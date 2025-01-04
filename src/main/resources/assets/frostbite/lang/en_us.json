@@ -1,5 +1,17 @@
 {
-  "itemGroup.examplemod": "Example Mod Tab",
-  "block.examplemod.example_block": "Example Block",
-  "item.examplemod.example_item": "Example Item"
+  "itemGroup.frostbite.frostbite_tab": "Frostbite",
+
+  "block.frostbite.black_block": "Black Block",
+
+  "item.frostbite.advanced_clock": "Advanced Clock",
+  "item.frostbite.metal_cog": "Metal Cog",
+  "item.frostbite.fur_helmet": "Fur Helmet",
+  "item.frostbite.fur_chestplate": "Fur Chestplate",
+  "item.frostbite.fur_leggings": "Fur Leggings",
+  "item.frostbite.fur_boots": "Fur Boots",
+  "item.frostbite.exploding_snowball": "Exploding Snowball",
+
+  "item.frostbite.black_block": "Black Block",
+
+  "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day"
 }
