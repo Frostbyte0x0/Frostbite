@@ -31,6 +31,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.FUR_BOOTS);
 
                         output.accept(ModItems.EXPLODING_SNOWBALL);
+                        output.accept(ModItems.HARDENED_SNOWBALL);
+                        output.accept(ModItems.PACKED_HARDENED_SNOWBALL);
+                        output.accept(ModItems.BLUE_HARDENED_SNOWBALL);
                     })).build());
 
     public static void register(IEventBus eventBus) {

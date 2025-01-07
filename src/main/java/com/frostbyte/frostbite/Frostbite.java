@@ -1,6 +1,7 @@
 package com.frostbyte.frostbite;
 
 import com.frostbyte.frostbite.block.ModBlocks;
+import com.frostbyte.frostbite.entity.ModEntities;
 import com.frostbyte.frostbite.item.ModCreativeModeTabs;
 import com.frostbyte.frostbite.item.ModItems;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -33,6 +34,7 @@ public class Frostbite {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+        ModEntities.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

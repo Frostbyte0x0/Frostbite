@@ -1,6 +1,6 @@
 package com.frostbyte.frostbite.item;
 
-import com.frostbyte.frostbite.item.custom.AdvancedClockItem;
+import com.frostbyte.frostbite.item.custom.*;
 import com.frostbyte.frostbite.Frostbite;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -15,7 +15,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Frostbite.MOD_ID);
 
-
     public static final DeferredItem<Item> METAL_COG =
             ITEMS.registerItem("metal_cog", Item::new, new Item.Properties());
 
@@ -23,10 +22,18 @@ public class ModItems {
     public static final DeferredItem<Item> ADVANCED_CLOCK =
             ITEMS.registerItem("advanced_clock", AdvancedClockItem::new, new Item.Properties());
 
-    // To keep track of the time I'm wasting on debugging
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
-            () -> new Item(new Item.Properties().stacksTo(16)
+            () -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "exploding_snowball")))));
+    public static final DeferredItem<Item> HARDENED_SNOWBALL = ITEMS.register("hardened_snowball",
+            () -> new HardenedSnowballItem(new Item.Properties().stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "hardened_snowball")))));
+    public static final DeferredItem<Item> PACKED_HARDENED_SNOWBALL = ITEMS.register("packed_hardened_snowball",
+            () -> new PackedHardenedSnowballItem(new Item.Properties().stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball")))));
+    public static final DeferredItem<Item> BLUE_HARDENED_SNOWBALL = ITEMS.register("blue_hardened_snowball",
+            () -> new BlueHardenedSnowballItem(new Item.Properties().stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "blue_hardened_snowball")))));
 
     public static final DeferredItem<Item> FUR_HELMET = ITEMS.register("fur_helmet",
             () -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.HELMET,

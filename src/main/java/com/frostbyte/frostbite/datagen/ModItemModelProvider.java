@@ -22,5 +22,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.FUR_BOOTS.get());
 
         basicItem(ModItems.EXPLODING_SNOWBALL.get());
+        basicItem(ModItems.HARDENED_SNOWBALL.get());
+        basicItem(ModItems.PACKED_HARDENED_SNOWBALL.get());
+        basicItem(ModItems.BLUE_HARDENED_SNOWBALL.get());
     }
 }
