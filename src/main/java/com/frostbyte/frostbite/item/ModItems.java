@@ -52,6 +52,9 @@ public class ModItems {
                     new Item.Properties().durability(ArmorType.BOOTS.getDurability(5))
                             .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_boots")))));
 
+    public static final DeferredItem<Item> DRAINING_STAFF =
+            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
