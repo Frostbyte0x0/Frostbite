@@ -1,7 +1,6 @@
 package com.frostbyte.frostbite.item.custom;
 
 import com.frostbyte.frostbite.entity.custom.BlueHardenedSnowballProjectileEntity;
-import com.frostbyte.frostbite.entity.custom.HardenedSnowballProjectileEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +21,7 @@ public class BlueHardenedSnowballItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemstack = player.getItemInHand(interactionHand);
-        level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 
         if (level instanceof ServerLevel serverlevel) {
             Projectile.spawnProjectileFromRotation(BlueHardenedSnowballProjectileEntity::new, serverlevel, itemstack, player, 0.0f, 1.5f, 1.0f);

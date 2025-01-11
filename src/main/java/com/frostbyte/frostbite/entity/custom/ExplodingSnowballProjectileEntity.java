@@ -27,7 +27,7 @@ public class ExplodingSnowballProjectileEntity extends AbstractArrow implements 
 
     protected void explode() {
         this.level().explode(this, Explosion.getDefaultDamageSource(this.level(), this),
-                null, this.getX(), this.getY((double)0.0625F), this.getZ(), 1f, false, Level.ExplosionInteraction.NONE);
+                null, this.getX(), this.getY(0.0625F), this.getZ(), 1f, false, Level.ExplosionInteraction.NONE);
     }
 
     private ParticleOptions getParticle() {
@@ -40,7 +40,7 @@ public class ExplodingSnowballProjectileEntity extends AbstractArrow implements 
             ParticleOptions particleoptions = this.getParticle();
 
             for(int i = 0; i < 8; ++i) {
-                this.level().addParticle(particleoptions, this.getX(), this.getY(), this.getZ(), (double)0.0F, (double)0.0F, (double)0.0F);
+                this.level().addParticle(particleoptions, this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F, 0.0F);
             }
         }
 

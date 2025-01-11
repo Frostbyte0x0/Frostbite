@@ -18,7 +18,6 @@ public class ModItems {
     public static final DeferredItem<Item> METAL_COG =
             ITEMS.registerItem("metal_cog", Item::new, new Item.Properties());
 
-    // To keep track of the time I'm wasting on debugging
     public static final DeferredItem<Item> ADVANCED_CLOCK =
             ITEMS.registerItem("advanced_clock", AdvancedClockItem::new, new Item.Properties());
 
