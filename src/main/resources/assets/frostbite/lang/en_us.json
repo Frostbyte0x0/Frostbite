@@ -17,5 +17,6 @@
 
   "item.frostbite.black_block": "Black Block",
 
-  "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day"
+  "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",
+  "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge"
 }

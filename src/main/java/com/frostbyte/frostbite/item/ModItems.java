@@ -52,7 +52,7 @@ public class ModItems {
                             .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_boots")))));
 
     public static final DeferredItem<Item> DRAINING_STAFF =
-            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1));
+            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1).fireResistant());
 
 
     public static void register(IEventBus eventBus) {
