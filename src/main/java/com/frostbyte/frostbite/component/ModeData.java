@@ -2,20 +2,19 @@ package com.frostbyte.frostbite.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public record ModeData(String mode) {
+public record ModeData(String mode) implements Serializable {
     public static final Codec<ModeData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(Codec.STRING.fieldOf("mode").forGetter(ModeData::mode)).apply(instance, ModeData::new));
 
-    @Override
-    public boolean equals(Object obj) {
-        return (obj == this) || (obj instanceof ModeData(String mode1) && Objects.equals(this.mode, mode1));
-    }
+    public static final StreamCodec<ByteBuf, ModeData> STREAM_CODEC;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.mode);
+    static {
+        STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8, ModeData::mode, ModeData::new);
     }
 }

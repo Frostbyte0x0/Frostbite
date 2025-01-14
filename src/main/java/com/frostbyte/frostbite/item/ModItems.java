@@ -1,7 +1,8 @@
 package com.frostbyte.frostbite.item;
 
-import com.frostbyte.frostbite.item.custom.*;
 import com.frostbyte.frostbite.Frostbite;
+import com.frostbyte.frostbite.item.custom.*;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -52,7 +53,21 @@ public class ModItems {
                             .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_boots")))));
 
     public static final DeferredItem<Item> DRAINING_STAFF =
-            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1).fireResistant());
+            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<Item> CHAINCICLE =
+            ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<Item> ICE_HAMMER =
+            ITEMS.registerItem("ice_hammer", IceHammerItem::new, new Item.Properties()
+                    .stacksTo(1)
+                    .attributes(IceHammerItem.createAttributes())
+                    .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
+                    .durability(500));
+
+
+    public static final DeferredItem<Item> THERMOMETER =
+            ITEMS.registerItem("thermometer", ThermometerItem::new, new Item.Properties().stacksTo(1));
 
 
     public static void register(IEventBus eventBus) {

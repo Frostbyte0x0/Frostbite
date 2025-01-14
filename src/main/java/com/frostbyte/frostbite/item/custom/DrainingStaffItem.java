@@ -18,10 +18,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.List;
 
 public class DrainingStaffItem extends Item {
-    public int max_charge = 100;
-    public String[] modes = {"drain", "blast", "ray", "shield", "heal"};
-    public Integer[] costs = {0, 80, 100, 50, 70};
-    public boolean used = false;
+    private final int max_charge = 100;
+    private final String[] modes = {"drain", "blast", "ray", "shield", "heal"};
+    private final Integer[] costs = {0, 80, 100, 50, 70};
+    private boolean used = false;
 
     public DrainingStaffItem(Properties properties) {
         super(properties);
@@ -106,12 +106,12 @@ public class DrainingStaffItem extends Item {
     }
 
     public void checkComponentDataForNull(ItemStack stack) {
-        if (stack.get(ModDataComponentTypes.MODE.get()).mode() == null) {
+        if (!stack.has(ModDataComponentTypes.MODE)) {
             stack.set(ModDataComponentTypes.MODE.get(), new ModeData("drain"));
         }
-//        if (stack.get(ModDataComponentTypes.CHARGE.get()).charge() == null) {
-//            stack.set(ModDataComponentTypes.CHARGE.get(), new ChargeData(0));
-//        }
+        if (!stack.has(ModDataComponentTypes.CHARGE)) {
+            stack.set(ModDataComponentTypes.CHARGE.get(), new ChargeData(0));
+        }
     }
 
     public void notifyPlayerNotEnoughCharge(Player player) {

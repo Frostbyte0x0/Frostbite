@@ -1,15 +1,13 @@
 package com.frostbyte.frostbite.entity.client;
 
-import com.frostbyte.frostbite.entity.custom.MurdershroomEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.entity.Entity;
 
-public class MurdershroomModel<T extends MurdershroomEntity> extends EntityModel<T> {
+public class MurdershroomModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart murdershroom;
     private final ModelPart upper_body_group;
     private final ModelPart body;
@@ -20,6 +18,7 @@ public class MurdershroomModel<T extends MurdershroomEntity> extends EntityModel
     private final ModelPart left;
 
     public MurdershroomModel(ModelPart root) {
+        super(root);
         this.murdershroom = root.getChild("murdershroom");
         this.upper_body_group = this.murdershroom.getChild("upper_body_group");
         this.body = this.upper_body_group.getChild("body");
@@ -55,13 +54,14 @@ public class MurdershroomModel<T extends MurdershroomEntity> extends EntityModel
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    @Override
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+//    @Override
+//    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+//
+//    }
 
-    }
 
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        murdershroom.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-    }
+//    @Override
+//    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+//        murdershroom.render(poseStack, buffer, packedLight, packedOverlay, color);
+//    }
 }

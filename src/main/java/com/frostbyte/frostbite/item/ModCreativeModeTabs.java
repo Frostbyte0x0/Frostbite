@@ -18,7 +18,7 @@ public class ModCreativeModeTabs {
     public static final Supplier<CreativeModeTab> FROSTBITE_TAB =
             CREATIVE_MODE_TABS.register("frostbite_tab", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.frostbite.frostbite_tab"))
-                    .icon(() -> new ItemStack(ModItems.METAL_COG.get()))
+                    .icon(() -> new ItemStack(ModItems.BLUE_HARDENED_SNOWBALL.get()))
                     .displayItems(((itemDisplayParameters, output) -> {
                         output.accept(ModItems.ADVANCED_CLOCK);
                         output.accept(ModItems.METAL_COG);
@@ -36,6 +36,8 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BLUE_HARDENED_SNOWBALL);
 
                         output.accept(ModItems.DRAINING_STAFF);
+                        output.accept(ModItems.CHAINCICLE);
+                        output.accept(ModItems.ICE_HAMMER);
                     })).build());
 
     public static void register(IEventBus eventBus) {

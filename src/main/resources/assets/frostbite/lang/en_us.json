@@ -14,9 +14,13 @@
   "item.frostbite.packed_hardened_snowball": "Packed Hardened Snowball",
   "item.frostbite.blue_hardened_snowball": "Blue Hardened Snowball",
   "item.frostbite.draining_staff": "Draining Staff",
+  "item.frostbite.chaincicle": "Chaincicle",
+  "item.frostbite.ice_hammer": "Ice Hammer",
+  "item.frostbite.thermometer": "Thermometer",
 
   "item.frostbite.black_block": "Black Block",
 
   "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",
+  "tooltip.frostbite.thermometer.tooltip": "Shows you the biome you are in and its temperature",
   "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge"
 }
