@@ -54,7 +54,7 @@ public class IceHammerItem extends Item {
             for (Entity entity : entities) {
                 context.getLevel().setBlock(entity.blockPosition(), Blocks.POWDER_SNOW.defaultBlockState(), 3);
                 entity.addDeltaMovement(new Vec3(0, 5, 0));
-                context.getPlayer().displayClientMessage(Component.literal((String.format("%s", entity.getName().getString()))), false);
+                context.getPlayer().displayClientMessage(Component.literal(entity.getName().getString()), false);
             }
         }
         used = !used;
