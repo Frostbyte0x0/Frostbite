@@ -28,6 +28,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         basicItem(ModItems.DRAINING_STAFF.get());
         basicItem(ModItems.CHAINCICLE.get());
+        basicItem(ModItems.STUNNING_BELL.get());
         basicItem(ModItems.ICE_HAMMER.get());
     }
 }

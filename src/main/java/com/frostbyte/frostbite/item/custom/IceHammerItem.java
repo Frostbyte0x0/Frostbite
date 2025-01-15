@@ -48,7 +48,6 @@ public class IceHammerItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         if (used) {
-            context.getPlayer().displayClientMessage(Component.literal("Yes"), false);
             List<Entity> entities = context.getLevel().getEntitiesOfClass(Entity.class,
                     new AABB(new Vec3(context.getPlayer().getBlockX() - size, context.getPlayer().getBlockY() - size, context.getPlayer().getBlockZ() - size),
                             new Vec3(context.getPlayer().getBlockX() + size, context.getPlayer().getBlockY() + size, context.getPlayer().getBlockZ() + size)));

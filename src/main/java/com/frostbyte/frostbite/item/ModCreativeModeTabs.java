@@ -37,6 +37,7 @@ public class ModCreativeModeTabs {
 
                         output.accept(ModItems.DRAINING_STAFF);
                         output.accept(ModItems.CHAINCICLE);
+                        output.accept(ModItems.STUNNING_BELL);
                         output.accept(ModItems.ICE_HAMMER);
                     })).build());
 

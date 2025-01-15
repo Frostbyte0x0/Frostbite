@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -84,22 +85,34 @@ public class DrainingStaffItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (entity instanceof Player player) {
+            if ((player.isUsingItem() && isSelected) || player.isScoping()) {
+                player.displayClientMessage(Component.literal("Wow cool"), true);
+            }
+        }
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+    }
+
 
     public void blastOption(Player player) {
-        player.displayClientMessage(Component.literal("Blast away!"), false);
+        player.displayClientMessage(Component.literal("Blast away!"), true);
     }
 
     public void rayOption(Player player) {
-        player.displayClientMessage(Component.literal("Pew pew"), false);
+        player.displayClientMessage(Component.literal("Pew pew"), true);
     }
 
     public void shieldOption(Player player) {
-        player.displayClientMessage(Component.literal("Shielding"), false);
+        player.displayClientMessage(Component.literal("Shielding"), true);
     }
 
     public void healOption(Player player) {
-        player.displayClientMessage(Component.literal("Healing"), false);
+        player.heal(7);
+        player.displayClientMessage(Component.literal("Healing"), true);
     }
+
 
     public void reduceCharge(Player player, InteractionHand hand, int amount) {
         player.getItemInHand(hand).set(ModDataComponentTypes.CHARGE.get(), new ChargeData(player.getItemInHand(hand).get(ModDataComponentTypes.CHARGE.get()).charge() - amount));
@@ -116,7 +129,7 @@ public class DrainingStaffItem extends Item {
 
     public void notifyPlayerNotEnoughCharge(Player player) {
         player.playSound(SoundEvents.THORNS_HIT);
-        player.displayClientMessage(Component.translatable("tooltip.frostbite.draining_staff.not_enough_charge"), false);
+        player.displayClientMessage(Component.translatable("tooltip.frostbite.draining_staff.not_enough_charge"), true);
     }
 
     @Override

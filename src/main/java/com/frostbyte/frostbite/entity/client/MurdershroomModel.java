@@ -5,7 +5,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.world.entity.Entity;
 
 public class MurdershroomModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart murdershroom;
@@ -60,6 +59,7 @@ public class MurdershroomModel extends EntityModel<LivingEntityRenderState> {
 //    }
 
 
+    // Access widener
 //    @Override
 //    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
 //        murdershroom.render(poseStack, buffer, packedLight, packedOverlay, color);

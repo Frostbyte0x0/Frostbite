@@ -58,6 +58,9 @@ public class ModItems {
     public static final DeferredItem<Item> CHAINCICLE =
             ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<Item> STUNNING_BELL =
+            ITEMS.registerItem("stunning_bell", StunningBellItem::new, new Item.Properties().stacksTo(1));
+
     public static final DeferredItem<Item> ICE_HAMMER =
             ITEMS.registerItem("ice_hammer", IceHammerItem::new, new Item.Properties()
                     .stacksTo(1)

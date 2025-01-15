@@ -59,19 +59,19 @@ public class ChaincicleItem extends Item {
 
 
     public void swipeOption(Player player) {
-        player.displayClientMessage(Component.literal("Slashing through enemies like butter"), false);
+        player.displayClientMessage(Component.literal("Slashing through enemies like butter"), true);
     }
 
     public void spinOption(Player player) {
-        player.displayClientMessage(Component.literal("BEYBLADE BEYBLADE LET IT RIP"), false);
+        player.displayClientMessage(Component.literal("BEYBLADE BEYBLADE LET IT RIP"), true);
     }
 
     public void hookOption(Player player) {
-        player.displayClientMessage(Component.literal("Looks like the mob it hooked (lol)"), false);
+        player.displayClientMessage(Component.literal("Looks like the mob it hooked (lol)"), true);
     }
 
     public void grappleOption(Player player) {
-        player.displayClientMessage(Component.literal("Groping, I mean, grappling"), false);
+        player.displayClientMessage(Component.literal("Groping, I mean, grappling"), true);
     }
 
     public void checkComponentDataForNull(ItemStack stack) {
