@@ -43,17 +43,15 @@ public class StunningBellItem extends Item {
                     }
                 }
 
-                for (int i = 0; i <= entities_per_distance.size(); i++) {
-                    for (LivingEntity entity : entities_per_distance.get(i)) {
-                        if (!entity.is(player) && !affected_entities.contains(entity)) {
-                            double num = 10 / (player.distanceTo(entity) + 3);
-                            Vec3 mul = new Vec3(num, num * 0.5, num);
-                            entity.addDeltaMovement(calculateDir(player, entity, mul));
-                            affected_entities.add(entity);
-                        }
+                entities_per_distance.forEach((i, e) -> e.forEach((entity) -> {
+                    if (!entity.is(player) && !affected_entities.contains(entity)) {
+                        double num = 10 / (player.distanceTo(entity) + 3);
+                        Vec3 mul = new Vec3(num, num * 0.5, num);
+                        entity.addDeltaMovement(calculateDir(player, entity, mul));
+                        affected_entities.add(entity);
                     }
-                    // wait 10 ticks
-                }
+                }));
+
                 affected_entities.clear();
             }
         }

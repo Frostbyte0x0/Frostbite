@@ -44,7 +44,7 @@ public class DrainingStaffItem extends Item {
             } else {
                 switch (player.getItemInHand(interactionHand).get(ModDataComponentTypes.MODE.get()).mode()) {
                     case "drain":
-                        if (charge < max_charge) reduceCharge(player, interactionHand, -10);;
+                        if (charge < max_charge) reduceCharge(player, interactionHand, -10);
                         break;
                     case "blast":
                         if (charge >= costs[1]) {

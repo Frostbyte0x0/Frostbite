@@ -1,6 +1,5 @@
 package com.frostbyte.frostbite.item.custom;
 
-import com.frostbyte.frostbite.component.ChargeData;
 import com.frostbyte.frostbite.component.ModDataComponentTypes;
 import com.frostbyte.frostbite.component.ModeData;
 import net.minecraft.ChatFormatting;
