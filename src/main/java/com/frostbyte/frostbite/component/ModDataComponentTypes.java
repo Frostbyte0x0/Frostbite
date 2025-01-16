@@ -19,6 +19,9 @@ public class ModDataComponentTypes {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ChargeData>> CHARGE = register("charge",
             builder -> builder.persistent(ChargeData.CODEC).networkSynchronized(ChargeData.STREAM_CODEC));
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<StoredEffectData>> STORED_EFFECT = register("stored_effect",
+            builder -> builder.persistent(StoredEffectData.CODEC).networkSynchronized(StoredEffectData.STREAM_CODEC));
+
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
         return DATA_COMPONENT_TYPES.register(name, () -> builderOperator.apply(DataComponentType.builder()).build());

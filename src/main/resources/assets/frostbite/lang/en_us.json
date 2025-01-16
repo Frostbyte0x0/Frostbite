@@ -33,6 +33,7 @@
   "effect.frostbite.paralysis": "Paralysis",
   "effect.frostbite.petrification": "Petrification",
   "effect.frostbite.mold": "Mold",
+  "effect.frostbite.decay": "Decay",
 
 
   "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",

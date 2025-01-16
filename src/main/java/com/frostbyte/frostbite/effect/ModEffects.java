@@ -37,6 +37,9 @@ public class ModEffects {
     public static final Holder<MobEffect> MOLD = MOB_EFFECTS.register("mold",
             () -> new FatigueEffect(MobEffectCategory.HARMFUL, 0x3b4052));
 
+    public static final Holder<MobEffect> DECAY = MOB_EFFECTS.register("decay",
+            () -> new FatigueEffect(MobEffectCategory.HARMFUL, 0x3b4052));
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

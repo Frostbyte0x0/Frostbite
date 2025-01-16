@@ -22,6 +22,9 @@ public class ModCreativeModeTabs {
                     .displayItems(((itemDisplayParameters, output) -> {
                         output.accept(ModItems.ADVANCED_CLOCK);
                         output.accept(ModItems.METAL_COG);
+                        output.accept(ModItems.VIAL);
+                        output.accept(ModItems.JAR);
+                        output.accept(ModItems.SPRAYER);
 
                         output.accept(ModBlocks.BLACK_BLOCK);
 

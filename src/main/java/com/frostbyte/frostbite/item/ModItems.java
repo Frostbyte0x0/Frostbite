@@ -27,6 +27,9 @@ public class ModItems {
     public static final DeferredItem<Item> ADVANCED_CLOCK =
             ITEMS.registerItem("advanced_clock", AdvancedClockItem::new, new Item.Properties());
 
+    public static final DeferredItem<Item> SPRAYER =
+            ITEMS.registerItem("sprayer", SprayerItem::new, new Item.Properties().stacksTo(1));
+
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
             () -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "exploding_snowball")))));
@@ -59,10 +62,8 @@ public class ModItems {
 
     public static final DeferredItem<Item> DRAINING_STAFF =
             ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1));
-
     public static final DeferredItem<Item> CHAINCICLE =
             ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1));
-
     public static final DeferredItem<Item> STUNNING_BELL =
             ITEMS.registerItem("stunning_bell", StunningBellItem::new, new Item.Properties().stacksTo(1));
 
