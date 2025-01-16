@@ -19,6 +19,11 @@ public class ModItems {
     public static final DeferredItem<Item> METAL_COG =
             ITEMS.registerItem("metal_cog", Item::new, new Item.Properties());
 
+    public static final DeferredItem<Item> JAR =
+            ITEMS.registerItem("jar", Item::new, new Item.Properties());
+    public static final DeferredItem<Item> VIAL =
+            ITEMS.registerItem("vial", Item::new, new Item.Properties());
+
     public static final DeferredItem<Item> ADVANCED_CLOCK =
             ITEMS.registerItem("advanced_clock", AdvancedClockItem::new, new Item.Properties());
 

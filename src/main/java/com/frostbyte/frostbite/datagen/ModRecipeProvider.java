@@ -30,6 +30,20 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('M', ModItems.METAL_COG.get())
                 .unlockedBy("has_metal_cog", has(ModItems.METAL_COG.get())).save(output);
 
+        ShapedRecipeBuilder.shaped(holderGetter, RecipeCategory.MISC, ModItems.VIAL.get())
+                .pattern(" G ")
+                .pattern("G G")
+                .pattern(" G ")
+                .define('G', Items.GLASS.asItem())
+                .unlockedBy("has_glass", has(Items.GLASS.asItem())).save(output);
+
+        ShapedRecipeBuilder.shaped(holderGetter, RecipeCategory.MISC, ModItems.JAR.get())
+                .pattern("GGG")
+                .pattern("G G")
+                .pattern("GGG")
+                .define('G', Items.GLASS.asItem())
+                .unlockedBy("has_glass", has(Items.GLASS.asItem())).save(output);
+
         ShapedRecipeBuilder.shaped(holderGetter, RecipeCategory.MISC, ModItems.EXPLODING_SNOWBALL.get(), 4)
                 .pattern("SSS")
                 .pattern("STS")

@@ -2,6 +2,7 @@ package com.frostbyte.frostbite;
 
 import com.frostbyte.frostbite.block.ModBlocks;
 import com.frostbyte.frostbite.component.ModDataComponentTypes;
+import com.frostbyte.frostbite.effect.ModEffects;
 import com.frostbyte.frostbite.entity.ModEntities;
 import com.frostbyte.frostbite.item.ModCreativeModeTabs;
 import com.frostbyte.frostbite.item.ModItems;
@@ -27,6 +28,7 @@ public class Frostbite {
         ModCreativeModeTabs.register(modEventBus);
         ModEntities.register(modEventBus);
         ModDataComponentTypes.register(modEventBus);
+        ModEffects.register(modEventBus);
 
         //NeoForge.EVENT_BUS.register(this);
     }
