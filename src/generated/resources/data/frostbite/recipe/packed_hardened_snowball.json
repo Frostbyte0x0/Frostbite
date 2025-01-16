@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": "minecraft:packed_ice",
+    "S": "minecraft:snowball"
+  },
+  "pattern": [
+    "PPP",
+    "PSP",
+    "PPP"
+  ],
+  "result": {
+    "count": 4,
+    "id": "frostbite:packed_hardened_snowball"
+  }
+}
