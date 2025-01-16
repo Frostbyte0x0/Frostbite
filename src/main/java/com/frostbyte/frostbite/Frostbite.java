@@ -6,6 +6,7 @@ import com.frostbyte.frostbite.effect.ModEffects;
 import com.frostbyte.frostbite.entity.ModEntities;
 import com.frostbyte.frostbite.item.ModCreativeModeTabs;
 import com.frostbyte.frostbite.item.ModItems;
+import com.frostbyte.frostbite.item.alchemy.Jars;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import org.slf4j.Logger;
 
@@ -29,6 +30,7 @@ public class Frostbite {
         ModEntities.register(modEventBus);
         ModDataComponentTypes.register(modEventBus);
         ModEffects.register(modEventBus);
+        Jars.register(modEventBus);
 
         //NeoForge.EVENT_BUS.register(this);
     }

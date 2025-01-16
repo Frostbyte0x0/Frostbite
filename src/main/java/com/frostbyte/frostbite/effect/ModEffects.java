@@ -23,22 +23,22 @@ public class ModEffects {
                             -0.1f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final Holder<MobEffect> PARANOIA = MOB_EFFECTS.register("paranoia",
-            () -> new ParanoiaEffect(MobEffectCategory.HARMFUL, 0x400b6b));
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x400b6b));
 
     public static final Holder<MobEffect> FATIGUE = MOB_EFFECTS.register("fatigue",
-            () -> new FatigueEffect(MobEffectCategory.HARMFUL, 0x3b4052));
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x3e374f));
 
     public static final Holder<MobEffect> PARALYSIS = MOB_EFFECTS.register("paralysis",
-            () -> new FatigueEffect(MobEffectCategory.HARMFUL, 0x3b4052));
+            () -> new ParalysisEffect(MobEffectCategory.HARMFUL, 0x2f6363));
 
     public static final Holder<MobEffect> PETRIFICATION = MOB_EFFECTS.register("petrification",
-            () -> new FatigueEffect(MobEffectCategory.HARMFUL, 0x3b4052));
+            () -> new PetrificationEffect(MobEffectCategory.HARMFUL, 0x464f4f));
 
     public static final Holder<MobEffect> MOLD = MOB_EFFECTS.register("mold",
-            () -> new FatigueEffect(MobEffectCategory.HARMFUL, 0x3b4052));
+            () -> new MoldEffect(MobEffectCategory.HARMFUL, 0x2f6636));
 
     public static final Holder<MobEffect> DECAY = MOB_EFFECTS.register("decay",
-            () -> new FatigueEffect(MobEffectCategory.HARMFUL, 0x3b4052));
+            () -> new DecayEffect(MobEffectCategory.HARMFUL, 0x050505));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

@@ -27,4 +27,4 @@ file="META-INF/accesstransformer.cfg"
     side="BOTH"
 
 [[mixins]]
-config = "frostbite-mixins.json"
+config = "frostbite.mixin.json"

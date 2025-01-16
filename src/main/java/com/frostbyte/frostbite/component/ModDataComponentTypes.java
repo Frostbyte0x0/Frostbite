@@ -16,11 +16,14 @@ public class ModDataComponentTypes {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ModeData>> MODE = register("mode",
             builder -> builder.persistent(ModeData.CODEC).networkSynchronized(ModeData.STREAM_CODEC));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ChargeData>> CHARGE = register("charge",
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ChargeData>> CHARGE = register("level",
             builder -> builder.persistent(ChargeData.CODEC).networkSynchronized(ChargeData.STREAM_CODEC));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<StoredEffectData>> STORED_EFFECT = register("stored_effect",
             builder -> builder.persistent(StoredEffectData.CODEC).networkSynchronized(StoredEffectData.STREAM_CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<JarContentsData>> JAR_CONTENTS = register("jar_contents",
+            builder -> builder.persistent(JarContentsData.CODEC).networkSynchronized(JarContentsData.STREAM_CODEC));
 
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

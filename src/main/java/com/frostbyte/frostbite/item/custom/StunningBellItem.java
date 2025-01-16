@@ -22,11 +22,9 @@ public class StunningBellItem extends Item {
         super(properties);
     }
 
-    private int x = 10;
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        ItemUtils.startUsingInstantly(level, player, hand);
         if (used) {
             List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
                     new AABB(new Vec3(player.getBlockX() - range, player.getBlockY() - range, player.getBlockZ() - range),
@@ -48,15 +46,12 @@ public class StunningBellItem extends Item {
                 }
 
                 entities_per_distance.forEach((i, e) -> e.forEach((entity) -> {
-                    if (x == 0 && !entity.is(player) && !affected_entities.contains(entity)) {
+                    if (!entity.is(player) && !affected_entities.contains(entity)) {
                         float num = 10f / (i + 3f);
                         Vec3 mul = new Vec3(num, num * 0.5, num);
                         entity.addDeltaMovement(calculateDir(player, entity, mul));
                         affected_entities.add(entity);
-                        x = 10;
                     }
-
-                    x--;
                 }));
 
                 affected_entities.clear();

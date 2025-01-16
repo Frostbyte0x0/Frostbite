@@ -4,6 +4,7 @@
   "package": "com.frostbyte.frostbite.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "LivingEntityMixin"
   ],
   "client": [
   ],

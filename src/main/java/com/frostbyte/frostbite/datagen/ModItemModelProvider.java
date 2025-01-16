@@ -15,6 +15,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         basicItem(ModItems.ADVANCED_CLOCK.get());
         basicItem(ModItems.METAL_COG.get());
+        basicItem(ModItems.EMPTY_JAR.get());
         basicItem(ModItems.JAR.get());
         basicItem(ModItems.VIAL.get());
         basicItem(ModItems.SPRAYER.get());

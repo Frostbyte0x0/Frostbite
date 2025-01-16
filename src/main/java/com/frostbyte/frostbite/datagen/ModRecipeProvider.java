@@ -37,7 +37,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('G', Items.GLASS.asItem())
                 .unlockedBy("has_glass", has(Items.GLASS.asItem())).save(output);
 
-        ShapedRecipeBuilder.shaped(holderGetter, RecipeCategory.MISC, ModItems.JAR.get())
+        ShapedRecipeBuilder.shaped(holderGetter, RecipeCategory.MISC, ModItems.EMPTY_JAR.get())
                 .pattern("GGG")
                 .pattern("G G")
                 .pattern("GGG")

@@ -1,10 +1,7 @@
 package com.frostbyte.frostbite.entity;
 
 import com.frostbyte.frostbite.Frostbite;
-import com.frostbyte.frostbite.entity.custom.BlueHardenedSnowballProjectileEntity;
-import com.frostbyte.frostbite.entity.custom.ExplodingSnowballProjectileEntity;
-import com.frostbyte.frostbite.entity.custom.HardenedSnowballProjectileEntity;
-import com.frostbyte.frostbite.entity.custom.PackedHardenedSnowballProjectileEntity;
+import com.frostbyte.frostbite.entity.custom.*;
 import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -44,6 +41,12 @@ public class ModEntities {
                     .<PackedHardenedSnowballProjectileEntity>of(PackedHardenedSnowballProjectileEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball"))));
+
+    public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
+            ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
+                    .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
 
 
     public static void register(IEventBus eventBus) {

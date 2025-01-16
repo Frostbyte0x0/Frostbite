@@ -1,6 +1,9 @@
 package com.frostbyte.frostbite.item;
 
 import com.frostbyte.frostbite.Frostbite;
+import com.frostbyte.frostbite.component.JarContentsData;
+import com.frostbyte.frostbite.component.ModDataComponentTypes;
+import com.frostbyte.frostbite.item.alchemy.JarItem;
 import com.frostbyte.frostbite.item.custom.*;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -8,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -19,8 +23,16 @@ public class ModItems {
     public static final DeferredItem<Item> METAL_COG =
             ITEMS.registerItem("metal_cog", Item::new, new Item.Properties());
 
+    public static final DeferredItem<Item> EMPTY_JAR =
+            ITEMS.registerItem("empty_jar", Item::new, new Item.Properties());
     public static final DeferredItem<Item> JAR =
-            ITEMS.registerItem("jar", Item::new, new Item.Properties());
+            ITEMS.registerItem("jar",
+                    JarItem::new,
+                    new Item.Properties()
+                            .stacksTo(1)
+                            .component(ModDataComponentTypes.JAR_CONTENTS, JarContentsData.EMPTY)
+                            .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
+                            .usingConvertsTo(EMPTY_JAR.asItem()));
     public static final DeferredItem<Item> VIAL =
             ITEMS.registerItem("vial", Item::new, new Item.Properties());
 
