@@ -9,6 +9,8 @@ import net.minecraft.network.codec.StreamCodec;
 import java.io.Serializable;
 
 public record ChargeData(int charge) implements Serializable {
+    public static ChargeData EMPTY = new ChargeData(0);
+
     public static final Codec<ChargeData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(Codec.INT.fieldOf("level").forGetter(ChargeData::charge)).apply(instance, ChargeData::new));
 

@@ -1,17 +1,23 @@
 package com.frostbyte.frostbite.item;
 
 import com.frostbyte.frostbite.Frostbite;
-import com.frostbyte.frostbite.component.JarContentsData;
+//import com.frostbyte.frostbite.component.JarContentsData;
+//import com.frostbyte.frostbite.item.custom.alchemy.JarItem;
+import com.frostbyte.frostbite.component.ChargeData;
+import com.frostbyte.frostbite.component.GunData;
 import com.frostbyte.frostbite.component.ModDataComponentTypes;
-import com.frostbyte.frostbite.item.alchemy.JarItem;
+import com.frostbyte.frostbite.component.ModeData;
+import com.frostbyte.frostbite.item.custom.alchemy.SprayerItem;
 import com.frostbyte.frostbite.item.custom.*;
+import com.frostbyte.frostbite.item.custom.gun.SniperItem;
+import com.frostbyte.frostbite.item.custom.gun.bullet.SniperBulletItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.Consumables;
+import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -25,14 +31,14 @@ public class ModItems {
 
     public static final DeferredItem<Item> EMPTY_JAR =
             ITEMS.registerItem("empty_jar", Item::new, new Item.Properties());
-    public static final DeferredItem<Item> JAR =
-            ITEMS.registerItem("jar",
-                    JarItem::new,
-                    new Item.Properties()
-                            .stacksTo(1)
-                            .component(ModDataComponentTypes.JAR_CONTENTS, JarContentsData.EMPTY)
-                            .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
-                            .usingConvertsTo(EMPTY_JAR.asItem()));
+//    public static final DeferredItem<Item> JAR =
+//            ITEMS.registerItem("jar",
+//                    JarItem::new,
+//                    new Item.Properties()
+//                            .stacksTo(1)
+//                            .component(ModDataComponentTypes.JAR_CONTENTS, JarContentsData.EMPTY)
+//                            .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
+//                            .usingConvertsTo(EMPTY_JAR.asItem()));
     public static final DeferredItem<Item> VIAL =
             ITEMS.registerItem("vial", Item::new, new Item.Properties());
 
@@ -40,7 +46,8 @@ public class ModItems {
             ITEMS.registerItem("advanced_clock", AdvancedClockItem::new, new Item.Properties());
 
     public static final DeferredItem<Item> SPRAYER =
-            ITEMS.registerItem("sprayer", SprayerItem::new, new Item.Properties().stacksTo(1));
+            ITEMS.registerItem("sprayer", SprayerItem::new, new Item.Properties().stacksTo(1)
+                    .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY));
 
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
             () -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
@@ -73,9 +80,12 @@ public class ModItems {
                             .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_boots")))));
 
     public static final DeferredItem<Item> DRAINING_STAFF =
-            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1));
+            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1)
+                    .component(ModDataComponentTypes.MODE, new ModeData("drain"))
+                    .component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY));
     public static final DeferredItem<Item> CHAINCICLE =
-            ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1));
+            ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1)
+                    .component(ModDataComponentTypes.MODE, new ModeData("swipe")));
     public static final DeferredItem<Item> STUNNING_BELL =
             ITEMS.registerItem("stunning_bell", StunningBellItem::new, new Item.Properties().stacksTo(1));
 
@@ -85,6 +95,15 @@ public class ModItems {
                     .attributes(IceHammerItem.createAttributes())
                     .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
                     .durability(500));
+
+
+    public static final DeferredItem<Item> SNIPER =
+            ITEMS.registerItem("sniper", SniperItem::new,
+                    new Item.Properties().stacksTo(1)
+                            .component(ModDataComponentTypes.GUN, GunData.EMPTY));
+    public static final DeferredItem<Item> SNIPER_BULLET =
+            ITEMS.registerItem("sniper_bullet", SniperBulletItem::new,
+                    new Item.Properties().stacksTo(1));
 
 
     public static final DeferredItem<Item> THERMOMETER =

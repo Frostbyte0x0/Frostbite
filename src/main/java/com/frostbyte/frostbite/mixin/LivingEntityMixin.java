@@ -20,7 +20,7 @@ public abstract class LivingEntityMixin {
     @Inject(at = @At("HEAD"), method = "tick()V")
     private void tick(CallbackInfo ci) {
         if (frostbite$livingEntity instanceof Blaze) {
-            Frostbite.LOGGER.error("WooowWW!!11!");
+            //Frostbite.LOGGER.error("WooowWW!!11!");
             frostbite$livingEntity.addEffect(new MobEffectInstance(ModEffects.IRRITATION));
         }
     }

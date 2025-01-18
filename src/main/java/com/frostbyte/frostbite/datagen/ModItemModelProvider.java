@@ -16,7 +16,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.ADVANCED_CLOCK.get());
         basicItem(ModItems.METAL_COG.get());
         basicItem(ModItems.EMPTY_JAR.get());
-        basicItem(ModItems.JAR.get());
+        //basicItem(ModItems.JAR.get());
         basicItem(ModItems.VIAL.get());
         basicItem(ModItems.SPRAYER.get());
 
@@ -34,5 +34,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.CHAINCICLE.get());
         basicItem(ModItems.STUNNING_BELL.get());
         basicItem(ModItems.ICE_HAMMER.get());
+
+        basicItem(ModItems.SNIPER.get());
+        basicItem(ModItems.SNIPER_BULLET.get());
     }
 }

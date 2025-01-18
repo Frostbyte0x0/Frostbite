@@ -2,6 +2,8 @@ package com.frostbyte.frostbite.entity;
 
 import com.frostbyte.frostbite.Frostbite;
 import com.frostbyte.frostbite.entity.custom.*;
+import com.frostbyte.frostbite.entity.custom.bullets.SniperBulletEntity;
+import com.frostbyte.frostbite.entity.custom.murdershrooms.AgaricMurdershroomEntity;
 import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -42,11 +44,26 @@ public class ModEntities {
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball"))));
 
-    public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
-            ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
-                    .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
+
+    public static final Supplier<EntityType<SniperBulletEntity>> SNIPER_BULLET_ENTITY =
+            ENTITY_TYPES.register("sniper_bullet", () -> EntityType.Builder
+                    .<SniperBulletEntity>of(SniperBulletEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball"))));
+
+//
+//    public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
+//            ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
+//                    .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
+//                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+//                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
+
+
+    public static final Supplier<EntityType<AgaricMurdershroomEntity>> AGARIC_MURDERSHROOM =
+            ENTITY_TYPES.register("agaric_murdershroom", () -> EntityType.Builder
+                    .<AgaricMurdershroomEntity>of(AgaricMurdershroomEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "agaric_murdershroom"))));
 
 
     public static void register(IEventBus eventBus) {

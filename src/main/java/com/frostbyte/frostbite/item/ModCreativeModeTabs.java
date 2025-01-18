@@ -49,15 +49,18 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.STUNNING_BELL);
                         output.accept(ModItems.ICE_HAMMER);
 
-                        itemDisplayParameters.holders()
-                                .lookup().ifPresent(
-                                        lookup -> generatePotionEffectTypes(
-                                                output,
-                                                lookup,
-                                                ModItems.JAR.asItem(),
-                                                CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS,
-                                                itemDisplayParameters.enabledFeatures()
-                                ));
+                        output.accept(ModItems.SNIPER);
+                        output.accept(ModItems.SNIPER_BULLET);
+
+//                        itemDisplayParameters.holders()
+//                                .lookup().ifPresent(
+//                                        lookup -> generatePotionEffectTypes(
+//                                                output,
+//                                                lookup,
+//                                                ModItems.JAR.asItem(),
+//                                                CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS,
+//                                                itemDisplayParameters.enabledFeatures()
+//                                ));
                     })).build());
 
 
