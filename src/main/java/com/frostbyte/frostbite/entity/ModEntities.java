@@ -61,7 +61,7 @@ public class ModEntities {
 
     public static final Supplier<EntityType<AgaricMurdershroomEntity>> AGARIC_MURDERSHROOM =
             ENTITY_TYPES.register("agaric_murdershroom", () -> EntityType.Builder
-                    .<AgaricMurdershroomEntity>of(AgaricMurdershroomEntity::new, MobCategory.MONSTER)
+                    .of(AgaricMurdershroomEntity::new, MobCategory.MONSTER)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "agaric_murdershroom"))));
 

@@ -81,11 +81,11 @@ public class ModItems {
 
     public static final DeferredItem<Item> DRAINING_STAFF =
             ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1)
-                    .component(ModDataComponentTypes.MODE, new ModeData("drain"))
-                    .component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY));
+                    //.component(ModDataComponentTypes.MODE, new ModeData("drain"))
+                    /*.component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY)*/);
     public static final DeferredItem<Item> CHAINCICLE =
             ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1)
-                    .component(ModDataComponentTypes.MODE, new ModeData("swipe")));
+                    /*.component(ModDataComponentTypes.MODE, new ModeData("swipe"))*/);
     public static final DeferredItem<Item> STUNNING_BELL =
             ITEMS.registerItem("stunning_bell", StunningBellItem::new, new Item.Properties().stacksTo(1));
 
@@ -93,17 +93,17 @@ public class ModItems {
             ITEMS.registerItem("ice_hammer", IceHammerItem::new, new Item.Properties()
                     .stacksTo(1)
                     .attributes(IceHammerItem.createAttributes())
-                    .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
+                    //.component(DataComponents.TOOL, IceHammerItem.createToolProperties())
                     .durability(500));
 
 
-    public static final DeferredItem<Item> SNIPER =
-            ITEMS.registerItem("sniper", SniperItem::new,
-                    new Item.Properties().stacksTo(1)
-                            .component(ModDataComponentTypes.GUN, GunData.EMPTY));
     public static final DeferredItem<Item> SNIPER_BULLET =
             ITEMS.registerItem("sniper_bullet", SniperBulletItem::new,
                     new Item.Properties().stacksTo(1));
+    public static final DeferredItem<Item> SNIPER =
+            ITEMS.registerItem("sniper", SniperItem::new,
+                    new Item.Properties().stacksTo(1));
+                            //.component(ModDataComponentTypes.GUN, GunData.EMPTY));
 
 
     public static final DeferredItem<Item> THERMOMETER =

@@ -16,8 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class AgaricMurdershroomEntity extends Monster {
-    public final AnimationState walkingAnimationState = new AnimationState();
-    private int walkingAnimationStateTimeout = 0;
+    public final AnimationState idleAnimationState = new AnimationState();
+    private int idleAnimationStateTimeout = 0;
 
     public AgaricMurdershroomEntity(EntityType<? extends Monster> entityType, Level level) {
         super(ModEntities.AGARIC_MURDERSHROOM.get(), level);
@@ -42,8 +42,12 @@ public class AgaricMurdershroomEntity extends Monster {
     }
 
     private void setupAnimationStates() {
-        if (this.walkingAnimationStateTimeout <= 0) {
-
+        if (this.idleAnimationStateTimeout <= 0) {
+            this.idleAnimationStateTimeout = 20;
+            this.idleAnimationState.start(this.tickCount);
+        }
+        else {
+            --this.idleAnimationStateTimeout;
         }
     }
 
@@ -52,7 +56,7 @@ public class AgaricMurdershroomEntity extends Monster {
         super.tick();
 
         if (this.level().isClientSide) {
-
+            this.setupAnimationStates();
         }
     }
 }

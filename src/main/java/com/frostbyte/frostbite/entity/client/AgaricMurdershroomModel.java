@@ -1,34 +1,25 @@
 package com.frostbyte.frostbite.entity.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.frostbyte.frostbite.entity.custom.murdershrooms.AgaricMurdershroomEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
-public class MurdershroomModel extends EntityModel<LivingEntityRenderState> {
+import java.util.function.Function;
+
+public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart murdershroom;
-    private final ModelPart upper_body_group;
-    private final ModelPart body;
-    private final ModelPart head_group;
-    private final ModelPart headmain;
-    private final ModelPart feet;
-    private final ModelPart right;
-    private final ModelPart left;
+    private final ModelPart head;
 
-    public MurdershroomModel(ModelPart root) {
+    public AgaricMurdershroomModel(ModelPart root) {
         super(root);
         this.murdershroom = root.getChild("murdershroom");
-        this.upper_body_group = this.murdershroom.getChild("upper_body_group");
-        this.body = this.upper_body_group.getChild("body");
-        this.head_group = this.body.getChild("head_group");
-        this.headmain = this.head_group.getChild("headmain");
-        this.feet = this.murdershroom.getChild("feet");
-        this.right = this.feet.getChild("right");
-        this.left = this.feet.getChild("left");
+        this.head = this.murdershroom.getChild("upper_body_group").getChild("body").getChild("head_group");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -56,14 +47,34 @@ public class MurdershroomModel extends EntityModel<LivingEntityRenderState> {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    @Override
-    public void setupAnim(LivingEntityRenderState renderState) {
-        super.setupAnim(renderState);
+    private void applyHeadRotation(float headYaw, float headPitch) {
+        headYaw = Mth.clamp(headYaw, -30f, 30f);
+        headPitch = Mth.clamp(headPitch, -25f, 45);
+
+        this.head.yRot = headYaw * ((float)Math.PI / 180f);
+        this.head.xRot = headPitch *  ((float)Math.PI / 180f);
     }
+
+//    @Override
+//    public void setupAnim(AgaricMurdershroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+//        this.root().getAllParts().forEach(ModelPart::resetPose);
+//        this.applyHeadRotation(netHeadYaw, headPitch);
+//
+//
+//        this.animateWalk(AgaricMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
+//        this.animate(entity.idleAnimationState, AgaricMurdershroomAnimations.IDLE, ageInTicks, 1f);
+//    }
+
+
 
 
     /*@Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         murdershroom.render(poseStack, buffer, packedLight, packedOverlay, color);
+    }*/
+
+    /*@Override
+    public ModelPart root() {
+        return murdershroom;
     }*/
 }

@@ -8,6 +8,6 @@ public class FrostbiteClient {
     }
 
     public static void registerOverlays() {
-        RenderGuiEvent.register(ColdBarOverlay::render);
+        //RenderGuiEvent.register(ColdBarOverlay::render);
     }
 }
