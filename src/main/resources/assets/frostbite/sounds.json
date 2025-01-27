@@ -1,0 +1,50 @@
+{
+  "stunning_bell_ring": {
+    "subtitle": "sounds.frostbite.stunning_bell_ring",
+    "sounds": [
+      "frostbite:stunning_bell_ring"
+    ]
+  },
+  "chaincicle_swipe": {
+    "subtitle": "sounds.frostbite.chaincicle_swipe",
+    "sounds": [
+      "frostbite:chaincicle_swipe"
+    ]
+  },
+  "chaincicle_spin": {
+    "subtitle": "sounds.frostbite.chaincicle_spin",
+    "sounds": [
+      "frostbite:chaincicle_spin"
+    ]
+  },
+  "chaincicle_launched_loop": {
+    "subtitle": "sounds.frostbite.chaincicle_launched_loop",
+    "sounds": [
+      "frostbite:chaincicle_launched_loop"
+    ]
+  },
+  "chaincicle_hook_launch": {
+    "subtitle": "sounds.frostbite.chaincicle_hook_launch",
+    "sounds": [
+      "frostbite:chaincicle_hook_launch"
+    ]
+  },
+  "chaincicle_hook_hit": {
+    "subtitle": "sounds.frostbite.chaincicle_hook_hit",
+    "sounds": [
+      "frostbite:chaincicle_hook_hit"
+    ]
+  },
+  "chaincicle_grapple_launch": {
+    "subtitle": "sounds.frostbite.chaincicle_grapple_launch",
+    "sounds": [
+      "frostbite:chaincicle_grapple_launch"
+    ]
+  },
+  "chaincicle_grapple_hit": {
+    "subtitle": "sounds.frostbite.chaincicle_grapple_hit",
+    "sounds": [
+      "frostbite:chaincicle_grapple_hit"
+    ]
+  }
+}

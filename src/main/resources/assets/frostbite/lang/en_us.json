@@ -27,6 +27,9 @@
   "item.frostbite.ice_hammer": "Ice Hammer",
   "item.frostbite.thermometer": "Thermometer",
 
+  "item.frostbite.sniper": "Sniper",
+  "item.frostbite.sniper_bullet": "Sniper Bullet",
+
 
   "effect.frostbite.irritation": "Irritation",
   "effect.frostbite.paranoia": "Paranoia",
@@ -39,5 +42,14 @@
 
   "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",
   "tooltip.frostbite.thermometer.tooltip": "Shows you the biome you are in and its temperature",
-  "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge"
+  "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge",
+
+  "sounds.frostbite.stunning_bell_ring": "Stunning bell rings",
+  "sounds.frostbite.chaincicle_swipe": "Chaincicle swipes",
+  "sounds.frostbite.chaincicle_spin": "Chaincicle spins",
+  "sounds.frostbite.chaincicle_launched_loop": "Chaincicle searches",
+  "sounds.frostbite.chaincicle_hook_launch": "Chaincicle hook launched",
+  "sounds.frostbite.chaincicle_hook_hit": "Chaincicle hooks",
+  "sounds.frostbite.chaincicle_grapple_launch": "Chaincicle grapple launched",
+  "sounds.frostbite.chaincicle_grapple_hit": "Chaincicle grapples"
 }
