@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.mixin;
 
-import org.exodusstudio.frostbite.effect.ModEffects;
+import org.exodusstudio.frostbite.common.effect.ModEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Blaze;

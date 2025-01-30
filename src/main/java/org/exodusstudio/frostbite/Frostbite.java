@@ -9,15 +9,15 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import org.exodusstudio.frostbite.block.ModBlocks;
+import org.exodusstudio.frostbite.common.block.ModBlocks;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
-import org.exodusstudio.frostbite.component.ModDataComponentTypes;
-import org.exodusstudio.frostbite.effect.ModEffects;
-import org.exodusstudio.frostbite.entity.ModEntities;
-import org.exodusstudio.frostbite.entity.client.AgaricMurdershroomRenderer;
-import org.exodusstudio.frostbite.item.ModCreativeModeTabs;
-import org.exodusstudio.frostbite.item.ModItems;
-import org.exodusstudio.frostbite.sound.ModSounds;
+import org.exodusstudio.frostbite.common.component.ModDataComponentTypes;
+import org.exodusstudio.frostbite.common.effect.ModEffects;
+import org.exodusstudio.frostbite.common.entity.ModEntities;
+import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.registry.CreativeModeTabRegistry;
+import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.sound.ModSounds;
 import org.slf4j.Logger;
 
 @Mod(Frostbite.MOD_ID)
@@ -32,9 +32,9 @@ public class Frostbite {
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
         ModDataComponentTypes.DATA_COMPONENT_TYPES.register(modEventBus);
-        ModItems.ITEMS.register(modEventBus);
+        ItemRegistry.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
-        ModCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        CreativeModeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModEffects.MOB_EFFECTS.register(modEventBus);
         ModSounds.SOUND_EVENTS.register(modEventBus);
