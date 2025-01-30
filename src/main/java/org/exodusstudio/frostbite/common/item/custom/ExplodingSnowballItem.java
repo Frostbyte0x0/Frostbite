@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.item.custom;
 
-import org.exodusstudio.frostbite.common.entity.ModEntities;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.entity.custom.ExplodingSnowballProjectileEntity;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import net.minecraft.sounds.SoundEvents;
@@ -21,7 +21,7 @@ public class ExplodingSnowballItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
-        ExplodingSnowballProjectileEntity entityArrow = new ExplodingSnowballProjectileEntity(ModEntities.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), player, player.level(), new ItemStack(ItemRegistry.EXPLODING_SNOWBALL.get()));
+        ExplodingSnowballProjectileEntity entityArrow = new ExplodingSnowballProjectileEntity(EntityRegistry.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), player, player.level(), new ItemStack(ItemRegistry.EXPLODING_SNOWBALL.get()));
 
         double d0 = player.getLookAngle().y + (double) player.getEyeHeight() - 1.1;
         double d1 = player.getLookAngle().x - player.getX();

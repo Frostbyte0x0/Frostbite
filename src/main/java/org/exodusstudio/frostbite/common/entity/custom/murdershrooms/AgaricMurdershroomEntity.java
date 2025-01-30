@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.custom.murdershrooms;
 
-import org.exodusstudio.frostbite.common.entity.ModEntities;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -20,7 +20,7 @@ public class AgaricMurdershroomEntity extends Monster {
     private int idleAnimationStateTimeout = 0;
 
     public AgaricMurdershroomEntity(EntityType<? extends Monster> entityType, Level level) {
-        super(ModEntities.AGARIC_MURDERSHROOM.get(), level);
+        super(EntityRegistry.AGARIC_MURDERSHROOM.get(), level);
     }
 
     @Override

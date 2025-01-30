@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
-import org.exodusstudio.frostbite.common.entity.ModEntities;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -18,15 +18,15 @@ import net.minecraft.world.phys.HitResult;
 
 public class BlueHardenedSnowballProjectileEntity extends ThrowableItemProjectile {
     public BlueHardenedSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
-        super(ModEntities.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), level);
+        super(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), level);
     }
 
     public BlueHardenedSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, double x, double y, double z, Level level, ItemStack item) {
-        super(ModEntities.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), x, y, z, level, item);
+        super(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), x, y, z, level, item);
     }
 
     public BlueHardenedSnowballProjectileEntity(ServerLevel serverLevel, LivingEntity owner, ItemStack itemStack) {
-        super(ModEntities.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), owner, serverLevel, itemStack);
+        super(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), owner, serverLevel, itemStack);
     }
 
     @Override

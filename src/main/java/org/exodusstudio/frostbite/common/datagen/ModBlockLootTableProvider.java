@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.datagen;
 
-import org.exodusstudio.frostbite.common.block.ModBlocks;
+import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -16,11 +16,11 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.BLACK_BLOCK.get());
+        dropSelf(BlockRegistry.BLACK_BLOCK.get());
     }
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
+        return BlockRegistry.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
     }
 }

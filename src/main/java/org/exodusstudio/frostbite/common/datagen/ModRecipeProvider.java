@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.datagen;
 
-import org.exodusstudio.frostbite.common.block.ModBlocks;
+import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -23,7 +23,7 @@ public class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes() {
         final HolderLookup.RegistryLookup<Item> holderGetter = registries.lookupOrThrow(Registries.ITEM);
 
-        ShapedRecipeBuilder.shaped(holderGetter, RecipeCategory.MISC, ModBlocks.BLACK_BLOCK.get())
+        ShapedRecipeBuilder.shaped(holderGetter, RecipeCategory.MISC, BlockRegistry.BLACK_BLOCK.get())
                 .pattern("MMM")
                 .pattern("MMM")
                 .pattern("MMM")

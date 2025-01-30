@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.item.custom;
 
 import org.exodusstudio.frostbite.common.component.ChargeData;
-import org.exodusstudio.frostbite.common.component.ModDataComponentTypes;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -33,16 +33,16 @@ public class DrainingStaffItem extends Item {
         ItemUtils.startUsingInstantly(level, player, interactionHand);
         checkComponentDataForNull(player.getItemInHand(interactionHand));
 
-        int modeIndex = ArrayUtils.indexOf(modes, player.getItemInHand(interactionHand).get(ModDataComponentTypes.MODE.get()).mode());
-        int charge = player.getItemInHand(interactionHand).get(ModDataComponentTypes.CHARGE.get()).charge();
+        int modeIndex = ArrayUtils.indexOf(modes, player.getItemInHand(interactionHand).get(DataComponentTypeRegistry.MODE.get()).mode());
+        int charge = player.getItemInHand(interactionHand).get(DataComponentTypeRegistry.CHARGE.get()).charge();
 
         if (player.isShiftKeyDown()) {
             modeIndex += 1;
             if (modeIndex == modes.length) modeIndex = 0;
-            player.getItemInHand(interactionHand).set(ModDataComponentTypes.MODE.get(),
+            player.getItemInHand(interactionHand).set(DataComponentTypeRegistry.MODE.get(),
                     new ModeData(modes[modeIndex]));
         } else {
-            switch (player.getItemInHand(interactionHand).get(ModDataComponentTypes.MODE.get()).mode()) {
+            switch (player.getItemInHand(interactionHand).get(DataComponentTypeRegistry.MODE.get()).mode()) {
                 case "drain":
                     if (charge < max_charge) reduceCharge(player, interactionHand, -10);
                     break;
@@ -113,15 +113,15 @@ public class DrainingStaffItem extends Item {
 
 
     public void reduceCharge(Player player, InteractionHand hand, int amount) {
-        player.getItemInHand(hand).set(ModDataComponentTypes.CHARGE.get(), new ChargeData(player.getItemInHand(hand).get(ModDataComponentTypes.CHARGE.get()).charge() - amount));
+        player.getItemInHand(hand).set(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(player.getItemInHand(hand).get(DataComponentTypeRegistry.CHARGE.get()).charge() - amount));
     }
 
     public void checkComponentDataForNull(ItemStack stack) {
-        if (!stack.has(ModDataComponentTypes.MODE)) {
-            stack.set(ModDataComponentTypes.MODE.get(), new ModeData("drain"));
+        if (!stack.has(DataComponentTypeRegistry.MODE)) {
+            stack.set(DataComponentTypeRegistry.MODE.get(), new ModeData("drain"));
         }
-        if (!stack.has(ModDataComponentTypes.CHARGE)) {
-            stack.set(ModDataComponentTypes.CHARGE.get(), new ChargeData(0));
+        if (!stack.has(DataComponentTypeRegistry.CHARGE)) {
+            stack.set(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(0));
         }
     }
 
@@ -134,6 +134,6 @@ public class DrainingStaffItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         checkComponentDataForNull(stack);
         tooltipComponents.add(Component.literal(String.format("Charge: %s  Mode: %s",
-                stack.get(ModDataComponentTypes.CHARGE.get()).charge(), stack.get(ModDataComponentTypes.MODE.get()).mode())).withStyle(ChatFormatting.GRAY));
+                stack.get(DataComponentTypeRegistry.CHARGE.get()).charge(), stack.get(DataComponentTypeRegistry.MODE.get()).mode())).withStyle(ChatFormatting.GRAY));
     }
 }

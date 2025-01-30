@@ -1,11 +1,14 @@
 package org.exodusstudio.frostbite.common.entity.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
+import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
 
 public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart murdershroom;
@@ -61,12 +64,10 @@ public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState
 //    }
 
 
-
-
-    /*@Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        murdershroom.render(poseStack, buffer, packedLight, packedOverlay, color);
-    }*/
+//    @Override
+//    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+//        murdershroom.render(poseStack, buffer, packedLight, packedOverlay, color);
+//    }
 
     /*@Override
     public ModelPart root() {

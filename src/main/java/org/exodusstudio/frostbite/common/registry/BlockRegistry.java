@@ -1,7 +1,6 @@
-package org.exodusstudio.frostbite.common.block;
+package org.exodusstudio.frostbite.common.registry;
 
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class ModBlocks {
+public class BlockRegistry {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(Frostbite.MOD_ID);
 

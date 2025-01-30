@@ -12,7 +12,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.GunData;
-import org.exodusstudio.frostbite.common.component.ModDataComponentTypes;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.ModArmorMaterials;
 import org.exodusstudio.frostbite.common.item.custom.*;
@@ -79,13 +78,13 @@ public class ItemRegistry {
     public static final DeferredItem<Item> DRAINING_STAFF =
             ITEMS.register("draining_staff", (id) -> new DrainingStaffItem(new Item.Properties()
                     .stacksTo(1)
-                    .component(ModDataComponentTypes.MODE, new ModeData("drain"))
-                    .component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY)
+                    .component(DataComponentTypeRegistry.MODE, new ModeData("drain"))
+                    .component(DataComponentTypeRegistry.CHARGE, ChargeData.EMPTY)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> CHAINCICLE =
             ITEMS.register("chaincicle", (id) -> new ChaincicleItem(new Item.Properties()
                     .stacksTo(1)
-                    .component(ModDataComponentTypes.MODE, new ModeData("swipe"))
+                    .component(DataComponentTypeRegistry.MODE, new ModeData("swipe"))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> STUNNING_BELL =
             ITEMS.register("stunning_bell", (id) -> new StunningBellItem(new Item.Properties()
@@ -107,7 +106,7 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SNIPER =
             ITEMS.register("sniper", (id) -> new SniperItem(new Item.Properties().stacksTo(1)
-                            .component(ModDataComponentTypes.GUN, GunData.EMPTY)
+                            .component(DataComponentTypeRegistry.GUN, GunData.EMPTY)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
 

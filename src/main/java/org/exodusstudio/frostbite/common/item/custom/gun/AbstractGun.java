@@ -1,8 +1,8 @@
 package org.exodusstudio.frostbite.common.item.custom.gun;
 
 import org.exodusstudio.frostbite.common.component.GunData;
-import org.exodusstudio.frostbite.common.component.ModDataComponentTypes;
-import org.exodusstudio.frostbite.common.entity.ModEntities;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
@@ -115,7 +115,7 @@ public abstract class AbstractGun extends Item {
             return revolverBulletItem.createBullet(level);
         }
 
-        return new SniperBulletEntity(ModEntities.SNIPER_BULLET_ENTITY.get(), level);
+        return new SniperBulletEntity(EntityRegistry.SNIPER_BULLET_ENTITY.get(), level);
     }
 
 
@@ -133,122 +133,122 @@ public abstract class AbstractGun extends Item {
 
 
     public boolean isBulletInChamber(ItemStack stack) {
-        return stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber();
+        return stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber();
     }
 
     public void setBulletInChamber(boolean bulletInChamber, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
                 bulletInChamber,
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag(),
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown(),
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown()));
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown()));
     }
 
 
     public int getBulletsInMag(ItemStack stack) {
-        return stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag();
+        return stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag();
     }
 
     public void setBulletsInMag(int bulletsInMag, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
                 bulletsInMag,
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown(),
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown()));
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown()));
     }
 
     public void reduceBulletsInMag(int amount, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag() - amount,
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown(),
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown()));
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag() - amount,
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown()));
     }
 
 
     public boolean isReloading(ItemStack stack) {
-        return stack.get(ModDataComponentTypes.GUN.get()).isReloading();
+        return stack.get(DataComponentTypeRegistry.GUN.get()).isReloading();
     }
 
     public void setReloading(boolean reloading, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag(),
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
                 reloading,
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown(),
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown()));
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown()));
     }
 
 
     public int getReloadCooldown(ItemStack stack) {
-        return stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown();
+        return stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown();
     }
 
     public void setReloadCooldown(int reloadCooldown, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag(),
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
                 reloadCooldown,
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown()));
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown()));
     }
 
     public void reduceReloadCooldown(int amount, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag(),
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown() - amount,
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown()));
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown() - amount,
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown()));
     }
 
 
     public int getChamberCooldown(ItemStack stack) {
-        return stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown();
+        return stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown();
     }
 
     public void setChamberCooldown(int chamberCooldown, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag(),
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown(),
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
                 chamberCooldown));
     }
 
     public void reduceChamberCooldown(int amount, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag(),
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown(),
-                stack.get(ModDataComponentTypes.GUN.get()).isChambering(),
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown() - amount));
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isChambering(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown() - amount));
     }
 
 
     public boolean isChambering(ItemStack stack) {
-        return stack.get(ModDataComponentTypes.GUN.get()).isChambering();
+        return stack.get(DataComponentTypeRegistry.GUN.get()).isChambering();
     }
 
     public void setChambering(boolean chambering, ItemStack stack) {
-        stack.set(ModDataComponentTypes.GUN.get(), new GunData(
-                stack.get(ModDataComponentTypes.GUN.get()).bulletInChamber(),
-                stack.get(ModDataComponentTypes.GUN.get()).bulletsInMag(),
-                stack.get(ModDataComponentTypes.GUN.get()).isReloading(),
-                stack.get(ModDataComponentTypes.GUN.get()).reloadCooldown(),
+        stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletInChamber(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).isReloading(),
+                stack.get(DataComponentTypeRegistry.GUN.get()).reloadCooldown(),
                 chambering,
-                stack.get(ModDataComponentTypes.GUN.get()).chamberCooldown()));
+                stack.get(DataComponentTypeRegistry.GUN.get()).chamberCooldown()));
     }
 
 

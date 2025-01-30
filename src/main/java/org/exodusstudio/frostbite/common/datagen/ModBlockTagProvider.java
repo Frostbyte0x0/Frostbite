@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.datagen;
 
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.block.ModBlocks;
+import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -19,6 +19,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(ModBlocks.BLACK_BLOCK.get());
+                .add(BlockRegistry.BLACK_BLOCK.get());
     }
 }

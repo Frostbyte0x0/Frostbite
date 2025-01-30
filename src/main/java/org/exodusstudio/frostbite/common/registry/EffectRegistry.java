@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.effect;
+package org.exodusstudio.frostbite.common.registry;
 
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.Holder;
@@ -9,8 +9,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.exodusstudio.frostbite.common.effect.*;
 
-public class ModEffects {
+public class EffectRegistry {
     public static final DeferredRegister<MobEffect> MOB_EFFECTS =
             DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Frostbite.MOD_ID);
 

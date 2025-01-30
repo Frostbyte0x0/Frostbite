@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.entity;
+package org.exodusstudio.frostbite.common.registry;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,7 +18,7 @@ import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurde
 
 import java.util.function.Supplier;
 
-public class ModEntities {
+public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Frostbite.MOD_ID);
 

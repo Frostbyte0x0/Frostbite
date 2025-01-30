@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.item.custom;
 
-import org.exodusstudio.frostbite.common.sound.ModSounds;
+import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,7 +40,7 @@ public class StunningBellItem extends Item {
                 }
             }
 
-            level.playSound(null, player.blockPosition(), ModSounds.STUNNING_BELL_RING.get(), SoundSource.PLAYERS, 1f, 1f);
+            level.playSound(null, player.blockPosition(), SoundRegistry.STUNNING_BELL_RING.get(), SoundSource.PLAYERS, 1f, 1f);
         }
 
         used = !used;

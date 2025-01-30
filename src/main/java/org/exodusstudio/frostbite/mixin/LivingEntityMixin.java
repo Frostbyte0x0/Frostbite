@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.mixin;
 
-import org.exodusstudio.frostbite.common.effect.ModEffects;
+import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Blaze;
@@ -20,7 +20,7 @@ public abstract class LivingEntityMixin {
     private void tick(CallbackInfo ci) {
         if (frostbite$livingEntity instanceof Blaze) {
             //Frostbite.LOGGER.error("WooowWW!!11!");
-            frostbite$livingEntity.addEffect(new MobEffectInstance(ModEffects.IRRITATION));
+            frostbite$livingEntity.addEffect(new MobEffectInstance(EffectRegistry.IRRITATION));
         }
     }
 }

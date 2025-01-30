@@ -1,8 +1,8 @@
 package org.exodusstudio.frostbite.common.item.custom;
 
-import org.exodusstudio.frostbite.common.component.ModDataComponentTypes;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.component.ModeData;
-import org.exodusstudio.frostbite.common.sound.ModSounds;
+import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -29,16 +29,16 @@ public class ChaincicleItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
         checkComponentDataForNull(player.getItemInHand(interactionHand));
 
-        int modeIndex = ArrayUtils.indexOf(modes, player.getItemInHand(interactionHand).get(ModDataComponentTypes.MODE.get()).mode());
+        int modeIndex = ArrayUtils.indexOf(modes, player.getItemInHand(interactionHand).get(DataComponentTypeRegistry.MODE.get()).mode());
 
         if (used) {
             if (player.isShiftKeyDown()) {
                 modeIndex += 1;
                 if (modeIndex == modes.length) modeIndex = 0;
-                player.getItemInHand(interactionHand).set(ModDataComponentTypes.MODE.get(),
+                player.getItemInHand(interactionHand).set(DataComponentTypeRegistry.MODE.get(),
                         new ModeData(modes[modeIndex]));
             } else {
-                switch (player.getItemInHand(interactionHand).get(ModDataComponentTypes.MODE.get()).mode()) {
+                switch (player.getItemInHand(interactionHand).get(DataComponentTypeRegistry.MODE.get()).mode()) {
                     case "swipe":
                         swipeOption(player);
                         break;
@@ -58,22 +58,22 @@ public class ChaincicleItem extends Item {
 
     public void swipeOption(Player player) {
         player.displayClientMessage(Component.literal("Slashing through enemies like butter"), false);
-        player.level().playSound(null, player.blockPosition(), ModSounds.CHAINCICLE_SWIPE.get(), SoundSource.PLAYERS, 1f, 1f);
+        player.level().playSound(null, player.blockPosition(), SoundRegistry.CHAINCICLE_SWIPE.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 
     public void hookOption(Player player) {
         player.displayClientMessage(Component.literal("Looks like the mob is hooked (lol)"), false);
-        player.level().playSound(null, player.blockPosition(), ModSounds.CHAINCICLE_HOOK_LAUNCH.get(), SoundSource.PLAYERS, 1f, 1f);
+        player.level().playSound(null, player.blockPosition(), SoundRegistry.CHAINCICLE_HOOK_LAUNCH.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 
     public void grappleOption(Player player) {
         player.displayClientMessage(Component.literal("Groping, I mean, grappling"), false);
-        player.level().playSound(null, player.blockPosition(), ModSounds.CHAINCICLE_GRAPPLE_LAUNCH.get(), SoundSource.PLAYERS, 1f, 1f);
+        player.level().playSound(null, player.blockPosition(), SoundRegistry.CHAINCICLE_GRAPPLE_LAUNCH.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 
     public void checkComponentDataForNull(ItemStack stack) {
-        if (!stack.has(ModDataComponentTypes.MODE)) {
-            stack.set(ModDataComponentTypes.MODE.get(), new ModeData("swipe"));
+        if (!stack.has(DataComponentTypeRegistry.MODE)) {
+            stack.set(DataComponentTypeRegistry.MODE.get(), new ModeData("swipe"));
         }
     }
 
@@ -81,6 +81,6 @@ public class ChaincicleItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         checkComponentDataForNull(stack);
         tooltipComponents.add(Component.literal(String.format("Mode: %s",
-                stack.get(ModDataComponentTypes.MODE.get()).mode())).withStyle(ChatFormatting.GRAY));
+                stack.get(DataComponentTypeRegistry.MODE.get()).mode())).withStyle(ChatFormatting.GRAY));
     }
 }

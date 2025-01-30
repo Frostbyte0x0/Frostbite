@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.event;
 
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.ModEntities;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomModel;
 import org.exodusstudio.frostbite.common.entity.client.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
@@ -19,6 +19,6 @@ public class ModEventBusEvents {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomEntity.createAttributes().build());
+        event.put(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomEntity.createAttributes().build());
     }
 }

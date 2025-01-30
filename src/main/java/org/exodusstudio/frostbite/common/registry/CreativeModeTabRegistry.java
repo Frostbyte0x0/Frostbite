@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.registry;
 
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -25,7 +24,7 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.EMPTY_JAR);
                         output.accept(ItemRegistry.SPRAYER);
 
-                        output.accept(ModBlocks.BLACK_BLOCK);
+                        output.accept(BlockRegistry.BLACK_BLOCK);
 
                         output.accept(ItemRegistry.FUR_HELMET);
                         output.accept(ItemRegistry.FUR_CHESTPLATE);

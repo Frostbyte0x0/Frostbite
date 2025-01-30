@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.sound;
+package org.exodusstudio.frostbite.common.registry;
 
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -8,7 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-public class ModSounds {
+public class SoundRegistry {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
             DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Frostbite.MOD_ID);
 
