@@ -41,70 +41,80 @@ public class ModItems {
             ITEMS.register("vial", (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> ADVANCED_CLOCK =
-            ITEMS.register("advanced_clock",(id) -> new AdvancedClockItem(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+            ITEMS.register("advanced_clock", (id) -> new AdvancedClockItem(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> SPRAYER =
             ITEMS.register("sprayer", (id) -> new SprayerItem(new Item.Properties().stacksTo(1)
                     .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
-            () -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
-                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "exploding_snowball")))));
+            (id) -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> HARDENED_SNOWBALL = ITEMS.register("hardened_snowball",
-            () -> new HardenedSnowballItem(new Item.Properties().stacksTo(16)
-                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "hardened_snowball")))));
+            (id) -> new HardenedSnowballItem(new Item.Properties().stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> PACKED_HARDENED_SNOWBALL = ITEMS.register("packed_hardened_snowball",
-            () -> new PackedHardenedSnowballItem(new Item.Properties().stacksTo(16)
-                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball")))));
+            (id) -> new PackedHardenedSnowballItem(new Item.Properties().stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLUE_HARDENED_SNOWBALL = ITEMS.register("blue_hardened_snowball",
-            () -> new BlueHardenedSnowballItem(new Item.Properties().stacksTo(16)
-                    .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "blue_hardened_snowball")))));
+            (id) -> new BlueHardenedSnowballItem(new Item.Properties().stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> FUR_HELMET = ITEMS.register("fur_helmet",
-            () -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.HELMET,
+            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.HELMET,
                     new Item.Properties().durability(ArmorType.HELMET.getDurability(5))
-                            .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_helmet")))));
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FUR_CHESTPLATE = ITEMS.register("fur_chestplate",
-            () -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.CHESTPLATE,
+            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.CHESTPLATE,
                     new Item.Properties().durability(ArmorType.CHESTPLATE.getDurability(5))
-                            .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_chestplate")))));
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FUR_LEGGINGS = ITEMS.register("fur_leggings",
-            () -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.LEGGINGS,
+            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.LEGGINGS,
                     new Item.Properties().durability(ArmorType.LEGGINGS.getDurability(5))
-                            .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_leggings")))));
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FUR_BOOTS = ITEMS.register("fur_boots",
-            () -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.BOOTS,
+            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.BOOTS,
                     new Item.Properties().durability(ArmorType.BOOTS.getDurability(5))
-                            .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fur_boots")))));
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> DRAINING_STAFF =
-            ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1)
+            ITEMS.register("draining_staff", (id) -> new DrainingStaffItem(new Item.Properties()
+                    .stacksTo(1)
                     .component(ModDataComponentTypes.MODE, new ModeData("drain"))
-                    .component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY));
+                    .component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> CHAINCICLE =
-            ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1)
-                    /*.component(ModDataComponentTypes.MODE, new ModeData("swipe"))*/);
+            ITEMS.register("chaincicle", (id) -> new ChaincicleItem(new Item.Properties()
+                    .stacksTo(1)
+                    .component(ModDataComponentTypes.MODE, new ModeData("swipe"))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> STUNNING_BELL =
-            ITEMS.registerItem("stunning_bell", StunningBellItem::new, new Item.Properties().stacksTo(1));
+            ITEMS.register("stunning_bell", (id) -> new StunningBellItem(new Item.Properties()
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> ICE_HAMMER =
-            ITEMS.registerItem("ice_hammer", IceHammerItem::new, new Item.Properties()
+            ITEMS.register("ice_hammer", (id) -> new IceHammerItem(new Item.Properties()
                     .stacksTo(1)
                     .attributes(IceHammerItem.createAttributes())
                     .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
-                    .durability(500));
+                    .durability(500)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
 
     public static final DeferredItem<Item> SNIPER_BULLET =
-            ITEMS.registerItem("sniper_bullet", SniperBulletItem::new,
-                    new Item.Properties().stacksTo(1));
+            ITEMS.register("sniper_bullet", (id) -> new SniperBulletItem(new Item.Properties()
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SNIPER =
-            ITEMS.registerItem("sniper", SniperItem::new,
-                    new Item.Properties().stacksTo(1)
-                            .component(ModDataComponentTypes.GUN, GunData.EMPTY));
+            ITEMS.register("sniper", (id) -> new SniperItem(new Item.Properties().stacksTo(1)
+                            .component(ModDataComponentTypes.GUN, GunData.EMPTY)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
 
     public static final DeferredItem<Item> THERMOMETER =
-            ITEMS.registerItem("thermometer", ThermometerItem::new, new Item.Properties().stacksTo(1));
+            ITEMS.register("thermometer", (id) -> new ThermometerItem(new Item.Properties()
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
 }
