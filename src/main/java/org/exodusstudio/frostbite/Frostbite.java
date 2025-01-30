@@ -1,7 +1,14 @@
 package org.exodusstudio.frostbite;
 
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
+import com.mojang.logging.LogUtils;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.block.ModBlocks;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.component.ModDataComponentTypes;
@@ -10,21 +17,8 @@ import org.exodusstudio.frostbite.entity.ModEntities;
 import org.exodusstudio.frostbite.entity.client.AgaricMurdershroomRenderer;
 import org.exodusstudio.frostbite.item.ModCreativeModeTabs;
 import org.exodusstudio.frostbite.item.ModItems;
-//import com.frostbyte.frostbite.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.sound.ModSounds;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
-
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
 
 @Mod(Frostbite.MOD_ID)
 public class Frostbite {
@@ -46,7 +40,7 @@ public class Frostbite {
         ModSounds.SOUND_EVENTS.register(modEventBus);
         //Jars.register(modEventBus);
 
-        NeoForge.EVENT_BUS.register(this);
+        //NeoForge.EVENT_BUS.register(this);
     }
 
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

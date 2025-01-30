@@ -27,12 +27,12 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     version = project.neo_version
 
+    accessTransformers { file('src/main/resources/META-INF/accesstransformer.cfg') }
+
     parchment {
         mappingsVersion = project.parchment_mappings_version
         minecraftVersion = project.parchment_minecraft_version
     }
-
-    accessTransformers = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
