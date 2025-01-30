@@ -8,13 +8,9 @@ import net.minecraft.network.codec.StreamCodec;
 
 import java.io.Serializable;
 
-public record ModeData(String mode) implements Serializable {
+public record ModeData(String mode) {
     public static final Codec<ModeData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(Codec.STRING.fieldOf("mode").forGetter(ModeData::mode)).apply(instance, ModeData::new));
 
-    public static final StreamCodec<ByteBuf, ModeData> STREAM_CODEC;
-
-    static {
-        STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8, ModeData::mode, ModeData::new);
-    }
+    public static final StreamCodec<ByteBuf, ModeData> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8, ModeData::mode, ModeData::new);
 }

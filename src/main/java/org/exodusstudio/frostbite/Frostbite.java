@@ -1,5 +1,7 @@
 package org.exodusstudio.frostbite;
 
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.exodusstudio.frostbite.block.ModBlocks;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.component.ModDataComponentTypes;
@@ -35,22 +37,17 @@ public class Frostbite {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::addCreative);
-
-        ModDataComponentTypes.register(modEventBus);
-        ModItems.register(modEventBus);
-        ModBlocks.register(modEventBus);
-        ModCreativeModeTabs.register(modEventBus);
-        ModEntities.register(modEventBus);
-        ModEffects.register(modEventBus);
-        ModSounds.register(modEventBus);
+        ModDataComponentTypes.DATA_COMPONENT_TYPES.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        ModEntities.ENTITY_TYPES.register(modEventBus);
+        ModEffects.MOB_EFFECTS.register(modEventBus);
+        ModSounds.SOUND_EVENTS.register(modEventBus);
         //Jars.register(modEventBus);
 
-        //NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
     }
-
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {}
-
 
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {

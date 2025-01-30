@@ -27,8 +27,4 @@ public class ModSounds {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, name);
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
-
-    public static void register(IEventBus eventBus) {
-        SOUND_EVENTS.register(eventBus);
-    }
 }

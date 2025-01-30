@@ -12,6 +12,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.component.ChargeData;
+import org.exodusstudio.frostbite.component.GunData;
+import org.exodusstudio.frostbite.component.ModDataComponentTypes;
+import org.exodusstudio.frostbite.component.ModeData;
 import org.exodusstudio.frostbite.item.custom.*;
 import org.exodusstudio.frostbite.item.custom.alchemy.SprayerItem;
 import org.exodusstudio.frostbite.item.custom.gun.SniperItem;
@@ -21,10 +25,10 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Frostbite.MOD_ID);
 
     public static final DeferredItem<Item> METAL_COG =
-            ITEMS.registerItem("metal_cog", Item::new, new Item.Properties());
+            ITEMS.register("metal_cog", (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EMPTY_JAR =
-            ITEMS.registerItem("empty_jar", Item::new, new Item.Properties());
+            ITEMS.register("empty_jar", (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 //    public static final DeferredItem<Item> JAR =
 //            ITEMS.registerItem("jar",
 //                    JarItem::new,
@@ -34,14 +38,14 @@ public class ModItems {
 //                            .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
 //                            .usingConvertsTo(EMPTY_JAR.asItem()));
     public static final DeferredItem<Item> VIAL =
-            ITEMS.registerItem("vial", Item::new, new Item.Properties());
+            ITEMS.register("vial", (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> ADVANCED_CLOCK =
-            ITEMS.registerItem("advanced_clock", AdvancedClockItem::new, new Item.Properties());
+            ITEMS.register("advanced_clock",(id) -> new AdvancedClockItem(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> SPRAYER =
-            ITEMS.registerItem("sprayer", SprayerItem::new, new Item.Properties().stacksTo(1)
-                    .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY));
+            ITEMS.register("sprayer", (id) -> new SprayerItem(new Item.Properties().stacksTo(1)
+                    .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
             () -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
@@ -75,8 +79,8 @@ public class ModItems {
 
     public static final DeferredItem<Item> DRAINING_STAFF =
             ITEMS.registerItem("draining_staff", DrainingStaffItem::new, new Item.Properties().stacksTo(1)
-                    //.component(ModDataComponentTypes.MODE, new ModeData("drain"))
-                    /*.component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY)*/);
+                    .component(ModDataComponentTypes.MODE, new ModeData("drain"))
+                    .component(ModDataComponentTypes.CHARGE, ChargeData.EMPTY));
     public static final DeferredItem<Item> CHAINCICLE =
             ITEMS.registerItem("chaincicle", ChaincicleItem::new, new Item.Properties().stacksTo(1)
                     /*.component(ModDataComponentTypes.MODE, new ModeData("swipe"))*/);
@@ -87,7 +91,7 @@ public class ModItems {
             ITEMS.registerItem("ice_hammer", IceHammerItem::new, new Item.Properties()
                     .stacksTo(1)
                     .attributes(IceHammerItem.createAttributes())
-                    //.component(DataComponents.TOOL, IceHammerItem.createToolProperties())
+                    .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
                     .durability(500));
 
 
@@ -96,15 +100,11 @@ public class ModItems {
                     new Item.Properties().stacksTo(1));
     public static final DeferredItem<Item> SNIPER =
             ITEMS.registerItem("sniper", SniperItem::new,
-                    new Item.Properties().stacksTo(1));
-                            //.component(ModDataComponentTypes.GUN, GunData.EMPTY));
+                    new Item.Properties().stacksTo(1)
+                            .component(ModDataComponentTypes.GUN, GunData.EMPTY));
 
 
     public static final DeferredItem<Item> THERMOMETER =
             ITEMS.registerItem("thermometer", ThermometerItem::new, new Item.Properties().stacksTo(1));
 
-
-    public static void register(IEventBus eventBus) {
-        ITEMS.register(eventBus);
-    }
 }

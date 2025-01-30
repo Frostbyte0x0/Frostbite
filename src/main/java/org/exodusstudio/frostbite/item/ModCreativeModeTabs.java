@@ -65,12 +65,8 @@ public class ModCreativeModeTabs {
 
     private static void generatePotionEffectTypes(CreativeModeTab.Output output, HolderLookup<Potion> potions, Item item, CreativeModeTab.TabVisibility tabVisibility, FeatureFlagSet requiredFeatures) {
         potions.listElements()
-                .filter(p_337926_ -> p_337926_.value().isEnabled(requiredFeatures))
-                .map(p_330083_ -> PotionContents.createItemStack(item, p_330083_))
-                .forEach(p_270000_ -> output.accept(p_270000_, tabVisibility));
-    }
-
-    public static void register(IEventBus eventBus) {
-        CREATIVE_MODE_TABS.register(eventBus);
+                .filter(potionReference -> potionReference.value().isEnabled(requiredFeatures))
+                .map(potionReference -> PotionContents.createItemStack(item, potionReference))
+                .forEach(itemStack -> output.accept(itemStack, tabVisibility));
     }
 }

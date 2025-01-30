@@ -33,8 +33,4 @@ public class ModBlocks {
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()
                 .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, path)))));
     }
-
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-    }
 }

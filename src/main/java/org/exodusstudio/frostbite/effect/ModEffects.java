@@ -43,8 +43,4 @@ public class ModEffects {
 
     public static final Holder<MobEffect> RAGE = MOB_EFFECTS.register("rage",
             () -> new GenericEffect(MobEffectCategory.BENEFICIAL, 0x050505));
-
-    public static void register(IEventBus eventBus) {
-        MOB_EFFECTS.register(eventBus);
-    }
 }

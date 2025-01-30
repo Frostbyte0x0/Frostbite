@@ -12,6 +12,7 @@ public record GunData(boolean bulletInChamber,
                       int reloadCooldown,
                       boolean isChambering,
                       int chamberCooldown) {
+
     public static final GunData EMPTY = new GunData(false, 0, false, 0, false, 0);
 
     public static final Codec<GunData> CODEC = RecordCodecBuilder.create(instance ->
@@ -24,16 +25,12 @@ public record GunData(boolean bulletInChamber,
                     Codec.INT.fieldOf("chamberCooldown").forGetter(GunData::chamberCooldown))
                     .apply(instance, GunData::new));
 
-    public static final StreamCodec<ByteBuf, GunData> STREAM_CODEC;
-
-    static {
-        STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.BOOL, GunData::bulletInChamber,
-                ByteBufCodecs.INT, GunData::bulletsInMag,
-                ByteBufCodecs.BOOL, GunData::isReloading,
-                ByteBufCodecs.INT, GunData::reloadCooldown,
-                ByteBufCodecs.BOOL, GunData::isChambering,
-                ByteBufCodecs.INT, GunData::chamberCooldown,
-                GunData::new);
-    }
+    public static final StreamCodec<ByteBuf, GunData> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.BOOL, GunData::bulletInChamber,
+            ByteBufCodecs.INT, GunData::bulletsInMag,
+            ByteBufCodecs.BOOL, GunData::isReloading,
+            ByteBufCodecs.INT, GunData::reloadCooldown,
+            ByteBufCodecs.BOOL, GunData::isChambering,
+            ByteBufCodecs.INT, GunData::chamberCooldown,
+            GunData::new);
 }
