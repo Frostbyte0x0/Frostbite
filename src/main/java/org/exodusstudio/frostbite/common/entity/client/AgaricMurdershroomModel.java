@@ -53,24 +53,18 @@ public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState
         this.head.xRot = headPitch *  ((float)Math.PI / 180f);
     }
 
-//    @Override
-//    public void setupAnim(AgaricMurdershroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-//        this.root().getAllParts().forEach(ModelPart::resetPose);
-//        this.applyHeadRotation(netHeadYaw, headPitch);
-//
-//
-//        this.animateWalk(AgaricMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
-//        this.animate(entity.idleAnimationState, AgaricMurdershroomAnimations.IDLE, ageInTicks, 1f);
-//    }
+    @Override
+    public void setupAnim(LivingEntityRenderState renderState) {
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+        //this.applyHeadRotation(netHeadYaw, headPitch);
 
 
-//    @Override
-//    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-//        murdershroom.render(poseStack, buffer, packedLight, packedOverlay, color);
-//    }
+        //this.animateWalk(AgaricMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
+        //this.animate(entity.idleAnimationState, AgaricMurdershroomAnimations.IDLE, ageInTicks, 1f);
+    }
 
-    /*@Override
-    public ModelPart root() {
-        return murdershroom;
-    }*/
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        murdershroom.render(poseStack, buffer, packedLight, packedOverlay, color);
+    }
 }
