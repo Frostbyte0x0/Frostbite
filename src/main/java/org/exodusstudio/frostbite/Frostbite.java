@@ -9,15 +9,10 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
-import org.exodusstudio.frostbite.common.registry.EffectRegistry;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.registry.CreativeModeTabRegistry;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.registry.SoundRegistry;
+import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
+import org.exodusstudio.frostbite.common.registry.*;
 import org.slf4j.Logger;
 
 @Mod(Frostbite.MOD_ID)
@@ -38,7 +33,10 @@ public class Frostbite {
         EntityRegistry.ENTITY_TYPES.register(modEventBus);
         EffectRegistry.MOB_EFFECTS.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
+        AttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
         //Jars.register(modEventBus);
+
+        TemperatureValues.addTemperatures();
 
         //NeoForge.EVENT_BUS.register(this);
     }

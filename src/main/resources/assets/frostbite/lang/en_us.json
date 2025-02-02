@@ -44,6 +44,9 @@
   "tooltip.frostbite.thermometer.tooltip": "Shows you the biome you are in and its temperature",
   "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge",
 
+
+  "general.frostbite.outer_temp": "Outer Temperature",
+
   "sounds.frostbite.stunning_bell_ring": "Stunning bell rings",
   "sounds.frostbite.chaincicle_swipe": "Chaincicle swipes",
   "sounds.frostbite.chaincicle_spin": "Chaincicle spins",
