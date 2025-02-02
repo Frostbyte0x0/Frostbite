@@ -3,7 +3,6 @@ package org.exodusstudio.frostbite.common.temperature;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.exodusstudio.frostbite.common.registry.AttachmentTypeRegistry;
 
@@ -45,7 +44,7 @@ public class TemperatureCalculator {
         float temp = 0f;
 
         if (player.isInWater()) {
-            temp -= 10f;
+            temp -= 5f;
         }
 
         Object[] blocks = player.level().getBlockStates(player.getBoundingBox().inflate(3))

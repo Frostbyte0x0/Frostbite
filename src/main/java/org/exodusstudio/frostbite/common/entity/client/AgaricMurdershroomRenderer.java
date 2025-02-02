@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class AgaricMurdershroomRenderer extends MobRenderer<AgaricMurdershroomEntity, AgaricMurdershroomRenderState, AgaricMurdershroomModel> {
     public AgaricMurdershroomRenderer(EntityRendererProvider.Context context) {
-        super(context, new AgaricMurdershroomModel(context.bakeLayer(ModModelLayers.AGARIC_MURDERSHROOM)), 0.55f);
+        super(context, new AgaricMurdershroomModel(context.bakeLayer(ModModelLayers.AGARIC_MURDERSHROOM)), 0.45f);
     }
 
     @Override

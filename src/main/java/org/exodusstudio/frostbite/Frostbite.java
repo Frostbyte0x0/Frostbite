@@ -11,8 +11,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
 import org.exodusstudio.frostbite.common.registry.*;
+import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.slf4j.Logger;
 
 @Mod(Frostbite.MOD_ID)
@@ -34,7 +36,7 @@ public class Frostbite {
         EffectRegistry.MOB_EFFECTS.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
         AttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
-        //Jars.register(modEventBus);
+        Jars.JARS.register(modEventBus);
 
         TemperatureValues.addTemperatures();
 
@@ -46,6 +48,7 @@ public class Frostbite {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomRenderer::new);
+            ModItemProperties.addCustomItemProperties();
         }
     }
 }

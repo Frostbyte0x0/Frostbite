@@ -8,7 +8,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
 
 public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart murdershroom;
@@ -58,10 +57,19 @@ public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState
         this.root().getAllParts().forEach(ModelPart::resetPose);
         //this.applyHeadRotation(netHeadYaw, headPitch);
 
-
         //this.animateWalk(AgaricMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
         //this.animate(entity.idleAnimationState, AgaricMurdershroomAnimations.IDLE, ageInTicks, 1f);
     }
+
+//    @Override
+//    public void setupAnim(AgaricMurdershroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+//        this.root().getAllParts().forEach(ModelPart::resetPose);
+//        this.applyHeadRotation(netHeadYaw, headPitch);
+//
+//
+//        this.animateWalk(AgaricMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
+//        this.animate(entity.idleAnimationState, AgaricMurdershroomAnimations.IDLE, ageInTicks, 1f);
+//    }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
