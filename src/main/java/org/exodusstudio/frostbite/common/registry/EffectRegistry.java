@@ -28,8 +28,8 @@ public class EffectRegistry {
     public static final Holder<MobEffect> FATIGUE = MOB_EFFECTS.register("fatigue",
             () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x3e374f));
 
-    public static final Holder<MobEffect> PARALYSIS = MOB_EFFECTS.register("paralysis",
-            () -> new ParalysisEffect(MobEffectCategory.HARMFUL, 0x2f6363));
+    public static final Holder<MobEffect> TWITCHING = MOB_EFFECTS.register("twitching",
+            () -> new TwitchingEffect(MobEffectCategory.HARMFUL, 0x2f6363));
 
     public static final Holder<MobEffect> PETRIFICATION = MOB_EFFECTS.register("petrification",
             () -> new PetrificationEffect(MobEffectCategory.HARMFUL, 0x464f4f));

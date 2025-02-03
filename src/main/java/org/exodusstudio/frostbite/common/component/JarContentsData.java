@@ -3,10 +3,7 @@ package org.exodusstudio.frostbite.common.component;
 import com.google.common.collect.Iterables;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.item.alchemy.PotionContents;
-import org.exodusstudio.frostbite.common.item.custom.alchemy.Jar;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -15,7 +12,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
+import org.exodusstudio.frostbite.common.item.custom.alchemy.Jar;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,25 +38,21 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     }
 
     public JarContentsData(PotionContents potionContents) {
-        this(jarFromEffect(potionContents.customEffects().get(0).getEffect()),
+        this(jarFromEffect(potionContents.customEffects().getFirst().getEffect()),
                 potionContents.customColor(),
                 potionContents.customEffects(),
                 potionContents.customName());
     }
 
-    public JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> customColor, List<MobEffectInstance> customEffects, Optional<String> customName) {
-        this.jar = jar;
-        this.customColor = customColor;
-        this.customEffects = customEffects;
-        this.customName = customName;
+
+    public static ItemStack createItemStack(Item item, Holder<Jar> jar) {
+        ItemStack itemstack = new ItemStack(item);
+        itemstack.set(DataComponentTypeRegistry.JAR_CONTENTS, new JarContentsData(jar));
+        return itemstack;
     }
 
     public Iterable<MobEffectInstance> getAllEffects() {
-        return this.jar.map(jarHolder -> (Iterable<MobEffectInstance>) (this.customEffects.isEmpty() ? ((Potion) ((Holder) jarHolder).value()).getEffects() : Iterables.concat(((Potion) ((Holder) this.jar.get()).value()).getEffects(), this.customEffects))).orElse(this.customEffects);
-    }
-
-    public JarContentsData withEffectAdded(MobEffectInstance effect) {
-        return new JarContentsData(this.jar, this.customColor, Util.copyAndAdd(this.customEffects, effect), this.customName);
+        return this.jar.map(jarHolder -> (this.customEffects.isEmpty() ? ((Potion) ((Holder) jarHolder).value()).getEffects() : Iterables.concat(((Potion) ((Holder) this.jar.get()).value()).getEffects(), this.customEffects))).orElse(this.customEffects);
     }
 
     public Optional<Holder<Jar>> jar() {

@@ -17,6 +17,7 @@ import org.exodusstudio.frostbite.common.component.JarContentsData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.ModArmorMaterials;
 import org.exodusstudio.frostbite.common.item.custom.*;
+import org.exodusstudio.frostbite.common.item.custom.alchemy.EmptyJarItem;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.JarItem;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.SprayerItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.SniperItem;
@@ -30,14 +31,14 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EMPTY_JAR =
-            ITEMS.register("empty_jar", (id) -> new Item(new Item.Properties()
+            ITEMS.register("empty_jar", (id) -> new EmptyJarItem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> JAR =
             ITEMS.register("jar", (id) -> new JarItem(new Item.Properties()
                     .stacksTo(1)
                     .component(DataComponentTypeRegistry.JAR_CONTENTS, JarContentsData.EMPTY)
                     .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
-                    .usingConvertsTo(EMPTY_JAR.asItem())
+                    //.usingConvertsTo(EMPTY_JAR.asItem())
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> VIAL =
             ITEMS.register("vial", (id) -> new Item(new Item.Properties()

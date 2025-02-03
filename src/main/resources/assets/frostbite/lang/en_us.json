@@ -30,6 +30,15 @@
   "item.frostbite.sniper": "Sniper",
   "item.frostbite.sniper_bullet": "Sniper Bullet",
 
+  "item.frostbite.jar.effect.water": "Jar of Water",
+  "item.frostbite.jar.effect.floral": "Jar of Floral Spores",
+  "item.frostbite.jar.effect.pine": "Jar of Pine Spores",
+  "item.frostbite.jar.effect.agaric": "Jar of Agaric Spores",
+  "item.frostbite.jar.effect.decaying": "Jar of Decaying Spores",
+  "item.frostbite.jar.effect.light": "Jar of Light Spores",
+  "item.frostbite.jar.effect.crystal": "Jar of Crystal Spores",
+  "item.frostbite.jar.effect.mossy": "Jar of Mossy Spores",
+
 
   "effect.frostbite.irritation": "Irritation",
   "effect.frostbite.paranoia": "Paranoia",

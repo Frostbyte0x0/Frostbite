@@ -1,10 +1,13 @@
 package org.exodusstudio.frostbite.common.item.custom.alchemy;
 
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.JarContentsData;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 public class JarItem extends Item {
     public JarItem(Properties properties) {
@@ -20,5 +23,23 @@ public class JarItem extends Item {
     public Component getName(ItemStack stack) {
         JarContentsData jar_contents = stack.get(DataComponentTypeRegistry.JAR_CONTENTS);
         return jar_contents != null ? jar_contents.getName(this.descriptionId + ".effect.") : super.getName(stack);
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
+        if (stack.has(DataComponentTypeRegistry.JAR_CONTENTS)) {
+            if (!stack.get(DataComponentTypeRegistry.JAR_CONTENTS.get()).customEffects().isEmpty()) {
+                Frostbite.LOGGER.debug("Has effect");
+            }
+            else {
+                Frostbite.LOGGER.debug("Effect not present");
+            }
+            Frostbite.LOGGER.debug("Component present");
+        }
+        super.onUseTick(level, livingEntity, stack, remainingUseDuration);
+        if (remainingUseDuration == 1) {
+            Frostbite.LOGGER.debug("Applying!");
+            livingEntity.addEffect(stack.get(DataComponentTypeRegistry.JAR_CONTENTS.get()).customEffects().getFirst());
+        }
     }
 }

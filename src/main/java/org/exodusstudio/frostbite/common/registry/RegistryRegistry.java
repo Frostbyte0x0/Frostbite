@@ -13,7 +13,7 @@ public class RegistryRegistry {
     public static final Registry<Jar> JAR_REGISTRY = new RegistryBuilder<>(JAR_REGISTRY_KEY)
             // If you want to enable integer id syncing, for networking.
             // These should only be used in networking contexts, for example in packets or purely networking-related NBT data.
-            //.sync(true)
+            .sync(true)
             .defaultKey(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "empty"))
             .maxId(256)
             .create();
