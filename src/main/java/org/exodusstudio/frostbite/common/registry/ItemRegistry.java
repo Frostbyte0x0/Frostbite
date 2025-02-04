@@ -6,15 +6,19 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.BundleContents;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.GunData;
+import org.exodusstudio.frostbite.common.component.JarContentsData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.ModArmorMaterials;
 import org.exodusstudio.frostbite.common.item.custom.*;
+import org.exodusstudio.frostbite.common.item.custom.alchemy.EmptyJarItem;
+import org.exodusstudio.frostbite.common.item.custom.alchemy.JarItem;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.SprayerItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
@@ -23,27 +27,32 @@ public class ItemRegistry {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Frostbite.MOD_ID);
 
     public static final DeferredItem<Item> METAL_COG =
-            ITEMS.register("metal_cog", (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+            ITEMS.register("metal_cog", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EMPTY_JAR =
-            ITEMS.register("empty_jar", (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
-//    public static final DeferredItem<Item> JAR =
-//            ITEMS.registerItem("jar",
-//                    JarItem::new,
-//                    new Item.Properties()
-//                            .stacksTo(1)
-//                            .component(ModDataComponentTypes.JAR_CONTENTS, JarContentsData.EMPTY)
-//                            .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
-//                            .usingConvertsTo(EMPTY_JAR.asItem()));
+            ITEMS.register("empty_jar", (id) -> new EmptyJarItem(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> JAR =
+            ITEMS.register("jar", (id) -> new JarItem(new Item.Properties()
+                    .stacksTo(1)
+                    .component(DataComponentTypeRegistry.JAR_CONTENTS, JarContentsData.EMPTY)
+                    .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
+                    //.usingConvertsTo(EMPTY_JAR.asItem())
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> VIAL =
-            ITEMS.register("vial", (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+            ITEMS.register("vial", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> ADVANCED_CLOCK =
-            ITEMS.register("advanced_clock", (id) -> new AdvancedClockItem(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+            ITEMS.register("advanced_clock", (id) -> new AdvancedClockItem(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> SPRAYER =
-            ITEMS.register("sprayer", (id) -> new SprayerItem(new Item.Properties().stacksTo(1)
-                    .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY).setId(ResourceKey.create(Registries.ITEM, id))));
+            ITEMS.register("sprayer", (id) -> new SprayerItem(new Item.Properties()
+                    .stacksTo(1)
+                    .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
             (id) -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)

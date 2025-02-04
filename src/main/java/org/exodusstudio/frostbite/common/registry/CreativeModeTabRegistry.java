@@ -1,11 +1,18 @@
 package org.exodusstudio.frostbite.common.registry;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.exodusstudio.frostbite.common.component.JarContentsData;
+import org.exodusstudio.frostbite.common.item.custom.alchemy.Jar;
 
 import java.util.function.Supplier;
 
@@ -44,14 +51,23 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.SNIPER);
                         output.accept(ItemRegistry.SNIPER_BULLET);
 
-//                        itemDisplayParameters.holders()
-//                                .lookup().ifPresent(
-//                                        lookup -> generatePotionEffectTypes(
-//                                                output,
-//                                                lookup,
-//                                                ModItems.JAR.asItem(),
-//                                                CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS,
-//                                                itemDisplayParameters.enabledFeatures()
-//                                ));
+                        itemDisplayParameters.holders()
+                                .lookup(RegistryRegistry.JAR_REGISTRY_KEY).ifPresent(
+                                        lookup -> generatePotionEffectTypes(
+                                                output,
+                                                lookup,
+                                                ItemRegistry.JAR.asItem(),
+                                                CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS,
+                                                itemDisplayParameters.enabledFeatures()
+                                ));
                     })).build());
+
+    private static void generatePotionEffectTypes(
+            CreativeModeTab.Output output, HolderLookup<Jar> jars, Item item, CreativeModeTab.TabVisibility tabVisibility, FeatureFlagSet requiredFeatures
+    ) {
+        jars.listElements()
+                .filter(p_337926_ -> p_337926_.value().isEnabled(requiredFeatures))
+                .map(p_330083_ -> JarContentsData.createItemStack(item, p_330083_))
+                .forEach(p_270000_ -> output.accept(p_270000_, tabVisibility));
+    }
 }

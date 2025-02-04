@@ -9,10 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.custom.BlueHardenedSnowballProjectileEntity;
-import org.exodusstudio.frostbite.common.entity.custom.ExplodingSnowballProjectileEntity;
-import org.exodusstudio.frostbite.common.entity.custom.HardenedSnowballProjectileEntity;
-import org.exodusstudio.frostbite.common.entity.custom.PackedHardenedSnowballProjectileEntity;
+import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
 
@@ -49,16 +46,16 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<SniperBulletEntity>> SNIPER_BULLET_ENTITY =
             ENTITY_TYPES.register("sniper_bullet", () -> EntityType.Builder
-                    .<SniperBulletEntity>of(SniperBulletEntity::new, MobCategory.MISC)
+                    .of(SniperBulletEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball"))));
 
-//
-//    public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
-//            ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
-//                    .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
-//                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-//                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
+
+    public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
+            ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
+                    .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
 
 
     public static final Supplier<EntityType<AgaricMurdershroomEntity>> AGARIC_MURDERSHROOM =

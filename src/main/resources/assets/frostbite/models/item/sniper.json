@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "frostbite:item/jar"
+    "layer0": "frostbite:item/sniper"
   }
 }
