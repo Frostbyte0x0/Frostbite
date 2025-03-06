@@ -1,0 +1,48 @@
+{
+  "type": "minecraft:overworld",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "minecraft:overworld",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "minecraft:dark_forest",
+          "parameters": {
+            "temperature": -0.8,
+            "humidity": -0.5,
+            "continentalness": -1,
+            "erosion": 2,
+            "weirdness": 1,
+            "depth": 2,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "frostbite:ice_canyon",
+          "parameters": {
+            "temperature": -0.5,
+            "humidity": -1.1,
+            "continentalness": 1.6,
+            "erosion": 2,
+            "weirdness": 2,
+            "depth": 1,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "frostbite:frozen_forest",
+          "parameters": {
+            "temperature": 1.5,
+            "humidity": 1.5,
+            "continentalness": 1.5,
+            "erosion": 2,
+            "weirdness": 1,
+            "depth": 1,
+            "offset": 0
+          }
+        }
+      ]
+    }
+  }
+}

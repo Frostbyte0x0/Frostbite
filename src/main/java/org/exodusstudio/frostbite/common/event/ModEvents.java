@@ -11,6 +11,6 @@ import static org.exodusstudio.frostbite.common.temperature.TemperatureCalculato
 public class ModEvents {
     @SubscribeEvent
     public static void playerTickEvent(PlayerTickEvent.Pre event) {
-        updateTemperature(event.getEntity());
+        //updateTemperature(event.getEntity());
     }
 }
