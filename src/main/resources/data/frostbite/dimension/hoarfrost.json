@@ -1,13 +1,13 @@
 {
-  "type": "minecraft:overworld",
+  "type": "frostbite:hoarfrost",
   "generator": {
     "type": "minecraft:noise",
-    "settings": "minecraft:overworld",
+    "settings": "frostbite:hoarfrost",
     "biome_source": {
       "type": "minecraft:multi_noise",
       "biomes": [
         {
-          "biome": "minecraft:dark_forest",
+          "biome": "frostbite:icebound_plains",
           "parameters": {
             "temperature": -0.8,
             "humidity": -0.5,
