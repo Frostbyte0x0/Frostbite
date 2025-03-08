@@ -18,7 +18,35 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(BlockRegistry.BLACK_BLOCK.get());
+        //this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        //        .add(BlockRegistry.BLACK_BLOCK.get());
+
+        // MISTY WOOD
+        this.tag(BlockTags.LOGS_THAT_BURN)
+                .add(BlockRegistry.MISTY_LOG.get())
+                .add(BlockRegistry.STRIPPED_MISTY_LOG.get())
+                .add(BlockRegistry.MISTY_WOOD.get())
+                .add(BlockRegistry.STRIPPED_MISTY_WOOD.get());
+
+        // DIM WOOD
+        this.tag(BlockTags.LOGS_THAT_BURN)
+                .add(BlockRegistry.DIM_LOG.get())
+                .add(BlockRegistry.STRIPPED_DIM_LOG.get())
+                .add(BlockRegistry.DIM_WOOD.get())
+                .add(BlockRegistry.STRIPPED_DIM_WOOD.get());
+
+        // SILVER WOOD
+        this.tag(BlockTags.LOGS_THAT_BURN)
+                .add(BlockRegistry.SILVER_LOG.get())
+                .add(BlockRegistry.STRIPPED_SILVER_LOG.get())
+                .add(BlockRegistry.SILVER_WOOD.get())
+                .add(BlockRegistry.STRIPPED_SILVER_WOOD.get());
+
+        // CHARM WOOD
+        this.tag(BlockTags.LOGS_THAT_BURN)
+                .add(BlockRegistry.CHARM_LOG.get())
+                .add(BlockRegistry.STRIPPED_CHARM_LOG.get())
+                .add(BlockRegistry.CHARM_WOOD.get())
+                .add(BlockRegistry.STRIPPED_CHARM_WOOD.get());
     }
 }

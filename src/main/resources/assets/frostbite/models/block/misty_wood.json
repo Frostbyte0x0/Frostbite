@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "frostbite:block/misty_log",
+    "side": "frostbite:block/misty_log"
+  }
+}

@@ -2,8 +2,40 @@
   "itemGroup.frostbite.frostbite_tab": "Frostbite",
 
 
-  "block.frostbite.black_block": "Black Block",
   "item.frostbite.black_block": "Black Block",
+
+  "item.frostbite.misty_log": "Misty Log",
+  "item.frostbite.misty_wood": "Misty Wood",
+  "item.frostbite.stripped_misty_log": "Stripped Misty Log",
+  "item.frostbite.stripped_misty_wood": "Stripped Misty Wood",
+  "item.frostbite.misty_planks": "Misty Planks",
+  "item.frostbite.misty_leaves": "Misty Leaves",
+  "item.frostbite.misty_sapling": "Misty Sapling",
+
+  "item.frostbite.dim_log": "Dim Log",
+  "item.frostbite.dim_wood": "Dim Wood",
+  "item.frostbite.stripped_dim_log": "Stripped Dim Log",
+  "item.frostbite.stripped_dim_wood": "Stripped Dim Wood",
+  "item.frostbite.dim_planks": "Dim Planks",
+  "item.frostbite.dim_leaves": "Dim Leaves",
+  "item.frostbite.dim_sapling": "Dim Sapling",
+
+  "item.frostbite.silver_log": "Silver Log",
+  "item.frostbite.silver_wood": "Silver Wood",
+  "item.frostbite.stripped_silver_log": "Stripped Silver Log",
+  "item.frostbite.stripped_silver_wood": "Stripped Silver Wood",
+  "item.frostbite.silver_planks": "Silver Planks",
+  "item.frostbite.silver_leaves": "Silver Leaves",
+  "item.frostbite.silver_sapling": "Silver Sapling",
+
+  "item.frostbite.charm_log": "Charm Log",
+  "item.frostbite.charm_wood": "Charm Wood",
+  "item.frostbite.stripped_charm_log": "Stripped Charm Log",
+  "item.frostbite.stripped_charm_wood": "Stripped Charm Wood",
+  "item.frostbite.charm_planks": "Charm Planks",
+  "item.frostbite.charm_leaves": "Charm Leaves",
+  "item.frostbite.charm_sapling": "Charm Sapling",
+
 
   "item.frostbite.advanced_clock": "Advanced Clock",
   "item.frostbite.metal_cog": "Metal Cog",

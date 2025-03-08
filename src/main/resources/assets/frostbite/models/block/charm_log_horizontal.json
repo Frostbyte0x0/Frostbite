@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "frostbite:block/charm_log_top",
+    "side": "frostbite:block/charm_log"
+  }
+}

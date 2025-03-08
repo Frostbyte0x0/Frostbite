@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "frostbite:block/silver_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "frostbite:block/silver_log"
+    },
+    "axis=z": {
+      "model": "frostbite:block/silver_log_horizontal",
+      "x": 90
+    }
+  }
+}

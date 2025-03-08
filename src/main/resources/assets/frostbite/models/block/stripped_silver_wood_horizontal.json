@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "frostbite:block/stripped_silver_log",
+    "side": "frostbite:block/stripped_silver_log"
+  }
+}
