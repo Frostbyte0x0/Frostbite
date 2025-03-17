@@ -47,7 +47,7 @@ public class BlockRegistry {
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_leaves")))));
     public static final DeferredBlock<Block> MISTY_SAPLING = registerBLock("misty_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+            () -> new SaplingBlock(ModTreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_sapling")))));
 
     // DIM WOOD
@@ -70,7 +70,7 @@ public class BlockRegistry {
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_leaves")))));
     public static final DeferredBlock<Block> DIM_SAPLING = registerBLock("dim_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.DIM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+            () -> new SaplingBlock(ModTreeGrowers.DIM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_sapling")))));
 
     // SILVER WOOD
@@ -93,7 +93,7 @@ public class BlockRegistry {
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_leaves")))));
     public static final DeferredBlock<Block> SILVER_SAPLING = registerBLock("silver_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.SILVER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+            () -> new SaplingBlock(ModTreeGrowers.SILVER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_sapling")))));
 
     // CHARM WOOD
@@ -116,7 +116,7 @@ public class BlockRegistry {
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_leaves")))));
     public static final DeferredBlock<Block> CHARM_SAPLING = registerBLock("charm_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+            () -> new SaplingBlock(ModTreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_sapling")))));
 
 

@@ -51,6 +51,43 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.SNIPER);
                         output.accept(ItemRegistry.SNIPER_BULLET);
 
+                        // MISTY WOOD
+                        output.accept(BlockRegistry.MISTY_LOG);
+                        output.accept(BlockRegistry.MISTY_WOOD);
+                        output.accept(BlockRegistry.STRIPPED_MISTY_LOG);
+                        output.accept(BlockRegistry.STRIPPED_MISTY_WOOD);
+                        output.accept(BlockRegistry.MISTY_PLANKS);
+                        output.accept(BlockRegistry.MISTY_LEAVES);
+                        output.accept(BlockRegistry.MISTY_SAPLING);
+
+                        // CHARM WOOD
+                        output.accept(BlockRegistry.CHARM_LOG);
+                        output.accept(BlockRegistry.CHARM_WOOD);
+                        output.accept(BlockRegistry.STRIPPED_CHARM_LOG);
+                        output.accept(BlockRegistry.STRIPPED_CHARM_WOOD);
+                        output.accept(BlockRegistry.CHARM_PLANKS);
+                        output.accept(BlockRegistry.CHARM_LEAVES);
+                        output.accept(BlockRegistry.CHARM_SAPLING);
+
+                        // DIM WOOD
+                        output.accept(BlockRegistry.DIM_LOG);
+                        output.accept(BlockRegistry.DIM_WOOD);
+                        output.accept(BlockRegistry.STRIPPED_DIM_LOG);
+                        output.accept(BlockRegistry.STRIPPED_DIM_WOOD);
+                        output.accept(BlockRegistry.DIM_PLANKS);
+                        output.accept(BlockRegistry.DIM_LEAVES);
+                        output.accept(BlockRegistry.DIM_SAPLING);
+
+                        // SILVER WOOD
+                        output.accept(BlockRegistry.SILVER_LOG);
+                        output.accept(BlockRegistry.SILVER_WOOD);
+                        output.accept(BlockRegistry.STRIPPED_SILVER_LOG);
+                        output.accept(BlockRegistry.STRIPPED_SILVER_WOOD);
+                        output.accept(BlockRegistry.SILVER_PLANKS);
+                        output.accept(BlockRegistry.SILVER_LEAVES);
+                        output.accept(BlockRegistry.SILVER_SAPLING);
+
+
                         itemDisplayParameters.holders()
                                 .lookup(RegistryRegistry.JAR_REGISTRY_KEY).ifPresent(
                                         lookup -> generatePotionEffectTypes(
