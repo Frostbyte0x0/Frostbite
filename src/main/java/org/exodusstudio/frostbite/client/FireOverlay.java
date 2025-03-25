@@ -15,21 +15,21 @@ import org.exodusstudio.frostbite.common.registry.AttachmentTypeRegistry;
 
 public class FireOverlay {
     private static final ResourceLocation FIRE0 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire0.png");
+            "textures/overlays/fire/fire0.png");
     private static final ResourceLocation FIRE1 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire1.png");
+            "textures/overlays/fire/fire1.png");
     private static final ResourceLocation FIRE2 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire2.png");
+            "textures/overlays/fire/fire2.png");
     private static final ResourceLocation FIRE3 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire3.png");
+            "textures/overlays/fire/fire3.png");
     private static final ResourceLocation FIRE4 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire4.png");
+            "textures/overlays/fire/fire4.png");
     private static final ResourceLocation FIRE5 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire5.png");
+            "textures/overlays/fire/fire5.png");
     private static final ResourceLocation FIRE6 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire6.png");
+            "textures/overlays/fire/fire6.png");
     private static final ResourceLocation FIRE7 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/fire/fire7.png");
+            "textures/overlays/fire/fire7.png");
 
     public static final ResourceLocation[] FIRES = {FIRE0, FIRE1, FIRE2, FIRE3,
             FIRE4, FIRE5, FIRE6, FIRE7};

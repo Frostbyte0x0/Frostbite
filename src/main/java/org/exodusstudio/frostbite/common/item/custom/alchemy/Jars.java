@@ -30,10 +30,10 @@ public class Jars {
             new Jar("decaying", new MobEffectInstance(EffectRegistry.DECAY, 3600)));
 
     public static final Holder<Jar> LIGHT = register("light",
-            new Jar("light", new MobEffectInstance(EffectRegistry.TWITCHING, 3600)));
+            new Jar("light", new MobEffectInstance(EffectRegistry.CORRUPTION, 3600)));
 
     public static final Holder<Jar> CRYSTAL = register("crystal",
-            new Jar("crystal", new MobEffectInstance(EffectRegistry.PETRIFICATION, 3600)));
+            new Jar("crystal", new MobEffectInstance(EffectRegistry.TWITCHING, 3600)));
 
     public static final Holder<Jar> MOSSY = register("mossy",
             new Jar("mossy", new MobEffectInstance(EffectRegistry.MOLD, 3600)));
@@ -52,17 +52,17 @@ public class Jars {
         if (effect.is(EffectRegistry.DECAY)) {
             return Optional.of(DECAYING);
         }
-        if (effect.is(EffectRegistry.TWITCHING)) {
+        if (effect.is(EffectRegistry.CORRUPTION)) {
             return Optional.of(LIGHT);
         }
-        if (effect.is(EffectRegistry.PETRIFICATION)) {
+        if (effect.is(EffectRegistry.TWITCHING)) {
             return Optional.of(CRYSTAL);
         }
         if (effect.is(EffectRegistry.MOLD)) {
             return Optional.of(MOSSY);
         }
 
-        return Optional.ofNullable(WATER);
+        return Optional.of(WATER);
     }
 
 

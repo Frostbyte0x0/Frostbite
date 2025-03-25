@@ -18,21 +18,21 @@ import org.exodusstudio.frostbite.common.registry.AttachmentTypeRegistry;
 
 public class ThermometerOverlay {
     private static final ResourceLocation THERMOMETER0 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer0.png");
+            "textures/overlays/cold_bar/thermometer0.png");
     private static final ResourceLocation THERMOMETER1 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer1.png");
+            "textures/overlays/cold_bar/thermometer1.png");
     private static final ResourceLocation THERMOMETER2 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer2.png");
+            "textures/overlays/cold_bar/thermometer2.png");
     private static final ResourceLocation THERMOMETER3 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer3.png");
+            "textures/overlays/cold_bar/thermometer3.png");
     private static final ResourceLocation THERMOMETER4 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer4.png");
+            "textures/overlays/cold_bar/thermometer4.png");
     private static final ResourceLocation THERMOMETER5 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer5.png");
+            "textures/overlays/cold_bar/thermometer5.png");
     private static final ResourceLocation THERMOMETER6 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer6.png");
+            "textures/overlays/cold_bar/thermometer6.png");
     private static final ResourceLocation THERMOMETER7 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
-            "textures/cold_bar/thermometer7.png");
+            "textures/overlays/cold_bar/thermometer7.png");
 
     public static final ResourceLocation[] THERMOMETERS = {THERMOMETER0, THERMOMETER1, THERMOMETER2, THERMOMETER3,
             THERMOMETER4, THERMOMETER5, THERMOMETER6, THERMOMETER7};

@@ -10,6 +10,8 @@ import org.exodusstudio.frostbite.common.component.JarContentsData;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 public class JarItem extends Item {
+    boolean used = false;
+
     public JarItem(Properties properties) {
         super(properties);
     }
@@ -27,19 +29,12 @@ public class JarItem extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {
-        if (stack.has(DataComponentTypeRegistry.JAR_CONTENTS)) {
-            if (!stack.get(DataComponentTypeRegistry.JAR_CONTENTS.get()).customEffects().isEmpty()) {
-                Frostbite.LOGGER.debug("Has effect");
+        if (used) {
+            super.onUseTick(level, livingEntity, stack, remainingUseDuration);
+            if (remainingUseDuration == 1) {
+                livingEntity.addEffect(stack.get(DataComponentTypeRegistry.JAR_CONTENTS.get()).customEffects().getFirst());
             }
-            else {
-                Frostbite.LOGGER.debug("Effect not present");
-            }
-            Frostbite.LOGGER.debug("Component present");
         }
-        super.onUseTick(level, livingEntity, stack, remainingUseDuration);
-        if (remainingUseDuration == 1) {
-            Frostbite.LOGGER.debug("Applying!");
-            livingEntity.addEffect(stack.get(DataComponentTypeRegistry.JAR_CONTENTS.get()).customEffects().getFirst());
-        }
+        used = !used;
     }
 }

@@ -33,8 +33,8 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     public static final Codec<JarContentsData> CODEC;
     public static final StreamCodec<RegistryFriendlyByteBuf, JarContentsData> STREAM_CODEC;
 
-    public JarContentsData(Holder<Jar> p_331208_) {
-        this(Optional.of(p_331208_), Optional.empty(), List.of(), Optional.empty());
+    public JarContentsData(Holder<Jar> jar) {
+        this(Optional.of(jar), Optional.empty(), jar.value().getEffects(), Optional.empty());
     }
 
     public JarContentsData(PotionContents potionContents) {

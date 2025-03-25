@@ -1,8 +1,8 @@
 {
-  "type": "minecraft:overworld",
+  "type": "frostbite:hoarfrost",
   "generator": {
     "type": "minecraft:noise",
-    "settings": "minecraft:overworld",
+    "settings": "frostbite:hoarfrost",
     "biome_source": {
       "type": "minecraft:multi_noise",
       "biomes": [

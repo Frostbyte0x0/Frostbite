@@ -27,6 +27,16 @@ public class BlockRegistry {
             () -> new Block(BlockBehaviour.Properties.of().strength(10f)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "black_block")))));
 
+    public static final DeferredBlock<Block> PERMAFROZEN_DIRT = registerBLock("permafrozen_dirt",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "permafrozen_dirt")))));
+    public static final DeferredBlock<Block> PERMAFROZEN_GRASS = registerBLock("permafrozen_grass",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "permafrozen_grass")))));
+    public static final DeferredBlock<Block> PETRIFIED_ICE = registerBLock("petrified_ice",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "petrified_ice")))));
+
     // MISTY WOOD
     public static final DeferredBlock<Block> MISTY_LOG = registerBLock("misty_log",
             () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)

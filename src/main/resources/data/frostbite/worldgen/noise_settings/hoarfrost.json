@@ -363,7 +363,10 @@
           "if_true": {
             "type": "minecraft:biome",
             "biome_is": [
-              "frostbite:frozen_forest",
+              "frostbite:frosted_forest",
+              "frostbite:charm_grove",
+              "frostbite:murky_woods",
+              "frostbite:shrouded_forest",
               "frostbite:icebound_plains"
             ]
           },

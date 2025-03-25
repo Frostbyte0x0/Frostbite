@@ -14,5 +14,7 @@ public class ClientEvent {
                 ThermometerOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_overlay"),
                 FireOverlay::render);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "decay_overlay"),
+                DecayOverlay::render);
     }
 }

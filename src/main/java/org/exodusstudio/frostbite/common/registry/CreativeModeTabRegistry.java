@@ -31,7 +31,9 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.EMPTY_JAR);
                         output.accept(ItemRegistry.SPRAYER);
 
-                        output.accept(BlockRegistry.BLACK_BLOCK);
+                        output.accept(BlockRegistry.PERMAFROZEN_DIRT);
+                        output.accept(BlockRegistry.PERMAFROZEN_GRASS);
+                        output.accept(BlockRegistry.PETRIFIED_ICE);
 
                         output.accept(ItemRegistry.FUR_HELMET);
                         output.accept(ItemRegistry.FUR_CHESTPLATE);
@@ -100,7 +102,11 @@ public class CreativeModeTabRegistry {
                     })).build());
 
     private static void generatePotionEffectTypes(
-            CreativeModeTab.Output output, HolderLookup<Jar> jars, Item item, CreativeModeTab.TabVisibility tabVisibility, FeatureFlagSet requiredFeatures
+            CreativeModeTab.Output output,
+            HolderLookup<Jar> jars,
+            Item item,
+            CreativeModeTab.TabVisibility tabVisibility,
+            FeatureFlagSet requiredFeatures
     ) {
         jars.listElements()
                 .filter(p_337926_ -> p_337926_.value().isEnabled(requiredFeatures))
