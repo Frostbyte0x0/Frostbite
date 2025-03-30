@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.event;
 
 import net.minecraft.client.gui.Gui;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerHeartTypeEvent;

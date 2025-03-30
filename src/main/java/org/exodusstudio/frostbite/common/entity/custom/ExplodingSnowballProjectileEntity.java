@@ -1,28 +1,28 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.jetbrains.annotations.NotNull;
 
-public class ExplodingSnowballProjectileEntity extends AbstractArrow implements ItemSupplier {
+public class ExplodingSnowballProjectileEntity extends ThrowableItemProjectile implements ItemSupplier {
     public ExplodingSnowballProjectileEntity(EntityType<? extends ExplodingSnowballProjectileEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public ExplodingSnowballProjectileEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity livingEntity, Level level, ItemStack itemStack) {
-        super(entityType, livingEntity, level, new ItemStack(ItemRegistry.EXPLODING_SNOWBALL.get()), null);
+    public ExplodingSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, LivingEntity livingEntity, Level level, ItemStack itemStack) {
+        super(entityType, livingEntity, level, new ItemStack(ItemRegistry.EXPLODING_SNOWBALL.get()));
     }
 
     protected void explode() {
@@ -46,20 +46,21 @@ public class ExplodingSnowballProjectileEntity extends AbstractArrow implements 
 
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (!this.level().getBlockState(this.getOnPos()).isAir() || !this.level()
-                .getEntitiesOfClass(Entity.class, new AABB(new Vec3(this.getBlockX() - 1, this.getBlockY() - 1,
-                        this.getBlockZ() - 1), new Vec3(this.getBlockX() + 1, this.getBlockY() + 1,
-                        this.getBlockZ() + 1))).isEmpty()) {
-            explode();
-        }
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+
+        explode();
+    }
+
+    protected void onHit(HitResult result) {
+        super.onHit(result);
+
+        explode();
     }
 
     @Override
-    protected ItemStack getDefaultPickupItem() {
-        return ItemRegistry.EXPLODING_SNOWBALL.get().getDefaultInstance();
+    protected Item getDefaultItem() {
+        return ItemRegistry.EXPLODING_SNOWBALL.get();
     }
 
     public @NotNull ItemStack getItem() {

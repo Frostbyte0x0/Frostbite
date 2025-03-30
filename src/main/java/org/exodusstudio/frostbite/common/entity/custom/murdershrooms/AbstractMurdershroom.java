@@ -14,7 +14,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class AbstractMurdershroom extends Monster{
+public class AbstractMurdershroom extends Monster {
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationStateTimeout = 0;
 

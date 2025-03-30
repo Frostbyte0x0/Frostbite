@@ -18,15 +18,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.JarContentsData;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class SporeCloudEntity extends AreaEffectCloud {
-    private static final EntityDataAccessor<Float> DATA_RADIUS;
-    private static final EntityDataAccessor<Boolean> DATA_WAITING;
-    private static final EntityDataAccessor<ParticleOptions> DATA_PARTICLE;
+//    private static final EntityDataAccessor<Float> DATA_RADIUS;
+//    private static final EntityDataAccessor<Boolean> DATA_WAITING;
+//    private static final EntityDataAccessor<ParticleOptions> DATA_PARTICLE;
     private PotionContents potionContents;
 
 
@@ -55,30 +56,36 @@ public class SporeCloudEntity extends AreaEffectCloud {
         }
     }
 
-    public ParticleOptions getParticle() {
-        return (ParticleOptions)this.getEntityData().get(DATA_PARTICLE);
-    }
-
     @Override
-    public void setParticle(ParticleOptions particleOption) {
-        this.getEntityData().set(DATA_PARTICLE, particleOption);
+    public void tick() {
+        super.tick();
+        Frostbite.LOGGER.debug("AAAAAAAA");
     }
 
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_RADIUS, 3.0F);
-        builder.define(DATA_WAITING, false);
-        builder.define(DATA_PARTICLE, ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, -1));
-    }
+//    public ParticleOptions getParticle() {
+//        return (ParticleOptions)this.getEntityData().get(DATA_PARTICLE);
+//    }
 
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        if (DATA_RADIUS.equals(key)) {
-            this.refreshDimensions();
-        }
+//    @Override
+//    public void setParticle(ParticleOptions particleOption) {
+//        this.getEntityData().set(DATA_PARTICLE, particleOption);
+//    }
 
-        super.onSyncedDataUpdated(key);
-    }
+//    @Override
+//    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+//        builder.define(DATA_RADIUS, 3.0F);
+//        builder.define(DATA_WAITING, false);
+//        builder.define(DATA_PARTICLE, ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, -1));
+//    }
+
+//    @Override
+//    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+//        if (DATA_RADIUS.equals(key)) {
+//            this.refreshDimensions();
+//        }
+//
+//        super.onSyncedDataUpdated(key);
+//    }
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
@@ -86,8 +93,8 @@ public class SporeCloudEntity extends AreaEffectCloud {
     }
 
     static {
-        DATA_RADIUS = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.FLOAT);
-        DATA_WAITING = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.BOOLEAN);
-        DATA_PARTICLE = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.PARTICLE);
+//        DATA_RADIUS = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.FLOAT);
+//        DATA_WAITING = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.BOOLEAN);
+//        DATA_PARTICLE = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.PARTICLE);
     }
 }

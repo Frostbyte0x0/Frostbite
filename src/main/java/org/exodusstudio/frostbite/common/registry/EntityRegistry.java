@@ -12,6 +12,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
+import org.exodusstudio.frostbite.common.entity.custom.IllusoryZombieEntity;
 
 import java.util.function.Supplier;
 
@@ -56,6 +57,13 @@ public class EntityRegistry {
                     .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
+
+
+    public static final Supplier<EntityType<IllusoryZombieEntity>> ILLUSORY_ZOMBIE =
+            ENTITY_TYPES.register("illusory_zombie", () -> EntityType.Builder
+                    .<IllusoryZombieEntity>of(IllusoryZombieEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "illusory_zombie"))));
 
 
     public static final Supplier<EntityType<AgaricMurdershroomEntity>> AGARIC_MURDERSHROOM =

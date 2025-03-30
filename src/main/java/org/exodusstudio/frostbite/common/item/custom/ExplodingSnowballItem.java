@@ -29,7 +29,6 @@ public class ExplodingSnowballItem extends Item {
 
         entityArrow.shoot(d1, d0 - entityArrow.getY() + Math.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 0.7f * 2, 12.0F);
         entityArrow.setSilent(true);
-        entityArrow.setCritArrow(false);
 
         player.level().addFreshEntity(entityArrow);
 

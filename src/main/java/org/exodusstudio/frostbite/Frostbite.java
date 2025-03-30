@@ -2,6 +2,8 @@ package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -11,6 +13,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.GenericEntityRenderer;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
 import org.exodusstudio.frostbite.common.registry.*;
@@ -48,6 +51,12 @@ public class Frostbite {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomRenderer::new);
+            EntityRenderers.register(EntityRegistry.ILLUSORY_ZOMBIE.get(), ZombieRenderer::new);
+            EntityRenderers.register(EntityRegistry.SPORE_CLOUD.get(), GenericEntityRenderer::new);
+            EntityRenderers.register(EntityRegistry.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
+            EntityRenderers.register(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
+            EntityRenderers.register(EntityRegistry.HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
+            EntityRenderers.register(EntityRegistry.PACKED_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }
