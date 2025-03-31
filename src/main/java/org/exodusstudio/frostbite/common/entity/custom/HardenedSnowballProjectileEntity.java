@@ -38,7 +38,7 @@ public class HardenedSnowballProjectileEntity extends ThrowableItemProjectile {
         super.onHitEntity(result);
 
         Entity entity = result.getEntity();
-        entity.hurt(this.damageSources().thrown(this, this.getOwner()), 2f);
+        entity.hurt(this.damageSources().thrown(this, this.getOwner()), 3f);
     }
 
     protected void onHit(HitResult result) {

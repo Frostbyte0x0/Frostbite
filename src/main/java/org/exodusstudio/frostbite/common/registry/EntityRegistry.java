@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.registry;
 
-import com.google.common.base.Suppliers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -11,8 +10,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
+import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
-import org.exodusstudio.frostbite.common.entity.custom.IllusoryZombieEntity;
+import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
 
 import java.util.function.Supplier;
 
@@ -20,11 +20,11 @@ public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Frostbite.MOD_ID);
 
-    public static final Supplier<EntityType<? extends ExplodingSnowballProjectileEntity>> EXPLODING_SNOWBALL_PROJECTILE_ENTITY =
-            ENTITY_TYPES.register("exploding_snowball", Suppliers.memoize(() -> EntityType.Builder.
-                            <ExplodingSnowballProjectileEntity>of(ExplodingSnowballProjectileEntity::new, MobCategory.MISC)
+    public static final Supplier<EntityType<ExplodingSnowballProjectileEntity>> EXPLODING_SNOWBALL_PROJECTILE_ENTITY =
+            ENTITY_TYPES.register("exploding_snowball", () -> EntityType.Builder
+                    .<ExplodingSnowballProjectileEntity>of(ExplodingSnowballProjectileEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "exploding_snowball")))));
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "exploding_snowball"))));
 
     public static final Supplier<EntityType<HardenedSnowballProjectileEntity>> HARDENED_SNOWBALL_PROJECTILE_ENTITY =
             ENTITY_TYPES.register("hardened_snowball", () -> EntityType.Builder
@@ -55,6 +55,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
             ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
                     .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
+                    .sized(5f, 5f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
 
@@ -64,6 +65,12 @@ public class EntityRegistry {
                     .<IllusoryZombieEntity>of(IllusoryZombieEntity::new, MobCategory.MONSTER)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "illusory_zombie"))));
+
+    public static final Supplier<EntityType<IllusoryEndermanEntity>> ILLUSORY_ENDERMAN =
+            ENTITY_TYPES.register("illusory_enderman", () -> EntityType.Builder
+                    .<IllusoryEndermanEntity>of(IllusoryEndermanEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "illusory_enderman"))));
 
 
     public static final Supplier<EntityType<AgaricMurdershroomEntity>> AGARIC_MURDERSHROOM =

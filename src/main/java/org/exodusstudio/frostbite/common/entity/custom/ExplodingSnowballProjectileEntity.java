@@ -27,7 +27,7 @@ public class ExplodingSnowballProjectileEntity extends ThrowableItemProjectile i
 
     protected void explode() {
         this.level().explode(this, Explosion.getDefaultDamageSource(this.level(), this),
-                null, this.getX(), this.getY(0.0625F), this.getZ(), 1f, false, Level.ExplosionInteraction.NONE);
+                null, this.getX(), this.getY(0.0625F), this.getZ(), 1f, false, Level.ExplosionInteraction.BLOCK);
     }
 
     private ParticleOptions getParticle() {
@@ -48,13 +48,11 @@ public class ExplodingSnowballProjectileEntity extends ThrowableItemProjectile i
 
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-
         explode();
     }
 
     protected void onHit(HitResult result) {
         super.onHit(result);
-
         explode();
     }
 

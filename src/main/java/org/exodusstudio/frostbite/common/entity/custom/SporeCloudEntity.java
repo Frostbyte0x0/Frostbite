@@ -25,9 +25,6 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class SporeCloudEntity extends AreaEffectCloud {
-//    private static final EntityDataAccessor<Float> DATA_RADIUS;
-//    private static final EntityDataAccessor<Boolean> DATA_WAITING;
-//    private static final EntityDataAccessor<ParticleOptions> DATA_PARTICLE;
     private PotionContents potionContents;
 
 
@@ -35,6 +32,10 @@ public class SporeCloudEntity extends AreaEffectCloud {
         super(EntityRegistry.SPORE_CLOUD.get(), level);
         this.potionContents = PotionContents.EMPTY;
         this.noPhysics = true;
+        this.setDuration(600);
+        this.setDurationOnUse(600);
+        this.setRadius(10f);
+        this.setRadiusOnUse(10f);
     }
 
     public SporeCloudEntity(Level level, double x, double y, double z) {
@@ -58,43 +59,25 @@ public class SporeCloudEntity extends AreaEffectCloud {
 
     @Override
     public void tick() {
-        super.tick();
-        Frostbite.LOGGER.debug("AAAAAAAA");
+        if (this.getRadius() == 0) {
+            this.setRadius(2.5f);
+        }
+
+        if (this.getDuration() == 0) {
+            this.discard();
+        }
+
+        this.setDuration(this.getDuration() - 1);
+        Frostbite.LOGGER.debug(String.valueOf(this.getDuration()));
     }
 
-//    public ParticleOptions getParticle() {
-//        return (ParticleOptions)this.getEntityData().get(DATA_PARTICLE);
-//    }
-
-//    @Override
-//    public void setParticle(ParticleOptions particleOption) {
-//        this.getEntityData().set(DATA_PARTICLE, particleOption);
-//    }
-
-//    @Override
-//    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-//        builder.define(DATA_RADIUS, 3.0F);
-//        builder.define(DATA_WAITING, false);
-//        builder.define(DATA_PARTICLE, ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, -1));
-//    }
-
-//    @Override
-//    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-//        if (DATA_RADIUS.equals(key)) {
-//            this.refreshDimensions();
-//        }
-//
-//        super.onSyncedDataUpdated(key);
-//    }
+    @Override
+    public void setPotionContents(PotionContents potionContents) {
+        this.potionContents = potionContents;
+    }
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         return EntityDimensions.scalable(this.getRadius() * 2.0F, 0.5F);
-    }
-
-    static {
-//        DATA_RADIUS = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.FLOAT);
-//        DATA_WAITING = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.BOOLEAN);
-//        DATA_PARTICLE = SynchedEntityData.defineId(SporeCloudEntity.class, EntityDataSerializers.PARTICLE);
     }
 }

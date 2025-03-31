@@ -1,9 +1,8 @@
 package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.ZombieRenderer;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -52,6 +51,7 @@ public class Frostbite {
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomRenderer::new);
             EntityRenderers.register(EntityRegistry.ILLUSORY_ZOMBIE.get(), ZombieRenderer::new);
+            EntityRenderers.register(EntityRegistry.ILLUSORY_ENDERMAN.get(), EndermanRenderer::new);
             EntityRenderers.register(EntityRegistry.SPORE_CLOUD.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
