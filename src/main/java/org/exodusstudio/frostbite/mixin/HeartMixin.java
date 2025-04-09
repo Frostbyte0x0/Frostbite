@@ -3,7 +3,6 @@ package org.exodusstudio.frostbite.mixin;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.PlayerHeartData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

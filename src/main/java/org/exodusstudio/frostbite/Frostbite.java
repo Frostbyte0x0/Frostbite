@@ -1,8 +1,10 @@
 package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.world.entity.projectile.ThrownEgg;
+import net.minecraft.client.renderer.entity.EndermanRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,8 +16,8 @@ import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomRenderer;
 import org.exodusstudio.frostbite.common.entity.client.GenericEntityRenderer;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
-import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
 import org.exodusstudio.frostbite.common.registry.*;
+import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.slf4j.Logger;
 
@@ -38,6 +40,7 @@ public class Frostbite {
         EffectRegistry.MOB_EFFECTS.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
         AttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
+        ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         Jars.JARS.register(modEventBus);
 
         TemperatureValues.addTemperatures();
@@ -53,6 +56,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.ILLUSORY_ZOMBIE.get(), ZombieRenderer::new);
             EntityRenderers.register(EntityRegistry.ILLUSORY_ENDERMAN.get(), EndermanRenderer::new);
             EntityRenderers.register(EntityRegistry.SPORE_CLOUD.get(), GenericEntityRenderer::new);
+            EntityRenderers.register(EntityRegistry.DRAIN_CIRCLE.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);

@@ -52,6 +52,14 @@ public class EntityRegistry {
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball"))));
 
 
+    public static final Supplier<EntityType<DrainCircle>> DRAIN_CIRCLE =
+            ENTITY_TYPES.register("drain_circle", () -> EntityType.Builder
+                    .<DrainCircle>of(DrainCircle::new, MobCategory.MISC)
+                    .sized(5f, 5f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "drain_circle"))));
+
+
     public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
             ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
                     .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
