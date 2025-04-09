@@ -3,19 +3,30 @@ package org.exodusstudio.frostbite.common.event;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerHeartTypeEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.PlayerHeartData;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
+import org.exodusstudio.frostbite.common.network.PlayerHeartDataHandler;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 
 import java.util.function.Supplier;
@@ -30,11 +41,24 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void playerHeartEvent(PlayerHeartTypeEvent event) {
-        if (event.getEntity().hasEffect(EffectRegistry.DECAY)) {
-            event.setType(Gui.HeartType.valueOf("frostbite_decaying_heart"));
+    public static void playerHeartEventAdded(MobEffectEvent.Added event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            if (event.getEffectInstance().is(EffectRegistry.DECAY)) {
+                PacketDistributor.sendToPlayer(player, new PlayerHeartDataHandler(true));
+            }
         }
     }
+
+    @SubscribeEvent
+    public static void playerHeartEventRemoved(MobEffectEvent.Remove event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            if (event.getEffectInstance() != null && event.getEffectInstance().is(EffectRegistry.DECAY)) {
+                PacketDistributor.sendToPlayer(player, new PlayerHeartDataHandler(false));
+            }
+        }
+    }
+
+
 
     @SubscribeEvent
     public static void changeTargetEvent(LivingChangeTargetEvent event) {
