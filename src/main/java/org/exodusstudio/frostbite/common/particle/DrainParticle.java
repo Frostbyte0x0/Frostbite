@@ -1,9 +1,12 @@
 package org.exodusstudio.frostbite.common.particle;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.joml.Quaternionf;
 
 public class DrainParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
@@ -14,7 +17,7 @@ public class DrainParticle extends TextureSheetParticle {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.friction = 0.96F;
         this.sprites = sprite;
-        this.scale(1.5F);
+        this.scale(5F);
         this.hasPhysics = false;
         this.setSpriteFromAge(sprite);
     }
@@ -27,6 +30,16 @@ public class DrainParticle extends TextureSheetParticle {
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    }
+
+    @Override
+    public void render(VertexConsumer vertexConsumer, Camera camera, float p_233987_) {
+        this.alpha = (float) (2f * Math.cos((double) this.age / 40));
+        Quaternionf quaternionf = new Quaternionf();
+        quaternionf.rotationX((float) -Math.PI / 2);
+        this.renderRotatedQuad(vertexConsumer, camera, quaternionf, p_233987_);
+        quaternionf.rotationX((float) Math.PI / 2);
+        this.renderRotatedQuad(vertexConsumer, camera, quaternionf, p_233987_);
     }
 
     @Override
@@ -50,11 +63,10 @@ public class DrainParticle extends TextureSheetParticle {
             DrainParticle drainParticle = new DrainParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
-            drainParticle.setAlpha(1.0F);
+            drainParticle.quadSize = 5f;
+            //drainParticle.setAlpha(1.0F);
             drainParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
-            drainParticle.oRoll = drainParticleOptions.roll();
-            drainParticle.roll = drainParticleOptions.roll();
-            drainParticle.setLifetime(10);
+            drainParticle.setLifetime(20);
             return drainParticle;
         }
     }

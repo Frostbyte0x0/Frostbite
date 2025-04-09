@@ -12,8 +12,8 @@ public class DrainCircle extends AreaEffectCloud {
 
     @Override
     public void tick() {
-        if (this.level().isClientSide && this.tickCount % 10 == 0) {
-            this.level().addParticle(new DrainParticleOptions((float) tickCount /10), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+        if (this.level().isClientSide && this.tickCount % 20 == 0) {
+            this.level().addParticle(new DrainParticleOptions(0), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         }
         //super.tick();
     }
