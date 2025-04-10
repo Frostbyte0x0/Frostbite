@@ -1,6 +1,10 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AreaEffectCloud;
@@ -53,7 +57,7 @@ public class SporeCloudEntity extends AreaEffectCloud {
     @Override
     public void tick() {
         if (this.getRadius() == 0) {
-            this.setRadius(2.5f);
+            this.setRadius(2f);
         }
 
         if (this.getDuration() == 0) {
@@ -61,7 +65,29 @@ public class SporeCloudEntity extends AreaEffectCloud {
         }
 
         this.setDuration(this.getDuration() - 1);
-        Frostbite.LOGGER.debug(String.valueOf(this.getDuration()));
+        float f = this.getRadius();
+
+        if (this.level().isClientSide) {
+            ParticleOptions particleoptions = this.getParticle();
+            int i;
+            float f1;
+
+            i = Mth.ceil((float)Math.PI * f * f * 2.8f);
+            f1 = f;
+
+            for(int j = 0; j < i; ++j) {
+                float f2 = this.random.nextFloat() * ((float)Math.PI * 2F);
+                float f3 = Mth.sqrt(this.random.nextFloat()) * f1;
+                double d0 = this.getX() + (double)(Mth.cos(f2) * f3);
+                double d1 = this.getY() + this.random.nextDouble();
+                double d2 = this.getZ() + (double)(Mth.sin(f2) * f3);
+                if (particleoptions.getType() == ParticleTypes.ENTITY_EFFECT) {
+                    this.level().addAlwaysVisibleParticle(particleoptions, d0, d1, d2, (double)0.0F, (double)0.0F, (double)0.0F);
+                } else {
+                    this.level().addAlwaysVisibleParticle(particleoptions, d0, d1, d2, (0.5D - this.random.nextDouble()) * 0.15, 0.05f * this.random.nextDouble() - 0.02D, (0.5D - this.random.nextDouble()) * 0.15);
+                }
+            }
+        }
     }
 
     @Override
@@ -71,6 +97,6 @@ public class SporeCloudEntity extends AreaEffectCloud {
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return EntityDimensions.scalable(this.getRadius() * 2.0F, 0.5F);
+        return EntityDimensions.scalable(this.getRadius() * 2.0F, 1F);
     }
 }
