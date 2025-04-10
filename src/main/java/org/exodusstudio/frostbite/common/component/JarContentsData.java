@@ -52,7 +52,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     }
 
     public Iterable<MobEffectInstance> getAllEffects() {
-        return this.jar.map(jarHolder -> (this.customEffects.isEmpty() ? ((Potion) ((Holder) jarHolder).value()).getEffects() : Iterables.concat(((Potion) ((Holder) this.jar.get()).value()).getEffects(), this.customEffects))).orElse(this.customEffects);
+        return this.jar.map(jarHolder -> (this.customEffects.isEmpty() ? ((Potion) ((Holder<?>) jarHolder).value()).getEffects() : Iterables.concat(((Potion) ((Holder<?>) this.jar.get()).value()).getEffects(), this.customEffects))).orElse(this.customEffects);
     }
 
     public Optional<Holder<Jar>> jar() {
@@ -72,7 +72,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     }
 
     public int getColorOr(int defaultValue) {
-        return this.customColor.isPresent() ? (Integer)this.customColor.get() : getColorOptional(this.getAllEffects()).orElse(defaultValue);
+        return this.customColor.map(integer -> (Integer) integer).orElseGet(() -> getColorOptional(this.getAllEffects()).orElse(defaultValue));
     }
 
     public static OptionalInt getColorOptional(Iterable<MobEffectInstance> effects) {
@@ -101,7 +101,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     }
 
     public boolean hasEffects() {
-        return !this.customEffects.isEmpty() ? true : this.jar.isPresent() && !((Potion)((Holder)this.jar.get()).value()).getEffects().isEmpty();
+        return !this.customEffects.isEmpty() || this.jar.isPresent() && !((Jar) ((Holder<?>) this.jar.get()).value()).getEffects().isEmpty();
     }
 
     static {

@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.exodusstudio.frostbite.Frostbite;
 import org.joml.Quaternionf;
 
 public class DrainParticle extends TextureSheetParticle {
@@ -17,7 +18,6 @@ public class DrainParticle extends TextureSheetParticle {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.friction = 0.96F;
         this.sprites = sprite;
-        this.scale(5F);
         this.hasPhysics = false;
         this.setSpriteFromAge(sprite);
     }
@@ -34,7 +34,7 @@ public class DrainParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float p_233987_) {
-        this.alpha = (float) (2f * Math.cos((double) this.age / 40));
+        this.alpha = (float) (Math.cos((double) this.age / 20));
         Quaternionf quaternionf = new Quaternionf();
         quaternionf.rotationX((float) -Math.PI / 2);
         this.renderRotatedQuad(vertexConsumer, camera, quaternionf, p_233987_);
@@ -63,8 +63,7 @@ public class DrainParticle extends TextureSheetParticle {
             DrainParticle drainParticle = new DrainParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
-            drainParticle.quadSize = 5f;
-            //drainParticle.setAlpha(1.0F);
+            drainParticle.quadSize = 2.5f;
             drainParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
             drainParticle.setLifetime(20);
             return drainParticle;

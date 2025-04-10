@@ -2,18 +2,14 @@ package org.exodusstudio.frostbite.common.item.custom.alchemy;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.flag.FeatureElement;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.Consumable;
 import org.exodusstudio.frostbite.common.registry.RegistryRegistry;
 
 import java.util.List;

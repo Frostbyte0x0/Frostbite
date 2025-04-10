@@ -21,7 +21,6 @@ import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 public class SporeCloudEntity extends AreaEffectCloud {
     private PotionContents potionContents;
 
-
     public SporeCloudEntity(EntityType<?> entityType, Level level) {
         super(EntityRegistry.SPORE_CLOUD.get(), level);
         this.potionContents = PotionContents.EMPTY;
