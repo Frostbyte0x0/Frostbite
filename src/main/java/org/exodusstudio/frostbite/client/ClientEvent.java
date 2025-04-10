@@ -9,6 +9,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.particle.DrainParticle;
+import org.exodusstudio.frostbite.common.particle.SporeParticle;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
@@ -27,5 +28,6 @@ public class ClientEvent {
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ParticleRegistry.DRAIN_PARTICLE.get(), DrainParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.SPORE_PARTICLE.get(), SporeParticle.Provider::new);
     }
 }

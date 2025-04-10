@@ -3,9 +3,11 @@ package org.exodusstudio.frostbite.common.entity.custom.murdershrooms;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,6 +23,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.SporeCloudEntity;
+import org.exodusstudio.frostbite.common.registry.EffectRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.jetbrains.annotations.ApiStatus;
 
 public class AbstractMurdershroom extends Monster {
     public final AnimationState idleAnimationState = new AnimationState();
@@ -67,8 +72,8 @@ public class AbstractMurdershroom extends Monster {
             sporeCloud.setOwner(this);
             sporeCloud.setRadius(2.0F);
             sporeCloud.setDuration(200);
-            sporeCloud.setParticle(ParticleTypes.DRAGON_BREATH);
-            sporeCloud.addEffect(new MobEffectInstance(effect));
+            sporeCloud.setParticle(ParticleRegistry.SPORE_PARTICLE.get());
+            sporeCloud.addEffect(new MobEffectInstance(effect, 20*120));
             serverLevel.addFreshEntity(sporeCloud);
         }
     }
@@ -80,6 +85,17 @@ public class AbstractMurdershroom extends Monster {
         if (this.level().isClientSide) {
             this.setupAnimationStates();
         }
+    }
+
+    @Override
+    public boolean canBeAffected(MobEffectInstance effectInstance) {
+        return (!effectInstance.is(EffectRegistry.DECAY) &&
+                !effectInstance.is(EffectRegistry.IRRITATION) &&
+                !effectInstance.is(EffectRegistry.PARANOIA) &&
+                !effectInstance.is(EffectRegistry.CORRUPTION) &&
+                !effectInstance.is(EffectRegistry.MOLD) &&
+                !effectInstance.is(EffectRegistry.FATIGUE) &&
+                !effectInstance.is(EffectRegistry.TWITCHING));
     }
 
     private static class MurdershroomReleaseSpores extends Goal {
@@ -118,7 +134,6 @@ public class AbstractMurdershroom extends Monster {
         @Override
         public boolean canUse() {
             LivingEntity livingentity = murdershroom.getTarget();
-            Frostbite.LOGGER.debug(String.valueOf(livingentity));
             if (livingentity != null && livingentity.isAlive()) {
                 this.target = livingentity;
                 if (RandomSource.create().nextFloat() <= (1 / 20f)) {
