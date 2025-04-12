@@ -11,7 +11,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
-import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
+import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.*;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
 
 import java.util.function.Supplier;
@@ -52,9 +52,9 @@ public class EntityRegistry {
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball"))));
 
 
-    public static final Supplier<EntityType<DrainCircle>> DRAIN_CIRCLE =
+    public static final Supplier<EntityType<DrainCircleEntity>> DRAIN_CIRCLE =
             ENTITY_TYPES.register("drain_circle", () -> EntityType.Builder
-                    .<DrainCircle>of(DrainCircle::new, MobCategory.MISC)
+                    .<DrainCircleEntity>of(DrainCircleEntity::new, MobCategory.MISC)
                     .sized(5f, 5f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "drain_circle"))));
@@ -86,5 +86,41 @@ public class EntityRegistry {
                     .of(AgaricMurdershroomEntity::new, MobCategory.MONSTER)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "agaric_murdershroom"))));
+
+    public static final Supplier<EntityType<CrystalMurdershroomEntity>> CRYSTAL_MURDERSHROOM =
+            ENTITY_TYPES.register("crystal_murdershroom", () -> EntityType.Builder
+                    .of(CrystalMurdershroomEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "crystal_murdershroom"))));
+
+    public static final Supplier<EntityType<DecayingMurdershroomEntity>> DECAYING_MURDERSHROOM =
+            ENTITY_TYPES.register("decaying_murdershroom", () -> EntityType.Builder
+                    .of(DecayingMurdershroomEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "decaying_murdershroom"))));
+
+    public static final Supplier<EntityType<FloralMurdershroomEntity>> FLORAL_MURDERSHROOM =
+            ENTITY_TYPES.register("floral_murdershroom", () -> EntityType.Builder
+                    .of(FloralMurdershroomEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "floral_murdershroom"))));
+
+    public static final Supplier<EntityType<LightMurdershroomEntity>> LIGHT_MURDERSHROOM =
+            ENTITY_TYPES.register("light_murdershroom", () -> EntityType.Builder
+                    .of(LightMurdershroomEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "light_murdershroom"))));
+
+    public static final Supplier<EntityType<MossyMurdershroomEntity>> MOSSY_MURDERSHROOM =
+            ENTITY_TYPES.register("mossy_murdershroom", () -> EntityType.Builder
+                    .of(MossyMurdershroomEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_murdershroom"))));
+
+    public static final Supplier<EntityType<PineMurdershroomEntity>> PINE_MURDERSHROOM =
+            ENTITY_TYPES.register("pine_murdershroom", () -> EntityType.Builder
+                    .of(PineMurdershroomEntity::new, MobCategory.MONSTER)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "pine_murdershroom"))));
 
 }

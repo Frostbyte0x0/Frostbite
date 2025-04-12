@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.entity.client;
+package org.exodusstudio.frostbite.common.entity.client.models.murdershrooms;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -9,11 +9,11 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
-public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState> {
+public class LightMurdershroomModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart murdershroom;
     private final ModelPart head;
 
-    public AgaricMurdershroomModel(ModelPart root) {
+    public LightMurdershroomModel(ModelPart root) {
         super(root);
         this.murdershroom = root.getChild("murdershroom");
         this.head = this.murdershroom.getChild("upper_body_group").getChild("body").getChild("head_group");
@@ -57,19 +57,9 @@ public class AgaricMurdershroomModel extends EntityModel<LivingEntityRenderState
         this.root().getAllParts().forEach(ModelPart::resetPose);
         //this.applyHeadRotation(netHeadYaw, headPitch);
 
-        //this.animateWalk(AgaricMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
-        //this.animate(entity.idleAnimationState, AgaricMurdershroomAnimations.IDLE, ageInTicks, 1f);
+        //this.animateWalk(LightMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
+        //this.animate(entity.idleAnimationState, LightMurdershroomAnimations.IDLE, ageInTicks, 1f);
     }
-
-//    @Override
-//    public void setupAnim(AgaricMurdershroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-//        this.root().getAllParts().forEach(ModelPart::resetPose);
-//        this.applyHeadRotation(netHeadYaw, headPitch);
-//
-//
-//        this.animateWalk(AgaricMurdershroomAnimations.WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
-//        this.animate(entity.idleAnimationState, AgaricMurdershroomAnimations.IDLE, ageInTicks, 1f);
-//    }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {

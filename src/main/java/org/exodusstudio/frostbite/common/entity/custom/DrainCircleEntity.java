@@ -9,12 +9,12 @@ import org.exodusstudio.frostbite.common.particle.DrainParticleOptions;
 
 import java.util.List;
 
-public class DrainCircle extends AreaEffectCloud {
+public class DrainCircleEntity extends AreaEffectCloud {
     private int charge;
     private final int chargePerHealth = 5;
     private final float dps = 1f;
 
-    public DrainCircle(EntityType<? extends AreaEffectCloud> p_19704_, Level p_19705_) {
+    public DrainCircleEntity(EntityType<? extends AreaEffectCloud> p_19704_, Level p_19705_) {
         super(p_19704_, p_19705_);
     }
 

@@ -10,11 +10,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomModel;
-import org.exodusstudio.frostbite.common.entity.client.ModModelLayers;
+import org.exodusstudio.frostbite.common.entity.client.*;
+import org.exodusstudio.frostbite.common.entity.client.models.murdershrooms.*;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
-import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.AgaricMurdershroomEntity;
+import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.*;
 import org.exodusstudio.frostbite.common.network.PlayerHeartDataHandler;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
@@ -25,11 +25,23 @@ public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.AGARIC_MURDERSHROOM, AgaricMurdershroomModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.CRYSTAL_MURDERSHROOM, CrystalMurdershroomModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.DECAYING_MURDERSHROOM, DecayingMurdershroomModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.FLORAL_MURDERSHROOM, FloralMurdershroomModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.LIGHT_MURDERSHROOM, LightMurdershroomModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.MOSSY_MURDERSHROOM, MossyMurdershroomModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.PINE_MURDERSHROOM, PineMurdershroomModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomEntity.createAttributes().build());
+        event.put(EntityRegistry.CRYSTAL_MURDERSHROOM.get(), CrystalMurdershroomEntity.createAttributes().build());
+        event.put(EntityRegistry.DECAYING_MURDERSHROOM.get(), DecayingMurdershroomEntity.createAttributes().build());
+        event.put(EntityRegistry.FLORAL_MURDERSHROOM.get(), FloralMurdershroomEntity.createAttributes().build());
+        event.put(EntityRegistry.LIGHT_MURDERSHROOM.get(), LightMurdershroomEntity.createAttributes().build());
+        event.put(EntityRegistry.MOSSY_MURDERSHROOM.get(), MossyMurdershroomEntity.createAttributes().build());
+        event.put(EntityRegistry.PINE_MURDERSHROOM.get(), PineMurdershroomEntity.createAttributes().build());
         event.put(EntityRegistry.ILLUSORY_ZOMBIE.get(), IllusoryZombieEntity.createAttributes().build());
         event.put(EntityRegistry.ILLUSORY_ENDERMAN.get(), IllusoryEndermanEntity.createAttributes().build());
     }

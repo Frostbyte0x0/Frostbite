@@ -12,7 +12,7 @@ public class IrritationEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
-        if (entity.getHealth() > 1.0f) {
+        if (entity.tickCount % (200 / (amplifier + 1)) == 0 && entity.getHealth() > 1.0f) {
             entity.hurtServer(level, entity.damageSources().magic(), 1f);
             return true;
         }
@@ -21,6 +21,6 @@ public class IrritationEffect extends MobEffect {
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return (duration % (200 / (amplifier + 1))) == 0;
+        return true;
     }
 }

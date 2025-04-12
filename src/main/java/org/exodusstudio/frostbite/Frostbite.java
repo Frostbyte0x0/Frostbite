@@ -13,8 +13,14 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
-import org.exodusstudio.frostbite.common.entity.client.AgaricMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.GenericEntityRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.AgaricMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.CrystalMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.DecayingMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.FloralMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.LightMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.MossyMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.PineMurdershroomRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.GenericEntityRenderer;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
@@ -53,6 +59,12 @@ public class Frostbite {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomRenderer::new);
+            EntityRenderers.register(EntityRegistry.CRYSTAL_MURDERSHROOM.get(), CrystalMurdershroomRenderer::new);
+            EntityRenderers.register(EntityRegistry.DECAYING_MURDERSHROOM.get(), DecayingMurdershroomRenderer::new);
+            EntityRenderers.register(EntityRegistry.FLORAL_MURDERSHROOM.get(), FloralMurdershroomRenderer::new);
+            EntityRenderers.register(EntityRegistry.LIGHT_MURDERSHROOM.get(), LightMurdershroomRenderer::new);
+            EntityRenderers.register(EntityRegistry.MOSSY_MURDERSHROOM.get(), MossyMurdershroomRenderer::new);
+            EntityRenderers.register(EntityRegistry.PINE_MURDERSHROOM.get(), PineMurdershroomRenderer::new);
             EntityRenderers.register(EntityRegistry.ILLUSORY_ZOMBIE.get(), ZombieRenderer::new);
             EntityRenderers.register(EntityRegistry.ILLUSORY_ENDERMAN.get(), EndermanRenderer::new);
             EntityRenderers.register(EntityRegistry.SPORE_CLOUD.get(), GenericEntityRenderer::new);

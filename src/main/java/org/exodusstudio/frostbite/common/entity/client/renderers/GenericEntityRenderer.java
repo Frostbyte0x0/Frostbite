@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.entity.client;
+package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

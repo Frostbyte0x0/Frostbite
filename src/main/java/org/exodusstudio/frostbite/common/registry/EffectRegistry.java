@@ -32,15 +32,15 @@ public class EffectRegistry {
             () -> new TwitchingEffect(MobEffectCategory.HARMFUL, 0x2f6363));
 
     public static final Holder<MobEffect> CORRUPTION = MOB_EFFECTS.register("corruption",
-            () -> new PetrificationEffect(MobEffectCategory.HARMFUL, 0x464f4f));
+            () -> new PetrificationEffect(MobEffectCategory.HARMFUL, 0xBFBC35));
 
     public static final Holder<MobEffect> MOLD = MOB_EFFECTS.register("mold",
-            () -> new MoldEffect(MobEffectCategory.HARMFUL, 0x2f6636));
+            () -> new MoldEffect(MobEffectCategory.HARMFUL, 0x3F7F33));
 
     public static final Holder<MobEffect> DECAY = MOB_EFFECTS.register("decay",
             () -> new DecayEffect(MobEffectCategory.HARMFUL, 0x050505)
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "decay_slowness"),
-                            -0.1f, AttributeModifier.Operation.ADD_VALUE));
+                            -0.1f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
 
     public static final Holder<MobEffect> RAGE = MOB_EFFECTS.register("rage",

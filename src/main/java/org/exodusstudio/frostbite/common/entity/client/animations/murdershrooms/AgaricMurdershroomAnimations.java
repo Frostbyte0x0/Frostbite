@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.entity.client;
+package org.exodusstudio.frostbite.common.entity.client.animations.murdershrooms;
 
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
