@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.util.RandomSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -29,9 +30,11 @@ public class SporeParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-
     @OnlyIn(Dist.CLIENT)
     public record Provider(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
+        private static final RandomSource random = RandomSource.create();
+        private static final float variation = 10f;
+
         public Particle createParticle(
                 ColorParticleOption colorParticleOption,
                 ClientLevel clientLevel,
@@ -45,7 +48,9 @@ public class SporeParticle extends TextureSheetParticle {
             SporeParticle sporeParticle = new SporeParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
-            //sporeParticle.quadSize = 2.5f;
+            sporeParticle.setColor(colorParticleOption.getRed() + random.nextFloat() / variation,
+                    colorParticleOption.getGreen() + random.nextFloat() / variation,
+                    colorParticleOption.getBlue() + random.nextFloat() / variation);
             sporeParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
             sporeParticle.setLifetime(20);
             return sporeParticle;

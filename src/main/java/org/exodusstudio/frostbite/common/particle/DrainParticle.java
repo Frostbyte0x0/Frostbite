@@ -6,7 +6,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.exodusstudio.frostbite.Frostbite;
 import org.joml.Quaternionf;
 
 public class DrainParticle extends TextureSheetParticle {
