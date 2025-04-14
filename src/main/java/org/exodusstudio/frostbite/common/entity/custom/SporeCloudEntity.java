@@ -6,22 +6,13 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.component.JarContentsData;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,20 +41,6 @@ public class SporeCloudEntity extends AreaEffectCloud {
     public SporeCloudEntity(Level level, double x, double y, double z) {
         this(EntityRegistry.SPORE_CLOUD.get(), level);
         this.setPos(x, y, z);
-    }
-
-    @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
-        Frostbite.LOGGER.debug("RAAAAH");
-        ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.is(ItemRegistry.EMPTY_JAR)) {
-            player.playSound(SoundEvents.BOTTLE_FILL, 1.0F, 1.0F);
-            ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, ItemRegistry.JAR.toStack());
-            itemstack1.set(DataComponentTypeRegistry.JAR_CONTENTS.get(), new JarContentsData(this.potionContents));
-            player.setItemInHand(hand, itemstack1);
-            return InteractionResult.SUCCESS;
-        }
-        return super.interact(player, hand);
     }
 
     @Override
@@ -150,6 +127,10 @@ public class SporeCloudEntity extends AreaEffectCloud {
         this.potionContents = potionContents;
     }
 
+    public PotionContents getPotionContents() {
+        return this.potionContents;
+    }
+
     @Override
     public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
         return EntityDimensions.scalable(this.getRadius() * 2.0F, 1F);
@@ -169,6 +150,7 @@ public class SporeCloudEntity extends AreaEffectCloud {
         }
     }
 
+    @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.tickCount = compound.getInt("Age");
         this.setRadius(compound.getFloat("Radius"));

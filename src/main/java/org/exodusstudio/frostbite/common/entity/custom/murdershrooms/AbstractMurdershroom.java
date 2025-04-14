@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.SporeCloudEntity;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 
-public class AbstractMurdershroom extends Monster {
+public abstract class AbstractMurdershroom extends Monster {
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationStateTimeout = 0;
     protected final Holder<MobEffect> effect;
