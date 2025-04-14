@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.datagen;
 
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.HolderLookup;

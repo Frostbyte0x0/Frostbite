@@ -3,8 +3,6 @@ package org.exodusstudio.frostbite.common.registry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionContents;
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

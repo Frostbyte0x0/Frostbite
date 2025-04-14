@@ -6,7 +6,6 @@ import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.BlockRegistry;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;

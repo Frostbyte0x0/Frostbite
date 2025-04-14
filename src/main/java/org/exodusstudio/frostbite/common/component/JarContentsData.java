@@ -34,7 +34,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     public static final StreamCodec<RegistryFriendlyByteBuf, JarContentsData> STREAM_CODEC;
 
     public JarContentsData(Holder<Jar> jar) {
-        this(Optional.of(jar), Optional.of(jar.value().getEffects().getFirst().getEffect().value().getColor()),
+        this(Optional.of(jar), jar.value().getEffects().isEmpty() ? Optional.empty() : Optional.of(jar.value().getEffects().getFirst().getEffect().value().getColor()),
                 jar.value().getEffects(), Optional.empty());
     }
 
@@ -73,7 +73,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     }
 
     public int getColorOr(int defaultValue) {
-        return this.customColor.map(integer -> (Integer) integer).orElseGet(() -> getColorOptional(this.getAllEffects()).orElse(defaultValue));
+        return this.customColor.map(integer -> integer).orElseGet(() -> getColorOptional(this.getAllEffects()).orElse(defaultValue));
     }
 
     public static OptionalInt getColorOptional(Iterable<MobEffectInstance> effects) {
@@ -84,7 +84,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
 
         for (MobEffectInstance mobeffectinstance : effects) {
             if (mobeffectinstance.isVisible()) {
-                int i1 = ((MobEffect)mobeffectinstance.getEffect().value()).getColor();
+                int i1 = mobeffectinstance.getEffect().value().getColor();
                 int j1 = mobeffectinstance.getAmplifier() + 1;
                 i += j1 * ARGB.red(i1);
                 j += j1 * ARGB.green(i1);
@@ -97,7 +97,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     }
 
     public Component getName(String name) {
-        String s = (String)this.customName.or(() -> this.jar.map((p_372776_) -> ((Jar)p_372776_.value()).name())).orElse("empty");
+        String s = this.customName.or(() -> this.jar.map((p_372776_) -> p_372776_.value().name())).orElse("empty");
         return Component.translatable(name + s);
     }
 

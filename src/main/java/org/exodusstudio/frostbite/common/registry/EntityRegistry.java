@@ -54,7 +54,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<DrainCircleEntity>> DRAIN_CIRCLE =
             ENTITY_TYPES.register("drain_circle", () -> EntityType.Builder
-                    .<DrainCircleEntity>of(DrainCircleEntity::new, MobCategory.MISC)
+                    .of(DrainCircleEntity::new, MobCategory.MISC)
                     .sized(5f, 5f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "drain_circle"))));
@@ -76,7 +76,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<IllusoryEndermanEntity>> ILLUSORY_ENDERMAN =
             ENTITY_TYPES.register("illusory_enderman", () -> EntityType.Builder
-                    .<IllusoryEndermanEntity>of(IllusoryEndermanEntity::new, MobCategory.MONSTER)
+                    .of(IllusoryEndermanEntity::new, MobCategory.MONSTER)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "illusory_enderman"))));
 

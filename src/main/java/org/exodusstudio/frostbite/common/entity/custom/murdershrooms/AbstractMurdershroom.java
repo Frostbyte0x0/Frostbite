@@ -66,7 +66,7 @@ public abstract class AbstractMurdershroom extends Monster {
             sporeCloud.setOwner(this);
             sporeCloud.setRadius(2.0F);
             sporeCloud.setDuration(200);
-            sporeCloud.addEffect(new MobEffectInstance(effect, 20*120));
+            sporeCloud.addEffect(new MobEffectInstance(effect, 2400));
             serverLevel.addFreshEntity(sporeCloud);
         }
     }
