@@ -1,5 +1,7 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
+import net.minecraft.Util;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -19,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SporeCloudEntity extends AreaEffectCloud {
@@ -45,11 +48,7 @@ public class SporeCloudEntity extends AreaEffectCloud {
 
     @Override
     public void tick() {
-        if (this.getRadius() == 0) {
-            this.setRadius(2f);
-        }
-
-        if (this.getDuration() == 0) {
+        if (this.getDuration() == 0 || this.getRadius() == 0) {
             this.discard();
         }
 
@@ -64,15 +63,19 @@ public class SporeCloudEntity extends AreaEffectCloud {
                 double d1 = this.getY() + this.random.nextDouble();
                 double d2 = this.getZ() + (double)(Mth.sin(f2) * f3);
 
+                //Frostbite.LOGGER.debug(String.valueOf(this.potionContents.getColor()));
+
                 this.level().addAlwaysVisibleParticle(
-                        ColorParticleOption.create(ParticleRegistry.SPORE_PARTICLE.get(), this.potionContents.getColor()),
+                        this.getParticle(),
                         d0, d1, d2,
                         (0.5D - this.random.nextDouble()) * 0.15,
                         0.05f * this.random.nextDouble() - 0.02D,
                         (0.5D - this.random.nextDouble()) * 0.15);
+
+                //Frostbite.LOGGER.debug(String.valueOf(this.potionContents.getColor()));
             }
         }
-
+        
         if (this.tickCount % 20 == 0) {
             if (this.level() instanceof ServerLevel) {
                 List<LivingEntity> list1 = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox());
@@ -119,7 +122,13 @@ public class SporeCloudEntity extends AreaEffectCloud {
 
     @Override
     public void addEffect(@NotNull MobEffectInstance effectInstance) {
-        this.setPotionContents(this.potionContents.withEffectAdded(effectInstance));
+        this.setPotionContents(new PotionContents(
+                Optional.empty(),
+                Optional.of(effectInstance.getEffect().value().getColor()),
+                Util.copyAndAdd(this.potionContents.customEffects(), effectInstance),
+                Optional.empty()));
+        Frostbite.LOGGER.debug(String.valueOf(this.potionContents.getColor()));
+        Frostbite.LOGGER.debug(String.valueOf(effectInstance.getEffect().value().getColor()));
     }
 
     @Override

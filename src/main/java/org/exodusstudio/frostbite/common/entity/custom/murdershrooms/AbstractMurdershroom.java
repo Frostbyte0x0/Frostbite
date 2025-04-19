@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.common.entity.custom.murdershrooms;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.SporeCloudEntity;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
 public abstract class AbstractMurdershroom extends Monster {
     public final AnimationState idleAnimationState = new AnimationState();
@@ -67,6 +69,7 @@ public abstract class AbstractMurdershroom extends Monster {
             sporeCloud.setRadius(2.0F);
             sporeCloud.setDuration(200);
             sporeCloud.addEffect(new MobEffectInstance(effect, 2400));
+            sporeCloud.setParticle(ColorParticleOption.create(ParticleRegistry.SPORE_PARTICLE.get(), effect.value().getColor()));
             serverLevel.addFreshEntity(sporeCloud);
         }
     }
@@ -82,13 +85,7 @@ public abstract class AbstractMurdershroom extends Monster {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effectInstance) {
-        return (!effectInstance.is(EffectRegistry.DECAY) &&
-                !effectInstance.is(EffectRegistry.IRRITATION) &&
-                !effectInstance.is(EffectRegistry.PARANOIA) &&
-                !effectInstance.is(EffectRegistry.CORRUPTION) &&
-                !effectInstance.is(EffectRegistry.MOLD) &&
-                !effectInstance.is(EffectRegistry.FATIGUE) &&
-                !effectInstance.is(EffectRegistry.TWITCHING));
+        return !EffectRegistry.isSporeEffect(effectInstance);
     }
 
     private static class MurdershroomReleaseSpores extends Goal {

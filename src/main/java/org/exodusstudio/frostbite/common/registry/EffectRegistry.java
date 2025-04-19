@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.registry;
 
+import net.minecraft.world.effect.MobEffectInstance;
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -45,4 +46,14 @@ public class EffectRegistry {
 
     public static final Holder<MobEffect> RAGE = MOB_EFFECTS.register("rage",
             () -> new GenericEffect(MobEffectCategory.BENEFICIAL, 0x050505));
+
+    public static boolean isSporeEffect(MobEffectInstance effectInstance) {
+        return (effectInstance.is(EffectRegistry.DECAY) ||
+                effectInstance.is(EffectRegistry.IRRITATION) ||
+                effectInstance.is(EffectRegistry.PARANOIA) ||
+                effectInstance.is(EffectRegistry.CORRUPTION) ||
+                effectInstance.is(EffectRegistry.MOLD) ||
+                effectInstance.is(EffectRegistry.FATIGUE) ||
+                effectInstance.is(EffectRegistry.TWITCHING));
+    }
 }

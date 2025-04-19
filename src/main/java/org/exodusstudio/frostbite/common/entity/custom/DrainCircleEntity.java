@@ -43,8 +43,6 @@ public class DrainCircleEntity extends AreaEffectCloud {
     }
 
     public int absorbCharge() {
-        int tempCharge = charge;
-        charge = 0;
-        return tempCharge;
+        return charge = 0;
     }
 }

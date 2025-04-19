@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.RandomSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.exodusstudio.frostbite.Frostbite;
 
 public class SporeParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
@@ -48,6 +49,11 @@ public class SporeParticle extends TextureSheetParticle {
             SporeParticle sporeParticle = new SporeParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
+
+            Frostbite.LOGGER.debug("R: " + colorParticleOption.getRed());
+            Frostbite.LOGGER.debug("G: " + colorParticleOption.getGreen());
+            Frostbite.LOGGER.debug("B: " + colorParticleOption.getBlue());
+
             sporeParticle.setColor(colorParticleOption.getRed() + random.nextFloat() / variation,
                     colorParticleOption.getGreen() + random.nextFloat() / variation,
                     colorParticleOption.getBlue() + random.nextFloat() / variation);

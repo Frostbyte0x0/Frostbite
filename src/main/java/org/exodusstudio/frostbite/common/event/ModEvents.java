@@ -42,6 +42,11 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void playerHeartEventRemoved(MobEffectEvent.Remove event) {
+        if (event.getEffectInstance() != null && EffectRegistry.isSporeEffect(event.getEffectInstance())) {
+            event.setCanceled(true);
+        }
+
+
         if (event.getEntity() instanceof ServerPlayer player) {
             if (event.getEffectInstance() != null && event.getEffectInstance().is(EffectRegistry.DECAY)) {
                 PacketDistributor.sendToPlayer(player, new PlayerHeartDataHandler(false));
