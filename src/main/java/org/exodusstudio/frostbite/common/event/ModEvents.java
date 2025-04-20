@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.event;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.CalculatePlayerTurnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -54,8 +56,6 @@ public class ModEvents {
         }
     }
 
-
-
     @SubscribeEvent
     public static void changeTargetEvent(LivingChangeTargetEvent event) {
         if (event.getEntity() instanceof IllusoryEndermanEntity || event.getEntity() instanceof IllusoryZombieEntity) {
@@ -66,13 +66,15 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void tick(PlayerTickEvent.Pre event) {
-        if (event.getEntity().hasEffect(EffectRegistry.PARANOIA)) {
-            if (random.nextFloat() < 0.01f) {
-                if (!event.getEntity().level().isClientSide) {
-                    ServerLevel serverlevel = (ServerLevel) event.getEntity().level();
+    public static void playerTick(PlayerTickEvent.Pre event) {
+        Player player = event.getEntity();
 
-                    spawnMonsterRandomlyAroundPlayer(() -> new IllusoryZombieEntity(serverlevel), serverlevel, event.getEntity(), 10, 60, 20);
+        if (player.hasEffect(EffectRegistry.PARANOIA)) {
+            if (random.nextFloat() < 0.01f) {
+                if (!player.level().isClientSide) {
+                    ServerLevel serverlevel = (ServerLevel) player.level();
+
+                    spawnMonsterRandomlyAroundPlayer(() -> new IllusoryZombieEntity(serverlevel), serverlevel, player, 10, 60, 20);
                 }
             }
         }

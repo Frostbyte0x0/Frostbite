@@ -63,16 +63,12 @@ public class SporeCloudEntity extends AreaEffectCloud {
                 double d1 = this.getY() + this.random.nextDouble();
                 double d2 = this.getZ() + (double)(Mth.sin(f2) * f3);
 
-                //Frostbite.LOGGER.debug(String.valueOf(this.potionContents.getColor()));
-
                 this.level().addAlwaysVisibleParticle(
                         this.getParticle(),
                         d0, d1, d2,
                         (0.5D - this.random.nextDouble()) * 0.15,
                         0.05f * this.random.nextDouble() - 0.02D,
                         (0.5D - this.random.nextDouble()) * 0.15);
-
-                //Frostbite.LOGGER.debug(String.valueOf(this.potionContents.getColor()));
             }
         }
         
