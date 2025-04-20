@@ -1,17 +1,17 @@
 package org.exodusstudio.frostbite.common.event;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.CalculatePlayerTurnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -19,8 +19,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
+import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.common.network.PlayerHeartDataHandler;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
+import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 import java.util.function.Supplier;
 
@@ -43,12 +46,20 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void playerHeartEventRemoved(MobEffectEvent.Remove event) {
-        if (event.getEffectInstance() != null && EffectRegistry.isSporeEffect(event.getEffectInstance())) {
-            event.setCanceled(true);
+    public static void cancelClearingEffects(MobEffectEvent.Remove event) {
+        if (event.getEffectInstance() != null && EffectRegistry.isSporeEffect(event.getEffectInstance()) && event.getEntity() instanceof Player player) {
+            ItemStack itemstack = player.getItemInHand(InteractionHand.MAIN_HAND);
+            if (itemstack.is(ItemRegistry.JAR) &&
+                    itemstack.has(DataComponentTypeRegistry.JAR_CONTENTS) &&
+                    itemstack.get(DataComponentTypeRegistry.JAR_CONTENTS).jar().get().is(Jars.CURING)) {
+                return;
+            }
         }
+        event.setCanceled(true);
+    }
 
-
+    @SubscribeEvent
+    public static void playerHeartEventRemoved(MobEffectEvent.Remove event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             if (event.getEffectInstance() != null && event.getEffectInstance().is(EffectRegistry.DECAY)) {
                 PacketDistributor.sendToPlayer(player, new PlayerHeartDataHandler(false));

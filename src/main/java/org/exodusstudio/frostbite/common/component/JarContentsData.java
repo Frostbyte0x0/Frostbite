@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ARGB;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +17,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jar;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     public static final Codec<JarContentsData> CODEC;
     public static final StreamCodec<RegistryFriendlyByteBuf, JarContentsData> STREAM_CODEC;
 
-    public JarContentsData(Holder<Jar> jar) {
+    public JarContentsData(@NotNull Holder<Jar> jar) {
         this(Optional.of(jar), jar.value().getEffects().isEmpty() ? Optional.empty() : Optional.of(jar.value().getEffects().getFirst().getEffect().value().getColor()),
                 jar.value().getEffects(), Optional.empty());
     }
@@ -49,6 +49,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     public static ItemStack createItemStack(Item item, Holder<Jar> jar) {
         ItemStack itemstack = new ItemStack(item);
         itemstack.set(DataComponentTypeRegistry.JAR_CONTENTS, new JarContentsData(jar));
+        itemstack.set(DataComponentTypeRegistry.FILL_LEVEL.get(), new FillLevelData(4));
         return itemstack;
     }
 
@@ -73,7 +74,7 @@ public record JarContentsData(Optional<Holder<Jar>> jar, Optional<Integer> custo
     }
 
     public int getColorOr(int defaultValue) {
-        return this.customColor.map(integer -> integer).orElseGet(() -> getColorOptional(this.getAllEffects()).orElse(defaultValue));
+        return this.customColor.orElseGet(() -> getColorOptional(this.getAllEffects()).orElse(defaultValue));
     }
 
     public static OptionalInt getColorOptional(Iterable<MobEffectInstance> effects) {

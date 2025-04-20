@@ -17,6 +17,9 @@ public class Jars {
     public static final Holder<Jar> WATER = register("water",
             new Jar("water"));
 
+    public static final Holder<Jar> CURING = register("curing",
+            new Jar("curing"));
+
     public static final Holder<Jar> FLORAL = register("floral",
             new Jar("floral", new MobEffectInstance(EffectRegistry.IRRITATION, 360000))); // infinite duration
 

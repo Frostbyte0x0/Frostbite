@@ -38,7 +38,6 @@ public class ItemRegistry {
                     .stacksTo(1)
                     .component(DataComponentTypeRegistry.JAR_CONTENTS, JarContentsData.EMPTY)
                     .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
-                    //.usingConvertsTo(EMPTY_JAR.asItem())
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> VIAL =
             ITEMS.register("vial", (id) -> new Item(new Item.Properties()
