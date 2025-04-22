@@ -1,8 +1,8 @@
 package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +18,7 @@ public abstract class LivingEntityMixin {
     float frostbite$frequency = (float) 1 / 300;
 
     @Unique
-    Player frostbite$livingEntity = (Player) ((Object) this);
+    Player frostbite$player = (Player) ((Object) this);
 
     @Inject(at = @At("HEAD"), method = "tick()V")
     private void tick(CallbackInfo ci) {
@@ -26,8 +26,10 @@ public abstract class LivingEntityMixin {
 //            frostbite$livingEntity.setPose(Pose.CROUCHING);
 //            frostbite$livingEntity.setShiftKeyDown(true);
 //        }
-        if (frostbite$random.nextFloat() < frostbite$frequency) {
-            frostbite$livingEntity.setSprinting(!frostbite$livingEntity.isSprinting());
+        if (frostbite$player != null && frostbite$player.hasEffect(EffectRegistry.TWITCHING)) {
+            if (frostbite$random.nextFloat() < frostbite$frequency) {
+                frostbite$player.setSprinting(!frostbite$player.isSprinting());
+            }
         }
     }
 }

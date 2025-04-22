@@ -1,5 +1,9 @@
 package org.exodusstudio.frostbite.common.item.custom.gun;
 
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Chicken;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
@@ -42,21 +46,33 @@ public abstract class AbstractGun extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        playShootSound(player, level);
+
+        Frostbite.LOGGER.debug("NEW SHOOT");
+        Frostbite.LOGGER.debug(shootCondition(itemstack));
+        Frostbite.LOGGER.debug(String.valueOf(isBulletInChamber(itemstack)));
+        Frostbite.LOGGER.debug(String.valueOf(isChambering(itemstack)));
+        Frostbite.LOGGER.debug(String.valueOf(isReloading(itemstack)));
+        Frostbite.LOGGER.debug(String.valueOf(getBulletsInMag(itemstack)));
+        Frostbite.LOGGER.debug(String.valueOf(getChamberCooldown(itemstack)));
+        Frostbite.LOGGER.debug(String.valueOf(getReloadCooldown(itemstack)));
 
         switch (shootCondition(itemstack)) {
             case "noShoot":
+                playFailSound(player, level);
                 return InteractionResult.FAIL;
             case "canShoot":
+                playShootSound(player, level);
                 if (level instanceof ServerLevel serverlevel) {
                     shoot(serverlevel, player, hand, player.getItemInHand(hand), this.bulletType, this.bulletVelocity, this.bulletInaccuracy);
                 }
                 return InteractionResult.SUCCESS;
             case "shouldReload":
                 reload(itemstack);
+                playReloadSound(player, level);
                 return InteractionResult.SUCCESS;
             case "shouldChamber":
                 chamberRound(itemstack);
+                playChamberingSound(player, level);
                 return InteractionResult.SUCCESS;
         }
 
@@ -70,15 +86,17 @@ public abstract class AbstractGun extends Item {
         if (isSelected && isReloading(stack)) {
             reduceReloadCooldown(1, stack);
         }
-        if (getReloadCooldown(stack) <= 0) {
+        if (isReloading(stack) && getReloadCooldown(stack) <= 0) {
             setReloading(false, stack);
+            setBulletsInMag(this.magSize, stack);
         }
 
         if (isSelected && isChambering(stack)) {
-            reduceReloadCooldown(1, stack);
+            reduceChamberCooldown(1, stack);
         }
-        if (getChamberCooldown(stack) <= 0) {
+        if (isChambering(stack) && getChamberCooldown(stack) <= 0) {
             setChambering(false, stack);
+            setBulletInChamber(true, stack);
         }
     }
 
@@ -93,6 +111,7 @@ public abstract class AbstractGun extends Item {
             float inaccuracy
     ) {
         if (!bullet.isEmpty()) {
+            this.setBulletInChamber(false, weapon);
             Projectile.spawnProjectile(
                     this.createProjectile(level, shooter, weapon, bullet),
                     level,
@@ -109,13 +128,17 @@ public abstract class AbstractGun extends Item {
 
     protected Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo) {
         if (ammo.getItem() instanceof SniperBulletItem sniperBulletItem) {
-            sniperBulletItem.createBullet(level);
+            SniperBulletEntity sniperBullet = sniperBulletItem.createBullet(level);
+            sniperBullet.moveTo(shooter.getX(), shooter.getY() + shooter.getEyeHeight(), shooter.getZ(), shooter.getYRot(), 0.0F);
+            return sniperBullet;
         }
         else if (ammo.getItem() instanceof RevolverBulletItem revolverBulletItem) {
-            return revolverBulletItem.createBullet(level);
+            SniperBulletEntity sniperBullet = revolverBulletItem.createBullet(level);
+            sniperBullet.moveTo(shooter.getX(), shooter.getY(), shooter.getZ(), shooter.getYRot(), 0.0F);
+            return sniperBullet;
         }
 
-        return new SniperBulletEntity(EntityRegistry.SNIPER_BULLET_ENTITY.get(), level);
+        return null;
     }
 
 
@@ -137,6 +160,7 @@ public abstract class AbstractGun extends Item {
     }
 
     public void setBulletInChamber(boolean bulletInChamber, ItemStack stack) {
+        Frostbite.LOGGER.debug("set bullet in chamber to: " + bulletInChamber);
         stack.set(DataComponentTypeRegistry.GUN.get(), new GunData(
                 bulletInChamber,
                 stack.get(DataComponentTypeRegistry.GUN.get()).bulletsInMag(),
@@ -255,11 +279,15 @@ public abstract class AbstractGun extends Item {
     public String shootCondition(ItemStack stack) {
         if (isReloading(stack) || isChambering(stack)) return "noShoot";
 
-        if (isBulletInChamber(stack)) return "canShoot";
-
         if (getBulletsInMag(stack) == 0) return "shouldReload";
 
+        if (isBulletInChamber(stack)) return "canShoot";
+
         return "shouldChamber";
+    }
+
+    public void playFailSound(Player player, Level level) {
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 
     public void playShootSound(Player player, Level level) {
@@ -267,10 +295,10 @@ public abstract class AbstractGun extends Item {
     }
 
     public void playReloadSound(Player player, Level level) {
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ALLAY_DEATH, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 
     public void playChamberingSound(Player player, Level level) {
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_USE, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 }

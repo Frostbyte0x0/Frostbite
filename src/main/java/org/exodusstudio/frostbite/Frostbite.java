@@ -1,10 +1,7 @@
 package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.entity.EndermanRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.ZombieRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,6 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
+import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.AgaricMurdershroomRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.CrystalMurdershroomRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.DecayingMurdershroomRenderer;
@@ -58,6 +56,7 @@ public class Frostbite {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(EntityRegistry.SNIPER_BULLET_ENTITY.get(), SniperBulletRenderer::new);
             EntityRenderers.register(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomRenderer::new);
             EntityRenderers.register(EntityRegistry.CRYSTAL_MURDERSHROOM.get(), CrystalMurdershroomRenderer::new);
             EntityRenderers.register(EntityRegistry.DECAYING_MURDERSHROOM.get(), DecayingMurdershroomRenderer::new);

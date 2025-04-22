@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.event;
 
+import net.minecraft.client.model.SnifferModel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -11,6 +12,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.*;
+import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.murdershrooms.*;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
@@ -31,6 +33,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.LIGHT_MURDERSHROOM, LightMurdershroomModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.MOSSY_MURDERSHROOM, MossyMurdershroomModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.PINE_MURDERSHROOM, PineMurdershroomModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SNIPER_BULLET, SniperBulletModel::createBodyLayer);
     }
 
     @SubscribeEvent

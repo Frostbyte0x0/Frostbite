@@ -110,7 +110,6 @@ public class ItemRegistry {
 
     public static final DeferredItem<Item> SNIPER_BULLET =
             ITEMS.register("sniper_bullet", (id) -> new SniperBulletItem(new Item.Properties()
-                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SNIPER =
             ITEMS.register("sniper", (id) -> new SniperItem(new Item.Properties().stacksTo(1)
