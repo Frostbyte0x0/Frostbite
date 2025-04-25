@@ -1,0 +1,9 @@
+package org.exodusstudio.frostbite.common.item.custom.gun;
+
+import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+
+public class RevolverItem extends AbstractGun {
+    public RevolverItem(Properties properties) {
+        super(properties, 4f, 1f, 60, 0, 6, ItemRegistry.SNIPER_BULLET.toStack());
+    }
+}

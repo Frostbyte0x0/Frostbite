@@ -1,15 +1,5 @@
 package org.exodusstudio.frostbite.common.item.custom.gun;
 
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Chicken;
-import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.component.GunData;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
-import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
-import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,6 +13,12 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.component.GunData;
+import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
+import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
+import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 public abstract class AbstractGun extends Item {
     private final float bulletVelocity;

@@ -20,7 +20,9 @@ import org.exodusstudio.frostbite.common.item.custom.*;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.EmptyJarItem;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.JarItem;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.SprayerItem;
+import org.exodusstudio.frostbite.common.item.custom.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.SniperItem;
+import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
 
 public class ItemRegistry {
@@ -113,6 +115,13 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SNIPER =
             ITEMS.register("sniper", (id) -> new SniperItem(new Item.Properties().stacksTo(1)
+                            .component(DataComponentTypeRegistry.GUN, GunData.EMPTY)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> REVOLVER_BULLET =
+            ITEMS.register("revolver_bullet", (id) -> new RevolverBulletItem(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> REVOLVER =
+            ITEMS.register("revolver", (id) -> new RevolverItem(new Item.Properties().stacksTo(1)
                             .component(DataComponentTypeRegistry.GUN, GunData.EMPTY)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 

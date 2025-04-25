@@ -50,6 +50,11 @@ public class EntityRegistry {
                     .of(SniperBulletEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "sniper_bullet"))));
+    public static final Supplier<EntityType<SniperBulletEntity>> REVOLVER_BULLET_ENTITY =
+            ENTITY_TYPES.register("revolver_bullet", () -> EntityType.Builder
+                    .of(SniperBulletEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revolver_bullet"))));
 
 
     public static final Supplier<EntityType<DrainCircleEntity>> DRAIN_CIRCLE =
