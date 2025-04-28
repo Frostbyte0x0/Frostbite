@@ -50,6 +50,8 @@ public class CreativeModeTabRegistry {
 
                         output.accept(ItemRegistry.SNIPER);
                         output.accept(ItemRegistry.SNIPER_BULLET);
+                        output.accept(ItemRegistry.REVOLVER);
+                        output.accept(ItemRegistry.REVOLVER_BULLET);
 
                         // MISTY WOOD
                         output.accept(BlockRegistry.MISTY_LOG);

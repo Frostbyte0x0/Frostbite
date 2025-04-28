@@ -21,6 +21,11 @@ public class SoundRegistry {
     public static final Supplier<SoundEvent> CHAINCICLE_GRAPPLE_LAUNCH = registerSoundEvent("chaincicle_grapple_launch");
     //public static final Supplier<SoundEvent> CHAINCICLE_GRAPPLE_HIT = registerSoundEvent("chaincicle_grapple_hit");
 
+    public static final Supplier<SoundEvent> SNIPER_RELOAD = registerSoundEvent("sniper_reload");
+    public static final Supplier<SoundEvent> SNIPER_CHAMBER = registerSoundEvent("sniper_chamber");
+    public static final Supplier<SoundEvent> SNIPER_SHOOT = registerSoundEvent("sniper_shoot");
+    public static final Supplier<SoundEvent> SNIPER_PING = registerSoundEvent("sniper_ping");
+    public static final Supplier<SoundEvent> SNIPER_FAIL = registerSoundEvent("sniper_fail");
 
     private static Supplier<SoundEvent> registerSoundEvent(String name) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, name);

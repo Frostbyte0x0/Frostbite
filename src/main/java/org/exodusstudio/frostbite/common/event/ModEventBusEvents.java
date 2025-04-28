@@ -12,8 +12,11 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.*;
+import org.exodusstudio.frostbite.common.entity.client.models.RainFrogModel;
+import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.murdershrooms.*;
+import org.exodusstudio.frostbite.common.entity.custom.RainFrogEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
 import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.*;
@@ -34,6 +37,8 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.MOSSY_MURDERSHROOM, MossyMurdershroomModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.PINE_MURDERSHROOM, PineMurdershroomModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SNIPER_BULLET, SniperBulletModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.REVOLVER_BULLET, RevolverBulletModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.RAIN_FROG, RainFrogModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -47,6 +52,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.PINE_MURDERSHROOM.get(), PineMurdershroomEntity.createAttributes().build());
         event.put(EntityRegistry.ILLUSORY_ZOMBIE.get(), IllusoryZombieEntity.createAttributes().build());
         event.put(EntityRegistry.ILLUSORY_ENDERMAN.get(), IllusoryEndermanEntity.createAttributes().build());
+        event.put(EntityRegistry.RAIN_FROG.get(), RainFrogEntity.createAttributes().build());
     }
 
     @SubscribeEvent

@@ -23,6 +23,8 @@ public class ClientEvent {
                 FireOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "decay_overlay"),
                 DecayOverlay::render);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
+                GunOverlay::render);
     }
 
     @SubscribeEvent

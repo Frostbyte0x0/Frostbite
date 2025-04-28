@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.common.item.custom.gun;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -19,6 +20,7 @@ import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntit
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 
 public abstract class AbstractGun extends Item {
     private final float bulletVelocity;
@@ -52,27 +54,36 @@ public abstract class AbstractGun extends Item {
         Frostbite.LOGGER.debug(String.valueOf(getChamberCooldown(itemstack)));
         Frostbite.LOGGER.debug(String.valueOf(getReloadCooldown(itemstack)));
 
+        SoundEvent sound = SoundEvents.ANVIL_USE;
+
         switch (shootCondition(itemstack)) {
             case "noShoot":
-                playFailSound(player, level);
+                sound = getFailSound(player, level);
                 return InteractionResult.FAIL;
             case "canShoot":
-                playShootSound(player, level);
+                sound = getShootSound(player, level);
                 if (level instanceof ServerLevel serverlevel) {
                     shoot(serverlevel, player, hand, player.getItemInHand(hand), this.bulletType, this.bulletVelocity, this.bulletInaccuracy);
                 }
-                return InteractionResult.SUCCESS;
+                break;
+            case "lastShot":
+                sound = getLastShotSound(player, level);
+                if (level instanceof ServerLevel serverlevel) {
+                    shoot(serverlevel, player, hand, player.getItemInHand(hand), this.bulletType, this.bulletVelocity, this.bulletInaccuracy);
+                }
+                break;
             case "shouldReload":
                 reload(itemstack);
-                playReloadSound(player, level);
-                return InteractionResult.SUCCESS;
+                sound = getReloadSound(player, level);
+                break;
             case "shouldChamber":
                 chamberRound(itemstack);
-                playChamberingSound(player, level);
-                return InteractionResult.SUCCESS;
+                sound = getChamberSound(player, level);
+                break;
         }
 
-
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), sound,
+                SoundSource.PLAYERS, 2F, 0.87F);
         player.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResult.SUCCESS;
     }
@@ -277,24 +288,30 @@ public abstract class AbstractGun extends Item {
 
         if (getBulletsInMag(stack) == 0) return "shouldReload";
 
+        if (isBulletInChamber(stack) && getBulletsInMag(stack) == 1) return "lastShot";
+
         if (isBulletInChamber(stack)) return "canShoot";
 
         return "shouldChamber";
     }
 
-    public void playFailSound(Player player, Level level) {
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+    public SoundEvent getFailSound(Player player, Level level) {
+        return SoundEvents.ENCHANTMENT_TABLE_USE;
     }
 
-    public void playShootSound(Player player, Level level) {
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+    public SoundEvent getShootSound(Player player, Level level) {
+        return SoundEvents.SNOWBALL_THROW;
     }
 
-    public void playReloadSound(Player player, Level level) {
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ALLAY_DEATH, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+    public SoundEvent getReloadSound(Player player, Level level) {
+        return SoundEvents.ALLAY_DEATH;
     }
 
-    public void playChamberingSound(Player player, Level level) {
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_USE, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+    public SoundEvent getChamberSound(Player player, Level level) {
+        return SoundEvents.ANVIL_USE;
+    }
+
+    public SoundEvent getLastShotSound(Player player, Level level) {
+        return getShootSound(player, level);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.*;
+import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.*;
@@ -50,9 +51,9 @@ public class EntityRegistry {
                     .of(SniperBulletEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "sniper_bullet"))));
-    public static final Supplier<EntityType<SniperBulletEntity>> REVOLVER_BULLET_ENTITY =
+    public static final Supplier<EntityType<RevolverBulletEntity>> REVOLVER_BULLET_ENTITY =
             ENTITY_TYPES.register("revolver_bullet", () -> EntityType.Builder
-                    .of(SniperBulletEntity::new, MobCategory.MISC)
+                    .of(RevolverBulletEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revolver_bullet"))));
 
@@ -134,5 +135,13 @@ public class EntityRegistry {
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "pine_murdershroom"))));
+
+
+    public static final Supplier<EntityType<RainFrogEntity>> RAIN_FROG =
+            ENTITY_TYPES.register("rain_frog", () -> EntityType.Builder
+                    .of(RainFrogEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rain_frog"))));
 
 }

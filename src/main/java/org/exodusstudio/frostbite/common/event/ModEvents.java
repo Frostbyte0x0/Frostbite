@@ -12,6 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -25,6 +28,7 @@ import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
+import java.awt.event.MouseEvent;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
@@ -42,6 +46,13 @@ public class ModEvents {
             if (event.getEffectInstance().is(EffectRegistry.DECAY)) {
                 PacketDistributor.sendToPlayer(player, new PlayerHeartDataHandler(true));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void fov(ComputeFovModifierEvent event) {
+        if (event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.SNIPER)) {
+            event.setNewFovModifier(0.05f);
         }
     }
 

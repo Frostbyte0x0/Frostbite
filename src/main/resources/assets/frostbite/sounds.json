@@ -46,5 +46,44 @@
     "sounds": [
       "frostbite:chaincicle_grapple_hit"
     ]
+  },
+  "sniper_reload": {
+    "subtitle": "sounds.frostbite.sniper_reload",
+    "sounds": [
+      "frostbite:sniper_reload_1",
+      "frostbite:sniper_reload_2",
+      "frostbite:sniper_reload_3"
+    ]
+  },
+  "sniper_chamber": {
+    "subtitle": "sounds.frostbite.sniper_chamber",
+    "sounds": [
+      "frostbite:sniper_chamber_1",
+      "frostbite:sniper_chamber_2",
+      "frostbite:sniper_chamber_3",
+      "frostbite:sniper_chamber_4"
+    ]
+  },
+  "sniper_shoot": {
+    "subtitle": "sounds.frostbite.sniper_shoot",
+    "sounds": [
+      "frostbite:sniper_shoot_1",
+      "frostbite:sniper_shoot_2",
+      "frostbite:sniper_shoot_3",
+      "frostbite:sniper_shoot_4"
+    ]
+  },
+  "sniper_ping": {
+    "subtitle": "sounds.frostbite.sniper_ping",
+    "sounds": [
+      "frostbite:sniper_ping_1",
+      "frostbite:sniper_ping_2"
+    ]
+  },
+  "sniper_fail": {
+    "subtitle": "sounds.frostbite.sniper_fail",
+    "sounds": [
+      "frostbite:sniper_fail"
+    ]
   }
 }

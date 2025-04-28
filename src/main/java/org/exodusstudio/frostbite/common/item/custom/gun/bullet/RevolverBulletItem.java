@@ -11,6 +11,6 @@ public class RevolverBulletItem extends Item {
     }
 
     public SniperBulletEntity createBullet(Level level) {
-        return new SniperBulletEntity(EntityRegistry.SNIPER_BULLET_ENTITY.get(), level);
+        return new SniperBulletEntity(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), level);
     }
 }

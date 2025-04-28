@@ -22,4 +22,9 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation SNIPER_BULLET = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "sniper_bullet"), "main");
+    public static final ModelLayerLocation REVOLVER_BULLET = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revolver_bullet"), "main");
+
+    public static final ModelLayerLocation RAIN_FROG = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rain_frog"), "main");
 }
