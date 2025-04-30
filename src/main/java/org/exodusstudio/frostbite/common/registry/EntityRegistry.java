@@ -65,6 +65,13 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "drain_circle"))));
 
+    public static final Supplier<EntityType<LastStandEntity>> LAST_STAND =
+            ENTITY_TYPES.register("last_stand", () -> EntityType.Builder
+                    .of(LastStandEntity::new, MobCategory.MISC)
+                    .sized(0f, 0f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "last_stand"))));
+
 
     public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
             ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder

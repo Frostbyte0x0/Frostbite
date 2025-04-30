@@ -7,6 +7,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.Consumables;
+import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -24,6 +25,8 @@ import org.exodusstudio.frostbite.common.item.custom.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
+
+import java.util.List;
 
 public class ItemRegistry {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Frostbite.MOD_ID);
@@ -129,6 +132,12 @@ public class ItemRegistry {
     public static final DeferredItem<Item> THERMOMETER =
             ITEMS.register("thermometer", (id) -> new ThermometerItem(new Item.Properties()
                     .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> LAST_STAND =
+            ITEMS.register("last_stand", (id) -> new LastStandItem(new Item.Properties()
+                    .stacksTo(1)
+                    .component(DataComponents.DEATH_PROTECTION, new DeathProtection(List.of()))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
 }

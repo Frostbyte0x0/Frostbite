@@ -83,7 +83,7 @@ public abstract class AbstractGun extends Item {
         }
 
         level.playSound(null, player.getX(), player.getY(), player.getZ(), sound,
-                SoundSource.PLAYERS, 2F, 0.87F);
+                SoundSource.PLAYERS, 1F, 0.87F);
         player.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResult.SUCCESS;
     }

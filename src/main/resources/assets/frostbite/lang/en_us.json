@@ -1,7 +1,6 @@
 {
   "itemGroup.frostbite.frostbite_tab": "Frostbite",
 
-
   "item.frostbite.black_block": "Black Block",
 
   "item.frostbite.misty_log": "Misty Log",
@@ -38,6 +37,7 @@
 
 
   "item.frostbite.advanced_clock": "Advanced Clock",
+  "item.frostbite.last_stand": "Last Stand",
   "item.frostbite.metal_cog": "Metal Cog",
   "item.frostbite.empty_jar": "Jar",
   "item.frostbite.vial": "Vial",

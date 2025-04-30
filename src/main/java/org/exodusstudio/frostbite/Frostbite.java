@@ -72,6 +72,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.ILLUSORY_ENDERMAN.get(), EndermanRenderer::new);
             EntityRenderers.register(EntityRegistry.SPORE_CLOUD.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.DRAIN_CIRCLE.get(), GenericEntityRenderer::new);
+            EntityRenderers.register(EntityRegistry.LAST_STAND.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);

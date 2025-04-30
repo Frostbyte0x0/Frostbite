@@ -16,6 +16,7 @@ import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -51,8 +52,21 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void fov(ComputeFovModifierEvent event) {
-        if (event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.SNIPER)) {
+        if (event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.SNIPER) && event.getPlayer().isShiftKeyDown()) {
             event.setNewFovModifier(0.05f);
+        }
+    }
+
+    @SubscribeEvent
+    public static void totem(LivingUseTotemEvent event) {
+        if (event.getTotem().is(ItemRegistry.LAST_STAND) && event.getEntity() instanceof Player player) {
+            // accumulating phase: player tick() and hurtServer() mixin
+            // each time damaged
+            // - get damage dealt to player
+            // - cancel it
+            // - store it
+            // - at last tick of accumulating phase, summon last stand entity and give it damage dealt
+            // releasing phase: last stand entity that explodes and sends shock waves
         }
     }
 

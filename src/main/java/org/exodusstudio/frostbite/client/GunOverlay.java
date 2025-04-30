@@ -29,7 +29,7 @@ public class GunOverlay {
         float f = deltaTracker.getGameTimeDeltaTicks();
         scopeScale = Mth.lerp(0.5F * f, scopeScale, 1.125F);
         if (mc.options.getCameraType().isFirstPerson()) {
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.SNIPER)) {
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.SNIPER) && player.isShiftKeyDown()) {
                 renderSpyglassOverlay(guiGraphics, scopeScale);
             } else {
                 scopeScale = 0.5F;

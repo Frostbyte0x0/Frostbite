@@ -32,7 +32,7 @@ public class ExplodingSnowballItem extends Item {
 
         player.level().addFreshEntity(entityArrow);
 
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GLASS_BREAK, SoundSource.HOSTILE, 1, 1f / (new Random().nextFloat() * 0.5f + 1));
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GLASS_BREAK, SoundSource.HOSTILE, 1f, 1f / (new Random().nextFloat() * 0.5f + 1));
         return InteractionResult.CONSUME;
     }
 }

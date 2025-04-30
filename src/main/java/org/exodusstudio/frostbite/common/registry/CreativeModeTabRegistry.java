@@ -24,6 +24,7 @@ public class CreativeModeTabRegistry {
                     .icon(() -> new ItemStack(ItemRegistry.BLUE_HARDENED_SNOWBALL.get()))
                     .displayItems(((itemDisplayParameters, output) -> {
                         output.accept(ItemRegistry.ADVANCED_CLOCK);
+                        output.accept(ItemRegistry.LAST_STAND);
                         output.accept(ItemRegistry.METAL_COG);
                         output.accept(ItemRegistry.VIAL);
                         output.accept(ItemRegistry.EMPTY_JAR);
