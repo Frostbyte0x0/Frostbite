@@ -1,8 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
 import net.minecraft.Util;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -15,7 +13,6 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

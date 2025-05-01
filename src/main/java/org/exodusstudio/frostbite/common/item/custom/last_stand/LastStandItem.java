@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom;
+package org.exodusstudio.frostbite.common.item.custom.last_stand;
 
 import net.minecraft.world.item.Item;
 

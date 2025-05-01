@@ -68,7 +68,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<LastStandEntity>> LAST_STAND =
             ENTITY_TYPES.register("last_stand", () -> EntityType.Builder
                     .of(LastStandEntity::new, MobCategory.MISC)
-                    .sized(0f, 0f)
+                    .sized(5f, 5f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "last_stand"))));
 

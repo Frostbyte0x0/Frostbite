@@ -25,6 +25,7 @@ import org.exodusstudio.frostbite.common.item.custom.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
+import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStandItem;
 
 import java.util.List;
 

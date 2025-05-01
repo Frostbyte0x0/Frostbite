@@ -13,8 +13,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
@@ -28,8 +26,8 @@ import org.exodusstudio.frostbite.common.network.PlayerHeartDataHandler;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
 
-import java.awt.event.MouseEvent;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
@@ -59,14 +57,8 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void totem(LivingUseTotemEvent event) {
-        if (event.getTotem().is(ItemRegistry.LAST_STAND) && event.getEntity() instanceof Player player) {
-            // accumulating phase: player tick() and hurtServer() mixin
-            // each time damaged
-            // - get damage dealt to player
-            // - cancel it
-            // - store it
-            // - at last tick of accumulating phase, summon last stand entity and give it damage dealt
-            // releasing phase: last stand entity that explodes and sends shock waves
+        if (event.getTotem().is(ItemRegistry.LAST_STAND) && event.getEntity() instanceof Player player && player.level() instanceof ServerLevel serverLevel) {
+            ((LastStand) player).frostbite$startAccumulatingDamage(serverLevel);
         }
     }
 
