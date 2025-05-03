@@ -5,8 +5,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.exodusstudio.frostbite.common.entity.custom.LastStandEntity;
 import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
@@ -65,6 +65,12 @@ public class PlayerMixin implements LastStand {
                 frostbite$player.makeSound(SoundEvents.PLAYER_DEATH);
                 frostbite$player.setHealth(0f);
                 frostbite$player.die(frostbite$player.damageSources().generic());
+                frostbite$player.level().explode(frostbite$lastStandEntity,
+                        frostbite$player.getX(),
+                        frostbite$player.getY(),
+                        frostbite$player.getZ(),
+                        frostbite$accumulatedDamage / 2,
+                        Level.ExplosionInteraction.MOB);
             }
             frostbite$lastStandEntity.moveTo(frostbite$player.position());
             frostbite$lastStandEntity.setDamageAccumulated(frostbite$accumulatedDamage);
