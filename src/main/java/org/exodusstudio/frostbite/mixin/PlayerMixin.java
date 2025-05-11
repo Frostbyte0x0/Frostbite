@@ -1,13 +1,16 @@
 package org.exodusstudio.frostbite.mixin;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.LastStandEntity;
 import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
@@ -18,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
 
 @Mixin(Player.class)
 public class PlayerMixin implements LastStand {
@@ -65,15 +70,19 @@ public class PlayerMixin implements LastStand {
                 frostbite$player.makeSound(SoundEvents.PLAYER_DEATH);
                 frostbite$player.setHealth(0f);
                 frostbite$player.die(frostbite$player.damageSources().generic());
-                frostbite$player.level().explode(frostbite$lastStandEntity,
-                        frostbite$player.getX(),
-                        frostbite$player.getY(),
-                        frostbite$player.getZ(),
-                        frostbite$accumulatedDamage / 2,
-                        Level.ExplosionInteraction.MOB);
+
+                for (int i = 0; i < frostbite$accumulatedDamage / 5; i++) {
+                    frostbite$player.level().explode(frostbite$lastStandEntity,
+                            frostbite$player.getX() + frostbite$random.nextFloat() * plusOrMinus() * frostbite$accumulatedDamage / 10,
+                            frostbite$player.getY() + frostbite$random.nextFloat() * plusOrMinus() * frostbite$accumulatedDamage / 10,
+                            frostbite$player.getZ() + frostbite$random.nextFloat() * plusOrMinus() * frostbite$accumulatedDamage / 10,
+                            frostbite$accumulatedDamage / 15,
+                            Level.ExplosionInteraction.MOB);
+                }
+                frostbite$lastStandEntity.setReleaseTicks((int) (frostbite$accumulatedDamage * 2));
             }
+
             frostbite$lastStandEntity.moveTo(frostbite$player.position());
-            frostbite$lastStandEntity.setDamageAccumulated(frostbite$accumulatedDamage);
         }
     }
 
@@ -83,6 +92,7 @@ public class PlayerMixin implements LastStand {
                 && !frostbite$player.getAbilities().invulnerable
                 && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             frostbite$accumulatedDamage += damage;
+            frostbite$accumulatedDamage = Math.min(frostbite$accumulatedDamage, 100);
             cir.cancel();
         }
     }

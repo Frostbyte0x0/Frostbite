@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.common.registry;
 
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
@@ -18,4 +19,7 @@ public class ParticleRegistry {
 
     public static final Supplier<SporeParticleType> SPORE_PARTICLE =
             PARTICLE_TYPES.register("spore", () -> new SporeParticleType(false));
+
+    public static final Supplier<SimpleParticleType> SHOCKWAVE_PARTICLE =
+            PARTICLE_TYPES.register("shockwave", () -> new SimpleParticleType(false));
 }

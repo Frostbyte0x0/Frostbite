@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.event;
 
-import net.minecraft.client.model.SnifferModel;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -11,7 +10,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.client.*;
+import org.exodusstudio.frostbite.common.entity.client.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.RainFrogModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;

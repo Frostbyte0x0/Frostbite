@@ -30,13 +30,13 @@ public class EffectRegistry {
             () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x3e374f));
 
     public static final Holder<MobEffect> TWITCHING = MOB_EFFECTS.register("twitching",
-            () -> new TwitchingEffect(MobEffectCategory.HARMFUL, 0x2f6363));
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x2f6363));
 
     public static final Holder<MobEffect> CORRUPTION = MOB_EFFECTS.register("corruption",
-            () -> new PetrificationEffect(MobEffectCategory.HARMFUL, 0xBFBC35));
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0xBFBC35));
 
     public static final Holder<MobEffect> MOLD = MOB_EFFECTS.register("mold",
-            () -> new MoldEffect(MobEffectCategory.HARMFUL, 0x3F7F33));
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x3F7F33));
 
     public static final Holder<MobEffect> DECAY = MOB_EFFECTS.register("decay",
             () -> new DecayEffect(MobEffectCategory.HARMFUL, 0x050505)
@@ -45,7 +45,15 @@ public class EffectRegistry {
 
 
     public static final Holder<MobEffect> RAGE = MOB_EFFECTS.register("rage",
-            () -> new GenericEffect(MobEffectCategory.BENEFICIAL, 0x050505));
+            () -> new RageEffect(MobEffectCategory.BENEFICIAL, 0x8c1111)
+                    .addAttributeModifier(Attributes.ATTACK_SPEED, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_attack_speed"),
+                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_movement_speed"),
+                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .addAttributeModifier(Attributes.ATTACK_DAMAGE, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_attack_damage"),
+                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .addAttributeModifier(Attributes.ARMOR, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_armor"),
+                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static boolean isSporeEffect(MobEffectInstance effectInstance) {
         return (effectInstance.is(EffectRegistry.DECAY) ||

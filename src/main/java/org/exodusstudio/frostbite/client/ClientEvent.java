@@ -9,6 +9,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.particle.DrainParticle;
+import org.exodusstudio.frostbite.common.particle.ShockwaveParticle;
 import org.exodusstudio.frostbite.common.particle.SporeParticle;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
@@ -25,11 +26,14 @@ public class ClientEvent {
                 DecayOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
                 GunOverlay::render);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
+                RageOverlay::render);
     }
 
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ParticleRegistry.DRAIN_PARTICLE.get(), DrainParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SPORE_PARTICLE.get(), SporeParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.SHOCKWAVE_PARTICLE.get(), ShockwaveParticle.Provider::new);
     }
 }

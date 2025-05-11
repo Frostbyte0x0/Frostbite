@@ -3,11 +3,14 @@ package org.exodusstudio.frostbite.common.registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.DeathProtection;
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -138,7 +141,8 @@ public class ItemRegistry {
     public static final DeferredItem<Item> LAST_STAND =
             ITEMS.register("last_stand", (id) -> new LastStandItem(new Item.Properties()
                     .stacksTo(1)
-                    .component(DataComponents.DEATH_PROTECTION, new DeathProtection(List.of()))
+                    .component(DataComponents.DEATH_PROTECTION, new DeathProtection(
+                            List.of(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(EffectRegistry.RAGE, 300, 1))))))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
 }

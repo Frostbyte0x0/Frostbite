@@ -22,13 +22,15 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
+import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
 import org.exodusstudio.frostbite.common.network.PlayerHeartDataHandler;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
 
 import java.util.function.Supplier;
+
+import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ModEvents {
@@ -71,8 +73,8 @@ public class ModEvents {
                     itemstack.get(DataComponentTypeRegistry.JAR_CONTENTS).jar().get().is(Jars.CURING)) {
                 return;
             }
+            event.setCanceled(true);
         }
-        event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -127,12 +129,5 @@ public class ModEvents {
                 serverLevel.gameEvent(GameEvent.ENTITY_PLACE, blockpos, GameEvent.Context.of(player));
             }
         }
-    }
-
-    public static int plusOrMinus() {
-        if (random.nextBoolean()) {
-            return 1;
-        }
-        return -1;
     }
 }

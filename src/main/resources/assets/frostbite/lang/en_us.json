@@ -91,6 +91,11 @@
 
   "general.frostbite.outer_temp": "Outer Temperature",
 
+  "sounds.frostbite.sniper_ping": "Sniper pings",
+  "sounds.frostbite.sniper_reload": "Sniper reloads",
+  "sounds.frostbite.sniper_shoot": "Sniper shoots",
+  "sounds.frostbite.sniper_fail": "Sniper fails",
+  "sounds.frostbite.sniper_chamber": "Sniper chambers",
   "sounds.frostbite.stunning_bell_ring": "Stunning bell rings",
   "sounds.frostbite.chaincicle_swipe": "Chaincicle swipes",
   "sounds.frostbite.chaincicle_spin": "Chaincicle spins",

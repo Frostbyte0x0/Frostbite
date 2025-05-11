@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.HashMap;
 import java.util.Set;
 
+import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
+
 @Mixin(MouseHandler.class)
 public class MouseHandlerTurnPlayerMixin {
     @Unique
@@ -62,8 +64,8 @@ public class MouseHandlerTurnPlayerMixin {
             }
 
             if (mc.player.hasEffect(EffectRegistry.TWITCHING) && frostbite$random.nextFloat() < (frostbite$frequency / mc.getFps())) {
-                this.accumulatedDX += frostbite$random.nextFloat() * frostbite$intensity * frostbite$plusOrMinus();
-                this.accumulatedDY += frostbite$random.nextFloat() * frostbite$intensity * frostbite$plusOrMinus();
+                this.accumulatedDX += frostbite$random.nextFloat() * frostbite$intensity * plusOrMinus();
+                this.accumulatedDY += frostbite$random.nextFloat() * frostbite$intensity * plusOrMinus();
             }
         }
     }
@@ -79,13 +81,5 @@ public class MouseHandlerTurnPlayerMixin {
             }
         }
         return closestResult;
-    }
-
-    @Unique
-    public int frostbite$plusOrMinus() {
-        if (frostbite$random.nextBoolean()) {
-            return 1;
-        }
-        return -1;
     }
 }

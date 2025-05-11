@@ -2,22 +2,35 @@ package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.ColorParticleOption;
-import net.minecraft.util.RandomSource;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.NeoForge;
+import org.exodusstudio.frostbite.Frostbite;
 
-public class SporeParticle extends TextureSheetParticle {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ShockwaveParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
+    private List<LivingEntity> victims;
 
-    public SporeParticle(
+    public ShockwaveParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
     ) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.friction = 0.96F;
         this.sprites = sprite;
         this.hasPhysics = false;
+        this.victims = new ArrayList<>();
         this.setSpriteFromAge(sprite);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.setParticleSpeed(this.xd*0.965, this.yd*0.965, this.zd*0.965);
     }
 
     @Override
@@ -31,12 +44,9 @@ public class SporeParticle extends TextureSheetParticle {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public record Provider(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
-        private static final RandomSource random = RandomSource.create();
-        private static final float variation = 10f;
-
+    public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
         public Particle createParticle(
-                ColorParticleOption colorParticleOption,
+                SimpleParticleType colorParticleOption,
                 ClientLevel clientLevel,
                 double p_233920_,
                 double p_233921_,
@@ -45,16 +55,13 @@ public class SporeParticle extends TextureSheetParticle {
                 double p_233924_,
                 double p_233925_
         ) {
-            SporeParticle sporeParticle = new SporeParticle(
+            ShockwaveParticle shockwaveParticle = new ShockwaveParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
 
-            sporeParticle.setColor(colorParticleOption.getRed() + random.nextFloat() / variation,
-                    colorParticleOption.getGreen() + random.nextFloat() / variation,
-                    colorParticleOption.getBlue() + random.nextFloat() / variation);
-            sporeParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
-            sporeParticle.setLifetime(20);
-            return sporeParticle;
+            shockwaveParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
+            shockwaveParticle.setLifetime(20);
+            return shockwaveParticle;
         }
     }
 }

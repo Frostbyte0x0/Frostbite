@@ -1,18 +1,19 @@
 package org.exodusstudio.frostbite.common.item.custom;
 
-import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 
-import java.util.*;
+import java.util.List;
+
+import static org.exodusstudio.frostbite.common.util.MathsUtil.calculateDir;
 
 public class StunningBellItem extends Item {
     private final int range = 10;
@@ -45,30 +46,5 @@ public class StunningBellItem extends Item {
 
         used = !used;
         return super.use(level, player, hand);
-    }
-
-
-    public Vec3 calculateDir(Entity e1, Entity e2, Vec3 multiplier) {
-        double theta = 0;
-        double alpha = 0;
-        double sign = 1;
-
-        double x = e1.position().x;
-        double y = e1.position().y;
-        double z = e1.position().z;
-
-        double u = e2.position().x;
-        double v = e2.position().y;
-        double w = e2.position().z;
-
-        if (!(u - x == 0)) {
-            sign = (u - x) / Math.abs(u - x);
-            theta = Math.atan((v - y) / (u - x));
-            alpha = Math.atan((w - z) / (u - x));
-        }
-
-        return new Vec3(Math.cos(theta) * multiplier.x * sign,
-                Math.sin(theta) * multiplier.y * sign,
-                Math.sin(alpha) * multiplier.z * sign);
     }
 }

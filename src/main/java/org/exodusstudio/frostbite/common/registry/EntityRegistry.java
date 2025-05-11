@@ -58,6 +58,14 @@ public class EntityRegistry {
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revolver_bullet"))));
 
 
+    public static final Supplier<EntityType<HailcoilEntity>> HAILCOIL =
+            ENTITY_TYPES.register("hailcoil", () -> EntityType.Builder
+                    .of(HailcoilEntity::new, MobCategory.MISC)
+                    .sized(0.35f, 0.35f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "hailcoil"))));
+
+
     public static final Supplier<EntityType<DrainCircleEntity>> DRAIN_CIRCLE =
             ENTITY_TYPES.register("drain_circle", () -> EntityType.Builder
                     .of(DrainCircleEntity::new, MobCategory.MISC)
@@ -68,7 +76,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<LastStandEntity>> LAST_STAND =
             ENTITY_TYPES.register("last_stand", () -> EntityType.Builder
                     .of(LastStandEntity::new, MobCategory.MISC)
-                    .sized(5f, 5f)
+                    .sized(1f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "last_stand"))));
 
