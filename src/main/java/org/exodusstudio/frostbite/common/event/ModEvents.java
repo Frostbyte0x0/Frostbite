@@ -13,12 +13,15 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
@@ -39,6 +42,13 @@ public class ModEvents {
     @SubscribeEvent
     public static void playerTickEvent(PlayerTickEvent.Pre event) {
         //updateTemperature(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void entityDamaged(LivingDamageEvent.Pre event) {
+        if (event.getSource().getEntity() instanceof ServerPlayer player) {
+            ((LastStand) event.getSource().getEntity()).frostbite$addDamage(event.getNewDamage());
+        }
     }
 
     @SubscribeEvent
@@ -84,6 +94,11 @@ public class ModEvents {
                 PacketDistributor.sendToPlayer(player, new PlayerHeartDataHandler(false));
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void commands(RegisterCommandsEvent event) {
+        SpawnLastStandCommand.register(event.getDispatcher(), event.getBuildContext());
     }
 
     @SubscribeEvent

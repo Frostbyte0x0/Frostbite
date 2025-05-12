@@ -7,4 +7,8 @@ public interface LastStand {
     default void frostbite$startAccumulatingDamage(ServerLevel serverLevel) {
 
     }
+
+    default void frostbite$addDamage(float amount) {
+
+    }
 }

@@ -77,6 +77,7 @@ public class PlayerMixin implements LastStand {
                             frostbite$player.getY() + frostbite$random.nextFloat() * plusOrMinus() * frostbite$accumulatedDamage / 10,
                             frostbite$player.getZ() + frostbite$random.nextFloat() * plusOrMinus() * frostbite$accumulatedDamage / 10,
                             frostbite$accumulatedDamage / 15,
+                            true,
                             Level.ExplosionInteraction.MOB);
                 }
                 frostbite$lastStandEntity.setReleaseTicks((int) (frostbite$accumulatedDamage * 2));
@@ -105,5 +106,10 @@ public class PlayerMixin implements LastStand {
         serverLevel.addFreshEntityWithPassengers(frostbite$lastStandEntity);
         serverLevel.gameEvent(GameEvent.ENTITY_PLACE, frostbite$player.position(), GameEvent.Context.of(frostbite$player));
         frostbite$isAccumulatingDamage = true;
+    }
+
+    @Unique
+    public void frostbite$addDamage(float amount) {
+        frostbite$accumulatedDamage += amount;
     }
 }

@@ -9,13 +9,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.exodusstudio.frostbite.common.util.MathsUtil.calculateDir;
 import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
@@ -24,9 +29,11 @@ public class LastStandEntity extends Entity {
     private final int maxReleaseTicks = 200;
     private final int shockwaveFrequency = 20;
     private final int explosionFrequency = 20;
+    private final int hailcoilReleaseFrequency = 10;
     private final int strength = 2;
     private static final EntityDataAccessor<Integer> DATA_RELEASE_TICKS = SynchedEntityData.defineId(LastStandEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_IS_RELEASING = SynchedEntityData.defineId(LastStandEntity.class, EntityDataSerializers.BOOLEAN);
+    private List<HailcoilEntity> hailcoils = new ArrayList<>();
 
     public LastStandEntity(EntityType<?> entityType, Level level) {
         super(EntityRegistry.LAST_STAND.get(), level);
@@ -87,11 +94,27 @@ public class LastStandEntity extends Entity {
             
             if (this.tickCount % explosionFrequency == 0) {
                 this.level().explode(this,
-                        this.getX() + this.getRandom().nextFloat() * plusOrMinus() * 25,
-                        this.getY() + this.getRandom().nextFloat() * plusOrMinus() * 25,
-                        this.getZ() + this.getRandom().nextFloat() * plusOrMinus() * 25,
-                        4,
+                        this.getX() + this.getRandom().nextFloat() * plusOrMinus() * 10,
+                        this.getY() + this.getRandom().nextFloat() * plusOrMinus() * 10,
+                        this.getZ() + this.getRandom().nextFloat() * plusOrMinus() * 10,
+                        5,
                         Level.ExplosionInteraction.MOB);
+            }
+
+            if (this.tickCount % hailcoilReleaseFrequency == 0) {
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    HailcoilEntity hailcoil = new HailcoilEntity(EntityRegistry.HAILCOIL.get(), serverLevel);
+                    hailcoil.moveTo(this.blockPosition(), 0.0F, 0.0F);
+                    hailcoil.setInvulnerable(true);
+                    hailcoils.add(hailcoil);
+                    hailcoil.finalizeSpawn(serverLevel, this.level().getCurrentDifficultyAt(this.blockPosition()),
+                            EntitySpawnReason.TRIGGERED, null);
+
+                    hailcoil.setDeltaMovement(new Vec3(random.nextDouble(), random.nextDouble(), random.nextDouble()));
+                    serverLevel.addFreshEntityWithPassengers(hailcoil);
+                    serverLevel.gameEvent(GameEvent.ENTITY_PLACE, this.blockPosition(), GameEvent.Context.of(this));
+                }
+
             }
 
             for (int j = 0; j < 10; ++j) {
@@ -110,6 +133,9 @@ public class LastStandEntity extends Entity {
             setReleaseTicks(getReleaseTicks() - 1);
             if (getReleaseTicks() < 0) {
                 this.discard();
+                for (HailcoilEntity hailcoil : hailcoils) {
+                    hailcoil.setInvulnerable(false);
+                }
             }
 
         } else {

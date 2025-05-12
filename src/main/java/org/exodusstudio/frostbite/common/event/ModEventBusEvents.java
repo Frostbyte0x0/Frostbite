@@ -15,6 +15,7 @@ import org.exodusstudio.frostbite.common.entity.client.models.RainFrogModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.murdershrooms.*;
+import org.exodusstudio.frostbite.common.entity.custom.HailcoilEntity;
 import org.exodusstudio.frostbite.common.entity.custom.RainFrogEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
@@ -52,6 +53,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.ILLUSORY_ZOMBIE.get(), IllusoryZombieEntity.createAttributes().build());
         event.put(EntityRegistry.ILLUSORY_ENDERMAN.get(), IllusoryEndermanEntity.createAttributes().build());
         event.put(EntityRegistry.RAIN_FROG.get(), RainFrogEntity.createAttributes().build());
+        event.put(EntityRegistry.HAILCOIL.get(), HailcoilEntity.createAttributes().build());
     }
 
     @SubscribeEvent

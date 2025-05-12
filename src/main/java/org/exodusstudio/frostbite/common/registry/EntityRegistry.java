@@ -61,7 +61,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<HailcoilEntity>> HAILCOIL =
             ENTITY_TYPES.register("hailcoil", () -> EntityType.Builder
                     .of(HailcoilEntity::new, MobCategory.MISC)
-                    .sized(0.35f, 0.35f)
+                    .sized(0.6f, 0.6f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "hailcoil"))));
 
