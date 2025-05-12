@@ -1,28 +1,25 @@
 package org.exodusstudio.frostbite.common.item.custom;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.IceBlockEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -50,7 +47,20 @@ public class IceHammerItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (level instanceof ServerLevel serverLevel) {
+            if (!player.isShiftKeyDown()) {
+                for (int i = 0; i < 10; i++) {
+                    FallingBlockEntity.fall(serverLevel, player.blockPosition(), Blocks.POINTED_DRIPSTONE.defaultBlockState());
+                }
+            }
+        }
+
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         if (context.getLevel() instanceof ServerLevel serverLevel) {
             IceBlockEntity iceBlock = new IceBlockEntity(EntityRegistry.ICE_BLOCK.get(), serverLevel);
             iceBlock.moveTo(context.getClickLocation());
