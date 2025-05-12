@@ -81,6 +81,14 @@ public class EntityRegistry {
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "last_stand"))));
 
 
+    public static final Supplier<EntityType<IceBlockEntity>> ICE_BLOCK =
+            ENTITY_TYPES.register("ice_block", () -> EntityType.Builder
+                    .of(IceBlockEntity::new, MobCategory.MISC)
+                    .sized(1f, 1f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ice_block"))));
+
+
     public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
             ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
                     .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
