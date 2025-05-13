@@ -2,30 +2,28 @@ package org.exodusstudio.frostbite.common.item.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.IceBlockEntity;
+import org.exodusstudio.frostbite.common.entity.custom.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class IceHammerItem extends Item {
-    private final int size = 6;
-
     public IceHammerItem(Properties p_333796_) {
         super(p_333796_);
     }
@@ -50,8 +48,26 @@ public class IceHammerItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (level instanceof ServerLevel serverLevel) {
             if (!player.isShiftKeyDown()) {
-                for (int i = 0; i < 10; i++) {
-                    FallingBlockEntity.fall(serverLevel, player.blockPosition(), Blocks.POINTED_DRIPSTONE.defaultBlockState());
+                for (int i = 1; i < 5; i++) {
+                    for (int j = 0; j < i; j++) {
+                        float angle = (-player.getYRot() * Mth.PI / 180) - ((float) j / 3) + (float) i / 6;
+                        serverLevel.addFreshEntity(new IceSpikeEntity(level,
+                                player.getX() + 1.5 * i * Mth.sin(angle),
+                                Math.floor(player.getY()),
+                                player.getZ() + 1.5 * i * Mth.cos(angle),
+                                (player.getYRot() + ((float) j / 3) - (float) i / 6), 2 * i + 5, player));
+                    }
+                }
+            } else {
+                for (int i = 1; i < 3; i++) {
+                    for (int j = 0; j < i*4; j++) {
+                        float angle = Mth.PI * j / (i * 2);
+                        serverLevel.addFreshEntity(new IceSpikeEntity(level,
+                                player.getX() + i * Mth.sin(angle),
+                                Math.floor(player.getY()),
+                                player.getZ() + i * Mth.cos(angle),
+                                -angle, 2 * i + 5, player));
+                    }
                 }
             }
         }
