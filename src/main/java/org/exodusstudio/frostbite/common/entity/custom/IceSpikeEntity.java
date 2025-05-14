@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.EvokerFangs;
@@ -30,6 +30,5 @@ public class IceSpikeEntity extends EvokerFangs {
                 this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.AMETHYST_BLOCK_BREAK, this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.2F + 0.85F, false);
             }
         }
-
     }
 }

@@ -10,6 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
+import org.exodusstudio.frostbite.common.entity.client.renderers.IceSpikeRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.RainFrogRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
@@ -75,7 +76,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.HAILCOIL.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.LAST_STAND.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.ICE_BLOCK.get(), FallingBlockRenderer::new);
-            EntityRenderers.register(EntityRegistry.ICE_SPIKE.get(), EvokerFangsRenderer::new);
+            EntityRenderers.register(EntityRegistry.ICE_SPIKE.get(), IceSpikeRenderer::new);
             EntityRenderers.register(EntityRegistry.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);

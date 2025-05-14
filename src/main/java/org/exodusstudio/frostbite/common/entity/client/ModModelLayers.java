@@ -20,6 +20,9 @@ public class ModModelLayers {
     public static final ModelLayerLocation PINE_MURDERSHROOM = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "pine_murdershroom"), "main");
 
+    public static final ModelLayerLocation ICE_SPIKE = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ice_spike"), "main");
+
     public static final ModelLayerLocation SNIPER_BULLET = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "sniper_bullet"), "main");
     public static final ModelLayerLocation REVOLVER_BULLET = new ModelLayerLocation(

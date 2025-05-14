@@ -55,7 +55,7 @@ public class IceHammerItem extends Item {
                                 player.getX() + 1.5 * i * Mth.sin(angle),
                                 Math.floor(player.getY()),
                                 player.getZ() + 1.5 * i * Mth.cos(angle),
-                                (player.getYRot() + ((float) j / 3) - (float) i / 6), 2 * i + 5, player));
+                                (player.getYRot() + ((float) j / 3) - (float) i / 6), 2 * i, player));
                     }
                 }
             } else {
@@ -66,7 +66,7 @@ public class IceHammerItem extends Item {
                                 player.getX() + i * Mth.sin(angle),
                                 Math.floor(player.getY()),
                                 player.getZ() + i * Mth.cos(angle),
-                                -angle, 2 * i + 5, player));
+                                -angle, 2 * i, player));
                     }
                 }
             }
