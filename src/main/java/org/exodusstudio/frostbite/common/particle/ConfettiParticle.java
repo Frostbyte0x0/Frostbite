@@ -17,6 +17,7 @@ public class ConfettiParticle extends TextureSheetParticle {
     private final float rotationSpeed;
     private final Vector3f rotationDir;
     private final RandomSource random = RandomSource.create();
+    private final float offset = random.nextFloat() * 0.001f;
 
     public ConfettiParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
@@ -57,7 +58,7 @@ public class ConfettiParticle extends TextureSheetParticle {
             this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
             quaternionf.rotationX((float) Math.PI / 2);
             this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
-            this.setPos(this.x, this.y + random.nextDouble() * 0.0001, this.z);
+            this.setPos(this.x, this.y + offset, this.z);
         }
     }
 
@@ -91,7 +92,7 @@ public class ConfettiParticle extends TextureSheetParticle {
                     colorParticleOption.getGreen(),
                     colorParticleOption.getBlue());
 
-            confettiParticle.setSize(2f, 2f);
+            confettiParticle.setSize(1.5f, 1.5f);
             confettiParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
             confettiParticle.setLifetime(100);
             return confettiParticle;
