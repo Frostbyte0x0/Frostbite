@@ -144,4 +144,9 @@ public class ItemRegistry {
                             List.of(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(EffectRegistry.RAGE, 300, 1))))))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
+    public static final DeferredItem<Item> CONFETTI_POPPER =
+            ITEMS.register("confetti_popper", (id) -> new ConfettiPopperItem(new Item.Properties()
+                    .stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
 }

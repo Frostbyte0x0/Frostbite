@@ -8,6 +8,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.particle.ConfettiParticle;
 import org.exodusstudio.frostbite.common.particle.DrainParticle;
 import org.exodusstudio.frostbite.common.particle.ShockwaveParticle;
 import org.exodusstudio.frostbite.common.particle.SporeParticle;
@@ -35,5 +36,6 @@ public class ClientEvent {
         event.registerSpriteSet(ParticleRegistry.DRAIN_PARTICLE.get(), DrainParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SPORE_PARTICLE.get(), SporeParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SHOCKWAVE_PARTICLE.get(), ShockwaveParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.CONFETTI_PARTICLE.get(), ConfettiParticle.Provider::new);
     }
 }

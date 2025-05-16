@@ -6,8 +6,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.common.NeoForge;
-import org.exodusstudio.frostbite.Frostbite;
 
 import java.util.ArrayList;
 import java.util.List;
