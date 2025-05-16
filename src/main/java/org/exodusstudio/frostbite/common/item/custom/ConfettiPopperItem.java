@@ -14,6 +14,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
+import java.util.Arrays;
+
 public class ConfettiPopperItem extends Item {
     private static RandomSource random = RandomSource.create();
 
@@ -45,11 +47,24 @@ public class ConfettiPopperItem extends Item {
                         random.triangle(0.0F, 0.0172275 * inaccuracy)).scale(velocity);
                 Vec3 vec32 = vec31.add(vec3.x, vec3.y, vec3.z);
 
+
+                int[] colour = new int[]{
+                        random.nextInt(80) + 150,
+                        random.nextInt(80) + 150,
+                        random.nextInt(80) + 150};
+                if (random.nextBoolean()) {
+                    int s = (int) (random.nextFloat() * 60) + 60;
+                    Arrays.sort(colour);
+                    colour[0] -= s;
+                    colour[2] += s;
+                }
+                int index = random.nextInt(3);
+
                 player.level().addAlwaysVisibleParticle(
                         ColorParticleOption.create(ParticleRegistry.CONFETTI_PARTICLE.get(), ARGB.color(
-                                (random.nextInt() * 85 + 170),
-                                (random.nextInt() * 85 + 170),
-                                (random.nextInt() * 85 + 170))),
+                                colour[index % 3],
+                                colour[(index + 1) % 3],
+                                colour[(index + 2) % 3])),
                         player.getX(),
                         player.getEyeY() - 0.25,
                         player.getZ(),
