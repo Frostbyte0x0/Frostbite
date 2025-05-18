@@ -100,6 +100,8 @@ public class CreativeModeTabRegistry {
                                                 CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS,
                                                 itemDisplayParameters.enabledFeatures()
                                 ));
+
+                        output.accept(ItemRegistry.CONFETTI_POPPER);
                     })).build());
 
     private static void generatePotionEffectTypes(

@@ -47,7 +47,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void entityDamaged(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player) {
-            ((LastStand) event.getSource().getEntity()).frostbite$addDamage(event.getNewDamage());
+            ((LastStand) player).frostbite$addDamage(event.getNewDamage());
         }
     }
 

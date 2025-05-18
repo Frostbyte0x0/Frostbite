@@ -47,13 +47,13 @@ public class EffectRegistry {
     public static final Holder<MobEffect> RAGE = MOB_EFFECTS.register("rage",
             () -> new RageEffect(MobEffectCategory.BENEFICIAL, 0x8c1111)
                     .addAttributeModifier(Attributes.ATTACK_SPEED, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_attack_speed"),
-                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                            0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_movement_speed"),
-                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                            0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .addAttributeModifier(Attributes.ATTACK_DAMAGE, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_attack_damage"),
-                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                            0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .addAttributeModifier(Attributes.ARMOR, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_armor"),
-                            0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                            0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static boolean isSporeEffect(MobEffectInstance effectInstance) {
         return (effectInstance.is(EffectRegistry.DECAY) ||

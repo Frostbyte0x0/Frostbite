@@ -8,6 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -75,7 +76,7 @@ public class ConfettiPopperItem extends Item {
 
         }
 
-        player.getItemInHand(hand).consume(1, player);
+        player.getItemInHand(hand).hurtAndBreak(1, player, hand.equals(InteractionHand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         return InteractionResult.SUCCESS;
     }
 }

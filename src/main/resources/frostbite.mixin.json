@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "MouseHandlerTurnPlayerMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "ServerPlayerGameModeMixin"
   ],
   "client": [
     "HeartMixin"

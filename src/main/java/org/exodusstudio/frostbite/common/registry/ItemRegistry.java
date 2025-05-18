@@ -112,6 +112,7 @@ public class ItemRegistry {
                     .stacksTo(1)
                     .attributes(IceHammerItem.createAttributes())
                     .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
+                    .component(DataComponentTypeRegistry.CHARGE, new ChargeData(0))
                     .durability(500)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
@@ -146,7 +147,8 @@ public class ItemRegistry {
 
     public static final DeferredItem<Item> CONFETTI_POPPER =
             ITEMS.register("confetti_popper", (id) -> new ConfettiPopperItem(new Item.Properties()
-                    .stacksTo(16)
+                    .stacksTo(1)
+                    .durability(10)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
 }
