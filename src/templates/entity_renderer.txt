@@ -1,0 +1,26 @@
+package org.exodusstudio.frostbite.common.entity.client.renderers;
+
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.resources.ResourceLocation;
+import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
+import org.exodusstudio.frostbite.common.entity.client.models.^PModel;
+import org.exodusstudio.frostbite.common.entity.custom.^PEntity;
+
+public class ^PRenderer extends MobRenderer<^PEntity, LivingEntityRenderState, ^PModel> {
+    public ^PRenderer(EntityRendererProvider.Context context) {
+        super(context, new ^PModel(context.bakeLayer(ModModelLayers.^U)), 0.45f);
+    }
+
+    @Override
+    public LivingEntityRenderState createRenderState() {
+        return new LivingEntityRenderState();
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(LivingEntityRenderState renderState) {
+        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/^S/^S.png");
+    }
+}

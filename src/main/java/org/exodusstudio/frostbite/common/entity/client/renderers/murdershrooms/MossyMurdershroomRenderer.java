@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms;
 
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.client.ModModelLayers;
+import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.murdershrooms.MossyMurdershroomModel;
 import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.MossyMurdershroomEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

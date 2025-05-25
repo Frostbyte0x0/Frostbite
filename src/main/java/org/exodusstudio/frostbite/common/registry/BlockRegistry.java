@@ -129,6 +129,29 @@ public class BlockRegistry {
             () -> new SaplingBlock(ModTreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_sapling")))));
 
+    // SHINNING CEDAR WOOD
+    public static final DeferredBlock<Block> SHINNING_CEDAR_LOG = registerBLock("shinning_cedar_log",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_log")))));
+    public static final DeferredBlock<Block> SHINNING_CEDAR_WOOD = registerBLock("shinning_cedar_wood",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_wood")))));
+    public static final DeferredBlock<Block> STRIPPED_SHINNING_CEDAR_LOG = registerBLock("stripped_shinning_cedar_log",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_shinning_cedar_log")))));
+    public static final DeferredBlock<Block> STRIPPED_SHINNING_CEDAR_WOOD = registerBLock("stripped_shinning_cedar_wood",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_shinning_cedar_wood")))));
+    public static final DeferredBlock<Block> SHINNING_CEDAR_PLANKS = registerBLock("shinning_cedar_planks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_planks")))));
+    public static final DeferredBlock<Block> SHINNING_CEDAR_LEAVES = registerBLock("shinning_cedar_leaves",
+            () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).lightLevel(p -> 10)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_leaves")))));
+    public static final DeferredBlock<Block> SHINNING_CEDAR_SAPLING = registerBLock("shinning_cedar_sapling",
+            () -> new SaplingBlock(ModTreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_sapling")))));
+
 
     public static <T extends Block> DeferredBlock<T> registerBLock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);

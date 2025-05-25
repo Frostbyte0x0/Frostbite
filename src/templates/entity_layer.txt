@@ -1,0 +1,3 @@
+
+    public static final ModelLayerLocation ^U = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "^S"), "main");

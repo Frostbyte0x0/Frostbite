@@ -12,6 +12,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.common.entity.client.renderers.IceSpikeRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.RainFrogRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.WoollySheepRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.AgaricMurdershroomRenderer;
@@ -62,6 +63,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.SNIPER_BULLET_ENTITY.get(), SniperBulletRenderer::new);
             EntityRenderers.register(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), RevolverBulletRenderer::new);
             EntityRenderers.register(EntityRegistry.RAIN_FROG.get(), RainFrogRenderer::new);
+            EntityRenderers.register(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepRenderer::new);
             EntityRenderers.register(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomRenderer::new);
             EntityRenderers.register(EntityRegistry.CRYSTAL_MURDERSHROOM.get(), CrystalMurdershroomRenderer::new);
             EntityRenderers.register(EntityRegistry.DECAYING_MURDERSHROOM.get(), DecayingMurdershroomRenderer::new);

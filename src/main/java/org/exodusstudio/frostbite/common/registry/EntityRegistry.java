@@ -173,4 +173,11 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rain_frog"))));
 
+    public static final Supplier<EntityType<WoollySheepEntity>> WOOLLY_SHEEP =
+            ENTITY_TYPES.register("woolly_sheep", () -> EntityType.Builder
+                    .of(WoollySheepEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep"))));
+
 }

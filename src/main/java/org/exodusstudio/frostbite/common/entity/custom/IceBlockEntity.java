@@ -68,7 +68,7 @@ public class IceBlockEntity extends FallingBlockEntity {
                                 double d5 = this.getY();
                                 double d6 = this.getZ();
 
-                                for(float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                                for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
                                     BlockPos blockpos = BlockPos.containing(d4, d5, d6);
                                     BlockState blockstate = this.level().getBlockState(blockpos);
                                     if (!this.level().isInWorldBounds(blockpos)) {

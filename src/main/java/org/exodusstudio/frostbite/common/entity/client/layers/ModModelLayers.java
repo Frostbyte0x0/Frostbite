@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.entity.client;
+package org.exodusstudio.frostbite.common.entity.client.layers;
 
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -30,4 +30,13 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation RAIN_FROG = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rain_frog"), "main");
+
+    public static final ModelLayerLocation WOOLLY_SHEEP = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep"), "main");
+    public static final ModelLayerLocation WOOLLY_SHEEP_FUR = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep_fur"), "main");
+    public static final ModelLayerLocation WOOLLY_SHEEP_BABY = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep_baby"), "main");
+    public static final ModelLayerLocation WOOLLY_SHEEP_BABY_FUR = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep_baby_fur"), "main");
 }
