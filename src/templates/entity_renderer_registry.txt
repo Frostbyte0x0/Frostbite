@@ -1,1 +1,0 @@
-EntityRenderers.register(EntityRegistry.^U.get(), ^PRenderer::new);

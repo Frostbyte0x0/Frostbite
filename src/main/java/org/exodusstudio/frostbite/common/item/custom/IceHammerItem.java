@@ -75,7 +75,6 @@ public class IceHammerItem extends Item {
             }
         }
 
-
         return InteractionResult.SUCCESS;
     }
 

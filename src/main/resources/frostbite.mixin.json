@@ -4,12 +4,14 @@
   "package": "org.exodusstudio.frostbite.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "LivingEntityMixin",
     "MouseHandlerTurnPlayerMixin",
     "PlayerMixin",
     "ServerPlayerGameModeMixin"
   ],
   "client": [
-    "HeartMixin"
+    "HeartMixin",
+    "LevelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

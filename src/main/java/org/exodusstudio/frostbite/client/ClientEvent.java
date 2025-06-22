@@ -29,6 +29,8 @@ public class ClientEvent {
                 GunOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
                 RageOverlay::render);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "thermal_lens_overlay"),
+                ThermalLensOverlay::render);
     }
 
     @SubscribeEvent

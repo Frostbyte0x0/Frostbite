@@ -151,4 +151,7 @@ public class ItemRegistry {
                     .durability(10)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
+    public static final DeferredItem<Item> THERMAL_LENS =
+            ITEMS.register("thermal_lens", (id) -> new ThermalLensItem(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }
