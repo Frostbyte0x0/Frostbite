@@ -75,6 +75,13 @@
   "item.frostbite.jar.effect.crystal": "Jar of Crystal Spores",
   "item.frostbite.jar.effect.mossy": "Jar of Mossy Spores",
 
+  "item.frostbite.thermal_lens": "Thermal lens",
+  "item.frostbite.helmet_weaving_pattern": "Helmet weaving pattern",
+  "item.frostbite.chestplate_weaving_pattern": "Chestplate weaving pattern",
+  "item.frostbite.leggings_weaving_pattern": "Leggings weaving pattern",
+  "item.frostbite.boots_weaving_pattern": "Boots weaving pattern",
+  "item.frostbite.weaving_table": "Weaving Table",
+
 
   "effect.frostbite.irritation": "Irritation",
   "effect.frostbite.twitching": "Twitching",
@@ -105,5 +112,4 @@
   "sounds.frostbite.chaincicle_hook_hit": "Chaincicle hooks",
   "sounds.frostbite.chaincicle_grapple_launch": "Chaincicle grapple launched",
   "sounds.frostbite.chaincicle_grapple_hit": "Chaincicle grapples"
-  "item.frostbite.thermal_lens": "Thermal lens"
 }

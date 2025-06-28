@@ -1,8 +1,6 @@
-package org.exodusstudio.frostbite.mixin;
+package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.world.entity.LivingEntity;
-
-import java.util.Map;
 
 public interface ColdAffectedEntity {
 

@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.world.entity.LivingEntity;
+import org.exodusstudio.frostbite.common.util.ColdAffectedEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,8 +38,8 @@ public class LivingEntityMixin implements ColdAffectedEntity {
                     .forEach(blockState -> {
                                 String blockname = blockState.getBlock().getName().toString();
                                 if (tempsPerBlock.containsKey(blockname)) {
-                                    outerTemperature = outerTemperature +
-                                            (tempsPerBlock.get(blockname) / (1 + frostbite$livingEntity.distanceToSqr(blockState)));
+                                    outerTemperature = outerTemperature + 1;
+                                            // (tempsPerBlock.get(blockname) / (1 + frostbite$livingEntity.distanceToSqr(blockState)));
                                 }
                             }
                     );

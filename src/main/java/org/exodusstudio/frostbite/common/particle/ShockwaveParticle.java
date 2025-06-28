@@ -3,16 +3,11 @@ package org.exodusstudio.frostbite.common.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ShockwaveParticle extends TextureSheetParticle {
     private final SpriteSet sprites;
-    private List<LivingEntity> victims;
 
     public ShockwaveParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
@@ -21,7 +16,6 @@ public class ShockwaveParticle extends TextureSheetParticle {
         this.friction = 0.96F;
         this.sprites = sprite;
         this.hasPhysics = false;
-        this.victims = new ArrayList<>();
         this.setSpriteFromAge(sprite);
     }
 

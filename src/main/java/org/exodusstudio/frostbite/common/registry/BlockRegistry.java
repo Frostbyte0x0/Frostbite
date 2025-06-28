@@ -1,19 +1,17 @@
 package org.exodusstudio.frostbite.common.registry;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.*;
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.common.block.HoarfrostWoodBlock;
+import org.exodusstudio.frostbite.common.block.WeavingTable;
 import org.exodusstudio.frostbite.common.worldgen.tree.ModTreeGrowers;
 
 import java.util.function.Supplier;
@@ -151,6 +149,10 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> SHINNING_CEDAR_SAPLING = registerBLock("shinning_cedar_sapling",
             () -> new SaplingBlock(ModTreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_sapling")))));
+
+    public static final DeferredBlock<HorizontalDirectionalBlock> WEAVING_TABLE = registerBLock("weaving_table",
+            () -> new WeavingTable(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "weaving_table")))));
 
 
     public static <T extends Block> DeferredBlock<T> registerBLock(String name, Supplier<T> block) {

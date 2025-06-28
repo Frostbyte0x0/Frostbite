@@ -10,19 +10,10 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
-import org.exodusstudio.frostbite.common.entity.client.renderers.IceSpikeRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.RainFrogRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.WoollySheepRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.AgaricMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.CrystalMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.DecayingMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.FloralMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.LightMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.MossyMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.PineMurdershroomRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.GenericEntityRenderer;
+import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.*;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
@@ -50,6 +41,7 @@ public class Frostbite {
         AttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         Jars.JARS.register(modEventBus);
+        MenuTypeRegistry.MENU_TYPES.register(modEventBus);
 
         TemperatureValues.addTemperatures();
 
@@ -83,6 +75,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.PACKED_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
+            EntityRenderers.register(EntityRegistry.LEVITATING_JELLYFISH.get(), LevitatingJellyfishRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

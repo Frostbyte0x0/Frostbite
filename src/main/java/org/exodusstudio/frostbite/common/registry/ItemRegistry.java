@@ -154,4 +154,25 @@ public class ItemRegistry {
     public static final DeferredItem<Item> THERMAL_LENS =
             ITEMS.register("thermal_lens", (id) -> new ThermalLensItem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> HELMET_WEAVING_PATTERN =
+            ITEMS.register("helmet_weaving_pattern", (id) -> new Item(new Item.Properties()
+                    .stacksTo(1)
+                    .durability(3)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CHESTPLATE_WEAVING_PATTERN =
+            ITEMS.register("chestplate_weaving_pattern", (id) -> new Item(new Item.Properties()
+                    .stacksTo(1)
+                    .durability(3)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> LEGGINGS_WEAVING_PATTERN =
+            ITEMS.register("leggings_weaving_pattern", (id) -> new Item(new Item.Properties()
+                    .stacksTo(1)
+                    .durability(3)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BOOTS_WEAVING_PATTERN =
+            ITEMS.register("boots_weaving_pattern", (id) -> new Item(new Item.Properties()
+                    .stacksTo(1)
+                    .durability(3)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

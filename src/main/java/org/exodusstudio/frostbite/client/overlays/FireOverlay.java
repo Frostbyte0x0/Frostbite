@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.client;
+package org.exodusstudio.frostbite.client.overlays;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;

@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.client;
+package org.exodusstudio.frostbite.client.overlays;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;

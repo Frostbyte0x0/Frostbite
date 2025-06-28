@@ -180,4 +180,10 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep"))));
 
+    public static final Supplier<EntityType<LevitatingJellyfishEntity>> LEVITATING_JELLYFISH =
+            ENTITY_TYPES.register("levitating_jellyfish", () -> EntityType.Builder
+                    .of(LevitatingJellyfishEntity::new, MobCategory.CREATURE)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "levitating_jellyfish"))));
 }
