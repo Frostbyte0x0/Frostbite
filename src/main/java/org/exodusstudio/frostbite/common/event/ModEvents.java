@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +20,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
@@ -31,6 +33,8 @@ import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
@@ -108,6 +112,19 @@ public class ModEvents {
                 event.setCanceled(true);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void serverTick(ServerTickEvent.Pre event) {
+        List<LivingEntity> entities = new ArrayList<>();
+        event.getServer().getAllLevels().forEach((level) -> {
+            level.getEntities().getAll().forEach((entity) -> {
+                if (entity instanceof LivingEntity livingEntity) {
+                    entities.add(livingEntity);
+                }
+            });
+        });
+        Frostbite.temperatures.updateEntityTemperatures(entities);
     }
 
     @SubscribeEvent

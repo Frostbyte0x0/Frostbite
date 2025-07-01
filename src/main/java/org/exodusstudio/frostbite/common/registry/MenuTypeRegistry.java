@@ -5,7 +5,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.client.screens.WeavingMenu;
+import org.exodusstudio.frostbite.client.gui.WeavingMenu;
 
 import java.util.function.Supplier;
 

@@ -16,7 +16,7 @@ import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBu
 import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.*;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.common.registry.*;
-import org.exodusstudio.frostbite.common.temperature.TemperatureValues;
+import org.exodusstudio.frostbite.common.temperature.Temperatures;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.slf4j.Logger;
 
@@ -29,6 +29,7 @@ public class Frostbite {
 
     public static final String MOD_ID = "frostbite";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static Temperatures temperatures = Temperatures.init();
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
@@ -43,7 +44,7 @@ public class Frostbite {
         Jars.JARS.register(modEventBus);
         MenuTypeRegistry.MENU_TYPES.register(modEventBus);
 
-        TemperatureValues.addTemperatures();
+        // TemperatureValues.addTemperatures();
 
         //NeoForge.EVENT_BUS.register(this);
     }
@@ -76,6 +77,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.PACKED_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
             EntityRenderers.register(EntityRegistry.LEVITATING_JELLYFISH.get(), LevitatingJellyfishRenderer::new);
+            EntityRenderers.register(EntityRegistry.FERAL_WOLF.get(), FeralWolfRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "J": "frostbite:jelly"
+  },
+  "pattern": [
+    "JJ ",
+    "JJ ",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:insulating_jelly"
+  }
+}

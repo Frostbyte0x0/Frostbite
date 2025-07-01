@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.temperature;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.exodusstudio.frostbite.common.registry.AttachmentTypeRegistry;
 
@@ -12,10 +13,10 @@ import static org.exodusstudio.frostbite.common.temperature.TemperatureValues.TE
 public class TemperatureCalculator {
     public static void updateTemperature(Player player) {
         float outerTemp = calculateOuterTemperature(player);
-        player.setData(AttachmentTypeRegistry.OUTER_TEMPERATURE, outerTemp);
+        //player.setData(AttachmentTypeRegistry.OUTER_TEMPERATURE, outerTemp);
 
-        float innerTemp = calculateInnerTemperature(player.getData(AttachmentTypeRegistry.INNER_TEMPERATURE), outerTemp);
-        player.setData(AttachmentTypeRegistry.INNER_TEMPERATURE, innerTemp);
+        //float innerTemp = calculateInnerTemperature(player.getData(AttachmentTypeRegistry.INNER_TEMPERATURE), outerTemp);
+        //player.setData(AttachmentTypeRegistry.INNER_TEMPERATURE, innerTemp);
     }
 
     public static float calculateOuterTemperature(Player player) {
@@ -30,7 +31,6 @@ public class TemperatureCalculator {
 
     public static float calculateBiomeTemperatureModifier(Player player) {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
-        // TODO: make this name compatible with other biomes other than minecraft's
         String biome_name = biome.getRegisteredName().replace("minecraft:", "");
         if (TEMPERATURE_PER_BIOME.containsKey(biome_name)) {
             return TEMPERATURE_PER_BIOME.get(biome_name);
@@ -47,7 +47,7 @@ public class TemperatureCalculator {
             temp -= 5f;
         }
 
-        Object[] blocks = player.level().getBlockStates(player.getBoundingBox().inflate(3))
+        Block[] blocks = (Block[]) player.level().getBlockStates(player.getBoundingBox().inflate(3))
                 .filter(TemperatureCalculator::isTemperatureModifyingBlock).toArray();
 
         float max_heat = 0f;

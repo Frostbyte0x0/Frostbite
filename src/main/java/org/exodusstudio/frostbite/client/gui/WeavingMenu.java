@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.client.screens;
+package org.exodusstudio.frostbite.client.gui;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
@@ -290,5 +290,10 @@ public class WeavingMenu extends ItemCombinerMenu {
 
     public void setMaximumCost(long value) {
         this.cost.set((int)Mth.clamp(value, 0L, 2147483647L));
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return !player.isLocalPlayer();
     }
 }

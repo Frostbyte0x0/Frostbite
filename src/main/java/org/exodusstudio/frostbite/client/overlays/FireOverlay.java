@@ -52,16 +52,21 @@ public class FireOverlay {
 
     public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
+        assert player != null;
+
 
         float maxTemp = 20f;
         float minTemp = -60f;
 
+        float innerTemp = (float) Math.round(Frostbite.temperatures.getTemperature(player, true) * 10f) / 10f;
 
-        float innerTemp = (float) Math.round(player.getData(AttachmentTypeRegistry.INNER_TEMPERATURE) * 10f) / 10f;
+        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]") && innerTemp == maxTemp) {
+            return;
+        }
 
         int fireToShow = (int) Math.floor(Math.clamp(FIRES.length * (innerTemp - minTemp) / (maxTemp - minTemp), 0, FIRES.length - 1));
 
-        int x = 340;
+        int x = 580;
         int y = 470;
 
         int textureWidth = 24;

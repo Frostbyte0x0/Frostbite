@@ -186,4 +186,11 @@ public class EntityRegistry {
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "levitating_jellyfish"))));
+
+    public static final Supplier<EntityType<FeralWolfEntity>> FERAL_WOLF =
+            ENTITY_TYPES.register("feral_wolf", () -> EntityType.Builder
+                    .of(FeralWolfEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "feral_wolf"))));
 }

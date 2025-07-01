@@ -52,15 +52,20 @@ public class ThermometerOverlay {
 
     public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
+        assert player != null;
 
         float maxTemp = 20f;
         float minTemp = -60f;
 
-        float outer_temp = player.getData(AttachmentTypeRegistry.OUTER_TEMPERATURE);
+        float outer_temp = (float) Math.round(Frostbite.temperatures.getTemperature(player, false) * 10f) / 10f;
+
+        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]") && outer_temp == maxTemp) {
+            return;
+        }
 
         int thermometerToShow = (int) Math.floor(Math.clamp(THERMOMETERS.length * (outer_temp - minTemp) / (maxTemp - minTemp), 0, THERMOMETERS.length - 1));
 
-        int x = 370;
+        int x = 610;
         int y = 470;
 
         int textureWidth = 24;

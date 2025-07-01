@@ -175,4 +175,11 @@ public class ItemRegistry {
                     .stacksTo(1)
                     .durability(3)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> JELLY =
+            ITEMS.register("jelly", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> INSULATING_JELLY =
+            ITEMS.register("insulating_jelly", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

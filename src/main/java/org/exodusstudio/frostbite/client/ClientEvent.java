@@ -10,7 +10,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.overlays.*;
-import org.exodusstudio.frostbite.client.screens.WeavingScreen;
+import org.exodusstudio.frostbite.client.gui.WeavingScreen;
 import org.exodusstudio.frostbite.common.particle.*;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;

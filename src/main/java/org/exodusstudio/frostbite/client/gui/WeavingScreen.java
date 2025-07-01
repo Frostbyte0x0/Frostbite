@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.client.screens;
+package org.exodusstudio.frostbite.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

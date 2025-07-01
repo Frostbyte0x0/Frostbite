@@ -42,4 +42,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation LEVITATING_JELLYFISH = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "levitating_jellyfish"), "main");
+
+    public static final ModelLayerLocation FERAL_WOLF = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "feral_wolf"), "main");
 }

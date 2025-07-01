@@ -6,11 +6,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.animations.LevitatingJellyfishAnimations;
-import org.exodusstudio.frostbite.common.entity.client.states.LevitatingJellyfishState;
+import org.exodusstudio.frostbite.common.entity.client.states.LevitatingJellyfishRenderState;
 
-public class LevitatingJellyfishModel extends EntityModel<LevitatingJellyfishState> {
+public class LevitatingJellyfishModel extends EntityModel<LevitatingJellyfishRenderState> {
     private final ModelPart head;
     private final ModelPart tentacles;
     private final ModelPart tentacle1;
@@ -48,7 +47,7 @@ public class LevitatingJellyfishModel extends EntityModel<LevitatingJellyfishSta
     }
 
     @Override
-    public void setupAnim(LevitatingJellyfishState renderState) {
+    public void setupAnim(LevitatingJellyfishRenderState renderState) {
         super.setupAnim(renderState);
         this.animate(renderState.swimmingAnimationState, LevitatingJellyfishAnimations.SWIM, renderState.ageInTicks);
     }
