@@ -45,4 +45,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation FERAL_WOLF = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "feral_wolf"), "main");
+
+    public static final ModelLayerLocation FROZEN_REMNANTS = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_remnants"), "main");
 }

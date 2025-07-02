@@ -24,6 +24,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
+import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
@@ -31,6 +32,7 @@ import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
 import org.exodusstudio.frostbite.common.network.PlayerHeartDataHandler;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 import java.util.ArrayList;
@@ -110,6 +112,22 @@ public class ModEvents {
         if (event.getEntity() instanceof IllusoryEndermanEntity || event.getEntity() instanceof IllusoryZombieEntity) {
             if (((Monster) event.getEntity()).getTarget() != null) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingDamagedEvent(LivingDamageEvent.Post event) {
+        if (event.getEntity().isDeadOrDying() && event.getEntity() instanceof Player player) {
+            if (player.level() instanceof ServerLevel serverLevel) {
+                FrozenRemnantsEntity frozenRemnants = new FrozenRemnantsEntity(EntityRegistry.FROZEN_REMNANTS.get(), serverLevel);
+                frozenRemnants.setOwner(player);
+                frozenRemnants.moveTo(player.position(), 0.0F, 0.0F);
+                frozenRemnants.finalizeSpawn(serverLevel, player.level().getCurrentDifficultyAt(BlockPos.containing(player.position())), EntitySpawnReason.EVENT, null);
+                frozenRemnants.setTarget(player);
+
+                serverLevel.addFreshEntityWithPassengers(frozenRemnants);
+                serverLevel.gameEvent(GameEvent.ENTITY_PLACE, player.position(), GameEvent.Context.of(player));
             }
         }
     }

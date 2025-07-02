@@ -193,4 +193,11 @@ public class EntityRegistry {
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "feral_wolf"))));
+
+    public static final Supplier<EntityType<FrozenRemnantsEntity>> FROZEN_REMNANTS =
+            ENTITY_TYPES.register("frozen_remnants", () -> EntityType.Builder
+                    .of(FrozenRemnantsEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 2f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_remnants"))));
 }

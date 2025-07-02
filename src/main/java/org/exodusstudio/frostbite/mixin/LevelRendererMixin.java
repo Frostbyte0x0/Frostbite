@@ -62,9 +62,9 @@ public class LevelRendererMixin {
         boolean flag = frostbite$levelRenderer.shouldShowEntityOutlines();
 
         for (Entity entity : entities) {
-            if (!(entity instanceof Strider || entity instanceof Stray)) {
-                continue;
-            }
+//            if (!(entity instanceof Strider || entity instanceof Stray)) {
+//                continue;
+//            }
 
             if (entity.tickCount == 0) {
                 entity.xOld = entity.getX();

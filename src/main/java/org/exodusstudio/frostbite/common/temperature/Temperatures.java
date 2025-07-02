@@ -50,7 +50,7 @@ public class Temperatures {
 
             if (entity.tickCount % 20 == 0) {
                 if (entity.level() instanceof ServerLevel serverLevel) {
-                    hurtEntity(serverLevel, entity, innerTemperature);
+                    affectEntity(serverLevel, entity, innerTemperature);
                 }
 
                 if (entity.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]")) {
@@ -102,7 +102,7 @@ public class Temperatures {
         return innerTemperature;
     }
 
-    public void hurtEntity(ServerLevel serverLevel, LivingEntity entity, float innerTemperature) {
+    public void affectEntity(ServerLevel serverLevel, LivingEntity entity, float innerTemperature) {
         if (innerTemperature < -10) {
             entity.hurtServer(serverLevel, entity.damageSources().freeze(), Mth.clamp(-innerTemperature / 10, 1, 3));
         }
@@ -112,6 +112,13 @@ public class Temperatures {
         String entityUUID = entity.getStringUUID();
         if (entityTemperatures.containsKey(entityUUID)) {
             return entityTemperatures.get(entityUUID).get(inner ? 0 : 1);
+        }
+        return 20f;
+    }
+
+    public float getTemperature(String uuid, boolean inner) {
+        if (entityTemperatures.containsKey(uuid)) {
+            return entityTemperatures.get(uuid).get(inner ? 0 : 1);
         }
         return 20f;
     }

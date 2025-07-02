@@ -4,11 +4,13 @@
   "package": "org.exodusstudio.frostbite.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "EntityMixin",
     "MouseHandlerTurnPlayerMixin",
     "PlayerMixin",
     "ServerPlayerGameModeMixin"
   ],
   "client": [
+    "EntityRenderDispatcherMixin",
     "HeartMixin",
     "LevelRendererMixin"
   ],
