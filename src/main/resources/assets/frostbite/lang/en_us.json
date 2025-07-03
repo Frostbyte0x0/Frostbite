@@ -99,6 +99,8 @@
   "tooltip.frostbite.thermometer.tooltip": "Shows you the biome you are in and its temperature",
   "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge",
 
+  "container.frozen_remnants": "Frozen Remnants",
+  "container.weaving_table": "Weaving Table",
 
   "general.frostbite.outer_temp": "Outer Temperature",
 

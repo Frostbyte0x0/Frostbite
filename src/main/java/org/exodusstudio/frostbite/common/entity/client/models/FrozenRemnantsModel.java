@@ -53,6 +53,7 @@ public class FrozenRemnantsModel extends EntityModel<FrozenRemnantsRenderState> 
 
     public void applyHeadRotation(float headPitch) {
         this.head.xRot = headPitch * ((float)Math.PI / 180f);
+        // this.right_arm.xRot = (headPitch - 90) * ((float)Math.PI / 180f);
         //this.headwear.xRot = headPitch * ((float)Math.PI / 180f);
     }
 

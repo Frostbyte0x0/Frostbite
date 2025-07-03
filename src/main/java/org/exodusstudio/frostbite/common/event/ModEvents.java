@@ -119,10 +119,11 @@ public class ModEvents {
     @SubscribeEvent
     public static void livingDamagedEvent(LivingDamageEvent.Post event) {
         if (event.getEntity().isDeadOrDying() && event.getEntity() instanceof Player player) {
-            if (player.level() instanceof ServerLevel serverLevel) {
+            if (player.level() instanceof ServerLevel serverLevel && FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
                 FrozenRemnantsEntity frozenRemnants = new FrozenRemnantsEntity(EntityRegistry.FROZEN_REMNANTS.get(), serverLevel);
                 frozenRemnants.setOwner(player);
                 frozenRemnants.moveTo(player.position(), 0.0F, 0.0F);
+                frozenRemnants.setItems(player.getInventory().items);
                 frozenRemnants.finalizeSpawn(serverLevel, player.level().getCurrentDifficultyAt(BlockPos.containing(player.position())), EntitySpawnReason.EVENT, null);
                 frozenRemnants.setTarget(player);
 

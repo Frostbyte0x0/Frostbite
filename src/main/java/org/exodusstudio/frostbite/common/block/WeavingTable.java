@@ -19,7 +19,7 @@ import org.exodusstudio.frostbite.client.gui.WeavingMenu;
 
 public class WeavingTable extends HorizontalDirectionalBlock {
     public static final MapCodec<WeavingTable> CODEC = simpleCodec(WeavingTable::new);
-    private static final Component CONTAINER_TITLE = Component.translatable("container.loom");
+    private static final Component CONTAINER_TITLE = Component.translatable("container.weaving_table");
 
     @Override
     public MapCodec<WeavingTable> codec() {

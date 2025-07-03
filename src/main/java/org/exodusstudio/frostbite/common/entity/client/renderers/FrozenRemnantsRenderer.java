@@ -1,8 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.client.renderers;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -26,11 +24,6 @@ public class FrozenRemnantsRenderer extends LivingEntityRenderer<FrozenRemnantsE
     @Override
     public ResourceLocation getTextureLocation(FrozenRemnantsRenderState renderState) {
         return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/frozen_remnants/frozen_remnants.png");
-    }
-
-    @Override
-    public void render(FrozenRemnantsRenderState renderState, PoseStack stack, MultiBufferSource bufferSource, int p_115313_) {
-        super.render(renderState, stack, bufferSource, p_115313_);
     }
 
     @Override
