@@ -14,15 +14,18 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.overlays.LiningBarOverlay;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
@@ -143,7 +146,20 @@ public class ModEvents {
                 }
             });
         });
-        Frostbite.temperatures.updateEntityTemperatures(entities);
+        Frostbite.savedTemperatures.updateEntityTemperatures(entities);
+    }
+
+    @SubscribeEvent
+    public static void containerOpen(PlayerContainerEvent.Open event) {
+        Frostbite.LOGGER.debug(event.getContainer().toString());
+    }
+
+    @SubscribeEvent
+    public static void containerOpen(RenderGuiLayerEvent.Post event) {
+        // Frostbite.LOGGER.debug(String.valueOf(event.getName()));
+        if (event.getName().toString().equals("minecraft:armor_level")) {
+            LiningBarOverlay.render(event.getGuiGraphics(), event.getPartialTick());
+        }
     }
 
     @SubscribeEvent
@@ -155,9 +171,17 @@ public class ModEvents {
                 if (!player.level().isClientSide) {
                     ServerLevel serverlevel = (ServerLevel) player.level();
 
-                    spawnMonsterRandomlyAroundPlayer(() -> new IllusoryZombieEntity(serverlevel), serverlevel, player, 10, 60, 20);
+                    spawnMonsterRandomlyAroundPlayer(() -> new IllusoryZombieEntity(serverlevel), serverlevel, player, 10, 60, 5);
                 }
             }
+        }
+
+        if (Frostbite.savedLinings.getLiningsForPlayer(player.getStringUUID()) == null) {
+            Frostbite.savedLinings.setLiningsForPlayer(player.getStringUUID(),
+                    ItemStack.EMPTY,
+                    ItemStack.EMPTY,
+                    ItemStack.EMPTY,
+                    ItemStack.EMPTY);
         }
     }
 

@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.temperature;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -12,11 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Temperatures {
-    public HashMap<String, List<Float>> entityTemperatures = new HashMap<>();
+public class SavedTemperatures {
+    private final HashMap<String, List<Float>> entityTemperatures = new HashMap<>();
     private static Map<String, Float> tempsPerBlock = new HashMap<>();
 
-    public static Temperatures init() {
+    public static SavedTemperatures init() {
         tempsPerBlock.put("lava", 2f);
         tempsPerBlock.put("torch", 1f);
         tempsPerBlock.put("wall_torch", 1f);
@@ -28,7 +27,7 @@ public class Temperatures {
         tempsPerBlock.put("furnace", 1.5f);
         tempsPerBlock.put("blast_furnace", 1.5f);
         tempsPerBlock.put("smoker", 1.5f);
-        return new Temperatures();
+        return new SavedTemperatures();
     }
 
     public void updateEntityTemperatures(List<LivingEntity> entities) {
@@ -78,9 +77,6 @@ public class Temperatures {
 
     public float calculateBlockTemperature(LivingEntity entity) {
         final float[] temp = {0};
-        if (entity instanceof ServerPlayer) {
-            int e = 0;
-        }
 
         AABB aabb = MathsUtil.squareAABB(entity.position(), 3f);
         List<BlockPos> l = MathsUtil.getBlockPositionsInAABB(aabb);
@@ -103,9 +99,18 @@ public class Temperatures {
     }
 
     public void affectEntity(ServerLevel serverLevel, LivingEntity entity, float innerTemperature) {
-        if (innerTemperature < -10) {
+        if (innerTemperature < -10 && entity.canFreeze()) {
             entity.hurtServer(serverLevel, entity.damageSources().freeze(), Mth.clamp(-innerTemperature / 10, 1, 3));
         }
+    }
+
+    public void setTemperatures(LivingEntity entity, List<Float> temps) {
+        String entityUUID = entity.getStringUUID();
+        entityTemperatures.put(entityUUID, temps);
+    }
+
+    public void setTemperatures(String entityUUID, List<Float> temps) {
+        entityTemperatures.put(entityUUID, temps);
     }
 
     public float getTemperature(LivingEntity entity, boolean inner) {

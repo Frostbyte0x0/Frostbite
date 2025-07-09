@@ -15,8 +15,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.TickRateManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Stray;
-import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
@@ -79,7 +77,7 @@ public class LevelRendererMixin {
                 //Frostbite.LOGGER.debug("Z");
                 OutlineBufferSource outlinebuffersource = frostbite$levelRenderer.renderBuffers.outlineBufferSource();
                 multibuffersource = outlinebuffersource;
-                int r = (int) Mth.lerp((Frostbite.temperatures.getTemperature(livingEntity, true) + 60) / 80, 0, 255);
+                int r = (int) Mth.lerp((Frostbite.savedTemperatures.getTemperature(livingEntity, true) + 60) / 80, 0, 255);
                 int b = 255 - r;
                 outlinebuffersource.setColor(r, 0, b, 128);
             } else {

@@ -8,6 +8,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.gui.GuiLayerManager;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.overlays.*;
 import org.exodusstudio.frostbite.client.gui.WeavingScreen;
@@ -30,6 +31,8 @@ public class ClientEvent {
                 GunOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
                 RageOverlay::render);
+        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lining_bar"),
+                LiningBarOverlay::render);
         event.registerBelowAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "thermal_lens_overlay"),
                 ThermalLensOverlay::render);
     }

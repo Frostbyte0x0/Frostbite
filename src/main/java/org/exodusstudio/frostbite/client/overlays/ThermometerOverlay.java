@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import org.exodusstudio.frostbite.common.registry.AttachmentTypeRegistry;
 
 public class ThermometerOverlay {
     private static final ResourceLocation THERMOMETER0 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
@@ -57,7 +56,7 @@ public class ThermometerOverlay {
         float maxTemp = 20f;
         float minTemp = -60f;
 
-        float outer_temp = (float) Math.round(Frostbite.temperatures.getTemperature(player, false) * 10f) / 10f;
+        float outer_temp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, false) * 10f) / 10f;
 
         if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]") && outer_temp == maxTemp) {
             return;

@@ -18,7 +18,8 @@ import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class GunOverlay {
     private static float scopeScale;
-    private static final ResourceLocation SNIPER_SCOPE_LOCATION = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/sniper_overlay.png");
+    private static final ResourceLocation SNIPER_SCOPE_LOCATION =
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/sniper_overlay.png");
     private static boolean isAiming = true;
 
     public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {

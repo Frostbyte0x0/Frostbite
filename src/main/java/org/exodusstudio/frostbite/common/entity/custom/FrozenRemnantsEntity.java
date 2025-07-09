@@ -12,8 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -164,7 +162,8 @@ public class FrozenRemnantsEntity extends Mob{
 
     public static boolean shouldSpawnFrozenRemnants(ServerLevel serverLevel) {
         return !serverLevel.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)
-                && serverLevel.getGameRules().getBoolean(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS);
+                && serverLevel.getGameRules().getBoolean(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS)
+                && serverLevel.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]");
     }
 
     @Override
@@ -228,6 +227,11 @@ public class FrozenRemnantsEntity extends Mob{
         this.dropEquipment(serverLevel);
         this.dead = true;
         this.discard();
+        return false;
+    }
+
+    @Override
+    public boolean canFreeze() {
         return false;
     }
 

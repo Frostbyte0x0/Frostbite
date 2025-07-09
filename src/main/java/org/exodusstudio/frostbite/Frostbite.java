@@ -15,8 +15,9 @@ import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.Revolver
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.*;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
+import org.exodusstudio.frostbite.common.item.custom.lining.SavedLinings;
 import org.exodusstudio.frostbite.common.registry.*;
-import org.exodusstudio.frostbite.common.temperature.Temperatures;
+import org.exodusstudio.frostbite.common.temperature.SavedTemperatures;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.slf4j.Logger;
 
@@ -29,7 +30,8 @@ public class Frostbite {
 
     public static final String MOD_ID = "frostbite";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static Temperatures temperatures = Temperatures.init();
+    public static SavedTemperatures savedTemperatures = SavedTemperatures.init();
+    public static SavedLinings savedLinings = new SavedLinings();
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);

@@ -25,7 +25,7 @@ public interface LiningMaterials {
     // Insulation I-IV, better cold resistance
     // Softness,
 
-    LiningMaterial LEATHER = new LiningMaterial(5, Util.make(new EnumMap<>(ArmorType.class), (map) -> {
+    LiningMaterial WOOL = new LiningMaterial(5, Util.make(new EnumMap<>(ArmorType.class), (map) -> {
         map.put(ArmorType.BOOTS, 1);
         map.put(ArmorType.LEGGINGS, 2);
         map.put(ArmorType.CHESTPLATE, 3);

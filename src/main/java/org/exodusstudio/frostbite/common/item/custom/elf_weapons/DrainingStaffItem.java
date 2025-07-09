@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom;
+package org.exodusstudio.frostbite.common.item.custom.elf_weapons;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;

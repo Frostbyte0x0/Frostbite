@@ -23,6 +23,8 @@ import org.exodusstudio.frostbite.common.item.custom.*;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.EmptyJarItem;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.JarItem;
 import org.exodusstudio.frostbite.common.item.custom.alchemy.SprayerItem;
+import org.exodusstudio.frostbite.common.item.custom.elf_weapons.CastingStaffItem;
+import org.exodusstudio.frostbite.common.item.custom.elf_weapons.DrainingStaffItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
@@ -181,5 +183,12 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> INSULATING_JELLY =
             ITEMS.register("insulating_jelly", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+
+    public static final DeferredItem<Item> CASTING_STAFF =
+            ITEMS.register("casting_staff", (id) -> new CastingStaffItem(new Item.Properties()
+                    .stacksTo(1)
+                    .useCooldown(6)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 }

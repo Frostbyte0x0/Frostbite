@@ -1,20 +1,21 @@
 package org.exodusstudio.frostbite.mixin;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.LastStandEntity;
 import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.registry.GameRuleRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -103,6 +104,19 @@ public class PlayerMixin implements LastStand {
         if (FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
             ci.cancel();
         }
+    }
+
+    @Inject(at = @At("HEAD"), method = "addAdditionalSaveData")
+    private void addAdditionalSaveData(CompoundTag compound, CallbackInfo ci) {
+        compound.put("linings", Frostbite.savedLinings.save(new ListTag(), frostbite$player.level().registryAccess(),
+                frostbite$player.getStringUUID()));
+    }
+
+    @Inject(at = @At("HEAD"), method = "readAdditionalSaveData")
+    private void readAdditionalSaveData(CompoundTag compound, CallbackInfo ci) {
+        ListTag listtag = compound.getList("linings", 10);
+        Frostbite.savedLinings.load(listtag, frostbite$player.level().registryAccess(),
+                frostbite$player.getStringUUID());
     }
 
     @Unique

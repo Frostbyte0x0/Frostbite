@@ -11,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.registry.AttachmentTypeRegistry;
 
 public class FireOverlay {
     private static final ResourceLocation FIRE0 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
@@ -58,7 +57,7 @@ public class FireOverlay {
         float maxTemp = 20f;
         float minTemp = -60f;
 
-        float innerTemp = (float) Math.round(Frostbite.temperatures.getTemperature(player, true) * 10f) / 10f;
+        float innerTemp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, true) * 10f) / 10f;
 
         if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]") && innerTemp == maxTemp) {
             return;
@@ -66,8 +65,8 @@ public class FireOverlay {
 
         int fireToShow = (int) Math.floor(Math.clamp(FIRES.length * (innerTemp - minTemp) / (maxTemp - minTemp), 0, FIRES.length - 1));
 
-        int x = 580;
-        int y = 470;
+        int x = 580; // 580
+        int y = 470; // 470
 
         int textureWidth = 24;
         int textureHeight = 24;
