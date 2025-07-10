@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "frostbite:item/fur_chestplate"
+    "layer0": "frostbite:item/black_ice_chestplate"
   }
 }

@@ -155,14 +155,6 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void containerOpen(RenderGuiLayerEvent.Post event) {
-        // Frostbite.LOGGER.debug(String.valueOf(event.getName()));
-        if (event.getName().toString().equals("minecraft:armor_level")) {
-            LiningBarOverlay.render(event.getGuiGraphics(), event.getPartialTick());
-        }
-    }
-
-    @SubscribeEvent
     public static void playerTick(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();
 

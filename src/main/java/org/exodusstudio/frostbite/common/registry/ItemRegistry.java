@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.DeathProtection;
@@ -76,21 +77,38 @@ public class ItemRegistry {
             (id) -> new BlueHardenedSnowballItem(new Item.Properties().stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
-    public static final DeferredItem<Item> FUR_HELMET = ITEMS.register("fur_helmet",
-            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.HELMET,
-                    new Item.Properties().durability(ArmorType.HELMET.getDurability(5))
+    public static final DeferredItem<Item> BLACK_ICE_HELMET = ITEMS.register("black_ice_helmet",
+            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.HELMET,
+                    new Item.Properties()//.durability(ArmorType.HELMET.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> FUR_CHESTPLATE = ITEMS.register("fur_chestplate",
-            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.CHESTPLATE,
-                    new Item.Properties().durability(ArmorType.CHESTPLATE.getDurability(5))
+    public static final DeferredItem<Item> BLACK_ICE_CHESTPLATE = ITEMS.register("black_ice_chestplate",
+            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.CHESTPLATE,
+                    new Item.Properties()//.durability(ArmorType.CHESTPLATE.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> FUR_LEGGINGS = ITEMS.register("fur_leggings",
-            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.LEGGINGS,
-                    new Item.Properties().durability(ArmorType.LEGGINGS.getDurability(5))
+    public static final DeferredItem<Item> BLACK_ICE_LEGGINGS = ITEMS.register("black_ice_leggings",
+            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.LEGGINGS,
+                    new Item.Properties()//.durability(ArmorType.LEGGINGS.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> FUR_BOOTS = ITEMS.register("fur_boots",
-            (id) -> new ArmorItem(ModArmorMaterials.FUR, ArmorType.BOOTS,
-                    new Item.Properties().durability(ArmorType.BOOTS.getDurability(5))
+    public static final DeferredItem<Item> BLACK_ICE_BOOTS = ITEMS.register("black_ice_boots",
+            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.BOOTS,
+                    new Item.Properties()//.durability(ArmorType.BOOTS.getDurability(15))
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> FROSTBITTEN_HELMET = ITEMS.register("frostbitten_helmet",
+            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.HELMET,
+                    new Item.Properties()//.durability(ArmorType.HELMET.getDurability(15))
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROSTBITTEN_CHESTPLATE = ITEMS.register("frostbitten_chestplate",
+            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.CHESTPLATE,
+                    new Item.Properties()//.durability(ArmorType.CHESTPLATE.getDurability(15))
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROSTBITTEN_LEGGINGS = ITEMS.register("frostbitten_leggings",
+            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.LEGGINGS,
+                    new Item.Properties()//.durability(ArmorType.LEGGINGS.getDurability(15))
+                            .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROSTBITTEN_BOOTS = ITEMS.register("frostbitten_boots",
+            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.BOOTS,
+                    new Item.Properties()//.durability(ArmorType.BOOTS.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> DRAINING_STAFF =
@@ -183,6 +201,21 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> INSULATING_JELLY =
             ITEMS.register("insulating_jelly", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> BOTTLE_OF_WARMTH =
+            ITEMS.register("bottle_of_warmth", (id) -> new Item(new Item.Properties()
+                    .craftRemainder(Items.GLASS_BOTTLE)
+                    .food(FoodRegistry.WARMING_BOTTLE, ConsumableRegistry.WARMTH_BOTTLE)
+                    .usingConvertsTo(Items.GLASS_BOTTLE)
+                    .stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BOTTLE_OF_HEAT =
+            ITEMS.register("bottle_of_heat", (id) -> new Item(new Item.Properties()
+                    .craftRemainder(Items.GLASS_BOTTLE)
+                    .food(FoodRegistry.WARMING_BOTTLE, ConsumableRegistry.HEAT_BOTTLE)
+                    .usingConvertsTo(Items.GLASS_BOTTLE)
+                    .stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
 

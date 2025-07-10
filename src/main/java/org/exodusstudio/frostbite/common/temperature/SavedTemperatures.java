@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import org.exodusstudio.frostbite.common.util.MathsUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class SavedTemperatures {
 
     public static SavedTemperatures init() {
         tempsPerBlock.put("lava", 2f);
-        tempsPerBlock.put("torch", 1f);
+        tempsPerBlock.put("torch", 0.5f);
         tempsPerBlock.put("wall_torch", 1f);
         tempsPerBlock.put("lantern", 1f);
         tempsPerBlock.put("soul_lantern", 1f);
@@ -79,7 +80,7 @@ public class SavedTemperatures {
         final float[] temp = {0};
 
         AABB aabb = MathsUtil.squareAABB(entity.position(), 3f);
-        List<BlockPos> l = MathsUtil.getBlockPositionsInAABB(aabb);
+        // List<BlockPos> l = MathsUtil.getBlockPositionsInAABB(aabb);
         for (BlockPos pos : MathsUtil.getBlockPositionsInAABB(aabb)) {
             String blockname = entity.level().getBlockState(pos).getBlock().toString().replace("Block{minecraft:", "").replace("}", "");
             if (tempsPerBlock.containsKey(blockname)) {
@@ -87,13 +88,15 @@ public class SavedTemperatures {
             }
         }
 
-        return Math.min(Math.round(temp[0] * 2) / 2f, 5);
+        //return Math.min(Math.round(temp[0] * 2) / 2f, 5);
+        return Math.min(temp[0], 5);
     }
 
     public float updateInnerTemperature(float innerTemperature, float outerTemperature) {
         if (innerTemperature != outerTemperature) {
             float delta = outerTemperature - innerTemperature + 20;
-            innerTemperature += (float) Math.round(delta / 10) / 2;
+            //innerTemperature += (float) Math.round(delta / 10) / 2;
+            innerTemperature += delta;
         }
         return innerTemperature;
     }
@@ -134,9 +137,22 @@ public class SavedTemperatures {
             entityTemperatures.put(entityUUID, List.of(20f, 20f));
         }
 
-        List<Float> temperatures = entityTemperatures.get(entityUUID);
-        temperatures.set(inner ? 0 : 1, -temperature + temperatures.get(inner ? 0 : 1));
+        List<Float> temperatures = new ArrayList<>(entityTemperatures.get(entityUUID));
+        byte index = (byte) (inner ? 0 : 1);
+        temperatures.set(index, Math.max(-temperature + temperatures.get(index), 60));
 
+        entityTemperatures.put(entityUUID, temperatures);
+    }
+
+    public void increaseTemperature(LivingEntity entity, float temperature, boolean inner) {
+        String entityUUID = entity.getStringUUID();
+        if (!entityTemperatures.containsKey(entityUUID)) {
+            entityTemperatures.put(entityUUID, List.of(20f, 20f));
+        }
+
+        List<Float> temperatures = new ArrayList<>(entityTemperatures.get(entityUUID));
+        byte index = (byte) (inner ? 0 : 1);
+        temperatures.set(index, Math.min(temperature + temperatures.get(index), 20));
 
         entityTemperatures.put(entityUUID, temperatures);
     }

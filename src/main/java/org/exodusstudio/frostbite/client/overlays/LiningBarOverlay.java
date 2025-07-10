@@ -14,20 +14,13 @@ public class LiningBarOverlay {
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/lining_bar/lining_bar_half.png");
     private static final ResourceLocation ARMOR_FULL_SPRITE =
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/lining_bar/lining_bar_full.png");
-//    private static final ResourceLocation ARMOR_HALF_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_half");
-//    private static final ResourceLocation ARMOR_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_full");
 
 
     public static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
-        if (player != null) {
+        if (player != null && Minecraft.getInstance().gameMode.canHurtPlayer()) {
             int l = graphics.guiWidth() / 2 - 91;
-            // Profiler.get().push("armor");
             renderLining(graphics, player, graphics.guiHeight() - 34, 1, 0, l);
-            // Profiler.get().pop();
-//            if (player.getArmorValue() > 0) {
-//                this.leftHeight += 10;
-//            }
         }
 
     }
@@ -58,7 +51,6 @@ public class LiningBarOverlay {
             RenderSystem.defaultBlendFunc();
         }
 
-        //RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, texture);
         graphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
 

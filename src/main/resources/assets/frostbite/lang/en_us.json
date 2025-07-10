@@ -43,10 +43,10 @@
   "item.frostbite.vial": "Vial",
   "item.frostbite.sprayer": "Sprayer",
 
-  "item.frostbite.fur_helmet": "Fur Helmet",
-  "item.frostbite.fur_chestplate": "Fur Chestplate",
-  "item.frostbite.fur_leggings": "Fur Leggings",
-  "item.frostbite.fur_boots": "Fur Boots",
+  "item.frostbite.black_ice_helmet": "Black Ice Helmet",
+  "item.frostbite.black_ice_chestplate": "Black Ice Chestplate",
+  "item.frostbite.black_ice_leggings": "Black Ice Leggings",
+  "item.frostbite.black_ice_boots": "Black Ice Boots",
 
   "item.frostbite.exploding_snowball": "Exploding Snowball",
   "item.frostbite.hardened_snowball": "Hardened Snowball",
@@ -84,6 +84,8 @@
 
   "item.frostbite.jelly": "Jelly",
   "item.frostbite.insulating_jelly": "Insulating jelly",
+  "item.frostbite.bottle_of_warmth": "Bottle of Warmth",
+  "item.frostbite.bottle_of_heat": "Bottle of Heat",
 
   "item.frostbite.casting_staff": "Casting staff",
 

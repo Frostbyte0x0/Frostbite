@@ -34,10 +34,15 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.PERMAFROZEN_GRASS);
                         output.accept(BlockRegistry.PETRIFIED_ICE);
 
-                        output.accept(ItemRegistry.FUR_HELMET);
-                        output.accept(ItemRegistry.FUR_CHESTPLATE);
-                        output.accept(ItemRegistry.FUR_LEGGINGS);
-                        output.accept(ItemRegistry.FUR_BOOTS);
+                        output.accept(ItemRegistry.BLACK_ICE_HELMET);
+                        output.accept(ItemRegistry.BLACK_ICE_CHESTPLATE);
+                        output.accept(ItemRegistry.BLACK_ICE_LEGGINGS);
+                        output.accept(ItemRegistry.BLACK_ICE_BOOTS);
+
+                        output.accept(ItemRegistry.FROSTBITTEN_HELMET);
+                        output.accept(ItemRegistry.FROSTBITTEN_CHESTPLATE);
+                        output.accept(ItemRegistry.FROSTBITTEN_LEGGINGS);
+                        output.accept(ItemRegistry.FROSTBITTEN_BOOTS);
 
                         output.accept(ItemRegistry.EXPLODING_SNOWBALL);
                         output.accept(ItemRegistry.HARDENED_SNOWBALL);
@@ -102,6 +107,16 @@ public class CreativeModeTabRegistry {
                                 ));
 
                         output.accept(ItemRegistry.CONFETTI_POPPER);
+                        output.accept(ItemRegistry.THERMAL_LENS);
+                        output.accept(ItemRegistry.HELMET_WEAVING_PATTERN);
+                        output.accept(ItemRegistry.CHESTPLATE_WEAVING_PATTERN);
+                        output.accept(ItemRegistry.LEGGINGS_WEAVING_PATTERN);
+                        output.accept(ItemRegistry.BOOTS_WEAVING_PATTERN);
+                        output.accept(ItemRegistry.BOTTLE_OF_WARMTH);
+                        output.accept(ItemRegistry.BOTTLE_OF_HEAT);
+                        output.accept(ItemRegistry.JELLY);
+                        output.accept(ItemRegistry.INSULATING_JELLY);
+                        output.accept(ItemRegistry.CASTING_STAFF);
                     })).build());
 
     private static void generatePotionEffectTypes(
