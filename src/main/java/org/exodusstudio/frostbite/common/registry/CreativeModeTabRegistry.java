@@ -44,6 +44,36 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.FROSTBITTEN_LEGGINGS);
                         output.accept(ItemRegistry.FROSTBITTEN_BOOTS);
 
+                        output.accept(ItemRegistry.WOOL_LINING_HELMET);
+                        output.accept(ItemRegistry.WOOL_LINING_CHESTPLATE);
+                        output.accept(ItemRegistry.WOOL_LINING_LEGGINGS);
+                        output.accept(ItemRegistry.WOOL_LINING_BOOTS);
+
+                        output.accept(ItemRegistry.WOOLLY_WOOL_LINING_HELMET);
+                        output.accept(ItemRegistry.WOOLLY_WOOL_LINING_CHESTPLATE);
+                        output.accept(ItemRegistry.WOOLLY_WOOL_LINING_LEGGINGS);
+                        output.accept(ItemRegistry.WOOLLY_WOOL_LINING_BOOTS);
+
+                        output.accept(ItemRegistry.FROZEN_FUR_LINING_HELMET);
+                        output.accept(ItemRegistry.FROZEN_FUR_LINING_CHESTPLATE);
+                        output.accept(ItemRegistry.FROZEN_FUR_LINING_LEGGINGS);
+                        output.accept(ItemRegistry.FROZEN_FUR_LINING_BOOTS);
+
+                        output.accept(ItemRegistry.INSULATED_CLOTH_LINING_HELMET);
+                        output.accept(ItemRegistry.INSULATED_CLOTH_LINING_CHESTPLATE);
+                        output.accept(ItemRegistry.INSULATED_CLOTH_LINING_LEGGINGS);
+                        output.accept(ItemRegistry.INSULATED_CLOTH_LINING_BOOTS);
+
+                        output.accept(ItemRegistry.HEATED_COATING_LINING_HELMET);
+                        output.accept(ItemRegistry.HEATED_COATING_LINING_CHESTPLATE);
+                        output.accept(ItemRegistry.HEATED_COATING_LINING_LEGGINGS);
+                        output.accept(ItemRegistry.HEATED_COATING_LINING_BOOTS);
+
+                        output.accept(ItemRegistry.FROZEN_PLATING_LINING_HELMET);
+                        output.accept(ItemRegistry.FROZEN_PLATING_LINING_CHESTPLATE);
+                        output.accept(ItemRegistry.FROZEN_PLATING_LINING_LEGGINGS);
+                        output.accept(ItemRegistry.FROZEN_PLATING_LINING_BOOTS);
+
                         output.accept(ItemRegistry.EXPLODING_SNOWBALL);
                         output.accept(ItemRegistry.HARDENED_SNOWBALL);
                         output.accept(ItemRegistry.PACKED_HARDENED_SNOWBALL);

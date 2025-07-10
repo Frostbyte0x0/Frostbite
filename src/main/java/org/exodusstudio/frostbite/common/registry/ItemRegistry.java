@@ -31,6 +31,8 @@ import org.exodusstudio.frostbite.common.item.custom.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStandItem;
+import org.exodusstudio.frostbite.common.item.custom.lining.LiningItem;
+import org.exodusstudio.frostbite.common.item.custom.lining.LiningMaterials;
 
 import java.util.List;
 
@@ -110,6 +112,85 @@ public class ItemRegistry {
             (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.BOOTS,
                     new Item.Properties()//.durability(ArmorType.BOOTS.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> WOOL_LINING_HELMET = ITEMS.register("wool_lining_helmet",
+            (id) -> new LiningItem(LiningMaterials.WOOL, ArmorType.HELMET,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> WOOL_LINING_CHESTPLATE = ITEMS.register("wool_lining_chestplate",
+            (id) -> new LiningItem(LiningMaterials.WOOL, ArmorType.CHESTPLATE,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> WOOL_LINING_LEGGINGS = ITEMS.register("wool_lining_leggings",
+            (id) -> new LiningItem(LiningMaterials.WOOL, ArmorType.LEGGINGS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> WOOL_LINING_BOOTS = ITEMS.register("wool_lining_boots",
+            (id) -> new LiningItem(LiningMaterials.WOOL, ArmorType.BOOTS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> WOOLLY_WOOL_LINING_HELMET = ITEMS.register("woolly_wool_lining_helmet",
+            (id) -> new LiningItem(LiningMaterials.WOOLLY_WOOL, ArmorType.HELMET,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> WOOLLY_WOOL_LINING_CHESTPLATE = ITEMS.register("woolly_wool_lining_chestplate",
+            (id) -> new LiningItem(LiningMaterials.WOOLLY_WOOL, ArmorType.CHESTPLATE,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> WOOLLY_WOOL_LINING_LEGGINGS = ITEMS.register("woolly_wool_lining_leggings",
+            (id) -> new LiningItem(LiningMaterials.WOOLLY_WOOL, ArmorType.LEGGINGS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> WOOLLY_WOOL_LINING_BOOTS = ITEMS.register("woolly_wool_lining_boots",
+            (id) -> new LiningItem(LiningMaterials.WOOLLY_WOOL, ArmorType.BOOTS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> FROZEN_FUR_LINING_HELMET = ITEMS.register("frozen_fur_lining_helmet",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_FUR, ArmorType.HELMET,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_FUR_LINING_CHESTPLATE = ITEMS.register("frozen_fur_lining_chestplate",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_FUR, ArmorType.CHESTPLATE,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_FUR_LINING_LEGGINGS = ITEMS.register("frozen_fur_lining_leggings",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_FUR, ArmorType.LEGGINGS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_FUR_LINING_BOOTS = ITEMS.register("frozen_fur_lining_boots",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_FUR, ArmorType.BOOTS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> INSULATED_CLOTH_LINING_HELMET = ITEMS.register("insulated_cloth_lining_helmet",
+            (id) -> new LiningItem(LiningMaterials.INSULATED_CLOTH, ArmorType.HELMET,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> INSULATED_CLOTH_LINING_CHESTPLATE = ITEMS.register("insulated_cloth_lining_chestplate",
+            (id) -> new LiningItem(LiningMaterials.INSULATED_CLOTH, ArmorType.CHESTPLATE,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> INSULATED_CLOTH_LINING_LEGGINGS = ITEMS.register("insulated_cloth_lining_leggings",
+            (id) -> new LiningItem(LiningMaterials.INSULATED_CLOTH, ArmorType.LEGGINGS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> INSULATED_CLOTH_LINING_BOOTS = ITEMS.register("insulated_cloth_lining_boots",
+            (id) -> new LiningItem(LiningMaterials.INSULATED_CLOTH, ArmorType.BOOTS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> HEATED_COATING_LINING_HELMET = ITEMS.register("heated_coating_lining_helmet",
+            (id) -> new LiningItem(LiningMaterials.HEATED_COATING, ArmorType.HELMET,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HEATED_COATING_LINING_CHESTPLATE = ITEMS.register("heated_coating_lining_chestplate",
+            (id) -> new LiningItem(LiningMaterials.HEATED_COATING, ArmorType.CHESTPLATE,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HEATED_COATING_LINING_LEGGINGS = ITEMS.register("heated_coating_lining_leggings",
+            (id) -> new LiningItem(LiningMaterials.HEATED_COATING, ArmorType.LEGGINGS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HEATED_COATING_LINING_BOOTS = ITEMS.register("heated_coating_lining_boots",
+            (id) -> new LiningItem(LiningMaterials.HEATED_COATING, ArmorType.BOOTS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> FROZEN_PLATING_LINING_HELMET = ITEMS.register("frozen_plating_lining_helmet",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_PLATING, ArmorType.HELMET,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_PLATING_LINING_CHESTPLATE = ITEMS.register("frozen_plating_lining_chestplate",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_PLATING, ArmorType.CHESTPLATE,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_PLATING_LINING_LEGGINGS = ITEMS.register("frozen_plating_lining_leggings",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_PLATING, ArmorType.LEGGINGS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_PLATING_LINING_BOOTS = ITEMS.register("frozen_plating_lining_boots",
+            (id) -> new LiningItem(LiningMaterials.FROZEN_PLATING, ArmorType.BOOTS,
+                    new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
 
     public static final DeferredItem<Item> DRAINING_STAFF =
             ITEMS.register("draining_staff", (id) -> new DrainingStaffItem(new Item.Properties()

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "frostbite:item/heated_coating_lining_helmet"
+  }
+}
