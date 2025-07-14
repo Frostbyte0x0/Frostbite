@@ -46,12 +46,12 @@ public class InventoryMenuMixin {
     );
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void doEntityOutline(Inventory playerInventory, boolean active, final Player owner, CallbackInfo ci) {
+    private void constructor(Inventory playerInventory, boolean active, final Player owner, CallbackInfo ci) {
         for (int i = 0; i < 4; i++) {
             EquipmentSlot equipmentslot = SLOT_IDS[i];
             ResourceLocation resourcelocation = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
             frostbite$inventoryMenu.addSlot(new LiningSlot(playerInventory, owner,
-                    equipmentslot, 54 + i, 8, 8 + i * 18, resourcelocation));
+                    equipmentslot, 139 + i, 8, 8 + i * 18, resourcelocation));
         }
     }
 }

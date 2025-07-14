@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import org.exodusstudio.frostbite.Frostbite;
 
 import javax.annotation.Nullable;
 
@@ -41,6 +42,12 @@ public class LiningSlot extends Slot {
     public boolean mayPickup(Player p_345575_) {
         ItemStack itemstack = this.getItem();
         return (itemstack.isEmpty() || p_345575_.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(p_345575_);
+    }
+
+    @Override
+    public void onTake(Player player, ItemStack stack) {
+        super.onTake(player, stack);
+        Frostbite.LOGGER.debug("AAA");
     }
 
     @Nullable

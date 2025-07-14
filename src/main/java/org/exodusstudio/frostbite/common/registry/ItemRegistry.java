@@ -7,8 +7,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.BundleContents;
-import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -17,13 +15,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.GunData;
-import org.exodusstudio.frostbite.common.component.JarContentsData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.ModArmorMaterials;
 import org.exodusstudio.frostbite.common.item.custom.*;
-import org.exodusstudio.frostbite.common.item.custom.alchemy.EmptyJarItem;
-import org.exodusstudio.frostbite.common.item.custom.alchemy.JarItem;
-import org.exodusstudio.frostbite.common.item.custom.alchemy.SprayerItem;
 import org.exodusstudio.frostbite.common.item.custom.elf_weapons.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.custom.elf_weapons.DrainingStaffItem;
 import org.exodusstudio.frostbite.common.item.custom.gun.RevolverItem;
@@ -43,27 +37,8 @@ public class ItemRegistry {
             ITEMS.register("metal_cog", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
-    public static final DeferredItem<Item> EMPTY_JAR =
-            ITEMS.register("empty_jar", (id) -> new EmptyJarItem(new Item.Properties()
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> JAR =
-            ITEMS.register("jar", (id) -> new JarItem(new Item.Properties()
-                    .stacksTo(1)
-                    .component(DataComponentTypeRegistry.JAR_CONTENTS, JarContentsData.EMPTY)
-                    .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> VIAL =
-            ITEMS.register("vial", (id) -> new Item(new Item.Properties()
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-
     public static final DeferredItem<Item> ADVANCED_CLOCK =
             ITEMS.register("advanced_clock", (id) -> new AdvancedClockItem(new Item.Properties()
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-
-    public static final DeferredItem<Item> SPRAYER =
-            ITEMS.register("sprayer", (id) -> new SprayerItem(new Item.Properties()
-                    .stacksTo(1)
-                    .component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",

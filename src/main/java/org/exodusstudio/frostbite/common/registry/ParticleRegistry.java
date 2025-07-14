@@ -7,7 +7,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.particle.ConfettiParticleType;
 import org.exodusstudio.frostbite.common.particle.DrainParticleType;
-import org.exodusstudio.frostbite.common.particle.SporeParticleType;
 
 import java.util.function.Supplier;
 
@@ -17,9 +16,6 @@ public class ParticleRegistry {
 
     public static final Supplier<DrainParticleType> DRAIN_PARTICLE =
             PARTICLE_TYPES.register("drain", () -> new DrainParticleType(false));
-
-    public static final Supplier<SporeParticleType> SPORE_PARTICLE =
-            PARTICLE_TYPES.register("spore", () -> new SporeParticleType(false));
 
     public static final Supplier<SimpleParticleType> SHOCKWAVE_PARTICLE =
             PARTICLE_TYPES.register("shockwave", () -> new SimpleParticleType(false));

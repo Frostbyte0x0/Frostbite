@@ -11,9 +11,6 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
-import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryEndermanEntity;
-import org.exodusstudio.frostbite.common.entity.custom.murdershrooms.*;
-import org.exodusstudio.frostbite.common.entity.custom.illusory.IllusoryZombieEntity;
 
 import java.util.function.Supplier;
 
@@ -93,78 +90,6 @@ public class EntityRegistry {
                     .sized(1f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ice_spike"))));
-
-
-    public static final Supplier<EntityType<SporeCloudEntity>> SPORE_CLOUD =
-            ENTITY_TYPES.register("spore_cloud", () -> EntityType.Builder
-                    .<SporeCloudEntity>of(SporeCloudEntity::new, MobCategory.MISC)
-                    .sized(5f, 5f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "spore_cloud"))));
-
-
-    public static final Supplier<EntityType<IllusoryZombieEntity>> ILLUSORY_ZOMBIE =
-            ENTITY_TYPES.register("illusory_zombie", () -> EntityType.Builder
-                    .<IllusoryZombieEntity>of(IllusoryZombieEntity::new, MobCategory.MONSTER)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "illusory_zombie"))));
-
-    public static final Supplier<EntityType<IllusoryEndermanEntity>> ILLUSORY_ENDERMAN =
-            ENTITY_TYPES.register("illusory_enderman", () -> EntityType.Builder
-                    .of(IllusoryEndermanEntity::new, MobCategory.MONSTER)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "illusory_enderman"))));
-
-
-    public static final Supplier<EntityType<AgaricMurdershroomEntity>> AGARIC_MURDERSHROOM =
-            ENTITY_TYPES.register("agaric_murdershroom", () -> EntityType.Builder
-                    .of(AgaricMurdershroomEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "agaric_murdershroom"))));
-
-    public static final Supplier<EntityType<CrystalMurdershroomEntity>> CRYSTAL_MURDERSHROOM =
-            ENTITY_TYPES.register("crystal_murdershroom", () -> EntityType.Builder
-                    .of(CrystalMurdershroomEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "crystal_murdershroom"))));
-
-    public static final Supplier<EntityType<DecayingMurdershroomEntity>> DECAYING_MURDERSHROOM =
-            ENTITY_TYPES.register("decaying_murdershroom", () -> EntityType.Builder
-                    .of(DecayingMurdershroomEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "decaying_murdershroom"))));
-
-    public static final Supplier<EntityType<FloralMurdershroomEntity>> FLORAL_MURDERSHROOM =
-            ENTITY_TYPES.register("floral_murdershroom", () -> EntityType.Builder
-                    .of(FloralMurdershroomEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "floral_murdershroom"))));
-
-    public static final Supplier<EntityType<LightMurdershroomEntity>> LIGHT_MURDERSHROOM =
-            ENTITY_TYPES.register("light_murdershroom", () -> EntityType.Builder
-                    .of(LightMurdershroomEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "light_murdershroom"))));
-
-    public static final Supplier<EntityType<MossyMurdershroomEntity>> MOSSY_MURDERSHROOM =
-            ENTITY_TYPES.register("mossy_murdershroom", () -> EntityType.Builder
-                    .of(MossyMurdershroomEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_murdershroom"))));
-
-    public static final Supplier<EntityType<PineMurdershroomEntity>> PINE_MURDERSHROOM =
-            ENTITY_TYPES.register("pine_murdershroom", () -> EntityType.Builder
-                    .of(PineMurdershroomEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "pine_murdershroom"))));
-
 
     public static final Supplier<EntityType<RainFrogEntity>> RAIN_FROG =
             ENTITY_TYPES.register("rain_frog", () -> EntityType.Builder

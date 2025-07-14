@@ -34,10 +34,6 @@ public class PlayerMixin implements LastStand {
     RandomSource frostbite$random = RandomSource.create();
 
     @Unique
-    float frostbite$frequency = (float) 1 / 300;
-
-
-    @Unique
     boolean frostbite$isAccumulatingDamage = false;
 
     @Unique
@@ -54,16 +50,6 @@ public class PlayerMixin implements LastStand {
 
     @Inject(at = @At("HEAD"), method = "tick()V")
     private void tick(CallbackInfo ci) {
-//        if (frostbite$random.nextFloat() < frostbite$frequency) {
-//            frostbite$livingEntity.setPose(Pose.CROUCHING);
-//            frostbite$livingEntity.setShiftKeyDown(true);
-//        }
-        if (frostbite$player != null && frostbite$player.hasEffect(EffectRegistry.TWITCHING)) {
-            if (frostbite$random.nextFloat() < frostbite$frequency) {
-                frostbite$player.setSprinting(!frostbite$player.isSprinting());
-            }
-        }
-
         if (frostbite$isAccumulatingDamage) {
             if (frostbite$maxDurationTicks < frostbite$durationTicks++) {
                 frostbite$isAccumulatingDamage = false;

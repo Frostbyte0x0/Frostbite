@@ -6,13 +6,13 @@
   "mixins": [
     "EntityMixin",
     "InventoryMenuMixin",
-    "MouseHandlerTurnPlayerMixin",
     "PlayerMixin",
     "ServerPlayerGameModeMixin"
   ],
   "client": [
+    "CreativeModeInventoryScreenMixin",
     "EntityRenderDispatcherMixin",
-    "HeartMixin",
+    "InventoryScreenMixin",
     "LevelRendererMixin"
   ],
   "injectors": {

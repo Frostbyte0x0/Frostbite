@@ -1,16 +1,11 @@
 package org.exodusstudio.frostbite.common.registry;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.world.flag.FeatureFlagSet;
-import net.minecraft.world.item.Item;
-import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.exodusstudio.frostbite.common.component.JarContentsData;
-import org.exodusstudio.frostbite.common.item.custom.alchemy.Jar;
+import org.exodusstudio.frostbite.Frostbite;
 
 import java.util.function.Supplier;
 
@@ -26,9 +21,6 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.ADVANCED_CLOCK);
                         output.accept(ItemRegistry.LAST_STAND);
                         output.accept(ItemRegistry.METAL_COG);
-                        output.accept(ItemRegistry.VIAL);
-                        output.accept(ItemRegistry.EMPTY_JAR);
-                        output.accept(ItemRegistry.SPRAYER);
 
                         output.accept(BlockRegistry.PERMAFROZEN_DIRT);
                         output.accept(BlockRegistry.PERMAFROZEN_GRASS);
@@ -125,17 +117,6 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.SILVER_LEAVES);
                         output.accept(BlockRegistry.SILVER_SAPLING);
 
-
-                        itemDisplayParameters.holders()
-                                .lookup(RegistryRegistry.JAR_REGISTRY_KEY).ifPresent(
-                                        lookup -> generatePotionEffectTypes(
-                                                output,
-                                                lookup,
-                                                ItemRegistry.JAR.asItem(),
-                                                CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS,
-                                                itemDisplayParameters.enabledFeatures()
-                                ));
-
                         output.accept(ItemRegistry.CONFETTI_POPPER);
                         output.accept(ItemRegistry.THERMAL_LENS);
                         output.accept(ItemRegistry.HELMET_WEAVING_PATTERN);
@@ -148,17 +129,4 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.INSULATING_JELLY);
                         output.accept(ItemRegistry.CASTING_STAFF);
                     })).build());
-
-    private static void generatePotionEffectTypes(
-            CreativeModeTab.Output output,
-            HolderLookup<Jar> jars,
-            Item item,
-            CreativeModeTab.TabVisibility tabVisibility,
-            FeatureFlagSet requiredFeatures
-    ) {
-        jars.listElements()
-                .filter(p_337926_ -> p_337926_.value().isEnabled(requiredFeatures))
-                .map(p_330083_ -> JarContentsData.createItemStack(item, p_330083_))
-                .forEach(p_270000_ -> output.accept(p_270000_, tabVisibility));
-    }
 }

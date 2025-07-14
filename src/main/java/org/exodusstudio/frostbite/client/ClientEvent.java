@@ -25,8 +25,6 @@ public class ClientEvent {
                 ThermometerOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_overlay"),
                 FireOverlay::render);
-        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "decay_overlay"),
-                DecayOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
                 GunOverlay::render);
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
@@ -40,7 +38,6 @@ public class ClientEvent {
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ParticleRegistry.DRAIN_PARTICLE.get(), DrainParticle.Provider::new);
-        event.registerSpriteSet(ParticleRegistry.SPORE_PARTICLE.get(), SporeParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SHOCKWAVE_PARTICLE.get(), ShockwaveParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.CONFETTI_PARTICLE.get(), ConfettiParticle.Provider::new);
     }

@@ -1,7 +1,9 @@
 package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,8 +15,6 @@ import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.murdershrooms.*;
-import org.exodusstudio.frostbite.common.item.custom.alchemy.Jars;
 import org.exodusstudio.frostbite.common.item.custom.lining.SavedLinings;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.temperature.SavedTemperatures;
@@ -32,6 +32,7 @@ public class Frostbite {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static SavedTemperatures savedTemperatures = SavedTemperatures.init();
     public static SavedLinings savedLinings = new SavedLinings();
+    public static boolean shouldShowLining = false;
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
@@ -43,7 +44,6 @@ public class Frostbite {
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
         AttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
-        Jars.JARS.register(modEventBus);
         MenuTypeRegistry.MENU_TYPES.register(modEventBus);
         ConsumeEffectRegistry.CONSUME_EFFECT_TYPES.register(modEventBus);
         GameRuleRegistry.register();
@@ -61,16 +61,6 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), RevolverBulletRenderer::new);
             EntityRenderers.register(EntityRegistry.RAIN_FROG.get(), RainFrogRenderer::new);
             EntityRenderers.register(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepRenderer::new);
-            EntityRenderers.register(EntityRegistry.AGARIC_MURDERSHROOM.get(), AgaricMurdershroomRenderer::new);
-            EntityRenderers.register(EntityRegistry.CRYSTAL_MURDERSHROOM.get(), CrystalMurdershroomRenderer::new);
-            EntityRenderers.register(EntityRegistry.DECAYING_MURDERSHROOM.get(), DecayingMurdershroomRenderer::new);
-            EntityRenderers.register(EntityRegistry.FLORAL_MURDERSHROOM.get(), FloralMurdershroomRenderer::new);
-            EntityRenderers.register(EntityRegistry.LIGHT_MURDERSHROOM.get(), LightMurdershroomRenderer::new);
-            EntityRenderers.register(EntityRegistry.MOSSY_MURDERSHROOM.get(), MossyMurdershroomRenderer::new);
-            EntityRenderers.register(EntityRegistry.PINE_MURDERSHROOM.get(), PineMurdershroomRenderer::new);
-            EntityRenderers.register(EntityRegistry.ILLUSORY_ZOMBIE.get(), ZombieRenderer::new);
-            EntityRenderers.register(EntityRegistry.ILLUSORY_ENDERMAN.get(), EndermanRenderer::new);
-            EntityRenderers.register(EntityRegistry.SPORE_CLOUD.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.DRAIN_CIRCLE.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.HAILCOIL.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.LAST_STAND.get(), GenericEntityRenderer::new);
