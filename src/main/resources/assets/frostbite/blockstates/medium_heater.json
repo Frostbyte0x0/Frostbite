@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "frostbite:block/medium_heater"
+    }
+  }
+}

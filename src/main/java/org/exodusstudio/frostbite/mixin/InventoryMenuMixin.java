@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.inventory.LiningSlot;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -23,16 +24,16 @@ public class InventoryMenuMixin {
             new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     @Unique
     private static final ResourceLocation EMPTY_ARMOR_SLOT_HELMET =
-            ResourceLocation.withDefaultNamespace("container/slot/helmet");
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gui/empty_helmet_slot.png");
     @Unique
     private static final ResourceLocation EMPTY_ARMOR_SLOT_CHESTPLATE =
-            ResourceLocation.withDefaultNamespace("container/slot/chestplate");
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gui/empty_chestplate_slot.png");
     @Unique
     private static final ResourceLocation EMPTY_ARMOR_SLOT_LEGGINGS =
-            ResourceLocation.withDefaultNamespace("container/slot/leggings");
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gui/empty_leggings_slot.png");
     @Unique
     private static final ResourceLocation EMPTY_ARMOR_SLOT_BOOTS =
-            ResourceLocation.withDefaultNamespace("container/slot/boots");
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gui/empty_boots_slot.png");
     @Unique
     private static final Map<EquipmentSlot, ResourceLocation> TEXTURE_EMPTY_SLOTS = Map.of(
             EquipmentSlot.FEET,
@@ -51,7 +52,7 @@ public class InventoryMenuMixin {
             EquipmentSlot equipmentslot = SLOT_IDS[i];
             ResourceLocation resourcelocation = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
             frostbite$inventoryMenu.addSlot(new LiningSlot(playerInventory, owner,
-                    equipmentslot, 139 + i, 8, 8 + i * 18, resourcelocation));
+                    equipmentslot, 139 + i, 8 + i * 18, 8, resourcelocation));
         }
     }
 }

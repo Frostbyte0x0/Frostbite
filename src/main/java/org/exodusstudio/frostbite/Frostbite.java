@@ -12,6 +12,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
+import org.exodusstudio.frostbite.common.block.HeaterStorage;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
@@ -20,6 +21,9 @@ import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.temperature.SavedTemperatures;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod(Frostbite.MOD_ID)
 public class Frostbite {
@@ -31,6 +35,7 @@ public class Frostbite {
     public static final String MOD_ID = "frostbite";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static SavedTemperatures savedTemperatures = SavedTemperatures.init();
+    public static List<HeaterStorage> savedHeaters = new ArrayList<>();
     public static SavedLinings savedLinings = new SavedLinings();
     public static boolean shouldShowLining = false;
 

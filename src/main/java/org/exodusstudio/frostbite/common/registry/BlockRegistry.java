@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.block.HoarfrostWoodBlock;
 import org.exodusstudio.frostbite.common.block.WeavingTable;
 import org.exodusstudio.frostbite.common.worldgen.tree.ModTreeGrowers;
@@ -153,6 +154,25 @@ public class BlockRegistry {
     public static final DeferredBlock<HorizontalDirectionalBlock> WEAVING_TABLE = registerBLock("weaving_table",
             () -> new WeavingTable(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "weaving_table")))));
+
+    public static final DeferredBlock<Block> SMALL_HEATER_BLOCK = registerBLock("small_heater",
+            () -> new HeaterBlock(BlockBehaviour.Properties.of()
+                    .strength(10f)
+                    .lightLevel(state -> 5)
+                    .setId(ResourceKey.create(Registries.BLOCK,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "small_heater"))), 6, 5));
+    public static final DeferredBlock<Block> MEDIUM_HEATER_BLOCK = registerBLock("medium_heater",
+            () -> new HeaterBlock(BlockBehaviour.Properties.of()
+                    .strength(10f)
+                    .lightLevel(state -> 10)
+                    .setId(ResourceKey.create(Registries.BLOCK,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "medium_heater"))), 12, 10));
+    public static final DeferredBlock<Block> BIG_HEATER_BLOCK = registerBLock("big_heater",
+            () -> new HeaterBlock(BlockBehaviour.Properties.of()
+                    .strength(10f)
+                    .lightLevel(state -> 15)
+                    .setId(ResourceKey.create(Registries.BLOCK,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "big_heater"))), 20, 10));
 
 
     public static <T extends Block> DeferredBlock<T> registerBLock(String name, Supplier<T> block) {

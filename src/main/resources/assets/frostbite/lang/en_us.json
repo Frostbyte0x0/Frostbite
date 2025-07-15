@@ -35,13 +35,14 @@
   "item.frostbite.charm_leaves": "Charm Leaves",
   "item.frostbite.charm_sapling": "Charm Sapling",
 
+  "item.frostbite.small_heater": "Small Heater",
+  "item.frostbite.medium_heater": "Medium Heater",
+  "item.frostbite.big_heater": "Big Heater",
+
 
   "item.frostbite.advanced_clock": "Advanced Clock",
   "item.frostbite.last_stand": "Last Stand",
   "item.frostbite.metal_cog": "Metal Cog",
-  "item.frostbite.empty_jar": "Jar",
-  "item.frostbite.vial": "Vial",
-  "item.frostbite.sprayer": "Sprayer",
 
   "item.frostbite.black_ice_helmet": "Black Ice Helmet",
   "item.frostbite.black_ice_chestplate": "Black Ice Chestplate",
@@ -64,16 +65,6 @@
   "item.frostbite.sniper_bullet": "Sniper Bullet",
   "item.frostbite.revolver": "Revolver",
   "item.frostbite.revolver_bullet": "Revolver Bullet",
-
-  "item.frostbite.jar.effect.water": "Jar of Water",
-  "item.frostbite.jar.effect.curing": "Jar of Curing",
-  "item.frostbite.jar.effect.floral": "Jar of Floral Spores",
-  "item.frostbite.jar.effect.pine": "Jar of Pine Spores",
-  "item.frostbite.jar.effect.agaric": "Jar of Agaric Spores",
-  "item.frostbite.jar.effect.decaying": "Jar of Decaying Spores",
-  "item.frostbite.jar.effect.light": "Jar of Light Spores",
-  "item.frostbite.jar.effect.crystal": "Jar of Crystal Spores",
-  "item.frostbite.jar.effect.mossy": "Jar of Mossy Spores",
 
   "item.frostbite.thermal_lens": "Thermal lens",
   "item.frostbite.helmet_weaving_pattern": "Helmet weaving pattern",

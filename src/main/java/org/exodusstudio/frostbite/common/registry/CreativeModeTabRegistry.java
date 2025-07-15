@@ -123,10 +123,15 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.CHESTPLATE_WEAVING_PATTERN);
                         output.accept(ItemRegistry.LEGGINGS_WEAVING_PATTERN);
                         output.accept(ItemRegistry.BOOTS_WEAVING_PATTERN);
+
                         output.accept(ItemRegistry.BOTTLE_OF_WARMTH);
                         output.accept(ItemRegistry.BOTTLE_OF_HEAT);
                         output.accept(ItemRegistry.JELLY);
                         output.accept(ItemRegistry.INSULATING_JELLY);
                         output.accept(ItemRegistry.CASTING_STAFF);
+
+                        output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
+                        output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);
+                        output.accept(BlockRegistry.BIG_HEATER_BLOCK);
                     })).build());
 }

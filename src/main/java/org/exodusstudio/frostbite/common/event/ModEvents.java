@@ -4,10 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -16,9 +18,12 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.block.HeaterBlock;
+import org.exodusstudio.frostbite.common.block.HeaterStorage;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
@@ -82,8 +87,20 @@ public class ModEvents {
                     entities.add(livingEntity);
                 }
             });
+            if (level.getDayTime() % 20 == 0) {
+                Frostbite.savedHeaters.forEach(heater -> heater.tickBlock(level));
+            }
         });
         Frostbite.savedTemperatures.updateEntityTemperatures(entities);
+    }
+
+    @SubscribeEvent
+    public static void heater(UseItemOnBlockEvent event) {
+        if (event.getPlayer().getItemInHand(event.getHand()).is(Items.FLINT_AND_STEEL) &&
+                event.getLevel() instanceof ServerLevel serverLevel) {
+            Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), (HeaterBlock) event.getLevel().getBlockState(event.getPos()).getBlock()));
+            event.cancelWithResult(InteractionResult.PASS);
+        }
     }
 
     @SubscribeEvent
