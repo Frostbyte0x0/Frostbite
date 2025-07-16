@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom.elf_weapons;
+package org.exodusstudio.frostbite.common.item.custom.weapons.elf_weapons;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

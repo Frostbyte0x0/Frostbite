@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom;
+package org.exodusstudio.frostbite.common.item.custom.weapons;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

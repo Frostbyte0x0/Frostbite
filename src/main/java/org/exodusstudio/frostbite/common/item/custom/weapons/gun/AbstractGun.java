@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom.gun;
+package org.exodusstudio.frostbite.common.item.custom.weapons.gun;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -17,10 +17,9 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
-import org.exodusstudio.frostbite.common.item.custom.gun.bullet.RevolverBulletItem;
-import org.exodusstudio.frostbite.common.item.custom.gun.bullet.SniperBulletItem;
+import org.exodusstudio.frostbite.common.item.custom.weapons.gun.bullet.RevolverBulletItem;
+import org.exodusstudio.frostbite.common.item.custom.weapons.gun.bullet.SniperBulletItem;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
-import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 
 public abstract class AbstractGun extends Item {
     private final float bulletVelocity;

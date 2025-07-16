@@ -1,8 +1,6 @@
-package org.exodusstudio.frostbite.common.item.custom.gun;
+package org.exodusstudio.frostbite.common.item.custom.weapons.gun;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;

@@ -125,4 +125,11 @@ public class EntityRegistry {
                     .sized(0.75f, 2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_remnants"))));
+
+    public static final Supplier<EntityType<WindCircleEntity>> WIND_CIRCLE =
+            ENTITY_TYPES.register("wind_circle", () -> EntityType.Builder
+                    .of(WindCircleEntity::new, MobCategory.AMBIENT)
+                    .sized(2.5f, 1f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "wind_circle"))));
 }

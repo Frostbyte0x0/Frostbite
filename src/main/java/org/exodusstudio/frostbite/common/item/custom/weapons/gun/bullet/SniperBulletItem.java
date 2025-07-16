@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom.gun.bullet;
+package org.exodusstudio.frostbite.common.item.custom.weapons.gun.bullet;
 
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;

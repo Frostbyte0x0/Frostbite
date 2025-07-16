@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom.gun;
+package org.exodusstudio.frostbite.common.item.custom.weapons.gun;
 
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 

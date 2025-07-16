@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom;
+package org.exodusstudio.frostbite.common.item.custom.weapons;
 
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.component.ModeData;

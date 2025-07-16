@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.custom;
+package org.exodusstudio.frostbite.common.item.custom.weapons;
 
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;

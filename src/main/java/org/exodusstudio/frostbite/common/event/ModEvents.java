@@ -97,8 +97,10 @@ public class ModEvents {
     @SubscribeEvent
     public static void heater(UseItemOnBlockEvent event) {
         if (event.getPlayer().getItemInHand(event.getHand()).is(Items.FLINT_AND_STEEL) &&
-                event.getLevel() instanceof ServerLevel serverLevel) {
-            Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), (HeaterBlock) event.getLevel().getBlockState(event.getPos()).getBlock()));
+                event.getLevel() instanceof ServerLevel &&
+                event.getLevel().getBlockState(event.getPos()).getBlock() instanceof HeaterBlock block &&
+                !Frostbite.savedHeaters.contains(new HeaterStorage(event.getPos(), block))) {
+            Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), block));
             event.cancelWithResult(InteractionResult.PASS);
         }
     }
