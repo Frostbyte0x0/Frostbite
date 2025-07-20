@@ -1,14 +1,13 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.particle.DrainParticleOptions;
 import org.exodusstudio.frostbite.common.particle.WindCircleParticleOptions;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
 import java.util.List;
 
@@ -33,10 +32,18 @@ public class WindCircleEntity extends AreaEffectCloud {
             List<LivingEntity> list1 = level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0, 3, 0));
             if (!list1.isEmpty()) {
                 for (LivingEntity livingentity : list1) {
-                    livingentity.push(new Vec3(0, 2, 0));
+                    livingentity.push(new Vec3(0, 1.5, 0));
                 }
             }
+
+            for (int i = 0; i < 100; i++) {
+                this.level().addParticle(ParticleRegistry.BUTTERFLY_PARTICLE.get(),
+                        this.getX(),
+                        this.getY() + 0.2f,
+                        this.getZ(), 0, 0, 0);
+            }
         }
+
         if (this.tickCount == 27) this.discard();
     }
 }

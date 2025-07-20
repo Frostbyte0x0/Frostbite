@@ -38,6 +38,5 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.FERAL_WOLF.get(), FeralWolfEntity.createAttributes().build());
         event.put(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsEntity.createAttributes().build());
         event.put(EntityRegistry.HAILCOIL.get(), HailcoilEntity.createAttributes().build());
-        //event.put(EntityRegistry.WIND_CIRCLE.get(), WindCircleEntity.createAttributes().build());
     }
 }

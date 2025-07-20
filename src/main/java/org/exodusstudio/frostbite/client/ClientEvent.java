@@ -11,10 +11,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.gui.WeavingScreen;
 import org.exodusstudio.frostbite.client.overlays.*;
-import org.exodusstudio.frostbite.common.particle.ConfettiParticle;
-import org.exodusstudio.frostbite.common.particle.DrainParticle;
-import org.exodusstudio.frostbite.common.particle.ShockwaveParticle;
-import org.exodusstudio.frostbite.common.particle.WindCircleParticle;
+import org.exodusstudio.frostbite.common.particle.*;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
@@ -43,6 +40,7 @@ public class ClientEvent {
         event.registerSpriteSet(ParticleRegistry.SHOCKWAVE_PARTICLE.get(), ShockwaveParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.CONFETTI_PARTICLE.get(), ConfettiParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.WIND_CIRCLE_PARTICLE.get(), WindCircleParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.BUTTERFLY_PARTICLE.get(), ButterflyParticle.Provider::new);
     }
 
     @SubscribeEvent

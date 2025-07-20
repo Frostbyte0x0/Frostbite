@@ -206,9 +206,12 @@ public class FrozenRemnantsEntity extends Mob{
 
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float damage) {
-        if (damageSource.is(DamageTypes.FALL)) {
+        if (damageSource.getEntity() == null) {
+            return false;
+        } else if (!damageSource.getEntity().is(getOwner())) {
             return false;
         }
+
         Player player = Minecraft.getInstance().player;
         assert player != null;
         for (int i = 0; i < 80; i++) {

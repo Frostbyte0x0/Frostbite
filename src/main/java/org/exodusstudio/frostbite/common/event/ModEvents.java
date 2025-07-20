@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.common.event;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -10,11 +11,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
@@ -68,8 +71,14 @@ public class ModEvents {
                 FrozenRemnantsEntity frozenRemnants = new FrozenRemnantsEntity(EntityRegistry.FROZEN_REMNANTS.get(), serverLevel);
                 frozenRemnants.setOwner(player);
                 frozenRemnants.moveTo(player.position(), 0.0F, 0.0F);
-                frozenRemnants.setItems(player.getInventory().items);
-                frozenRemnants.finalizeSpawn(serverLevel, player.level().getCurrentDifficultyAt(BlockPos.containing(player.position())), EntitySpawnReason.EVENT, null);
+                NonNullList<ItemStack> items = NonNullList.create();
+                items.addAll(player.getInventory().items);
+                items.addAll(player.getInventory().armor);
+                items.addAll(player.getInventory().offhand);
+                frozenRemnants.setItems(items);
+                frozenRemnants.finalizeSpawn(serverLevel,
+                        player.level().getCurrentDifficultyAt(BlockPos.containing(player.position())),
+                        EntitySpawnReason.EVENT, null);
                 frozenRemnants.setTarget(player);
 
                 serverLevel.addFreshEntityWithPassengers(frozenRemnants);
@@ -87,8 +96,14 @@ public class ModEvents {
                     entities.add(livingEntity);
                 }
             });
-            if (level.getDayTime() % 20 == 0) {
-                Frostbite.savedHeaters.forEach(heater -> heater.tickBlock(level));
+            if (event.getServer().getTickCount() % 20 == 0) {
+//                Frostbite.savedHeaters = new ArrayList<>(Frostbite.savedHeaters.stream().filter(heater ->
+//                                !(level.getBlockState(heater.getPos()).getBlock() instanceof HeaterBlock) ||
+//                                !(heater.getDimensionName().equals(level.dimension().location().toString())))
+//                        .toList());
+                Frostbite.savedHeaters.forEach(heater -> {
+                    if (heater.getDimensionName().equals(level.dimension().location().toString())) heater.tickBlock(level);
+                });
             }
         });
         Frostbite.savedTemperatures.updateEntityTemperatures(entities);
@@ -96,14 +111,30 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void heater(UseItemOnBlockEvent event) {
+        assert event.getPlayer() != null;
         if (event.getPlayer().getItemInHand(event.getHand()).is(Items.FLINT_AND_STEEL) &&
-                event.getLevel() instanceof ServerLevel &&
-                event.getLevel().getBlockState(event.getPos()).getBlock() instanceof HeaterBlock block &&
-                !Frostbite.savedHeaters.contains(new HeaterStorage(event.getPos(), block))) {
-            Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), block));
-            event.cancelWithResult(InteractionResult.PASS);
+                event.getLevel() instanceof ServerLevel serverLevel &&
+                serverLevel.getBlockState(event.getPos()).getBlock() instanceof HeaterBlock block &&
+                Frostbite.savedHeaters.stream().noneMatch(heater ->
+                        heater.getPos().equals(event.getPos()) &&
+                        heater.getDimensionName().equals(serverLevel.dimension().location().toString()))) {
+            Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().location().toString()));
+            event.cancelWithResult(InteractionResult.FAIL);
         }
     }
+//
+//    @SubscribeEvent
+//    public static void heaterDestroyed(VanillaGameEvent event) {
+//        if (event.getVanillaEvent().getRegisteredName().equals(GameEvent.BLOCK_DESTROY.getRegisteredName())) {
+//            BlockPos pos = BlockPos.containing(event.getEventPosition());
+//            if (event.getLevel().getBlockState(pos).getBlock() instanceof HeaterBlock) {
+//                Frostbite.savedHeaters = new ArrayList<>(Frostbite.savedHeaters.stream().filter(heater ->
+//                                !heater.getPos().equals(pos) ||
+//                                        !heater.getDimensionName().equals(event.getLevel().dimension().location().toString()))
+//                        .toList());
+//            }
+//        }
+//    }
 
     @SubscribeEvent
     public static void containerOpen(PlayerContainerEvent.Open event) {

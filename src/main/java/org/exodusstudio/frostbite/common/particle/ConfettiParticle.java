@@ -17,7 +17,8 @@ public class ConfettiParticle extends TextureSheetParticle {
     private final float rotationSpeed;
     private final Vector3f rotationDir;
     private final RandomSource random = RandomSource.create();
-    private final float offset = random.nextFloat() * 0.001f;
+    private final double ownOffset;
+    private static double offset = 0;
 
     public ConfettiParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
@@ -29,6 +30,13 @@ public class ConfettiParticle extends TextureSheetParticle {
         this.rotationSpeed = random.nextFloat() * 0.5f + 0.5f;
         this.rotationDir = new Vector3f(random.nextFloat(), random.nextFloat(), random.nextFloat());
         this.setSpriteFromAge(sprite);
+        this.ownOffset = getOffset();
+    }
+
+    private double getOffset() {
+        offset += 0.00001f * random.nextDouble();
+        offset %= 0.001f; // Keep the offset within a reasonable range
+        return offset;
     }
 
     @Override
@@ -58,7 +66,7 @@ public class ConfettiParticle extends TextureSheetParticle {
             this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
             quaternionf.rotationX((float) Math.PI / 2);
             this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
-            this.setPos(this.x, this.y + offset, this.z);
+            this.setPos(this.x, this.y + ownOffset, this.z);
         }
     }
 

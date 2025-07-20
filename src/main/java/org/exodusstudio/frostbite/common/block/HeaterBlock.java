@@ -22,7 +22,6 @@ public class HeaterBlock extends Block {
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.tick(state, level, pos, random);
-        Frostbite.LOGGER.debug(String.valueOf(level.getDayTime()));
         double h = (double) range / 2;
         level.getEntitiesOfClass(LivingEntity.class,
                 new AABB(pos.getX() - h,

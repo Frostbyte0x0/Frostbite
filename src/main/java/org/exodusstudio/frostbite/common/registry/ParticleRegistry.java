@@ -25,4 +25,8 @@ public class ParticleRegistry {
             PARTICLE_TYPES.register("confetti", () -> new ConfettiParticleType(false));
 
     public static final Supplier<WindCircleParticleType> WIND_CIRCLE_PARTICLE =
-            PARTICLE_TYPES.register("wind_circle", () -> new WindCircleParticleType(false));}
+            PARTICLE_TYPES.register("wind_circle", () -> new WindCircleParticleType(false));
+
+    public static final Supplier<SimpleParticleType> BUTTERFLY_PARTICLE =
+            PARTICLE_TYPES.register("butterfly", () -> new SimpleParticleType(false));
+}
