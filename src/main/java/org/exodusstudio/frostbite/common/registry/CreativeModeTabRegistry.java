@@ -129,6 +129,7 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.JELLY);
                         output.accept(ItemRegistry.INSULATING_JELLY);
                         output.accept(ItemRegistry.CASTING_STAFF);
+                        output.accept(ItemRegistry.GALE_FAN);
 
                         output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
                         output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);

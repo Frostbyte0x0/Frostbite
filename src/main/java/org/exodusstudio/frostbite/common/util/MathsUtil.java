@@ -90,4 +90,14 @@ public class MathsUtil {
 
         return positions;
     }
+
+
+    public static double distanceBetweenVec(Vec3 v1, Vec3 v2) {
+        return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2) + Math.pow(v1.z - v2.z, 2));
+    }
+
+
+    public static double distanceBetween(double v1, double v2) {
+        return Math.sqrt(Math.pow(v1, 2) + Math.pow(v2, 2));
+    }
 }
