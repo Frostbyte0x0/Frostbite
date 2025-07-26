@@ -28,6 +28,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.FROZEN_REMNANTS, FrozenRemnantsModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.WIND_CIRCLE, WindCircleModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -38,5 +39,6 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.FERAL_WOLF.get(), FeralWolfEntity.createAttributes().build());
         event.put(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsEntity.createAttributes().build());
         event.put(EntityRegistry.HAILCOIL.get(), HailcoilEntity.createAttributes().build());
+        event.put(EntityRegistry.BOAR.get(), BoarEntity.createAttributes().build());
     }
 }

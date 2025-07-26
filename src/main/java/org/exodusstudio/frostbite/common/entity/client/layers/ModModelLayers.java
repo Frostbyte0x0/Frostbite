@@ -36,4 +36,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation WIND_CIRCLE = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "wind_circle"), "main");
+
+    public static final ModelLayerLocation BOAR = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "boar"), "main");
 }

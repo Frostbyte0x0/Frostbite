@@ -79,6 +79,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.FERAL_WOLF.get(), FeralWolfRenderer::new);
             EntityRenderers.register(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsRenderer::new);
             EntityRenderers.register(EntityRegistry.WIND_CIRCLE.get(), GenericEntityRenderer::new);
+            EntityRenderers.register(EntityRegistry.BOAR.get(), BoarRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

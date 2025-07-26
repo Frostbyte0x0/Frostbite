@@ -18,19 +18,19 @@ import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.ModArmorMaterials;
 import org.exodusstudio.frostbite.common.item.custom.*;
+import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStandItem;
+import org.exodusstudio.frostbite.common.item.custom.lining.LiningItem;
+import org.exodusstudio.frostbite.common.item.custom.lining.LiningMaterials;
+import org.exodusstudio.frostbite.common.item.custom.weapons.ChaincicleItem;
 import org.exodusstudio.frostbite.common.item.custom.weapons.GaleFanItem;
+import org.exodusstudio.frostbite.common.item.custom.weapons.IceHammerItem;
+import org.exodusstudio.frostbite.common.item.custom.weapons.StunningBellItem;
 import org.exodusstudio.frostbite.common.item.custom.weapons.elf_weapons.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.custom.weapons.elf_weapons.DrainingStaffItem;
 import org.exodusstudio.frostbite.common.item.custom.weapons.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.custom.weapons.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.custom.weapons.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.custom.weapons.gun.bullet.SniperBulletItem;
-import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStandItem;
-import org.exodusstudio.frostbite.common.item.custom.lining.LiningItem;
-import org.exodusstudio.frostbite.common.item.custom.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.custom.weapons.ChaincicleItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.IceHammerItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.StunningBellItem;
 
 import java.util.List;
 

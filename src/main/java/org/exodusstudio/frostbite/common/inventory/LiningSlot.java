@@ -26,9 +26,9 @@ public class LiningSlot extends Slot {
         this.emptyIcon = emptyIcon;
     }
 
-    public void setByPlayer(ItemStack p_345031_, ItemStack p_344961_) {
-        this.owner.onEquipItem(this.slot, p_344961_, p_345031_);
-        super.setByPlayer(p_345031_, p_344961_);
+    public void setByPlayer(ItemStack newStack, ItemStack oldStack) {
+        this.owner.onEquipItem(this.slot, oldStack, newStack);
+        this.set(newStack);
     }
 
     public int getMaxStackSize() {
@@ -36,22 +36,29 @@ public class LiningSlot extends Slot {
     }
 
     public boolean mayPlace(ItemStack stack) {
-        return stack.canEquip(this.slot, this.owner);
+        return Frostbite.shouldShowLining && stack.canEquip(this.slot, this.owner);
     }
 
     public boolean mayPickup(Player p_345575_) {
         ItemStack itemstack = this.getItem();
-        return (itemstack.isEmpty() || p_345575_.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(p_345575_);
-    }
-
-    @Override
-    public void onTake(Player player, ItemStack stack) {
-        super.onTake(player, stack);
-        Frostbite.LOGGER.debug("AAA");
+        return Frostbite.shouldShowLining && (itemstack.isEmpty() || p_345575_.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(p_345575_);
     }
 
     @Nullable
     public ResourceLocation getNoItemIcon() {
         return this.emptyIcon;
+    }
+
+    public boolean isActive() {
+        return Frostbite.shouldShowLining;
+    }
+
+    public ItemStack getItem() {
+        return Frostbite.savedLinings.getSpecificLiningForPlayer(this.owner.getStringUUID(), slot);
+    }
+
+    public void set(ItemStack stack) {
+        Frostbite.savedLinings.setSpecificLiningForPlayer(this.owner.getStringUUID(), slot, stack);
+        this.setChanged();
     }
 }

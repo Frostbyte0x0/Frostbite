@@ -8,9 +8,11 @@
     "InventoryMenuMixin",
     "PlayerMixin",
     "PrimaryLevelDataMixin",
-    "ServerPlayerGameModeMixin"
+    "ServerPlayerGameModeMixin",
+    "SlotMixin"
   ],
   "client": [
+    "AbstractContainerScreenMixin",
     "CreativeModeInventoryScreenMixin",
     "EntityRenderDispatcherMixin",
     "InventoryScreenMixin",
