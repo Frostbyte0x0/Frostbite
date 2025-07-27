@@ -4,16 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.FeralWolfModel;
 import org.exodusstudio.frostbite.common.entity.client.states.FeralWolfRenderState;
-import org.exodusstudio.frostbite.common.entity.client.states.LevitatingJellyfishRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.FeralWolfEntity;
-import org.exodusstudio.frostbite.common.entity.custom.LevitatingJellyfishEntity;
 
 public class FeralWolfRenderer extends MobRenderer<FeralWolfEntity, FeralWolfRenderState, FeralWolfModel> {
     public FeralWolfRenderer(EntityRendererProvider.Context context) {

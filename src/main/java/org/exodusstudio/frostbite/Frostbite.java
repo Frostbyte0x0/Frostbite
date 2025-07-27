@@ -36,6 +36,7 @@ public class Frostbite {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static SavedTemperatures savedTemperatures = SavedTemperatures.init();
     public static List<HeaterStorage> savedHeaters = new ArrayList<>();
+    public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static SavedLinings savedLinings = new SavedLinings();
     public static boolean shouldShowLining = false;
 

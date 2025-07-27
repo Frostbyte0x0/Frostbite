@@ -2,6 +2,8 @@ package org.exodusstudio.frostbite.common.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import org.exodusstudio.frostbite.Frostbite;
 
 public class HeaterStorage {
     HeaterBlock block;
@@ -16,9 +18,15 @@ public class HeaterStorage {
 
     public void tickBlock(ServerLevel level) {
         if (block == null) {
-            block = (HeaterBlock) level.getBlockState(pos).getBlock();
+            Block potentialBlock = level.getBlockState(pos).getBlock();
+            if (potentialBlock instanceof HeaterBlock heaterBlock) {
+                block = heaterBlock;
+            } else {
+                Frostbite.heatersToRemove.add(this);
+            }
+        } else {
+            block.tick(level.getBlockState(pos), level, pos, level.random);
         }
-        block.tick(level.getBlockState(pos), level, pos, level.random);
     }
 
     public BlockPos getPos() {

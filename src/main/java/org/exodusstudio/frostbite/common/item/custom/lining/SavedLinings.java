@@ -28,7 +28,7 @@ public class SavedLinings {
     }
 
     public void setSpecificLiningForPlayer(String playerUUID, int index, ItemStack lining) {
-        playerLinings.get(playerUUID).set(index, lining);
+        getLiningsForPlayerOrSetEmpty(playerUUID).set(index, lining);
     }
 
     public void setSpecificLiningForPlayer(String playerUUID, EquipmentSlot slot, ItemStack lining) {
@@ -39,15 +39,17 @@ public class SavedLinings {
             case FEET -> 3;
             default -> -1;
         };
-        playerLinings.get(playerUUID).set(index, lining);
+        getLiningsForPlayerOrSetEmpty(playerUUID).set(index, lining);
     }
 
-    public List<ItemStack> getLiningsForPlayer(String playerUUID) {
+    public List<ItemStack> getLiningsForPlayerOrSetEmpty(String playerUUID) {
+        List<ItemStack> linings = new ArrayList<>(List.of(ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY));
+        playerLinings.putIfAbsent(playerUUID, linings);
         return playerLinings.get(playerUUID);
     }
 
     public int getLiningLevelForPlayer(String playerUUID) {
-        List<ItemStack> linings = playerLinings.get(playerUUID);
+        List<ItemStack> linings = getLiningsForPlayerOrSetEmpty(playerUUID);
         int sum = 0;
         for (ItemStack lining : linings) {
             if (!lining.isEmpty() && lining.getItem() instanceof LiningItem liningItem) {
@@ -58,7 +60,7 @@ public class SavedLinings {
     }
 
     public ItemStack getSpecificLiningForPlayer(String playerUUID, int index) {
-        List<ItemStack> linings = playerLinings.get(playerUUID);
+        List<ItemStack> linings = getLiningsForPlayerOrSetEmpty(playerUUID);
         if (linings != null && index >= 0 && index < linings.size()) {
             return linings.get(index);
         }
@@ -66,7 +68,7 @@ public class SavedLinings {
     }
 
     public ItemStack getSpecificLiningForPlayer(String playerUUID, EquipmentSlot slot) {
-        List<ItemStack> linings = playerLinings.get(playerUUID);
+        List<ItemStack> linings = getLiningsForPlayerOrSetEmpty(playerUUID);
         int index = switch (slot) {
             case HEAD -> 0;
             case CHEST -> 1;
@@ -85,7 +87,7 @@ public class SavedLinings {
             CompoundTag compoundtag = listTag.getCompound(i);
             int j = compoundtag.getByte("Slot") & 255;
             ItemStack itemstack = ItemStack.parse(registryAccess, compoundtag).orElse(ItemStack.EMPTY);
-            this.playerLinings.get(playerUUID).set(j, itemstack);
+            this.getLiningsForPlayerOrSetEmpty(playerUUID).set(j, itemstack);
         }
     }
 

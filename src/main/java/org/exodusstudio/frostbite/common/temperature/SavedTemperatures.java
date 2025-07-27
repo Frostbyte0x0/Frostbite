@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class SavedTemperatures {
     private final HashMap<String, List<Float>> entityTemperatures = new HashMap<>();
-    private static Map<String, Float> tempsPerBlock = new HashMap<>();
+    private static final Map<String, Float> tempsPerBlock = new HashMap<>();
 
     public static SavedTemperatures init() {
         tempsPerBlock.put("lava", 2f);

@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

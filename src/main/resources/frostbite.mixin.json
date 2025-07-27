@@ -4,6 +4,7 @@
   "package": "org.exodusstudio.frostbite.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AbstractContainerMenuMixin",
     "EntityMixin",
     "InventoryMenuMixin",
     "PlayerMixin",

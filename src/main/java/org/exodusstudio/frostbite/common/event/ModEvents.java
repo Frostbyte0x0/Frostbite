@@ -11,13 +11,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
@@ -104,6 +102,8 @@ public class ModEvents {
                 Frostbite.savedHeaters.forEach(heater -> {
                     if (heater.getDimensionName().equals(level.dimension().location().toString())) heater.tickBlock(level);
                 });
+                Frostbite.savedHeaters.removeAll(Frostbite.heatersToRemove);
+                Frostbite.heatersToRemove.clear();
             }
         });
         Frostbite.savedTemperatures.updateEntityTemperatures(entities);
@@ -145,7 +145,7 @@ public class ModEvents {
     public static void playerTick(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();
 
-        if (Frostbite.savedLinings.getLiningsForPlayer(player.getStringUUID()) == null) {
+        if (Frostbite.savedLinings.getLiningsForPlayerOrSetEmpty(player.getStringUUID()) == null) {
             Frostbite.savedLinings.setLiningsForPlayer(player.getStringUUID(),
                     ItemStack.EMPTY,
                     ItemStack.EMPTY,

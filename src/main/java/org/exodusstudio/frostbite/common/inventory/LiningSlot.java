@@ -7,9 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.item.custom.lining.LiningItem;
 
 import javax.annotation.Nullable;
 
@@ -35,13 +34,25 @@ public class LiningSlot extends Slot {
         return 1;
     }
 
-    public boolean mayPlace(ItemStack stack) {
-        return Frostbite.shouldShowLining && stack.canEquip(this.slot, this.owner);
+    @Override
+    public void onTake(Player player, ItemStack stack) {
+        super.onTake(player, stack);
+        Frostbite.LOGGER.debug("AAA");
     }
 
-    public boolean mayPickup(Player p_345575_) {
+    public boolean mayPlace(ItemStack stack) {
+        return Frostbite.shouldShowLining && stack.canEquip(this.slot, this.owner) && stack.getItem() instanceof LiningItem;
+    }
+
+    public boolean mayPickup(Player player) {
         ItemStack itemstack = this.getItem();
-        return Frostbite.shouldShowLining && (itemstack.isEmpty() || p_345575_.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(p_345575_);
+        return Frostbite.shouldShowLining && !itemstack.isEmpty() && itemstack.getItem() instanceof LiningItem;
+    }
+
+    public ItemStack remove(int amount) {
+        ItemStack stack = this.getItem();
+        Frostbite.savedLinings.setSpecificLiningForPlayer(owner.getStringUUID(), slot, ItemStack.EMPTY);
+        return stack;
     }
 
     @Nullable
@@ -60,5 +71,9 @@ public class LiningSlot extends Slot {
     public void set(ItemStack stack) {
         Frostbite.savedLinings.setSpecificLiningForPlayer(this.owner.getStringUUID(), slot, stack);
         this.setChanged();
+    }
+
+    public EquipmentSlot getSlot() {
+        return slot;
     }
 }

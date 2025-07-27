@@ -1,10 +1,8 @@
 package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import org.exodusstudio.frostbite.Frostbite;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -38,7 +36,7 @@ public class InventoryScreenMixin {
                 .booleanBuilder(Component.literal("A"), Component.literal("L"))
                 .displayOnlyValue()
                 .withInitialValue(!Frostbite.shouldShowLining)
-                .create(frostbite$screen.getGuiLeft() + 467, frostbite$screen.getGuiTop() + 208, 16, 16, Component.literal("A"),
+                .create(frostbite$screen.getGuiLeft() + 468, frostbite$screen.getGuiTop() + 208, 16, 16, Component.literal("A"),
                         (button, bool) -> Frostbite.shouldShowLining = !bool);
     }
 }

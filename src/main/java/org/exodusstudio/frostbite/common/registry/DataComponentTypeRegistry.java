@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.registry;
 
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

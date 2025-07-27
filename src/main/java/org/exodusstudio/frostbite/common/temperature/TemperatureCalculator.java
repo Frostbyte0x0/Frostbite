@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.exodusstudio.frostbite.common.registry.AttachmentTypeRegistry;
 
 import static org.exodusstudio.frostbite.common.temperature.TemperatureValues.TEMPERATURE_PER_BIOME;
 import static org.exodusstudio.frostbite.common.temperature.TemperatureValues.TEMPERATURE_PER_BLOCK;
