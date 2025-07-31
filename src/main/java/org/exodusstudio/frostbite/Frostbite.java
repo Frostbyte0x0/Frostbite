@@ -52,6 +52,7 @@ public class Frostbite {
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         MenuTypeRegistry.MENU_TYPES.register(modEventBus);
         ConsumeEffectRegistry.CONSUME_EFFECT_TYPES.register(modEventBus);
+        FoliagePlacerRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
         GameRuleRegistry.register();
 
         // TemperatureValues.addTemperatures();

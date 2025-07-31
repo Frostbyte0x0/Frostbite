@@ -118,8 +118,9 @@ public class SavedTemperatures {
 
     public float getTemperature(LivingEntity entity, boolean inner) {
         String entityUUID = entity.getStringUUID();
-        if (entityTemperatures.containsKey(entityUUID)) {
-            return entityTemperatures.get(entityUUID).get(inner ? 0 : 1);
+        List<Float> list;
+        if (entityTemperatures.containsKey(entityUUID) && (list = entityTemperatures.get(entityUUID)) != null) {
+            return list.get(inner ? 0 : 1);
         }
         return 20f;
     }
