@@ -97,7 +97,24 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.STRIPPED_CHARM_WOOD);
                         output.accept(BlockRegistry.CHARM_PLANKS);
                         output.accept(BlockRegistry.CHARM_LEAVES);
+                        output.accept(BlockRegistry.FLOWERING_CHARM_LEAVES);
                         output.accept(BlockRegistry.CHARM_SAPLING);
+
+                        // MOSSY CHARM WOOD
+                        output.accept(BlockRegistry.MOSSY_CHARM_LOG);
+                        output.accept(BlockRegistry.MOSSY_CHARM_WOOD);
+                        output.accept(BlockRegistry.MOSSY_STRIPPED_CHARM_LOG);
+                        output.accept(BlockRegistry.MOSSY_STRIPPED_CHARM_WOOD);
+                        output.accept(BlockRegistry.MOSSY_CHARM_PLANKS);
+
+                        // SHINNING CEDAR WOOD
+                        output.accept(BlockRegistry.SHINNING_CEDAR_LOG);
+                        output.accept(BlockRegistry.SHINNING_CEDAR_WOOD);
+                        output.accept(BlockRegistry.STRIPPED_SHINNING_CEDAR_LOG);
+                        output.accept(BlockRegistry.STRIPPED_SHINNING_CEDAR_WOOD);
+                        output.accept(BlockRegistry.SHINNING_CEDAR_PLANKS);
+                        output.accept(BlockRegistry.SHINNING_CEDAR_LEAVES);
+                        output.accept(BlockRegistry.SHINNING_CEDAR_SAPLING);
 
                         // DIM WOOD
                         output.accept(BlockRegistry.DIM_LOG);

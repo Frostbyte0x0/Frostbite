@@ -23,58 +23,54 @@ import java.util.List;
 
 import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
 
-public class MistyFoliagePlacer extends FoliagePlacer {
-    public static final MapCodec<MistyFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+public class CharmFoliagePlacer extends FoliagePlacer {
+    public static final MapCodec<CharmFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) ->
             foliagePlacerParts(instance)
                     .and(IntProvider.codec(0, 24).fieldOf("trunk_height")
                     .forGetter((foliagePlacer) -> foliagePlacer.trunkHeight))
-                    .apply(instance, MistyFoliagePlacer::new));
+                    .apply(instance, CharmFoliagePlacer::new));
     private final IntProvider trunkHeight;
     private int treeHeight;
-    private int maxRadius;
-    private int maxY;
-    private int minY;
     private final List<Pair<BlockPos, BlockPos>> leafPositions = new ArrayList<>();
     private final List<Pair<BlockPos, BlockPos>> leafPositionsToRemove = new ArrayList<>();
 
-    public MistyFoliagePlacer(IntProvider radius, IntProvider offset, IntProvider trunkHeight) {
+    public CharmFoliagePlacer(IntProvider radius, IntProvider offset, IntProvider trunkHeight) {
         super(radius, offset);
         this.trunkHeight = trunkHeight;
     }
 
     protected FoliagePlacerType<?> type() {
-        return FoliagePlacerRegistry.MISTY_FOLIAGE_PLACER.get();
+        return FoliagePlacerRegistry.CHARM_FOLIAGE_PLACER.get();
     }
 
 
     protected void createFoliage(
             LevelSimulatedReader level,
-            FoliagePlacer.FoliageSetter blockSetter,
+            FoliageSetter blockSetter,
             RandomSource random,
             TreeConfiguration config,
             int maxTreeHeight,
-            FoliagePlacer.FoliageAttachment attachment,
+            FoliageAttachment attachment,
             int foliageHeight,
             int foliageRadius,
             int offset
     ) {
-        // Place some sphere centers on the trunk
+        // Place a sphere center on the trunk
         // Loop over all the potential locations of leaves and place leaves if they're within a certain distance of center
-        // Loop over all the locations of leaves and remove them at random
+        // Loop over all the locations of leaves and remove them at random based on y level
         // Loop over all the locations of leaves and remove leaves if they don't have enough neighbors
 
         this.leafPositions.clear();
 
-        List<Pair<BlockPos, Float>> sphereCenters = generateSphereCenters(treeHeight - foliageHeight, treeHeight,
-                5, 7, random);
-
+        int bottomOffset = treeHeight - foliageHeight;
+        float radius = random.nextFloat();
 
         AABB locations = new AABB(
-                -maxRadius, minY, -maxRadius,
-                maxRadius, maxY, maxRadius
+                -Math.floor(radius), bottomOffset, -Math.floor(radius),
+                Math.ceil(radius), treeHeight + 3, Math.ceil(radius)
         );
 
-        placeLeavesFromSphereCenters(sphereCenters, blockSetter, random,
+        placeLeavesFromSphereCenter(new BlockPos(0, treeHeight, 0), 3, blockSetter, random,
                 attachment.pos().offset(0, -treeHeight, 0), locations, level, config);
 
 
@@ -83,33 +79,9 @@ public class MistyFoliagePlacer extends FoliagePlacer {
     }
 
 
-    private List<Pair<BlockPos, Float>> generateSphereCenters(int bottomOffset, int trunkHeight, int minCount, int maxCount, RandomSource random) {
-        List<Pair<BlockPos, Float>> centers = new ArrayList<>();
-        centers.add(new Pair<>(new BlockPos(0, trunkHeight, 0), 2f + random.nextFloat()));
-
-        int count = random.nextIntBetweenInclusive(minCount, maxCount) - 1;
-        int availableHeight = trunkHeight - bottomOffset + 1;
-
-        for (int i = 0; i < count; i++) {
-            int y = bottomOffset + 2 + Math.round((float) i / count * availableHeight) + random.nextInt(1) * plusOrMinus();
-            float radius = 3f * (2f - 1.5f * y / availableHeight) + random.nextFloat() * 1.25f;
-            Pair<BlockPos, Float> pair = new Pair<>(new BlockPos(0, y, 0), radius);
-            centers.add(pair);
-
-            if (radius > maxRadius) {
-                maxRadius = (int) Math.ceil(radius);
-            }
-        }
-
-        minY = bottomOffset;
-        maxY = trunkHeight + 3;
-
-        return centers;
-    }
-
-
-    private void placeLeavesFromSphereCenters(
-            List<Pair<BlockPos, Float>> sphereCenters,
+    private void placeLeavesFromSphereCenter(
+            BlockPos sphereCenter,
+            float radius,
             FoliageSetter foliageSetter,
             RandomSource random,
             BlockPos origin,
@@ -125,17 +97,20 @@ public class MistyFoliagePlacer extends FoliagePlacer {
                 for (int z = (int) locations.minZ - 1; z < locations.maxZ + 1; z++) {
 
                     leafPos.setWithOffset(Vec3i.ZERO, x, y, z);
-                    for (Pair<BlockPos, Float> sphereCenter : sphereCenters) {
-                        if (Math.sqrt(leafPos.distToCenterSqr(new Vec3(sphereCenter.getFirst()))) <= sphereCenter.getSecond()) {
-                            if (tryPlaceLeaf(level, foliageSetter, random, treeConfiguration,
-                                    leafPos.setWithOffset(origin, x + 1, y, z + 1))) {
-                                this.leafPositions.add(new Pair<>(
-                                        relativeLeafPos.setWithOffset(Vec3i.ZERO, x, y, z).immutable(),
-                                        leafPos.immutable()));
-                                break;
-                            }
+                    double dist =
+                            Math.pow(leafPos.getX() - sphereCenter.getX(), 2) +
+                            Math.pow(leafPos.getY() - sphereCenter.getY(), 2) * 4 +
+                            Math.pow(leafPos.getZ() - sphereCenter.getZ(), 2);
+                    if (dist <= radius) {
+                        if (tryPlaceLeaf(level, foliageSetter, random, treeConfiguration,
+                                leafPos.setWithOffset(origin, x + 1, y, z + 1))) {
+                            this.leafPositions.add(new Pair<>(
+                                    relativeLeafPos.setWithOffset(Vec3i.ZERO, x, y, z).immutable(),
+                                    leafPos.immutable()));
+                            break;
                         }
                     }
+
                 }
             }
         }
@@ -160,18 +135,19 @@ public class MistyFoliagePlacer extends FoliagePlacer {
         leafPositionsToRemove.clear();
     }
 
+
     private void deleteLonelyLeaves(LevelSimulatedReader level, FoliageSetter foliageSetter) {
         for (Pair<BlockPos, BlockPos> positions : leafPositions) {
             BlockPos pos = positions.getSecond();
             boolean isLeaf = level.isStateAtPosition(pos, state -> state.is(BlockRegistry.MISTY_LEAVES));
             int neighborCount = 0;
 
-            if (level.isStateAtPosition(newPosWithOff(pos, 1, 0, 0), MistyFoliagePlacer::isMistyBlock)) neighborCount++;
-            if (level.isStateAtPosition(newPosWithOff(pos, -1, 0, 0), MistyFoliagePlacer::isMistyBlock)) neighborCount++;
-            if (level.isStateAtPosition(newPosWithOff(pos, 0, 1, 0), MistyFoliagePlacer::isMistyBlock)) neighborCount++;
-            if (level.isStateAtPosition(newPosWithOff(pos, 0, -1, 0), MistyFoliagePlacer::isMistyBlock)) neighborCount++;
-            if (level.isStateAtPosition(newPosWithOff(pos, 0, 0, 1), MistyFoliagePlacer::isMistyBlock)) neighborCount++;
-            if (level.isStateAtPosition(newPosWithOff(pos, 0, 0, -1), MistyFoliagePlacer::isMistyBlock)) neighborCount++;
+            if (level.isStateAtPosition(newPosWithOff(pos, 1, 0, 0), CharmFoliagePlacer::isMistyBlock)) neighborCount++;
+            if (level.isStateAtPosition(newPosWithOff(pos, -1, 0, 0), CharmFoliagePlacer::isMistyBlock)) neighborCount++;
+            if (level.isStateAtPosition(newPosWithOff(pos, 0, 1, 0), CharmFoliagePlacer::isMistyBlock)) neighborCount++;
+            if (level.isStateAtPosition(newPosWithOff(pos, 0, -1, 0), CharmFoliagePlacer::isMistyBlock)) neighborCount++;
+            if (level.isStateAtPosition(newPosWithOff(pos, 0, 0, 1), CharmFoliagePlacer::isMistyBlock)) neighborCount++;
+            if (level.isStateAtPosition(newPosWithOff(pos, 0, 0, -1), CharmFoliagePlacer::isMistyBlock)) neighborCount++;
 
             if (isLeaf && neighborCount <= 1) {
                 foliageSetter.set(pos, Blocks.AIR.defaultBlockState());

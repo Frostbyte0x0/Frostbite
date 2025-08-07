@@ -31,10 +31,7 @@
       "minecraft:monster_room",
       "minecraft:monster_room_deep"
     ],
-    [
-      "minecraft:ice_spike",
-      "minecraft:ice_patch"
-    ],
+    [],
     [],
     [
       "minecraft:ore_dirt",
@@ -74,7 +71,6 @@
     ],
     [
       "minecraft:glow_lichen",
-      "minecraft:trees_water",
       "minecraft:flower_default",
       "minecraft:patch_grass_badlands",
       "minecraft:brown_mushroom_normal",

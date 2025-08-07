@@ -71,6 +71,7 @@
     ],
     [
       "minecraft:glow_lichen",
+      "frostbite:trees_misty",
       "minecraft:trees_water",
       "minecraft:flower_default",
       "minecraft:patch_grass_badlands",

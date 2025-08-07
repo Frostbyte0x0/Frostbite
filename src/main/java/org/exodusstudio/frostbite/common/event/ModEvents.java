@@ -1,9 +1,14 @@
 package org.exodusstudio.frostbite.common.event;
 
+import com.mojang.blaze3d.shaders.FogShape;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -15,6 +20,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
@@ -51,8 +57,29 @@ public class ModEvents {
     }
 
     @SubscribeEvent
+    public static void fog(ViewportEvent.RenderFog event) {
+        if (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN) {
+            event.setNearPlaneDistance(-50f);
+            event.setFarPlaneDistance(100f);
+        } else if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
+            event.setNearPlaneDistance(-50f);
+            event.setFarPlaneDistance(100f);
+        }
+
+        event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void fogColour(ViewportEvent.ComputeFogColor event) {
+        event.setRed(73 / 255f);
+        event.setGreen(106 / 255f);
+        event.setBlue(184 / 255f);
+    }
+
+    @SubscribeEvent
     public static void totem(LivingUseTotemEvent event) {
-        if (event.getTotem().is(ItemRegistry.LAST_STAND) && event.getEntity() instanceof Player player && player.level() instanceof ServerLevel serverLevel) {
+        if (event.getTotem().is(ItemRegistry.LAST_STAND) && event.getEntity() instanceof Player player &&
+                player.level() instanceof ServerLevel serverLevel) {
             ((LastStand) player).frostbite$startAccumulatingDamage(serverLevel);
         }
     }

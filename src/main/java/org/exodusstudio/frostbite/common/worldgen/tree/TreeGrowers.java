@@ -6,7 +6,7 @@ import org.exodusstudio.frostbite.common.worldgen.ModConfiguredFeatures;
 
 import java.util.Optional;
 
-public class ModTreeGrowers {
+public class TreeGrowers {
     public static final TreeGrower MISTY = new TreeGrower(Frostbite.MOD_ID + ":misty",
             Optional.empty(), Optional.of(ModConfiguredFeatures.MISTY_KEY), Optional.empty());
 

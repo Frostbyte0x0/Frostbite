@@ -23,17 +23,17 @@ public class DataGenerator {
         PackOutput packOutput = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-
-        event.addProvider(new ModRecipeProvider.Runner(packOutput, lookupProvider));
-        event.addProvider(new LootTableProvider(packOutput, Collections.emptySet(),
-                List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
-
-        BlockTagsProvider blockTagsProvider = new ModBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
-        event.addProvider(blockTagsProvider);
-        event.addProvider(new ModItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
-
-        event.addProvider(new ModItemModelProvider(packOutput, existingFileHelper));
-        event.addProvider(new ModBlockStateProvider(packOutput, existingFileHelper));
+//
+//        event.addProvider(new ModRecipeProvider.Runner(packOutput, lookupProvider));
+//        event.addProvider(new LootTableProvider(packOutput, Collections.emptySet(),
+//                List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+//
+//        BlockTagsProvider blockTagsProvider = new ModBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
+//        event.addProvider(blockTagsProvider);
+//        event.addProvider(new ModItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+//
+//        event.addProvider(new ModItemModelProvider(packOutput, existingFileHelper));
+//        event.addProvider(new ModBlockStateProvider(packOutput, existingFileHelper));
         event.addProvider(new ModWorldGenProvider(packOutput, lookupProvider));
     }
 }

@@ -1,20 +1,23 @@
 package org.exodusstudio.frostbite.common.registry;
 
-import net.minecraft.world.level.block.*;
-import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.block.HoarfrostWoodBlock;
 import org.exodusstudio.frostbite.common.block.RangedLeavesBlock;
 import org.exodusstudio.frostbite.common.block.WeavingTable;
-import org.exodusstudio.frostbite.common.worldgen.tree.ModTreeGrowers;
+import org.exodusstudio.frostbite.common.worldgen.tree.TreeGrowers;
 
 import java.util.function.Supplier;
 
@@ -57,7 +60,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_leaves")))));
     public static final DeferredBlock<Block> MISTY_SAPLING = registerBLock("misty_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_sapling")))));
 
     // DIM WOOD
@@ -80,7 +83,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_leaves")))));
     public static final DeferredBlock<Block> DIM_SAPLING = registerBLock("dim_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.DIM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.DIM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_sapling")))));
 
     // SILVER WOOD
@@ -103,7 +106,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_leaves")))));
     public static final DeferredBlock<Block> SILVER_SAPLING = registerBLock("silver_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.SILVER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.SILVER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_sapling")))));
 
     // CHARM WOOD
@@ -125,9 +128,29 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> CHARM_LEAVES = registerBLock("charm_leaves",
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_leaves")))));
+    public static final DeferredBlock<Block> FLOWERING_CHARM_LEAVES = registerBLock("flowering_charm_leaves",
+            () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "flowering_charm_leaves")))));
     public static final DeferredBlock<Block> CHARM_SAPLING = registerBLock("charm_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_sapling")))));
+
+    // MOSSY CHARM WOOD
+    public static final DeferredBlock<Block> MOSSY_CHARM_LOG = registerBLock("mossy_charm_log",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_charm_log")))));
+    public static final DeferredBlock<Block> MOSSY_CHARM_WOOD = registerBLock("mossy_charm_wood",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_charm_wood")))));
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_CHARM_LOG = registerBLock("mossy_stripped_charm_log",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_stripped_charm_log")))));
+    public static final DeferredBlock<Block> MOSSY_STRIPPED_CHARM_WOOD = registerBLock("mossy_stripped_charm_wood",
+            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_stripped_charm_wood")))));
+    public static final DeferredBlock<Block> MOSSY_CHARM_PLANKS = registerBLock("mossy_charm_planks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_charm_planks")))));
 
     // SHINNING CEDAR WOOD
     public static final DeferredBlock<Block> SHINNING_CEDAR_LOG = registerBLock("shinning_cedar_log",
@@ -149,7 +172,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).lightLevel(p -> 10)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_leaves")))));
     public static final DeferredBlock<Block> SHINNING_CEDAR_SAPLING = registerBLock("shinning_cedar_sapling",
-            () -> new SaplingBlock(ModTreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_sapling")))));
 
     public static final DeferredBlock<HorizontalDirectionalBlock> WEAVING_TABLE = registerBLock("weaving_table",

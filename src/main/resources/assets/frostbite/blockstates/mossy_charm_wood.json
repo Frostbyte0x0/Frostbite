@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "frostbite:block/mossy_charm_wood_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "frostbite:block/mossy_charm_wood"
+    },
+    "axis=z": {
+      "model": "frostbite:block/mossy_charm_wood_horizontal",
+      "x": 90
+    }
+  }
+}
