@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_mirrored",
+  "textures": {
+    "end": "frostbite:block/slated_ice_top",
+    "side": "frostbite:block/slated_ice"
+  }
+}

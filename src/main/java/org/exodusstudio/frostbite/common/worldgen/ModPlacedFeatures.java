@@ -24,13 +24,16 @@ import java.util.List;
 
 public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> MISTY_KEY = registerKey("trees_misty");
-
+    public static final ResourceKey<PlacedFeature> MEGA_MISTY_KEY = registerKey("mega_trees_misty");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holdergetter = context.lookup(Registries.CONFIGURED_FEATURE);
-        Holder<ConfiguredFeature<?, ?>> holder = holdergetter.getOrThrow(ModConfiguredFeatures.MISTY_KEY);
 
+        Holder<ConfiguredFeature<?, ?>> holder = holdergetter.getOrThrow(ModConfiguredFeatures.MISTY_KEY);
         register(context, MISTY_KEY, holder, List.of());
+
+        Holder<ConfiguredFeature<?, ?>> holder1 = holdergetter.getOrThrow(ModConfiguredFeatures.MEGA_MISTY_KEY);
+        register(context, MEGA_MISTY_KEY, holder1, List.of());
     }
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {

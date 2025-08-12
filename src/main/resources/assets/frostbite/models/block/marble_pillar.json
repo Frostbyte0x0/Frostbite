@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "frostbite:block/marble_pillar_top",
+    "side": "frostbite:block/marble_pillar"
+  }
+}

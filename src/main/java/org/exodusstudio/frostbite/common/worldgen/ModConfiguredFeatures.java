@@ -18,12 +18,20 @@ import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MISTY_KEY = registerKey("misty");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MEGA_MISTY_KEY = registerKey("mega_misty");
     public static final ResourceKey<ConfiguredFeature<?, ?>> DIM_KEY = registerKey("dim");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_KEY = registerKey("silver");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CHARM_KEY = registerKey("charm");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, MISTY_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(BlockRegistry.MISTY_LOG.get()),
+                new StraightTrunkPlacer(4, 5, 3),
+                BlockStateProvider.simple(BlockRegistry.MISTY_LEAVES.get()),
+                new BlobFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), 4),
+                new TwoLayersFeatureSize(1, 0, 2)).build());
+
+        register(context, MEGA_MISTY_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(BlockRegistry.MISTY_LOG.get()),
                 new StraightTrunkPlacer(4, 5, 3),
                 BlockStateProvider.simple(BlockRegistry.MISTY_LEAVES.get()),

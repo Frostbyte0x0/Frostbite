@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.event;
 
-import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -42,6 +43,8 @@ import java.util.List;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ModEvents {
+    public static float shroudedBlendLerp = 0;
+
     @SubscribeEvent
     public static void entityDamaged(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player) {
@@ -58,22 +61,66 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void fog(ViewportEvent.RenderFog event) {
-        if (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN) {
-            event.setNearPlaneDistance(-50f);
-            event.setFarPlaneDistance(100f);
-        } else if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
-            event.setNearPlaneDistance(-50f);
-            event.setFarPlaneDistance(100f);
-        }
+        Player player = Minecraft.getInstance().player;
+        ClientLevel level = Minecraft.getInstance().level;
+        if (player == null || !player.isAlive() || player.isSpectator() || level == null) return;
 
-        event.setCanceled(true);
+        if (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN || event.getMode() == FogRenderer.FogMode.FOG_SKY) {
+//            int[] smoothColour = smoothColour(player, level);
+//
+//            int delta = getColourDifference(smoothColour,
+//                    new int[] { ARGB.red(8434839), ARGB.green(8434839), ARGB.blue(8434839) });
+//
+//            int range = 13;
+
+            //if (delta <= range) {
+                //float lerp = 1 - (float) delta / range;
+            float near = Mth.lerp(shroudedBlendLerp, event.getNearPlaneDistance(), -50f);
+            float far = Mth.lerp(shroudedBlendLerp, event.getFarPlaneDistance(), 100f);
+
+            event.setNearPlaneDistance(near);
+            event.setFarPlaneDistance(far);
+            //}
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
     public static void fogColour(ViewportEvent.ComputeFogColor event) {
-        event.setRed(73 / 255f);
-        event.setGreen(106 / 255f);
-        event.setBlue(184 / 255f);
+        Player player = Minecraft.getInstance().player;
+        ClientLevel level = Minecraft.getInstance().level;
+        if (player == null || !player.isAlive() || player.isSpectator() || level == null) return;
+
+        computeShroudedBlendLerp(level, player, event.getPartialTick());
+
+        // 8434839
+        // int colour = level.calculateBlockTint(player.blockPosition().below(), Biome::getGrassColor);
+
+
+//        int[] smoothColour = smoothColour(player, level);
+//
+//        int delta = getColourDifference(smoothColour,
+//                new int[] { ARGB.red(8434839), ARGB.green(8434839), ARGB.blue(8434839) });
+//
+//        //Frostbite.LOGGER.debug(String.valueOf(delta));
+//
+//        int range = 13;
+
+        //if (delta <= range) {
+        //float lerp = 1 - (float) delta / range;
+        float red = Mth.lerp(shroudedBlendLerp, event.getRed(), 73 / 255f);
+        float green = Mth.lerp(shroudedBlendLerp, event.getGreen(), 106 / 255f);
+        float blue = Mth.lerp(shroudedBlendLerp, event.getBlue(), 184 / 255f);
+
+        event.setRed(red);
+        event.setGreen(green);
+        event.setBlue(blue);
+        //}
+
+
+//        event.setRed(73 / 255f);
+//        event.setGreen(106 / 255f);
+//        event.setBlue(184 / 255f);
     }
 
     @SubscribeEvent
@@ -178,6 +225,54 @@ public class ModEvents {
                     ItemStack.EMPTY,
                     ItemStack.EMPTY,
                     ItemStack.EMPTY);
+        }
+    }
+
+    public static int[] smoothColour(Player player, ClientLevel level) {
+        int colourX0 = level.calculateBlockTint(player.blockPosition().west(),  Biome::getGrassColor);
+        int colourX1 = level.calculateBlockTint(player.blockPosition().east(),  Biome::getGrassColor);
+        int colourY0 = level.calculateBlockTint(player.blockPosition().below(), Biome::getGrassColor);
+        int colourY1 = level.calculateBlockTint(player.blockPosition().above(), Biome::getGrassColor);
+        int colourZ0 = level.calculateBlockTint(player.blockPosition().north(), Biome::getGrassColor);
+        int colourZ1 = level.calculateBlockTint(player.blockPosition().south(), Biome::getGrassColor);
+
+        int redX = (int) Mth.lerp(player.getX() % 1, ARGB.red(colourX0), ARGB.red(colourX1));
+        int redY = (int) Mth.lerp(player.getY() % 1, ARGB.red(colourY0), ARGB.red(colourY1));
+        int redZ = (int) Mth.lerp(player.getZ() % 1, ARGB.red(colourZ0), ARGB.red(colourZ1));
+
+        int greenX = (int) Mth.lerp(player.getX() % 1, ARGB.green(colourX0), ARGB.green(colourX1));
+        int greenY = (int) Mth.lerp(player.getY() % 1, ARGB.green(colourY0), ARGB.green(colourY1));
+        int greenZ = (int) Mth.lerp(player.getZ() % 1, ARGB.green(colourZ0), ARGB.green(colourZ1));
+
+        int blueX = (int) Mth.lerp(player.getX() % 1, ARGB.blue(colourX0), ARGB.blue(colourX1));
+        int blueY = (int) Mth.lerp(player.getY() % 1, ARGB.blue(colourY0), ARGB.blue(colourY1));
+        int blueZ = (int) Mth.lerp(player.getZ() % 1, ARGB.blue(colourZ0), ARGB.blue(colourZ1));
+
+        int red = (redX + redY + redZ) / 3;
+        int green = (greenX + greenY + greenZ) / 3;
+        int blue = (blueX + blueY + blueZ) / 3;
+
+        return new int[] {
+            red,
+            green,
+            blue,
+        };
+    }
+
+    public static int getColourDifference(int[] colour1, int[] colour2) {
+        return Math.abs(colour1[0] - colour2[0]) +
+               Math.abs(colour1[1] - colour2[1]) +
+               Math.abs(colour1[2] - colour2[2]);
+    }
+
+    public static void computeShroudedBlendLerp(ClientLevel level, Player player, double partialTicks) {
+        String name = level.getBiome(player.blockPosition()).toString();
+
+        partialTicks /= 200;
+        if (name.contains("shrouded_forest")) {
+            shroudedBlendLerp = (float) Mth.clamp(shroudedBlendLerp + partialTicks, 0, 1);
+        } else {
+            shroudedBlendLerp = (float) Mth.clamp(shroudedBlendLerp - partialTicks, 0, 1);
         }
     }
 }

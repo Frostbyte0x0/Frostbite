@@ -8,7 +8,7 @@
         "distribution": [
           {
             "data": 2,
-            "weight": 9
+            "weight": 6
           }
         ]
       }
@@ -30,7 +30,7 @@
     {
       "type": "minecraft:block_predicate_filter",
       "predicate": {
-        "type": "minecraft:true",
+        "type": "minecraft:would_survive",
         "state": {
           "Name": "frostbite:misty_sapling",
           "Properties": {

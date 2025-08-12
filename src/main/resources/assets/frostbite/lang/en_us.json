@@ -2,6 +2,18 @@
   "itemGroup.frostbite.frostbite_tab": "Frostbite",
 
   "item.frostbite.black_block": "Black Block",
+  "item.frostbite.permafrozen_dirt": "Permafrozen Dirt",
+  "item.frostbite.slated_ice": "Slated Ice",
+  "item.frostbite.chiseled_slated_ice": "Chiseled Slated Ice",
+  "item.frostbite.cobbled_slated_ice": "Cobbled Slated Ice",
+  "item.frostbite.polished_slated_ice": "Polished Slated Ice",
+  "item.frostbite.cracked_slated_ice_tiles": "Cracked Slated Ice Tiles",
+  "item.frostbite.slated_ice_bricks": "Slated Ice Bricks",
+  "item.frostbite.slated_ice_tiles": "Slated Ice Tiles",
+  "item.frostbite.marble": "Marble",
+  "item.frostbite.chiseled_marble": "Chiseled Marble",
+  "item.frostbite.marble_bricks": "Marble Bricks",
+  "item.frostbite.marble_pillar": "Marble Pillar",
 
   "item.frostbite.misty_log": "Misty Log",
   "item.frostbite.misty_wood": "Misty Wood",

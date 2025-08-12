@@ -5,7 +5,7 @@
     "minecraft:cave_extra_underground",
     "minecraft:canyon"
   ],
-  "downfall": 0.5,
+  "downfall": 1,
   "effects": {
     "fog_color": 8289748,
     "mood_sound": {
@@ -72,13 +72,12 @@
     [
       "minecraft:glow_lichen",
       "frostbite:trees_misty",
-      "minecraft:trees_water",
+      "frostbite:mega_trees_misty",
       "minecraft:flower_default",
       "minecraft:patch_grass_badlands",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_pumpkin",
       "minecraft:seagrass_deep",
       "minecraft:kelp_cold"
     ],
@@ -187,5 +186,5 @@
       }
     ]
   },
-  "temperature": -0.5
+  "temperature": 0
 }

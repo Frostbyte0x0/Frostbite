@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class TreeGrowers {
     public static final TreeGrower MISTY = new TreeGrower(Frostbite.MOD_ID + ":misty",
-            Optional.empty(), Optional.of(ModConfiguredFeatures.MISTY_KEY), Optional.empty());
+            Optional.of(ModConfiguredFeatures.MEGA_MISTY_KEY), Optional.of(ModConfiguredFeatures.MISTY_KEY), Optional.empty());
 
     public static final TreeGrower DIM = new TreeGrower(Frostbite.MOD_ID + ":dim",
             Optional.empty(), Optional.of(ModConfiguredFeatures.DIM_KEY), Optional.empty());

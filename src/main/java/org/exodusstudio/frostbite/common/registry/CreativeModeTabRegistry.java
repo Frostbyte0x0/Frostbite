@@ -23,8 +23,18 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.METAL_COG);
 
                         output.accept(BlockRegistry.PERMAFROZEN_DIRT);
-                        output.accept(BlockRegistry.PERMAFROZEN_GRASS);
-                        output.accept(BlockRegistry.PETRIFIED_ICE);
+                        output.accept(BlockRegistry.SLATED_ICE);
+                        output.accept(BlockRegistry.CHISELED_SLATED_ICE);
+                        output.accept(BlockRegistry.COBBLED_SLATED_ICE);
+                        output.accept(BlockRegistry.CRACKED_SLATED_ICE_TILES);
+                        output.accept(BlockRegistry.POLISHED_SLATED_ICE);
+                        output.accept(BlockRegistry.SLATED_ICE_BRICKS);
+                        output.accept(BlockRegistry.SLATED_ICE_TILES);
+
+                        output.accept(BlockRegistry.MARBLE);
+                        output.accept(BlockRegistry.MARBLE_BRICKS);
+                        output.accept(BlockRegistry.CHISELED_MARBLE);
+                        output.accept(BlockRegistry.MARBLE_PILLAR);
 
                         output.accept(ItemRegistry.BLACK_ICE_HELMET);
                         output.accept(ItemRegistry.BLACK_ICE_CHESTPLATE);
