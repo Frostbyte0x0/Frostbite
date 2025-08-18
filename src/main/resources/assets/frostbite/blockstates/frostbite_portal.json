@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "frostbite:block/frostbite_portal_ns"
+    },
+    "axis=z": {
+      "model": "frostbite:block/frostbite_portal_ew"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "frostbite:block/reinforced_black_ice_receptacle",
+  "textures": {
+    "front": "frostbite:block/reinforced_black_ice_receptacle_full"
+  }
+}

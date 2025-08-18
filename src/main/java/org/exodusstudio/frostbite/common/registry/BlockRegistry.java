@@ -7,6 +7,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
@@ -23,6 +26,24 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> BLACK_BLOCK = registerBlock("black_block",
             () -> new Block(BlockBehaviour.Properties.of().strength(10f)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "black_block")))));
+
+
+
+    public static final DeferredBlock<Block> REINFORCED_BLACK_ICE = registerBlock("reinforced_black_ice",
+            () -> new Block(BlockBehaviour.Properties.of().strength(-1f)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "reinforced_black_ice")))));
+    public static final DeferredBlock<Block> REINFORCED_BLACK_ICE_RECEPTACLE = registerBlock("reinforced_black_ice_receptacle",
+            () -> new ReinforcedBlackIceReceptacleBlock(BlockBehaviour.Properties.of().strength(-1f)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "reinforced_black_ice_receptacle")))));
+    public static final DeferredBlock<Block> FROSTBITE_PORTAL = registerBlock("frostbite_portal",
+            () -> new FrostbitePortalBlock(BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .randomTicks()
+                    .strength(-1.0F)
+                    .sound(SoundType.GLASS)
+                    .lightLevel(p_50884_ -> 11)
+                    .pushReaction(PushReaction.BLOCK)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite_portal")))));
 
 
     public static final DeferredBlock<Block> PERMAFROZEN_DIRT = registerBlock("permafrozen_dirt",
@@ -61,7 +82,7 @@ public class BlockRegistry {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "marble_bricks")))));
     public static final DeferredBlock<Block> MARBLE_PILLAR = registerBlock("marble_pillar",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_PILLAR)
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_PILLAR)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "marble_pillar")))));
 
 
@@ -81,12 +102,39 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> MISTY_PLANKS = registerBlock("misty_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_planks")))));
+    public static final DeferredBlock<Block> MISTY_STAIRS = registerBlock("misty_stairs",
+            () -> new StairBlock(MISTY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_stairs")))));
+    public static final DeferredBlock<Block> MISTY_SLAB = registerBlock("misty_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_slab")))));
+    public static final DeferredBlock<Block> MISTY_FENCE = registerBlock("misty_fence",
+            () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_fence")))));
+    public static final DeferredBlock<Block> MISTY_FENCE_GATE = registerBlock("misty_fence_gate",
+            () -> new FenceGateBlock(WoodType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_fence_gate")))));
+    public static final DeferredBlock<Block> MISTY_DOOR = registerBlock("misty_door",
+            () -> new DoorBlock(BlockSetType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_door")))));
+    public static final DeferredBlock<Block> MISTY_TRAPDOOR = registerBlock("misty_trapdoor",
+            () -> new TrapDoorBlock(BlockSetType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_trapdoor")))));
+    public static final DeferredBlock<Block> MISTY_BUTTON = registerBlock("misty_button",
+            () -> new ButtonBlock(BlockSetType.ACACIA, 30, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_button")))));
     public static final DeferredBlock<Block> MISTY_LEAVES = registerBlock("misty_leaves",
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_leaves")))));
     public static final DeferredBlock<Block> MISTY_SAPLING = registerBlock("misty_sapling",
-            () -> new SnowySaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SnowySaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_sapling")))));
+    public static final DeferredBlock<Block> MISTY_SIGN = registerBlock("misty_sign",
+            () -> new StandingSignBlock(WoodType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_sign")))));
+    public static final DeferredBlock<Block> MISTY_HANGING_SIGN = registerBlock("misty_hanging_sign",
+            () -> new WallHangingSignBlock(WoodType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_hanging_sign")))));
 
     // DIM WOOD
     public static final DeferredBlock<Block> DIM_LOG = registerBlock("dim_log",

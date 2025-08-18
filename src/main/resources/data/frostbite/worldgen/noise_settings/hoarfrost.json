@@ -5,7 +5,7 @@
   "ore_veins_enabled": true,
   "legacy_random_source": false,
   "default_block": {
-    "Name": "minecraft:blue_ice"
+    "Name": "frostbite:slated_ice"
   },
   "default_fluid": {
     "Name": "minecraft:air"
@@ -379,14 +379,14 @@
               "type": "minecraft:condition",
               "if_true": {
                 "type": "minecraft:noise_threshold",
-                "max_threshold": 0.2,
-                "min_threshold": -0.5,
+                "max_threshold": -0.2,
+                "min_threshold": -0.3,
                 "noise": "minecraft:packed_ice"
               },
               "then_run": {
                 "type": "minecraft:block",
                 "result_state": {
-                  "Name": "minecraft:packed_ice"
+                  "Name": "minecraft:blue_ice"
                 }
               }
             },
@@ -394,7 +394,7 @@
               "type": "minecraft:condition",
               "if_true": {
                 "type": "minecraft:noise_threshold",
-                "max_threshold": 0.025,
+                "max_threshold": 0.065,
                 "min_threshold": -0.0625,
                 "noise": "minecraft:ice"
               },
@@ -402,6 +402,21 @@
                 "type": "minecraft:block",
                 "result_state": {
                   "Name": "minecraft:ice"
+                }
+              }
+            },
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:noise_threshold",
+                "max_threshold": 0.5,
+                "min_threshold": -0.2,
+                "noise": "minecraft:powder_snow"
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": {
+                  "Name": "frostbite:marble"
                 }
               }
             },

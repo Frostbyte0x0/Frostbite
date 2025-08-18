@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.item.custom.lining.LiningItem;
+import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 
 import javax.annotation.Nullable;
 

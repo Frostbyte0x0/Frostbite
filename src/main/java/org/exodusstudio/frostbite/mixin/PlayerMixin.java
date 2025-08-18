@@ -13,7 +13,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.LastStandEntity;
-import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
+import org.exodusstudio.frostbite.common.item.last_stand.LastStand;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

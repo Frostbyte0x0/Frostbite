@@ -7,6 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,16 +31,20 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.block.HeaterStorage;
+import org.exodusstudio.frostbite.common.block.ReinforcedBlackIceReceptacleBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
-import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStand;
+import org.exodusstudio.frostbite.common.item.last_stand.LastStand;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.structures.FTOPortal;
+import org.exodusstudio.frostbite.common.structures.OTFPortal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +52,12 @@ import java.util.List;
 @EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ModEvents {
     public static float shroudedBlendLerp = 0;
+
+    @SubscribeEvent
+    public static void resetPortalCount(ServerStoppingEvent event) {
+        OTFPortal.count = 0;
+        FTOPortal.count = 0;
+    }
 
     @SubscribeEvent
     public static void entityDamaged(LivingDamageEvent.Pre event) {
@@ -186,15 +200,26 @@ public class ModEvents {
     @SubscribeEvent
     public static void heater(UseItemOnBlockEvent event) {
         assert event.getPlayer() != null;
-        if (event.getPlayer().getItemInHand(event.getHand()).is(Items.FLINT_AND_STEEL) &&
+        BlockState state = event.getLevel().getBlockState(event.getPos());
+        ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
+
+        if (stack.is(Items.FLINT_AND_STEEL) &&
                 event.getLevel() instanceof ServerLevel serverLevel &&
-                serverLevel.getBlockState(event.getPos()).getBlock() instanceof HeaterBlock block &&
+                state.getBlock() instanceof HeaterBlock block &&
                 Frostbite.savedHeaters.stream().noneMatch(heater ->
                         heater.getPos().equals(event.getPos()) &&
                         heater.getDimensionName().equals(serverLevel.dimension().location().toString()))) {
             Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().location().toString()));
             event.cancelWithResult(InteractionResult.FAIL);
-        }
+
+        } //else if (stack.is(ItemRegistry.FROSTBITTEN_GEM) &&
+//                state.getBlock() instanceof ReinforcedBlackIceReceptacleBlock block &&
+//                !state.getValue(BlockStateProperties.ACTIVE)) {
+//            stack.consume(1, event.getPlayer());
+//            BlockState state1 = state.setValue(BlockStateProperties.ACTIVE, true);
+//            event.getLevel().setBlock(event.getPos(), state1, 3);
+//            event.getLevel().playSound(event.getPlayer(), event.getPos(), SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.0F);
+//        }
     }
 //
 //    @SubscribeEvent

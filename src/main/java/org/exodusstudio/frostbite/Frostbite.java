@@ -16,7 +16,7 @@ import org.exodusstudio.frostbite.common.block.HeaterStorage;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
-import org.exodusstudio.frostbite.common.item.custom.lining.SavedLinings;
+import org.exodusstudio.frostbite.common.item.lining.SavedLinings;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.temperature.SavedTemperatures;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
@@ -53,6 +53,7 @@ public class Frostbite {
         MenuTypeRegistry.MENU_TYPES.register(modEventBus);
         ConsumeEffectRegistry.CONSUME_EFFECT_TYPES.register(modEventBus);
         FoliagePlacerRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
+        StructureRegistry.STRUCTURES.register(modEventBus);
         GameRuleRegistry.register();
 
         // TemperatureValues.addTemperatures();

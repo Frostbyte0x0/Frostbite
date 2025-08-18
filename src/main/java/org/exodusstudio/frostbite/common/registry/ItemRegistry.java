@@ -16,21 +16,20 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.component.ModeData;
-import org.exodusstudio.frostbite.common.item.ModArmorMaterials;
-import org.exodusstudio.frostbite.common.item.custom.*;
-import org.exodusstudio.frostbite.common.item.custom.last_stand.LastStandItem;
-import org.exodusstudio.frostbite.common.item.custom.lining.LiningItem;
-import org.exodusstudio.frostbite.common.item.custom.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.custom.weapons.ChaincicleItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.GaleFanItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.IceHammerItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.StunningBellItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.elf_weapons.CastingStaffItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.elf_weapons.DrainingStaffItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.gun.RevolverItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.gun.SniperItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.gun.bullet.RevolverBulletItem;
-import org.exodusstudio.frostbite.common.item.custom.weapons.gun.bullet.SniperBulletItem;
+import org.exodusstudio.frostbite.common.item.*;
+import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
+import org.exodusstudio.frostbite.common.item.lining.LiningItem;
+import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
+import org.exodusstudio.frostbite.common.item.weapons.ChaincicleItem;
+import org.exodusstudio.frostbite.common.item.weapons.GaleFanItem;
+import org.exodusstudio.frostbite.common.item.weapons.IceHammerItem;
+import org.exodusstudio.frostbite.common.item.weapons.StunningBellItem;
+import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.CastingStaffItem;
+import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.DrainingStaffItem;
+import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
+import org.exodusstudio.frostbite.common.item.weapons.gun.SniperItem;
+import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
+import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.SniperBulletItem;
 
 import java.util.List;
 
@@ -59,36 +58,36 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> BLACK_ICE_HELMET = ITEMS.register("black_ice_helmet",
-            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.HELMET,
+            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.HELMET,
                     new Item.Properties()//.durability(ArmorType.HELMET.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLACK_ICE_CHESTPLATE = ITEMS.register("black_ice_chestplate",
-            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.CHESTPLATE,
+            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.CHESTPLATE,
                     new Item.Properties()//.durability(ArmorType.CHESTPLATE.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLACK_ICE_LEGGINGS = ITEMS.register("black_ice_leggings",
-            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.LEGGINGS,
+            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.LEGGINGS,
                     new Item.Properties()//.durability(ArmorType.LEGGINGS.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLACK_ICE_BOOTS = ITEMS.register("black_ice_boots",
-            (id) -> new ArmorItem(ModArmorMaterials.BLACK_ICE, ArmorType.BOOTS,
+            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.BOOTS,
                     new Item.Properties()//.durability(ArmorType.BOOTS.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> FROSTBITTEN_HELMET = ITEMS.register("frostbitten_helmet",
-            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.HELMET,
+            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.HELMET,
                     new Item.Properties()//.durability(ArmorType.HELMET.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_CHESTPLATE = ITEMS.register("frostbitten_chestplate",
-            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.CHESTPLATE,
+            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.CHESTPLATE,
                     new Item.Properties()//.durability(ArmorType.CHESTPLATE.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_LEGGINGS = ITEMS.register("frostbitten_leggings",
-            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.LEGGINGS,
+            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.LEGGINGS,
                     new Item.Properties()//.durability(ArmorType.LEGGINGS.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_BOOTS = ITEMS.register("frostbitten_boots",
-            (id) -> new ArmorItem(ModArmorMaterials.FROSTBITTEN, ArmorType.BOOTS,
+            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.BOOTS,
                     new Item.Properties()//.durability(ArmorType.BOOTS.getDurability(15))
                             .setId(ResourceKey.create(Registries.ITEM, id))));
 
@@ -289,5 +288,8 @@ public class ItemRegistry {
                     .component(DataComponentTypeRegistry.MODE, new ModeData("firstAttack"))
                     .component(DataComponentTypeRegistry.CHARGE, new ChargeData(0))
                     .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROSTBITTEN_GEM =
+            ITEMS.register("frostbitten_gem", (id) -> new FrostbittenGemItem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 }

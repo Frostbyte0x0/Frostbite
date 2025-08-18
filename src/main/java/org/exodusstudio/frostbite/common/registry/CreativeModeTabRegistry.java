@@ -16,11 +16,15 @@ public class CreativeModeTabRegistry {
     public static final Supplier<CreativeModeTab> FROSTBITE_TAB =
             CREATIVE_MODE_TABS.register("frostbite_tab", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.frostbite.frostbite_tab"))
-                    .icon(() -> new ItemStack(ItemRegistry.BLUE_HARDENED_SNOWBALL.get()))
+                    .icon(() -> new ItemStack(ItemRegistry.FROSTBITTEN_GEM.get()))
                     .displayItems(((itemDisplayParameters, output) -> {
                         output.accept(ItemRegistry.ADVANCED_CLOCK);
                         output.accept(ItemRegistry.LAST_STAND);
                         output.accept(ItemRegistry.METAL_COG);
+
+                        output.accept(BlockRegistry.REINFORCED_BLACK_ICE);
+                        output.accept(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE);
+                        output.accept(ItemRegistry.FROSTBITTEN_GEM);
 
                         output.accept(BlockRegistry.PERMAFROZEN_DIRT);
                         output.accept(BlockRegistry.SLATED_ICE);

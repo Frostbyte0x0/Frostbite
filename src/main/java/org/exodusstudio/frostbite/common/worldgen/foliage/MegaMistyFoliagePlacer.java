@@ -20,9 +20,7 @@ public class MegaMistyFoliagePlacer extends MistyFoliagePlacer {
         this.trunkHeight = trunkHeight;
         this.minCount = 5;
         this.maxCount = 7;
-        this.topRadius = 2;
-        this.offsetXZ = 1;
-        this.range = 7;
+        this.large = true;
     }
 
     protected FoliagePlacerType<?> type() {

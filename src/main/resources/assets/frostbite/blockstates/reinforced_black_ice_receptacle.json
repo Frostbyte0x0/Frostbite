@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "facing=down,active=false": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle",
+      "x": 90
+    },
+    "facing=down,active=true": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle_on",
+      "x": 90
+    },
+    "facing=east,active=false": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle",
+      "y": 90
+    },
+    "facing=east,active=true": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle_on",
+      "y": 90
+    },
+    "facing=north,active=false": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle"
+    },
+    "facing=north,active=true": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle_on"
+    },
+    "facing=south,active=false": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle",
+      "y": 180
+    },
+    "facing=south,active=true": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle_on",
+      "y": 180
+    },
+    "facing=up,active=false": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle",
+      "x": 270
+    },
+    "facing=up,active=true": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle_on",
+      "x": 270
+    },
+    "facing=west,active=false": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle",
+      "y": 270
+    },
+    "facing=west,active=true": {
+      "model": "frostbite:block/reinforced_black_ice_receptacle_on",
+      "y": 270
+    }
+  }
+}

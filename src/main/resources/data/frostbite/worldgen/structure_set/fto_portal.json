@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "frostbite:fto_portal",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1224466880,
+    "spacing": 3,
+    "separation": 0
+  }
+}
