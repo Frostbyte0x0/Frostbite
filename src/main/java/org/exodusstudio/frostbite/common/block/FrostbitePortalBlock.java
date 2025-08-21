@@ -1,8 +1,7 @@
 package org.exodusstudio.frostbite.common.block;
 
 import net.minecraft.BlockUtil;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -26,13 +26,17 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.portal.PortalShape;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.exodusstudio.frostbite.Frostbite;
-import org.jetbrains.annotations.Nullable;
+import org.exodusstudio.frostbite.common.structures.FTOPortal;
 
 import java.util.Optional;
 
@@ -85,11 +89,10 @@ public class FrostbitePortalBlock extends Block implements Portal {
         ResourceKey<Level> resourcekey = serverLevel.dimension() == hoarfrostKey ? Level.OVERWORLD : hoarfrostKey;
         ServerLevel serverlevel = serverLevel.getServer().getLevel(resourcekey);
 
-
         if (serverlevel == null) {
             return null;
         } else {
-            boolean flag = serverlevel.dimension() == Level.NETHER;
+            boolean flag = serverlevel.dimension() == Level.OVERWORLD;
             WorldBorder worldborder = serverlevel.getWorldBorder();
             BlockPos blockpos = serverLevel.dimension() == hoarfrostKey ?
                     new BlockPos(1, 100, 0) : new BlockPos(0, 100, 0);
@@ -97,41 +100,45 @@ public class FrostbitePortalBlock extends Block implements Portal {
         }
     }
 
-    @Nullable
     private TeleportTransition getExitPortal(
-            ServerLevel level, Entity entity, BlockPos pos, BlockPos exitPos, boolean isNether, WorldBorder worldBorder
+            ServerLevel level, Entity entity, BlockPos pos, BlockPos exitPos, boolean isCurrentDimensionOverworld, WorldBorder worldBorder
     ) {
-        Optional<BlockPos> optional = level.getPortalForcer().findClosestPortalPosition(exitPos, isNether, worldBorder);
-        BlockUtil.FoundRectangle blockutil$foundrectangle;
         TeleportTransition.PostTeleportTransition teleporttransition$postteleporttransition;
-        if (optional.isPresent()) {
-            BlockPos blockpos = optional.get();
-            BlockState blockstate = level.getBlockState(blockpos);
-            blockutil$foundrectangle = BlockUtil.getLargestRectangleAround(
-                    blockpos,
-                    blockstate.getValue(BlockStateProperties.HORIZONTAL_AXIS),
-                    21,
-                    Direction.Axis.Y,
-                    21,
-                    p_351970_ -> level.getBlockState(p_351970_) == blockstate
-            );
-            teleporttransition$postteleporttransition = TeleportTransition.PLAY_PORTAL_SOUND.then(p_351967_ -> p_351967_.placePortalTicket(blockpos));
-        } else {
-            Direction.Axis direction$axis = entity.level().getBlockState(pos).getOptionalValue(AXIS).orElse(Direction.Axis.X);
-            Optional<BlockUtil.FoundRectangle> optional1 = level.getPortalForcer().createPortal(exitPos, direction$axis);
-            if (optional1.isEmpty()) {
-                return null;
-            }
 
-            blockutil$foundrectangle = optional1.get();
-            teleporttransition$postteleporttransition = TeleportTransition.PLAY_PORTAL_SOUND.then(TeleportTransition.PLACE_PORTAL_TICKET);
+        Holder.Reference<Structure> p_structure = getStructure(level);
+
+        if (!isCurrentDimensionOverworld) {
+            Structure structure = p_structure.value();
+            ChunkGenerator chunkgenerator = level.getChunkSource().getGenerator();
+            StructureStart structurestart = structure.generate(p_structure, level.dimension(),
+                    level.getServer().registryAccess(), chunkgenerator, chunkgenerator.getBiomeSource(),
+                    level.getChunkSource().randomState(), level.getStructureManager(), level.getSeed(),
+                    new ChunkPos(pos), 0, level, (p_214580_) -> true);
+            BoundingBox boundingbox = structurestart.getBoundingBox();
+            ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()),
+                    SectionPos.blockToSectionCoord(boundingbox.minZ()));
+            ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()),
+                    SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+            ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> structurestart
+                    .placeInChunk(level, level.structureManager(), chunkgenerator, level.getRandom(),
+                            new BoundingBox(chunkPos.getMinBlockX(), level.getMinY(), chunkPos.getMinBlockZ(),
+                                    chunkPos.getMaxBlockX(), level.getMaxY() + 1, chunkPos.getMaxBlockZ()), chunkPos));
+//            ChunkPos chunkPos = new ChunkPos(0, 0);
+//            structurestart.placeInChunk(level, level.structureManager(), chunkgenerator, level.getRandom(),
+//                            new BoundingBox(chunkPos.getMinBlockX(), level.getMinY(), chunkPos.getMinBlockZ(),
+//                                    chunkPos.getMaxBlockX(), level.getMaxY() + 1, chunkPos.getMaxBlockZ()), chunkPos);
+
+
         }
 
-        return getDimensionTransitionFromExit(entity, pos, blockutil$foundrectangle, level, teleporttransition$postteleporttransition);
+        teleporttransition$postteleporttransition = TeleportTransition.PLAY_PORTAL_SOUND
+                .then(p_351967_ -> p_351967_.placePortalTicket(exitPos));
+
+        return getDimensionTransitionFromExit(entity, pos, exitPos, level, teleporttransition$postteleporttransition);
     }
 
     private static TeleportTransition getDimensionTransitionFromExit(
-            Entity entity, BlockPos pos, BlockUtil.FoundRectangle rectangle, ServerLevel level, TeleportTransition.PostTeleportTransition postTeleportTransition
+            Entity entity, BlockPos pos, BlockPos blockpos, ServerLevel level, TeleportTransition.PostTeleportTransition postTeleportTransition
     ) {
         BlockState blockstate = entity.level().getBlockState(pos);
         Direction.Axis direction$axis;
@@ -147,26 +154,23 @@ public class FrostbitePortalBlock extends Block implements Portal {
             vec3 = new Vec3(0.5, 0.0, 0.0);
         }
 
-        return createDimensionTransition(level, rectangle, direction$axis, vec3, entity, postTeleportTransition);
+        return createDimensionTransition(level, blockpos, direction$axis, vec3, entity, postTeleportTransition);
     }
 
     private static TeleportTransition createDimensionTransition(
             ServerLevel level,
-            BlockUtil.FoundRectangle rectangle,
+            BlockPos blockpos,
             Direction.Axis axis,
             Vec3 offset,
             Entity entity,
             TeleportTransition.PostTeleportTransition postTeleportTransition
     ) {
-        BlockPos blockpos = rectangle.minCorner;
         BlockState blockstate = level.getBlockState(blockpos);
         Direction.Axis direction$axis = blockstate.getOptionalValue(BlockStateProperties.HORIZONTAL_AXIS).orElse(Direction.Axis.X);
-        double d0 = rectangle.axis1Size;
-        double d1 = rectangle.axis2Size;
         EntityDimensions entitydimensions = entity.getDimensions(entity.getPose());
         int i = axis == direction$axis ? 0 : 90;
-        double d2 = (double)entitydimensions.width() / 2.0 + (d0 - (double)entitydimensions.width()) * offset.x();
-        double d3 = (d1 - (double)entitydimensions.height()) * offset.y();
+        double d2 = (double)entitydimensions.width() / 2.0 + - (double)entitydimensions.width() * offset.x();
+        double d3 = (double)entitydimensions.height() * offset.y();
         double d4 = 0.5 + offset.z();
         boolean flag = direction$axis == Direction.Axis.X;
         Vec3 vec3 = new Vec3((double)blockpos.getX() + (flag ? d2 : d4), (double)blockpos.getY() + d3, (double)blockpos.getZ() + (flag ? d4 : d2));
@@ -235,5 +239,20 @@ public class FrostbitePortalBlock extends Block implements Portal {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AXIS);
+    }
+
+    public static Holder.Reference<Structure> getStructure(ServerLevel level) {
+        return resolveKey(Registries.STRUCTURE, level);
+    }
+
+    private static <T> Holder.Reference<T> resolveKey(ResourceKey<Registry<T>> registryKey, ServerLevel level) {
+        ResourceKey<T> resourcekey = getRegistryKey(registryKey);
+        return level.getServer().registryAccess().lookupOrThrow(registryKey).get(resourcekey).orElse(null);
+    }
+
+    private static <T> ResourceKey<T> getRegistryKey(ResourceKey<Registry<T>> registryKey) {
+        ResourceKey<?> resourcekey = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fto_portal"));
+        Optional<ResourceKey<T>> optional = resourcekey.cast(registryKey);
+        return optional.orElse(null);
     }
 }

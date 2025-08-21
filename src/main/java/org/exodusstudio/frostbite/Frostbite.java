@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -13,6 +14,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.common.block.HeaterStorage;
+import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
@@ -54,6 +56,7 @@ public class Frostbite {
         ConsumeEffectRegistry.CONSUME_EFFECT_TYPES.register(modEventBus);
         FoliagePlacerRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
+        BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
         GameRuleRegistry.register();
 
         // TemperatureValues.addTemperatures();
@@ -83,6 +86,8 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsRenderer::new);
             EntityRenderers.register(EntityRegistry.WIND_CIRCLE.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.BOAR.get(), BoarRenderer::new);
+
+            BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

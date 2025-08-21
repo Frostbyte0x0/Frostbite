@@ -8,8 +8,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -17,11 +18,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -78,10 +77,6 @@ public class FTOPortal extends Structure {
         this.liquidSettings = liquidSettings;
     }
 
-    private static boolean extraSpawningChecks(Structure.GenerationContext context) {
-        return count < 1;
-    }
-
     @Override
     public StructureStart generate(
             Holder<Structure> structure,
@@ -99,9 +94,11 @@ public class FTOPortal extends Structure {
     ) {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
                 randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
-        if (structureStart != StructureStart.INVALID_START) {
+
+        if (!structureStart.equals(StructureStart.INVALID_START)) {
             count++;
         }
+
         if (count > 1) {
             return StructureStart.INVALID_START;
         }
@@ -110,13 +107,8 @@ public class FTOPortal extends Structure {
     }
 
     @Override
-    public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer pieces) {
-        count++;
-    }
-
-    @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
-        if (!FTOPortal.extraSpawningChecks(context)) {
+        if (count > 0) {
             return Optional.empty();
         }
 

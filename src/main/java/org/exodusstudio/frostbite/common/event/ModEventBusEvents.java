@@ -5,6 +5,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.*;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
@@ -29,6 +30,9 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.WIND_CIRCLE, WindCircleModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
+        event.registerLayerDefinition(ModModelLayers.LODESTAR_EYE, LodestarRenderer::createEyeLayer);
+        event.registerLayerDefinition(ModModelLayers.LODESTAR_SHELL, LodestarRenderer::createShellLayer);
     }
 
     @SubscribeEvent

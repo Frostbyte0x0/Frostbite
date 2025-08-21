@@ -39,4 +39,11 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation BOAR = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "boar"), "main");
+
+    public static final ModelLayerLocation LODESTAR_EYE = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar"), "eye");
+    public static final ModelLayerLocation LODESTAR_CAGE = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar"), "cage");
+    public static final ModelLayerLocation LODESTAR_SHELL = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar"), "shell");
 }
