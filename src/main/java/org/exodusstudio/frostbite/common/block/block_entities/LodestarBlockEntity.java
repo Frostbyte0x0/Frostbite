@@ -34,7 +34,7 @@ public class LodestarBlockEntity extends BlockEntity {
 
     private static void animationTick(Level level, BlockPos pos, List<BlockPos> positions, @Nullable Entity entity, int tickCount) {
         RandomSource randomsource = level.random;
-        double d0 = (double)(Mth.sin((float)(tickCount + 35) * 0.1F) / 2.0F + 0.5F);
+        double d0 = (Mth.sin((float)(tickCount + 35) * 0.1F) / 2.0F + 0.5F);
         d0 = (d0 * d0 + d0) * (double)0.3F;
         Vec3 vec3 = new Vec3((double)pos.getX() + (double)0.5F, (double)pos.getY() + (double)1.5F + d0, (double)pos.getZ() + (double)0.5F);
 

@@ -1,10 +1,12 @@
 package org.exodusstudio.frostbite.common.block.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
@@ -13,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -99,11 +102,36 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
         pose.scale(1.3333334F, 1.3333334F, 1.3333334F);
         this.eye.render(pose, EYE_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
         pose.popPose();
-        this.shell.render(pose, SHELL_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
+        //this.shell.render(pose, SHELL_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
 
         int colour = ARGB.color(0, 0, (int) Mth.lerp(f2 / 2, 150, 200));
         BeaconRenderer.renderBeaconBeam(pose, bufferSource, BEAM_LOCATION, partialTick, 0.3f,
                 lodestar.getLevel().getGameTime(), 1, 320, colour, 0.2f, 0.25f);
+
+
+
+    }
+
+    protected void renderRotatedQuad(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, LodestarBlockEntity lodestar) {
+        float f = 1;
+        float f1 = SHELL_TEXTURE.sprite().getU0();
+        float f2 = SHELL_TEXTURE.sprite().getU1();
+        float f3 = SHELL_TEXTURE.sprite().getV0();
+        float f4 = SHELL_TEXTURE.sprite().getV1();
+        int i = this.getLightColor(lodestar);
+        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, -1.0F, f, f2, f4, i);
+        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, 1.0F, f, f2, f3, i);
+        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, 1.0F, f, f1, f3, i);
+        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, -1.0F, f, f1, f4, i);
+    }
+
+    private void renderVertex(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, float xOffset, float yOffset, float quadSize, float u, float v, int packedLight) {
+        Vector3f vector3f = (new Vector3f(xOffset, yOffset, 0.0F)).rotate(quaternion).mul(quadSize).add(x, y, z);
+        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z()).setUv(u, v).setLight(packedLight);//.setColor(this.rCol, this.gCol, this.bCol, this.alpha);
+    }
+
+    protected int getLightColor(LodestarBlockEntity lodestar) {
+        return lodestar.getLevel().hasChunkAt(lodestar.getBlockPos()) ? LevelRenderer.getLightColor(lodestar.getLevel(), lodestar.getBlockPos()) : 0;
     }
 
     @Override
