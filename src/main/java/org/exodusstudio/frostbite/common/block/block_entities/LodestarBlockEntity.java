@@ -61,6 +61,4 @@ public class LodestarBlockEntity extends BlockEntity {
     public float getActiveRotation(float partialTick) {
         return (this.activeRotation + partialTick) * -0.0375F;
     }
-
-    
 }

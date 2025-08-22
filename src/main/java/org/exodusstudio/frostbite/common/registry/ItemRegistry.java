@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DeathProtection;
@@ -291,5 +292,10 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_GEM =
             ITEMS.register("frostbitten_gem", (id) -> new FrostbittenGemItem(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+
+    public static final DeferredItem<Item> STARSEEKING_COMPASS =
+            ITEMS.register("starseeking_compass", (id) -> new StarseekingCompass(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 }

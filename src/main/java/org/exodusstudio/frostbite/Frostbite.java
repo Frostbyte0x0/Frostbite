@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.core.BlockPos;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -41,6 +42,7 @@ public class Frostbite {
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static SavedLinings savedLinings = new SavedLinings();
     public static boolean shouldShowLining = false;
+    public static BlockPos OTFPortalPos;
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);

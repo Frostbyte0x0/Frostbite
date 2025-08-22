@@ -59,7 +59,7 @@ public class FireOverlay {
 
         float innerTemp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, true) * 10f) / 10f;
 
-        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]") && innerTemp == maxTemp) {
+        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]") && innerTemp == maxTemp) {
             return;
         }
 

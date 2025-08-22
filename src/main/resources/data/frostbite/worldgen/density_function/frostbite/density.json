@@ -9,7 +9,7 @@
         "type": "minecraft:mul",
         "argument1": {
           "type": "minecraft:add",
-          "argument1": "frostbite:hoarfrost/depth",
+          "argument1": "frostbite:frostbite/depth",
           "argument2": {
             "type": "minecraft:mul",
             "argument1": "minecraft:overworld/jaggedness",
@@ -24,7 +24,7 @@
             }
           }
         },
-        "argument2": "frostbite:hoarfrost/factor"
+        "argument2": "frostbite:frostbite/factor"
       }
     }
   },

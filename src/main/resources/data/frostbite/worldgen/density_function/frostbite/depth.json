@@ -7,5 +7,5 @@
     "from_value": 1.5,
     "to_value": -1.5
   },
-  "argument2": "frostbite:hoarfrost/offset"
+  "argument2": "frostbite:frostbite/offset"
 }

@@ -13,8 +13,8 @@ import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 
 import javax.annotation.Nullable;
 
-public class HoarfrostWoodBlock extends RotatedPillarBlock {
-    public HoarfrostWoodBlock(BlockBehaviour.Properties properties) {
+public class FrostbiteWoodBlock extends RotatedPillarBlock {
+    public FrostbiteWoodBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 

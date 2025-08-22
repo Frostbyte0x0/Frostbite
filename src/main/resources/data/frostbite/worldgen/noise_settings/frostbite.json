@@ -105,10 +105,10 @@
                         "type": "minecraft:quarter_negative",
                         "argument": {
                           "type": "minecraft:mul",
-                          "argument1": "frostbite:hoarfrost/depth",
+                          "argument1": "frostbite:frostbite/depth",
                           "argument2": {
                             "type": "minecraft:cache_2d",
-                            "argument": "frostbite:hoarfrost/factor"
+                            "argument": "frostbite:frostbite/factor"
                           }
                         }
                       }
@@ -166,12 +166,12 @@
                           "argument1": 0.078125,
                           "argument2": {
                             "type": "minecraft:range_choice",
-                            "input": "frostbite:hoarfrost/density",
+                            "input": "frostbite:frostbite/density",
                             "min_inclusive": -1000000,
                             "max_exclusive": 1.5625,
                             "when_in_range": {
                               "type": "minecraft:min",
-                              "argument1": "frostbite:hoarfrost/density",
+                              "argument1": "frostbite:frostbite/density",
                               "argument2": {
                                 "type": "minecraft:mul",
                                 "argument1": 5,
@@ -224,7 +224,7 @@
                                           "argument2": {
                                             "type": "minecraft:mul",
                                             "argument1": -0.64,
-                                            "argument2": "frostbite:hoarfrost/density"
+                                            "argument2": "frostbite:frostbite/density"
                                           }
                                         },
                                         "min": 0,

@@ -53,7 +53,7 @@ public class SavedTemperatures {
                     affectEntity(serverLevel, entity, innerTemperature);
                 }
 
-                if (entity.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]")) {
+                if (entity.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) {
                     outerTempChange -= 1.5f;
                 } else if (entity.level().dimension().toString().equals("ResourceKey[minecraft:dimension / minecraft:nether]")) {
                     outerTempChange += 5;

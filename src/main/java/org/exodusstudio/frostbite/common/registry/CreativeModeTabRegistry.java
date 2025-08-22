@@ -25,6 +25,7 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.REINFORCED_BLACK_ICE);
                         output.accept(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE);
                         output.accept(ItemRegistry.FROSTBITTEN_GEM);
+                        output.accept(ItemRegistry.STARSEEKING_COMPASS);
 
                         output.accept(BlockRegistry.PERMAFROZEN_DIRT);
                         output.accept(BlockRegistry.SLATED_ICE);

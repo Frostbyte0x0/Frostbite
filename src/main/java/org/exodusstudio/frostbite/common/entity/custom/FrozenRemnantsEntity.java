@@ -162,7 +162,7 @@ public class FrozenRemnantsEntity extends Mob{
     public static boolean shouldSpawnFrozenRemnants(ServerLevel serverLevel) {
         return !serverLevel.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)
                 && serverLevel.getGameRules().getBoolean(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS)
-                && serverLevel.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]");
+                && serverLevel.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]");
     }
 
     @Override

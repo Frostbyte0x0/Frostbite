@@ -36,7 +36,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.structures.FTOPortal;
 
 import java.util.Optional;
 
@@ -85,8 +84,8 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
     @Override
     public TeleportTransition getPortalDestination(ServerLevel serverLevel, Entity entity, BlockPos pos) {
-        ResourceKey<Level> hoarfrostKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "hoarfrost"));;
-        ResourceKey<Level> resourcekey = serverLevel.dimension() == hoarfrostKey ? Level.OVERWORLD : hoarfrostKey;
+        ResourceKey<Level> frostbiteKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));;
+        ResourceKey<Level> resourcekey = serverLevel.dimension() == frostbiteKey ? Level.OVERWORLD : frostbiteKey;
         ServerLevel serverlevel = serverLevel.getServer().getLevel(resourcekey);
 
         if (serverlevel == null) {
@@ -94,7 +93,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
         } else {
             boolean flag = serverlevel.dimension() == Level.OVERWORLD;
             WorldBorder worldborder = serverlevel.getWorldBorder();
-            BlockPos blockpos = serverLevel.dimension() == hoarfrostKey ?
+            BlockPos blockpos = serverLevel.dimension() == frostbiteKey ?
                     new BlockPos(1, 100, 0) : new BlockPos(0, 100, 0);
             return this.getExitPortal(serverlevel, entity, pos, blockpos, flag, worldborder);
         }

@@ -58,7 +58,7 @@ public class ThermometerOverlay {
 
         float outer_temp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, false) * 10f) / 10f;
 
-        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:hoarfrost]") && outer_temp == maxTemp) {
+        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]") && outer_temp == maxTemp) {
             return;
         }
 

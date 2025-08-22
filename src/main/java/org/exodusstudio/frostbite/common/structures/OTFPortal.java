@@ -30,6 +30,7 @@ import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
 
 import java.util.Optional;
@@ -108,6 +109,7 @@ public class OTFPortal extends Structure {
                 randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
         if (structureStart != StructureStart.INVALID_START) {
             count++;
+            Frostbite.OTFPortalPos = chunkPos.getWorldPosition();
         }
         return structureStart;
     }

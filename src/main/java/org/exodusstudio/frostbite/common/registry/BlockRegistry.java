@@ -88,16 +88,16 @@ public class BlockRegistry {
 
     // MISTY WOOD
     public static final DeferredBlock<Block> MISTY_LOG = registerBlock("misty_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_log")))));
     public static final DeferredBlock<Block> MISTY_WOOD = registerBlock("misty_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_wood")))));
     public static final DeferredBlock<Block> STRIPPED_MISTY_LOG = registerBlock("stripped_misty_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_misty_log")))));
     public static final DeferredBlock<Block> STRIPPED_MISTY_WOOD = registerBlock("stripped_misty_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_misty_wood")))));
     public static final DeferredBlock<Block> MISTY_PLANKS = registerBlock("misty_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
@@ -138,16 +138,16 @@ public class BlockRegistry {
 
     // DIM WOOD
     public static final DeferredBlock<Block> DIM_LOG = registerBlock("dim_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_log")))));
     public static final DeferredBlock<Block> DIM_WOOD = registerBlock("dim_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_wood")))));
     public static final DeferredBlock<Block> STRIPPED_DIM_LOG = registerBlock("stripped_dim_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_dim_log")))));
     public static final DeferredBlock<Block> STRIPPED_DIM_WOOD = registerBlock("stripped_dim_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_dim_wood")))));
     public static final DeferredBlock<Block> DIM_PLANKS = registerBlock("dim_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
@@ -161,16 +161,16 @@ public class BlockRegistry {
 
     // SILVER WOOD
     public static final DeferredBlock<Block> SILVER_LOG = registerBlock("silver_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_log")))));
     public static final DeferredBlock<Block> SILVER_WOOD = registerBlock("silver_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_wood")))));
     public static final DeferredBlock<Block> STRIPPED_SILVER_LOG = registerBlock("stripped_silver_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_silver_log")))));
     public static final DeferredBlock<Block> STRIPPED_SILVER_WOOD = registerBlock("stripped_silver_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_silver_wood")))));
     public static final DeferredBlock<Block> SILVER_PLANKS = registerBlock("silver_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
@@ -184,16 +184,16 @@ public class BlockRegistry {
 
     // CHARM WOOD
     public static final DeferredBlock<Block> CHARM_LOG = registerBlock("charm_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_log")))));
     public static final DeferredBlock<Block> CHARM_WOOD = registerBlock("charm_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_wood")))));
     public static final DeferredBlock<Block> STRIPPED_CHARM_LOG = registerBlock("stripped_charm_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_charm_log")))));
     public static final DeferredBlock<Block> STRIPPED_CHARM_WOOD = registerBlock("stripped_charm_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_charm_wood")))));
     public static final DeferredBlock<Block> CHARM_PLANKS = registerBlock("charm_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
@@ -210,16 +210,16 @@ public class BlockRegistry {
 
     // MOSSY CHARM WOOD
     public static final DeferredBlock<Block> MOSSY_CHARM_LOG = registerBlock("mossy_charm_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_charm_log")))));
     public static final DeferredBlock<Block> MOSSY_CHARM_WOOD = registerBlock("mossy_charm_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_charm_wood")))));
     public static final DeferredBlock<Block> MOSSY_STRIPPED_CHARM_LOG = registerBlock("mossy_stripped_charm_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_stripped_charm_log")))));
     public static final DeferredBlock<Block> MOSSY_STRIPPED_CHARM_WOOD = registerBlock("mossy_stripped_charm_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_stripped_charm_wood")))));
     public static final DeferredBlock<Block> MOSSY_CHARM_PLANKS = registerBlock("mossy_charm_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
@@ -227,16 +227,16 @@ public class BlockRegistry {
 
     // SHINNING CEDAR WOOD
     public static final DeferredBlock<Block> SHINNING_CEDAR_LOG = registerBlock("shinning_cedar_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_log")))));
     public static final DeferredBlock<Block> SHINNING_CEDAR_WOOD = registerBlock("shinning_cedar_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_wood")))));
     public static final DeferredBlock<Block> STRIPPED_SHINNING_CEDAR_LOG = registerBlock("stripped_shinning_cedar_log",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_shinning_cedar_log")))));
     public static final DeferredBlock<Block> STRIPPED_SHINNING_CEDAR_WOOD = registerBlock("stripped_shinning_cedar_wood",
-            () -> new HoarfrostWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_shinning_cedar_wood")))));
     public static final DeferredBlock<Block> SHINNING_CEDAR_PLANKS = registerBlock("shinning_cedar_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
