@@ -40,6 +40,8 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.CHISELED_MARBLE);
                         output.accept(BlockRegistry.MARBLE_PILLAR);
 
+                        output.accept(BlockRegistry.LODESTAR);
+
                         output.accept(ItemRegistry.BLACK_ICE_HELMET);
                         output.accept(ItemRegistry.BLACK_ICE_CHESTPLATE);
                         output.accept(ItemRegistry.BLACK_ICE_LEGGINGS);
