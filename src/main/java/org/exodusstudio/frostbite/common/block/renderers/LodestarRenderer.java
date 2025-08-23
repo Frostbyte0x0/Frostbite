@@ -72,43 +72,30 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
         float f1 = lodestar.getActiveRotation(partialTick) * (180F / (float) Math.PI);
         float f2 = Mth.sin(f * 0.1F) / 2.0F + 0.5F;
         f2 = f2 * f2 + f2;
+
+        // Cage
         pose.pushPose();
-        pose.translate(0.5F, 0.3F + f2 * 0.2F, 0.5F);
+        pose.translate(0.5F, 0.3F + f2 * 0.15F, 0.5F);
         Vector3f vector3f = (new Vector3f(0.5F, 1.0F, 0.5F)).normalize();
         pose.mulPose((new Quaternionf()).rotationAxis(f1 * ((float) Math.PI / 180F), vector3f));
         this.cage.render(pose, CAGE_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
         pose.popPose();
-        int i = lodestar.tickCount / 66 % 3;
-        pose.pushPose();
-        pose.translate(0.5F, 0.5F, 0.5F);
-        if (i == 1) {
-            pose.mulPose((new Quaternionf()).rotationX(((float) Math.PI / 2F)));
-        } else if (i == 2) {
-            pose.mulPose((new Quaternionf()).rotationZ(((float) Math.PI / 2F)));
-        }
-        pose.popPose();
-        pose.pushPose();
-        pose.translate(0.5F, 0.5F, 0.5F);
-        pose.scale(0.875F, 0.875F, 0.875F);
-        pose.mulPose((new Quaternionf()).rotationXYZ((float) Math.PI, 0.0F, (float) Math.PI));
-        pose.popPose();
+
+        // Eye
         Camera camera = this.renderer.camera;
         pose.pushPose();
-        pose.translate(0.5F, 0.3F + f2 * 0.2F, 0.5F);
+        pose.translate(0.5F, 0.3F + f2 * 0.15F, 0.5F);
         pose.scale(0.5F, 0.5F, 0.5F);
         float f3 = -camera.getYRot();
         pose.mulPose((new Quaternionf()).rotationYXZ(f3 * ((float) Math.PI / 180F), camera.getXRot() * ((float) Math.PI / 180F), (float) Math.PI));
         pose.scale(1.3333334F, 1.3333334F, 1.3333334F);
         this.eye.render(pose, EYE_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
         pose.popPose();
-        //this.shell.render(pose, SHELL_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
 
-        int colour = ARGB.color(0, 0, (int) Mth.lerp(f2 / 2, 150, 200));
+        // Beam
+        int colour = ARGB.color(0, 100, (int) Mth.lerp(f2 / 2, 150, 200));
         BeaconRenderer.renderBeaconBeam(pose, bufferSource, BEAM_LOCATION, partialTick, 0.3f,
                 lodestar.getLevel().getGameTime(), 1, 320, colour, 0.2f, 0.25f);
-
-
-
     }
 
     public AABB getRenderBoundingBox(LodestarBlockEntity blockEntity) {

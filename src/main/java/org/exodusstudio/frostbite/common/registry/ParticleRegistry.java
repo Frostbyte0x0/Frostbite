@@ -31,4 +31,8 @@ public class ParticleRegistry {
             PARTICLE_TYPES.register("butterfly", () -> new SimpleParticleType(false));
 
     public static final Supplier<SimpleParticleType> SWIRLING_LEAF_PARTICLE =
-            PARTICLE_TYPES.register("swirling_leaf", () -> new SimpleParticleType(false));}
+            PARTICLE_TYPES.register("swirling_leaf", () -> new SimpleParticleType(false));
+
+    public static final Supplier<SimpleParticleType> SNOWFLAKE_PARTICLE =
+            PARTICLE_TYPES.register("snowflake", () -> new SimpleParticleType(false));
+}

@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.block;
 
 import net.minecraft.BlockUtil;
 import net.minecraft.core.*;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +35,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.exodusstudio.frostbite.common.registry.Tags;
 
 import java.util.Optional;
 
@@ -83,57 +84,56 @@ public class FrostbitePortalBlock extends Block implements Portal {
     }
 
     @Override
-    public TeleportTransition getPortalDestination(ServerLevel serverLevel, Entity entity, BlockPos pos) {
-        ResourceKey<Level> frostbiteKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));;
-        ResourceKey<Level> resourcekey = serverLevel.dimension() == frostbiteKey ? Level.OVERWORLD : frostbiteKey;
-        ServerLevel serverlevel = serverLevel.getServer().getLevel(resourcekey);
+    public TeleportTransition getPortalDestination(ServerLevel originLevel, Entity entity, BlockPos pos) {
+        ResourceKey<Level> frostbiteKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
+        ResourceKey<Level> resourcekey = originLevel.dimension() == frostbiteKey ? Level.OVERWORLD : frostbiteKey;
+        ServerLevel destinationLevel = originLevel.getServer().getLevel(resourcekey);
 
-        if (serverlevel == null) {
+        if (destinationLevel == null) {
             return null;
         } else {
-            boolean flag = serverlevel.dimension() == Level.OVERWORLD;
-            WorldBorder worldborder = serverlevel.getWorldBorder();
-            BlockPos blockpos = serverLevel.dimension() == frostbiteKey ?
+            boolean flag = originLevel.dimension() == Level.OVERWORLD;
+            BlockPos blockpos = originLevel.dimension() == frostbiteKey ?
                     new BlockPos(1, 100, 0) : new BlockPos(0, 100, 0);
-            return this.getExitPortal(serverlevel, entity, pos, blockpos, flag, worldborder);
+            return this.getExitPortal(destinationLevel, originLevel, entity, pos, blockpos, flag);
         }
     }
 
     private TeleportTransition getExitPortal(
-            ServerLevel level, Entity entity, BlockPos pos, BlockPos exitPos, boolean isCurrentDimensionOverworld, WorldBorder worldBorder
+            ServerLevel destinationLevel, ServerLevel originLevel, Entity entity, BlockPos pos, BlockPos exitPos, boolean isOriginDimensionOverworld
     ) {
         TeleportTransition.PostTeleportTransition teleporttransition$postteleporttransition;
 
-        Holder.Reference<Structure> p_structure = getStructure(level);
+        Holder.Reference<Structure> p_structure = getStructure(destinationLevel);
 
-        if (!isCurrentDimensionOverworld) {
-            Structure structure = p_structure.value();
-            ChunkGenerator chunkgenerator = level.getChunkSource().getGenerator();
-            StructureStart structurestart = structure.generate(p_structure, level.dimension(),
-                    level.getServer().registryAccess(), chunkgenerator, chunkgenerator.getBiomeSource(),
-                    level.getChunkSource().randomState(), level.getStructureManager(), level.getSeed(),
-                    new ChunkPos(pos), 0, level, (p_214580_) -> true);
-            BoundingBox boundingbox = structurestart.getBoundingBox();
-            ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()),
-                    SectionPos.blockToSectionCoord(boundingbox.minZ()));
-            ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()),
-                    SectionPos.blockToSectionCoord(boundingbox.maxZ()));
-            ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> structurestart
-                    .placeInChunk(level, level.structureManager(), chunkgenerator, level.getRandom(),
-                            new BoundingBox(chunkPos.getMinBlockX(), level.getMinY(), chunkPos.getMinBlockZ(),
-                                    chunkPos.getMaxBlockX(), level.getMaxY() + 1, chunkPos.getMaxBlockZ()), chunkPos));
-//            ChunkPos chunkPos = new ChunkPos(0, 0);
-//            structurestart.placeInChunk(level, level.structureManager(), chunkgenerator, level.getRandom(),
-//                            new BoundingBox(chunkPos.getMinBlockX(), level.getMinY(), chunkPos.getMinBlockZ(),
-//                                    chunkPos.getMaxBlockX(), level.getMaxY() + 1, chunkPos.getMaxBlockZ()), chunkPos);
-
-
+        if (isOriginDimensionOverworld) {
+            try {
+                Structure structure = p_structure.value();
+                ChunkGenerator chunkgenerator = destinationLevel.getChunkSource().getGenerator();
+                StructureStart structurestart = structure.generate(p_structure, destinationLevel.dimension(),
+                        destinationLevel.getServer().registryAccess(), chunkgenerator, chunkgenerator.getBiomeSource(),
+                        destinationLevel.getChunkSource().randomState(), destinationLevel.getStructureManager(), destinationLevel.getSeed(),
+                        new ChunkPos(pos), 0, destinationLevel, (p_214580_) -> true);
+                BoundingBox boundingbox = structurestart.getBoundingBox();
+                ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()),
+                        SectionPos.blockToSectionCoord(boundingbox.minZ()));
+                ChunkPos chunkpos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.maxX()),
+                        SectionPos.blockToSectionCoord(boundingbox.maxZ()));
+                ChunkPos.rangeClosed(chunkpos, chunkpos1).forEach((chunkPos) -> structurestart
+                        .placeInChunk(destinationLevel, destinationLevel.structureManager(), chunkgenerator, destinationLevel.getRandom(),
+                                new BoundingBox(chunkPos.getMinBlockX(), destinationLevel.getMinY(), chunkPos.getMinBlockZ(),
+                                        chunkPos.getMaxBlockX(), destinationLevel.getMaxY() + 1, chunkPos.getMaxBlockZ()), chunkPos));
+            } catch (IllegalStateException ignored) {}
+        } else {
+            exitPos = destinationLevel.findNearestMapStructure(Tags.STRUCTURE_OTF,
+                    entity.blockPosition(), 100, false);
         }
 
+        BlockPos finalExitPos = exitPos;
         teleporttransition$postteleporttransition = TeleportTransition.PLAY_PORTAL_SOUND
-                .then(p_351967_ -> p_351967_.placePortalTicket(exitPos));
+                .then(p_351967_ -> p_351967_.placePortalTicket(finalExitPos));
 
-        return getDimensionTransitionFromExit(entity, pos, exitPos, level, teleporttransition$postteleporttransition);
+        return getDimensionTransitionFromExit(entity, pos, exitPos, destinationLevel, teleporttransition$postteleporttransition);
     }
 
     private static TeleportTransition getDimensionTransitionFromExit(
@@ -213,7 +213,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
                 d5 = (double)(p_221797_.nextFloat() * 2.0F * (float)j);
             }
 
-            p_221795_.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
+            p_221795_.addParticle(ParticleRegistry.SNOWFLAKE_PARTICLE.get(), d0, d1, d2, d3, d4, d5);
         }
     }
 

@@ -7,8 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -37,7 +34,6 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.block.HeaterStorage;
-import org.exodusstudio.frostbite.common.block.ReinforcedBlackIceReceptacleBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStand;
@@ -57,6 +53,8 @@ public class ModEvents {
     public static void resetPortalCount(ServerStoppingEvent event) {
         OTFPortal.count = 0;
         FTOPortal.count = 0;
+        shroudedBlendLerp = 0;
+        Frostbite.savedTemperatures.clear();
     }
 
     @SubscribeEvent

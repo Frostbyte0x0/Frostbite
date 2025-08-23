@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.item;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -13,7 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.registry.Tags;
 
 import java.util.Optional;
 
@@ -26,14 +27,20 @@ public class StarseekingCompass extends CompassItem {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
         if ((!stack.has(DataComponents.LODESTONE_TRACKER) || stack.get(DataComponents.LODESTONE_TRACKER).target().isEmpty()) &&
                 level instanceof ServerLevel serverLevel) {
-            BlockPos blockpos = Frostbite.OTFPortalPos;
+            BlockPos blockpos = serverLevel.findNearestMapStructure(Tags.STRUCTURE_OTF,
+                    entity.blockPosition(), 100, false);
+
             if (blockpos != null) {
                 LodestoneTracker lodestonetracker = new LodestoneTracker
                         (Optional.of(GlobalPos.of(level.dimension(), blockpos)), true);
                 stack.set(DataComponents.LODESTONE_TRACKER, lodestonetracker);
             }
         }
-        //super.inventoryTick(stack, level, entity, itemSlot, isSelected);
+    }
+
+    @Override
+    public boolean isFoil(ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -41,7 +48,7 @@ public class StarseekingCompass extends CompassItem {
         return InteractionResult.FAIL;
     }
 
-    public Component getName(ItemStack p_371723_) {
-        return super.getName(new ItemStack(Items.AIR));
+    public Component getName(ItemStack stack) {
+        return stack.getComponents().getOrDefault(DataComponents.ITEM_NAME, CommonComponents.EMPTY);
     }
 }

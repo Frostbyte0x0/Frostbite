@@ -272,8 +272,8 @@ public class BlockRegistry {
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "big_heater"))), 20, 10));
 
     public static final DeferredBlock<Block> LODESTAR = registerBlock("lodestar",
-            () -> new LodestarBlock(BlockBehaviour.Properties.of().strength(10f).noOcclusion()
-                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar")))));
+            () -> new LodestarBlock(BlockBehaviour.Properties.of().strength(10f)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar"))).noOcclusion()));
 
 
 

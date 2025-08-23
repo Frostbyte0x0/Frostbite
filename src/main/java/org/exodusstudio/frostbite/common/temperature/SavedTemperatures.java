@@ -157,4 +157,8 @@ public class SavedTemperatures {
 
         entityTemperatures.put(entityUUID, temperatures);
     }
+
+    public void clear() {
+        entityTemperatures.clear();
+    }
 }

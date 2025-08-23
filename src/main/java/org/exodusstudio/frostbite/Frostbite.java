@@ -42,7 +42,6 @@ public class Frostbite {
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static SavedLinings savedLinings = new SavedLinings();
     public static boolean shouldShowLining = false;
-    public static BlockPos OTFPortalPos;
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);

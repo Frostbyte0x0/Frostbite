@@ -3,6 +3,7 @@
     "particle": "frostbite:block/frostbite_portal",
     "portal": "frostbite:block/frostbite_portal"
   },
+  "render_type": "translucent",
   "elements": [
     {
       "from": [ 6, 0, 0 ],

@@ -109,7 +109,6 @@ public class OTFPortal extends Structure {
                 randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
         if (structureStart != StructureStart.INVALID_START) {
             count++;
-            Frostbite.OTFPortalPos = chunkPos.getWorldPosition();
         }
         return structureStart;
     }
