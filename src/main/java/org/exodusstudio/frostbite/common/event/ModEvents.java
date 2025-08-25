@@ -50,9 +50,11 @@ public class ModEvents {
     public static float shroudedBlendLerp = 0;
 
     @SubscribeEvent
-    public static void resetPortalCount(ServerStoppingEvent event) {
-        OTFPortal.count = 0;
-        FTOPortal.count = 0;
+    public static void reset(ServerStoppingEvent event) {
+        //OTFPortal.count = 0;
+        OTFPortal.canSpawn = true;
+        //FTOPortal.count = 0;
+        FTOPortal.canSpawn = true;
         shroudedBlendLerp = 0;
         Frostbite.savedTemperatures.clear();
     }

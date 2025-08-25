@@ -8,9 +8,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -18,9 +17,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
 
 import java.util.Optional;
@@ -55,6 +57,7 @@ public class FTOPortal extends Structure {
     private final DimensionPadding dimensionPadding;
     private final LiquidSettings liquidSettings;
     public static int count = 0;
+    public static boolean canSpawn = true;
 
     public FTOPortal(Structure.StructureSettings config,
                      Holder<StructureTemplatePool> startPool,
@@ -78,6 +81,12 @@ public class FTOPortal extends Structure {
     }
 
     @Override
+    public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer pieces) {
+        super.afterPlace(level, structureManager, chunkGenerator, random, boundingBox, chunkPos, pieces);
+        Frostbite.frostbiteSpawnPoint = pieces.calculateBoundingBox().getCenter();
+    }
+
+    @Override
     public StructureStart generate(
             Holder<Structure> structure,
             ResourceKey<Level> level,
@@ -96,10 +105,11 @@ public class FTOPortal extends Structure {
                 randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
 
         if (!structureStart.equals(StructureStart.INVALID_START)) {
-            count++;
+            //count++;
+            canSpawn = false;
         }
 
-        if (count > 1) {
+        if (canSpawn) {//count > 1) {
             return StructureStart.INVALID_START;
         }
 
@@ -108,7 +118,7 @@ public class FTOPortal extends Structure {
 
     @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
-        if (count > 0) {
+        if (!canSpawn) {//count > 0) {
             return Optional.empty();
         }
 

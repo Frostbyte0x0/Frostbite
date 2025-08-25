@@ -106,6 +106,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
         Holder.Reference<Structure> p_structure = getStructure(destinationLevel);
 
+        // TODO: Make player spawn a correct y level
         if (isOriginDimensionOverworld) {
             try {
                 Structure structure = p_structure.value();
@@ -127,6 +128,14 @@ public class FrostbitePortalBlock extends Block implements Portal {
         } else {
             exitPos = destinationLevel.findNearestMapStructure(Tags.STRUCTURE_OTF,
                     entity.blockPosition(), 100, false);
+
+            for (int y = destinationLevel.getMaxY(); y > 0; y--) {
+                BlockPos testPos = new BlockPos(exitPos.getX(), y, exitPos.getZ());
+                if (isValidSpawnBlock(testPos, destinationLevel)) {
+                    exitPos = testPos;
+                    break;
+                }
+            }
         }
 
         BlockPos finalExitPos = exitPos;
@@ -215,6 +224,10 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
             p_221795_.addParticle(ParticleRegistry.SNOWFLAKE_PARTICLE.get(), d0, d1, d2, d3, d4, d5);
         }
+    }
+
+    protected boolean isValidSpawnBlock(BlockPos pos, Level level) {
+        return level.getBlockState(pos).isAir() && !level.getBlockState(pos.below()).isAir();
     }
 
     @Override

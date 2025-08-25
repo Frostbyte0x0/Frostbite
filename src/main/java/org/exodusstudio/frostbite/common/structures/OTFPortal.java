@@ -58,6 +58,7 @@ public class OTFPortal extends Structure {
     private final DimensionPadding dimensionPadding;
     private final LiquidSettings liquidSettings;
     public static int count = 0;
+    public static boolean canSpawn = true;
 
     public OTFPortal(Structure.StructureSettings config,
                          Holder<StructureTemplatePool> startPool,
@@ -80,14 +81,22 @@ public class OTFPortal extends Structure {
         this.liquidSettings = liquidSettings;
     }
 
+//    private static boolean extraSpawningChecks(Structure.GenerationContext context) {
+//        float dist = Mth.sqrt((float) context.chunkPos().getWorldPosition().distToCenterSqr(0, 0, 0));
+//        return count < 1 && dist > 1500;
+//    }
+
     private static boolean extraSpawningChecks(Structure.GenerationContext context) {
         float dist = Mth.sqrt((float) context.chunkPos().getWorldPosition().distToCenterSqr(0, 0, 0));
-        return count < 1 && dist > 1500;
+        return canSpawn && dist > 1500;
     }
 
     @Override
     public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer pieces) {
-        count++;
+        //count++;
+        canSpawn = false;
+        super.afterPlace(level, structureManager, chunkGenerator, random, boundingBox, chunkPos, pieces);
+        Frostbite.overworldSpawnPoint = pieces.calculateBoundingBox().getCenter();
     }
 
     @Override
@@ -108,7 +117,8 @@ public class OTFPortal extends Structure {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
                 randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
         if (structureStart != StructureStart.INVALID_START) {
-            count++;
+            //count++;
+            canSpawn = false;
         }
         return structureStart;
     }
