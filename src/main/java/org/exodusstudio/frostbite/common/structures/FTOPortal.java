@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -102,15 +103,17 @@ public class FTOPortal extends Structure {
             Predicate<Holder<Biome>> validBiome
     ) {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
-                randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
+                randomState, structureTemplateManager, seed, new ChunkPos(0, 0), references, heightAccessor, validBiome);
+
+        if (!canSpawn) {//count > 1) {
+            return StructureStart.INVALID_START;
+        }
 
         if (!structureStart.equals(StructureStart.INVALID_START)) {
             //count++;
+            structureStart.getPieces().forEach(p -> p.setOrientation(Direction.NORTH));
+            Frostbite.frostbiteSpawnPoint = structureStart.getPieces().getFirst().getLocatorPosition();
             canSpawn = false;
-        }
-
-        if (canSpawn) {//count > 1) {
-            return StructureStart.INVALID_START;
         }
 
         return structureStart;

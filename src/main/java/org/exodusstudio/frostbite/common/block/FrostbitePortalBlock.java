@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -36,7 +35,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.registry.Tags;
 
 import java.util.Optional;
 
@@ -106,7 +104,6 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
         Holder.Reference<Structure> p_structure = getStructure(destinationLevel);
 
-        // TODO: Make player spawn a correct y level
         if (isOriginDimensionOverworld) {
             try {
                 Structure structure = p_structure.value();
@@ -125,17 +122,20 @@ public class FrostbitePortalBlock extends Block implements Portal {
                                 new BoundingBox(chunkPos.getMinBlockX(), destinationLevel.getMinY(), chunkPos.getMinBlockZ(),
                                         chunkPos.getMaxBlockX(), destinationLevel.getMaxY() + 1, chunkPos.getMaxBlockZ()), chunkPos));
             } catch (IllegalStateException ignored) {}
+            exitPos = Frostbite.frostbiteSpawnPoint.offset(0, -2, 0);
         } else {
-            exitPos = destinationLevel.findNearestMapStructure(Tags.STRUCTURE_OTF,
-                    entity.blockPosition(), 100, false);
+//            exitPos = destinationLevel.findNearestMapStructure(Tags.STRUCTURE_OTF,
+//                    entity.blockPosition(), 100, false);
+//
+//            for (int y = destinationLevel.getMaxY(); y > 0; y--) {
+//                BlockPos testPos = new BlockPos(exitPos.getX(), y, exitPos.getZ());
+//                if (isValidSpawnBlock(testPos, destinationLevel)) {
+//                    exitPos = testPos;
+//                    break;
+//                }
+//            }
 
-            for (int y = destinationLevel.getMaxY(); y > 0; y--) {
-                BlockPos testPos = new BlockPos(exitPos.getX(), y, exitPos.getZ());
-                if (isValidSpawnBlock(testPos, destinationLevel)) {
-                    exitPos = testPos;
-                    break;
-                }
-            }
+            exitPos = Frostbite.overworldSpawnPoint.offset(0, -2, 0);
         }
 
         BlockPos finalExitPos = exitPos;

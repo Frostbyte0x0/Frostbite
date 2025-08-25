@@ -11,6 +11,8 @@ import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.storage.PrimaryLevelData;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterStorage;
+import org.exodusstudio.frostbite.common.structures.FTOPortal;
+import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,6 +36,18 @@ public class PrimaryLevelDataMixin {
             nbt.putInt("heater_posZ" + i, (int) heater.getPos().getCenter().z);
             nbt.putString("heater_dimension" + i, heater.getDimensionName());
         }
+
+        nbt.putBoolean("canSpawnOTF", OTFPortal.canSpawn);
+        nbt.putBoolean("canSpawnFTO", FTOPortal.canSpawn);
+
+        nbt.putIntArray("frostbiteSpawnPoint", new int[]{
+                Frostbite.frostbiteSpawnPoint.getX(),
+                Frostbite.frostbiteSpawnPoint.getY(),
+                Frostbite.frostbiteSpawnPoint.getZ()});
+        nbt.putIntArray("overworldSpawnPoint", new int[]{
+                Frostbite.overworldSpawnPoint.getX(),
+                Frostbite.overworldSpawnPoint.getY(),
+                Frostbite.overworldSpawnPoint.getZ()});
     }
 
 
@@ -48,5 +62,13 @@ public class PrimaryLevelDataMixin {
 
             Frostbite.savedHeaters.add(new HeaterStorage(blockPos, null, tag.get(heaterDimensionKey).asString("")));
         }
+
+        OTFPortal.canSpawn = tag.get("canSpawnOTF").asBoolean().getOrThrow();
+        FTOPortal.canSpawn = tag.get("canSpawnFTO").asBoolean().getOrThrow();
+
+        int[] pos = tag.get("frostbiteSpawnPoint").asIntStream().toArray();
+        int[] pos1 = tag.get("overworldSpawnPoint").asIntStream().toArray();
+        Frostbite.frostbiteSpawnPoint = new BlockPos(pos[0], pos[1], pos[2]);
+        Frostbite.overworldSpawnPoint = new BlockPos(pos1[0], pos1[1], pos1[2]);
     }
 }

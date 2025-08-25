@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
@@ -116,8 +117,11 @@ public class OTFPortal extends Structure {
     ) {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
                 randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
+
         if (structureStart != StructureStart.INVALID_START) {
             //count++;
+            structureStart.getPieces().forEach(p -> p.setOrientation(Direction.NORTH));
+            Frostbite.overworldSpawnPoint = structureStart.getPieces().getFirst().getLocatorPosition();
             canSpawn = false;
         }
         return structureStart;
