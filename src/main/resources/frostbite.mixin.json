@@ -17,7 +17,8 @@
     "CreativeModeInventoryScreenMixin",
     "EntityRenderDispatcherMixin",
     "InventoryScreenMixin",
-    "LevelRendererMixin"
+    "LevelRendererMixin",
+    "WeatherEffectRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

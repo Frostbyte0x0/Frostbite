@@ -23,6 +23,7 @@ import org.exodusstudio.frostbite.common.item.lining.SavedLinings;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.temperature.SavedTemperatures;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
+import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Frostbite {
     public static boolean shouldShowLining = false;
     public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
+    public static WeatherInfo weatherInfo = new WeatherInfo();
 
     public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);

@@ -3,11 +3,11 @@ package org.exodusstudio.frostbite.common.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,12 +16,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -29,25 +31,30 @@ import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.block.HeaterStorage;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
+import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStand;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
+import org.exodusstudio.frostbite.common.weather.FrostbiteWeatherEffectRenderer;
+import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class ModEvents {
-    public static float shroudedBlendLerp = 0;
+    public static float blendLerp = 0;
+    public static FrostbiteWeatherEffectRenderer weatherEffectRenderer = new FrostbiteWeatherEffectRenderer();
 
     @SubscribeEvent
     public static void reset(ServerStoppingEvent event) {
@@ -55,7 +62,7 @@ public class ModEvents {
         OTFPortal.canSpawn = true;
         //FTOPortal.count = 0;
         FTOPortal.canSpawn = true;
-        shroudedBlendLerp = 0;
+        blendLerp = 0;
         Frostbite.savedTemperatures.clear();
     }
 
@@ -74,27 +81,133 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void fog(ViewportEvent.RenderFog event) {
+    public static void weatherControl(LevelTickEvent.Post event) {
+        Level level = event.getLevel();
+
+        if (level instanceof ServerLevel serverLevel && serverLevel.dimensionType().hasSkyLight()) {
+            if (serverLevel.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)) {
+                int i = Frostbite.weatherInfo.snowTime;
+                int j = Frostbite.weatherInfo.whiteoutTime;
+                int k = Frostbite.weatherInfo.blizzardTime;
+                boolean flag1 = Frostbite.weatherInfo.isWhiteouting;
+                boolean flag2 = Frostbite.weatherInfo.isBlizzarding;
+                if (i > 0) {
+                    i--;
+                    j = flag1 ? 0 : 1;
+                    k = flag2 ? 0 : 1;
+                    flag1 = false;
+                    flag2 = false;
+                } else {
+                    if (j > 0) {
+                        if (--j == 0) {
+                            flag1 = !flag1;
+                        }
+                    } else if (flag1) {
+                        j = WeatherInfo.WHITEOUT_DURATION.sample(serverLevel.random);
+                    } else {
+                        j = WeatherInfo.WHITEOUT_DELAY.sample(serverLevel.random);
+                    }
+
+                    if (k > 0) {
+                        if (--k == 0) {
+                            flag2 = !flag2;
+                        }
+                    } else if (flag2) {
+                        k = WeatherInfo.BLIZZARD_DURATION.sample(serverLevel.random);
+                    } else {
+                        k = WeatherInfo.BLIZZARD_DELAY.sample(serverLevel.random);
+                    }
+                }
+
+                Frostbite.weatherInfo.whiteoutTime = j;
+                Frostbite.weatherInfo.blizzardTime = k;
+                Frostbite.weatherInfo.snowTime = i;
+                Frostbite.weatherInfo.isWhiteouting = flag1;
+                Frostbite.weatherInfo.isBlizzarding = flag2;
+            }
+
+            Frostbite.weatherInfo.oWhiteoutLevel = Frostbite.weatherInfo.whiteoutLevel;
+            if (Frostbite.weatherInfo.isWhiteouting) {
+                Frostbite.weatherInfo.whiteoutLevel += 0.0025F;
+            } else {
+                Frostbite.weatherInfo.whiteoutLevel -= 0.0025F;
+            }
+
+            Frostbite.weatherInfo.whiteoutLevel = Mth.clamp(Frostbite.weatherInfo.whiteoutLevel, 0.0F, 1.0F);
+            Frostbite.weatherInfo.oBlizzardLevel = Frostbite.weatherInfo.blizzardLevel;
+            if (Frostbite.weatherInfo.isBlizzarding) {
+                Frostbite.weatherInfo.blizzardLevel += 0.0025F;
+            } else {
+                Frostbite.weatherInfo.blizzardLevel -= 0.0025F;
+            }
+
+            Frostbite.weatherInfo.blizzardLevel = Mth.clamp(Frostbite.weatherInfo.blizzardLevel, 0.0F, 1.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void weatherRender(RenderLevelStageEvent event) {
+        LevelRenderer renderer = event.getLevelRenderer();
+        if (Minecraft.getInstance().level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]") &&
+            event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_WEATHER)) {
+            weatherEffectRenderer.render(Minecraft.getInstance().level, renderer.renderBuffers.bufferSource(),
+                    renderer.getTicks(), event.getPartialTick().getGameTimeDeltaPartialTick(false),
+                    event.getCamera().getPosition());
+        }
+    }
+
+    @SubscribeEvent
+    public static void fogDist(ViewportEvent.RenderFog event) {
         Player player = Minecraft.getInstance().player;
         ClientLevel level = Minecraft.getInstance().level;
-        if (player == null || !player.isAlive() || player.isSpectator() || level == null) return;
+        if (player == null || !player.isAlive() || level == null) return;
 
         if (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN || event.getMode() == FogRenderer.FogMode.FOG_SKY) {
-//            int[] smoothColour = smoothColour(player, level);
-//
-//            int delta = getColourDifference(smoothColour,
-//                    new int[] { ARGB.red(8434839), ARGB.green(8434839), ARGB.blue(8434839) });
-//
-//            int range = 13;
+            float nearShrouded = Mth.lerp(blendLerp, event.getNearPlaneDistance(), -50f);
+            float farShrouded = Mth.lerp(blendLerp, event.getFarPlaneDistance(), 100f);
 
-            //if (delta <= range) {
-                //float lerp = 1 - (float) delta / range;
-            float near = Mth.lerp(shroudedBlendLerp, event.getNearPlaneDistance(), -50f);
-            float far = Mth.lerp(shroudedBlendLerp, event.getFarPlaneDistance(), 100f);
+            float near;
+            float far;
+
+            if (Frostbite.weatherInfo.isWhiteouting) {
+                near = Mth.lerp(Frostbite.weatherInfo.getWhiteoutLevel((float) event.getPartialTick()), nearShrouded, -50f);
+                far = Mth.lerp(Frostbite.weatherInfo.getWhiteoutLevel((float) event.getPartialTick()), farShrouded, 50f);
+            } else if (Frostbite.weatherInfo.isBlizzarding) {
+                near = Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel((float) event.getPartialTick()), nearShrouded, 0f);
+                far = Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel((float) event.getPartialTick()), farShrouded, 100f);
+            } else {
+                near = Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel((float) event.getPartialTick()), 0, nearShrouded);
+                far = Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel((float) event.getPartialTick()), 100, farShrouded);
+            }
+
+//            float near = event.getNearPlaneDistance();
+//            float far = event.getFarPlaneDistance();
+//            float oNear = event.getFarPlaneDistance();
+//            float oFar = event.getFarPlaneDistance();
+//
+//            if (Frostbite.weatherInfo.isWhiteouting) {
+//                oNear = near;
+//                oFar = far;
+//                near = -50f;
+//                far = 50f;
+//            } else if (Frostbite.weatherInfo.isBlizzarding) {
+//                oNear = near;
+//                oFar = far;
+//                near = 0f;
+//                far = 100f;
+//            } else if (level.getBiome(player.blockPosition()).toString().contains("shrouded_forest")) {
+//                oNear = near;
+//                oFar = far;
+//                near = -50f;
+//                far = 100f;
+//            }
+//
+//            float t = Mth.clamp(, 0, 1);
+//            float nearPlane = Mth.lerp(t, oNear, near);
+//            float farPlane = Mth.lerp(t, oFar, far);
 
             event.setNearPlaneDistance(near);
             event.setFarPlaneDistance(far);
-            //}
             event.setCanceled(true);
         }
     }
@@ -103,38 +216,34 @@ public class ModEvents {
     public static void fogColour(ViewportEvent.ComputeFogColor event) {
         Player player = Minecraft.getInstance().player;
         ClientLevel level = Minecraft.getInstance().level;
-        if (player == null || !player.isAlive() || player.isSpectator() || level == null) return;
+        if (player == null || !player.isAlive() || level == null) return;
 
-        computeShroudedBlendLerp(level, player, event.getPartialTick());
+        computeBlendLerp(level, player, event.getPartialTick());
+        float red1 = Mth.lerp(blendLerp, event.getRed(), 73 / 255f);
+        float green1 = Mth.lerp(blendLerp, event.getGreen(), 106 / 255f);
+        float blue1 = Mth.lerp(blendLerp, event.getBlue(), 184 / 255f);
 
-        // 8434839
-        // int colour = level.calculateBlockTint(player.blockPosition().below(), Biome::getGrassColor);
+        float red = red1;
+        float green = green1;
+        float blue = blue1;
 
+        float blizzardLevel = Frostbite.weatherInfo.getBlizzardLevel((float) event.getPartialTick());
+        float whiteoutLevel = Frostbite.weatherInfo.getWhiteoutLevel((float) event.getPartialTick());
 
-//        int[] smoothColour = smoothColour(player, level);
-//
-//        int delta = getColourDifference(smoothColour,
-//                new int[] { ARGB.red(8434839), ARGB.green(8434839), ARGB.blue(8434839) });
-//
-//        //Frostbite.LOGGER.debug(String.valueOf(delta));
-//
-//        int range = 13;
+        if (Frostbite.weatherInfo.isWhiteouting) {
+            red = Mth.lerp(blizzardLevel, red1, 200 / 255f);
+            green = Mth.lerp(blizzardLevel, green1, 200 / 255f);
+            blue = Mth.lerp(blizzardLevel, blue1, 200 / 255f);
+        } else if (Frostbite.weatherInfo.isBlizzarding) {
+            red = Mth.lerp(whiteoutLevel, red1, 150 / 255f);
+            green = Mth.lerp(whiteoutLevel, green1, 150 / 255f);
+            blue = Mth.lerp(whiteoutLevel, blue1, 150 / 255f);
+        }
 
-        //if (delta <= range) {
-        //float lerp = 1 - (float) delta / range;
-        float red = Mth.lerp(shroudedBlendLerp, event.getRed(), 73 / 255f);
-        float green = Mth.lerp(shroudedBlendLerp, event.getGreen(), 106 / 255f);
-        float blue = Mth.lerp(shroudedBlendLerp, event.getBlue(), 184 / 255f);
 
         event.setRed(red);
         event.setGreen(green);
         event.setBlue(blue);
-        //}
-
-
-//        event.setRed(73 / 255f);
-//        event.setGreen(106 / 255f);
-//        event.setBlue(184 / 255f);
     }
 
     @SubscribeEvent
@@ -148,6 +257,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void commands(RegisterCommandsEvent event) {
         SpawnLastStandCommand.register(event.getDispatcher(), event.getBuildContext());
+        WeatherCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -183,10 +293,6 @@ public class ModEvents {
                 }
             });
             if (event.getServer().getTickCount() % 20 == 0) {
-//                Frostbite.savedHeaters = new ArrayList<>(Frostbite.savedHeaters.stream().filter(heater ->
-//                                !(level.getBlockState(heater.getPos()).getBlock() instanceof HeaterBlock) ||
-//                                !(heater.getDimensionName().equals(level.dimension().location().toString())))
-//                        .toList());
                 Frostbite.savedHeaters.forEach(heater -> {
                     if (heater.getDimensionName().equals(level.dimension().location().toString())) heater.tickBlock(level);
                 });
@@ -212,28 +318,8 @@ public class ModEvents {
             Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().location().toString()));
             event.cancelWithResult(InteractionResult.FAIL);
 
-        } //else if (stack.is(ItemRegistry.FROSTBITTEN_GEM) &&
-//                state.getBlock() instanceof ReinforcedBlackIceReceptacleBlock block &&
-//                !state.getValue(BlockStateProperties.ACTIVE)) {
-//            stack.consume(1, event.getPlayer());
-//            BlockState state1 = state.setValue(BlockStateProperties.ACTIVE, true);
-//            event.getLevel().setBlock(event.getPos(), state1, 3);
-//            event.getLevel().playSound(event.getPlayer(), event.getPos(), SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.0F);
-//        }
+        }
     }
-//
-//    @SubscribeEvent
-//    public static void heaterDestroyed(VanillaGameEvent event) {
-//        if (event.getVanillaEvent().getRegisteredName().equals(GameEvent.BLOCK_DESTROY.getRegisteredName())) {
-//            BlockPos pos = BlockPos.containing(event.getEventPosition());
-//            if (event.getLevel().getBlockState(pos).getBlock() instanceof HeaterBlock) {
-//                Frostbite.savedHeaters = new ArrayList<>(Frostbite.savedHeaters.stream().filter(heater ->
-//                                !heater.getPos().equals(pos) ||
-//                                        !heater.getDimensionName().equals(event.getLevel().dimension().location().toString()))
-//                        .toList());
-//            }
-//        }
-//    }
 
     @SubscribeEvent
     public static void containerOpen(PlayerContainerEvent.Open event) {
@@ -253,51 +339,13 @@ public class ModEvents {
         }
     }
 
-    public static int[] smoothColour(Player player, ClientLevel level) {
-        int colourX0 = level.calculateBlockTint(player.blockPosition().west(),  Biome::getGrassColor);
-        int colourX1 = level.calculateBlockTint(player.blockPosition().east(),  Biome::getGrassColor);
-        int colourY0 = level.calculateBlockTint(player.blockPosition().below(), Biome::getGrassColor);
-        int colourY1 = level.calculateBlockTint(player.blockPosition().above(), Biome::getGrassColor);
-        int colourZ0 = level.calculateBlockTint(player.blockPosition().north(), Biome::getGrassColor);
-        int colourZ1 = level.calculateBlockTint(player.blockPosition().south(), Biome::getGrassColor);
-
-        int redX = (int) Mth.lerp(player.getX() % 1, ARGB.red(colourX0), ARGB.red(colourX1));
-        int redY = (int) Mth.lerp(player.getY() % 1, ARGB.red(colourY0), ARGB.red(colourY1));
-        int redZ = (int) Mth.lerp(player.getZ() % 1, ARGB.red(colourZ0), ARGB.red(colourZ1));
-
-        int greenX = (int) Mth.lerp(player.getX() % 1, ARGB.green(colourX0), ARGB.green(colourX1));
-        int greenY = (int) Mth.lerp(player.getY() % 1, ARGB.green(colourY0), ARGB.green(colourY1));
-        int greenZ = (int) Mth.lerp(player.getZ() % 1, ARGB.green(colourZ0), ARGB.green(colourZ1));
-
-        int blueX = (int) Mth.lerp(player.getX() % 1, ARGB.blue(colourX0), ARGB.blue(colourX1));
-        int blueY = (int) Mth.lerp(player.getY() % 1, ARGB.blue(colourY0), ARGB.blue(colourY1));
-        int blueZ = (int) Mth.lerp(player.getZ() % 1, ARGB.blue(colourZ0), ARGB.blue(colourZ1));
-
-        int red = (redX + redY + redZ) / 3;
-        int green = (greenX + greenY + greenZ) / 3;
-        int blue = (blueX + blueY + blueZ) / 3;
-
-        return new int[] {
-            red,
-            green,
-            blue,
-        };
-    }
-
-    public static int getColourDifference(int[] colour1, int[] colour2) {
-        return Math.abs(colour1[0] - colour2[0]) +
-               Math.abs(colour1[1] - colour2[1]) +
-               Math.abs(colour1[2] - colour2[2]);
-    }
-
-    public static void computeShroudedBlendLerp(ClientLevel level, Player player, double partialTicks) {
+    public static void computeBlendLerp(ClientLevel level, Player player, double partialTicks) {
         String name = level.getBiome(player.blockPosition()).toString();
 
-        partialTicks /= 200;
         if (name.contains("shrouded_forest")) {
-            shroudedBlendLerp = (float) Mth.clamp(shroudedBlendLerp + partialTicks, 0, 1);
+            blendLerp = (float) Mth.clamp(blendLerp + partialTicks / 200, 0, 1);
         } else {
-            shroudedBlendLerp = (float) Mth.clamp(shroudedBlendLerp - partialTicks, 0, 1);
+            blendLerp = (float) Mth.clamp(blendLerp - partialTicks / 200, 0, 1);
         }
     }
 }

@@ -13,6 +13,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterStorage;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
+import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,6 +49,14 @@ public class PrimaryLevelDataMixin {
                 Frostbite.overworldSpawnPoint.getX(),
                 Frostbite.overworldSpawnPoint.getY(),
                 Frostbite.overworldSpawnPoint.getZ()});
+
+        nbt.putInt("snowTime", Frostbite.weatherInfo.snowTime);
+        nbt.putInt("blizzardTime", Frostbite.weatherInfo.blizzardTime);
+        nbt.putInt("whiteoutTime", Frostbite.weatherInfo.whiteoutTime);
+        nbt.putBoolean("isBlizzarding", Frostbite.weatherInfo.isBlizzarding);
+        nbt.putBoolean("isWhiteouting", Frostbite.weatherInfo.isWhiteouting);
+        nbt.putFloat("blizzardLevel", Frostbite.weatherInfo.blizzardLevel);
+        nbt.putFloat("whiteoutLevel", Frostbite.weatherInfo.whiteoutLevel);
     }
 
 
@@ -70,5 +79,14 @@ public class PrimaryLevelDataMixin {
         int[] pos1 = tag.get("overworldSpawnPoint").asIntStream().toArray();
         Frostbite.frostbiteSpawnPoint = new BlockPos(pos[0], pos[1], pos[2]);
         Frostbite.overworldSpawnPoint = new BlockPos(pos1[0], pos1[1], pos1[2]);
+
+        Frostbite.weatherInfo = new WeatherInfo(
+                tag.get("snowTime").asInt(0),
+                tag.get("blizzardTime").asInt(0),
+                tag.get("whiteoutTime").asInt(0),
+                tag.get("isBlizzarding").asBoolean().getOrThrow(),
+                tag.get("isWhiteouting").asBoolean().getOrThrow(),
+                tag.get("blizzardLevel").asFloat(0),
+                tag.get("whiteoutLevel").asFloat(0));
     }
 }
