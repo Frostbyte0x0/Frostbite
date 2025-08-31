@@ -43,20 +43,20 @@ public class WeavingMenu extends ItemCombinerMenu {
         return ItemCombinerMenuSlotDefinition.create().withSlot(0, 27, 47, (p_266635_) -> true).withSlot(1, 76, 47, (p_266634_) -> true).withResultSlot(2, 134, 47).build();
     }
 
-    protected boolean isValidBlock(BlockState p_39019_) {
-        return p_39019_.is(BlockTags.ANVIL);
+    protected boolean isValidBlock(BlockState state) {
+        return state.is(BlockTags.ANVIL);
     }
 
-    protected boolean mayPickup(Player p_39023_, boolean p_39024_) {
-        return (p_39023_.hasInfiniteMaterials() || p_39023_.experienceLevel >= this.cost.get()) && this.cost.get() > 0;
+    protected boolean mayPickup(Player player, boolean p_39024_) {
+        return (player.hasInfiniteMaterials() || player.experienceLevel >= this.cost.get()) && this.cost.get() > 0;
     }
 
-    protected void onTake(Player p_150474_, ItemStack p_150475_) {
-        if (!p_150474_.getAbilities().instabuild) {
-            p_150474_.giveExperienceLevels(-this.cost.get());
+    protected void onTake(Player player, ItemStack stack) {
+        if (!player.getAbilities().instabuild) {
+            player.giveExperienceLevels(-this.cost.get());
         }
 
-        float breakChance = CommonHooks.onAnvilRepair(p_150474_, p_150475_, this.inputSlots.getItem(0), this.inputSlots.getItem(1));
+        float breakChance = CommonHooks.onAnvilRepair(player, stack, this.inputSlots.getItem(0), this.inputSlots.getItem(1));
         if (this.repairItemCountCost > 0) {
             ItemStack itemstack = this.inputSlots.getItem(1);
             if (!itemstack.isEmpty() && itemstack.getCount() > this.repairItemCountCost) {
@@ -73,7 +73,7 @@ public class WeavingMenu extends ItemCombinerMenu {
         this.inputSlots.setItem(0, ItemStack.EMPTY);
         this.access.execute((p_150479_, p_150480_) -> {
             BlockState blockstate = p_150479_.getBlockState(p_150480_);
-            if (!p_150474_.getAbilities().instabuild && blockstate.is(BlockTags.ANVIL) && p_150474_.getRandom().nextFloat() < breakChance) {
+            if (!player.getAbilities().instabuild && blockstate.is(BlockTags.ANVIL) && player.getRandom().nextFloat() < breakChance) {
                 BlockState blockstate1 = AnvilBlock.damage(blockstate);
                 if (blockstate1 == null) {
                     p_150479_.removeBlock(p_150480_, false);
@@ -209,7 +209,7 @@ public class WeavingMenu extends ItemCombinerMenu {
                 itemstack1.remove(DataComponents.CUSTOM_NAME);
             }
 
-            if (flag && !itemstack1.isBookEnchantable(itemstack2)) {
+            if (flag && !itemstack1.isEnchantable()) {
                 itemstack1 = ItemStack.EMPTY;
             }
 

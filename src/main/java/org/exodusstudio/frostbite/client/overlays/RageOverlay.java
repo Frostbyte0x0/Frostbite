@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.client.overlays;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +21,7 @@ public class RageOverlay {
         assert player != null;
         if (player.hasEffect(EffectRegistry.RAGE)) {
             guiGraphics.blit(
-                    RenderType::guiTexturedOverlay,
+                    RenderPipelines.GUI_TEXTURED,
                     RAGE,
                     0,
                     0,
@@ -34,7 +34,7 @@ public class RageOverlay {
                     ARGB.color(1000, 256, 256));
 
             guiGraphics.blit(
-                    RenderType::vignette,
+                    RenderPipelines.VIGNETTE,
                     VIGNETTE_LOCATION,
                     0,
                     0,

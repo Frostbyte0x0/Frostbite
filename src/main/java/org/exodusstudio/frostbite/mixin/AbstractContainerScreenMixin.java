@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.mixin;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -56,12 +56,11 @@ public class AbstractContainerScreenMixin {
                 }
             }
 
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().translate(0.0F, 0.0F, 100.0F);
+            guiGraphics.pose().translate(0.0F, 100.0F, guiGraphics.pose().pushMatrix());
             if (itemstack.isEmpty() && slot.isActive()) {
                 ResourceLocation resourcelocation = slot.getNoItemIcon();
                 if (resourcelocation != null) {
-                    guiGraphics.blit(RenderType::guiTextured, resourcelocation, i, j, 0, 0, 16, 16, 16, 16);
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, resourcelocation, i, j, 0, 0, 16, 16, 16, 16);
                     flag1 = true;
                 }
             }
@@ -74,7 +73,7 @@ public class AbstractContainerScreenMixin {
                 frostbite$screen.renderSlotContents(guiGraphics, itemstack, slot, s);
             }
 
-            guiGraphics.pose().popPose();
+            guiGraphics.pose().popMatrix();
             ci.cancel();
         }
     }

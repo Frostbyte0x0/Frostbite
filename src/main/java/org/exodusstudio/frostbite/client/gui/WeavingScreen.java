@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundRenameItemPacket;
@@ -78,8 +78,8 @@ public class WeavingScreen extends ItemCombinerScreen<WeavingMenu> {
 
     }
 
-    protected void renderLabels(GuiGraphics p_281442_, int p_282417_, int p_283022_) {
-        super.renderLabels(p_281442_, p_282417_, p_283022_);
+    protected void renderLabels(GuiGraphics graphics, int p_282417_, int p_283022_) {
+        super.renderLabels(graphics, p_282417_, p_283022_);
         int i = this.menu.getCost();
         if (i > 0) {
             int j = 8453920;
@@ -98,25 +98,25 @@ public class WeavingScreen extends ItemCombinerScreen<WeavingMenu> {
 
             if (component != null) {
                 int k = this.imageWidth - 8 - this.font.width(component) - 2;
-                p_281442_.fill(k - 2, 67, this.imageWidth - 8, 79, 1325400064);
-                p_281442_.drawString(this.font, component, k, 69, j);
+                graphics.fill(k - 2, 67, this.imageWidth - 8, 79, 1325400064);
+                graphics.drawString(this.font, component, k, 69, j);
             }
         }
 
     }
 
-    protected void renderBg(GuiGraphics p_283345_, float p_283412_, int p_282871_, int p_281306_) {
-        super.renderBg(p_283345_, p_283412_, p_282871_, p_281306_);
-        p_283345_.blitSprite(RenderType::guiTextured, this.menu.getSlot(0).hasItem() ? TEXT_FIELD_SPRITE : TEXT_FIELD_DISABLED_SPRITE, this.leftPos + 59, this.topPos + 20, 110, 16);
+    protected void renderBg(GuiGraphics graphics, float p_283412_, int p_282871_, int p_281306_) {
+        super.renderBg(graphics, p_283412_, p_282871_, p_281306_);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.menu.getSlot(0).hasItem() ? TEXT_FIELD_SPRITE : TEXT_FIELD_DISABLED_SPRITE, this.leftPos + 59, this.topPos + 20, 110, 16);
     }
 
-    public void renderFg(GuiGraphics p_283449_, int p_283263_, int p_281526_, float p_282957_) {
-        this.name.render(p_283449_, p_283263_, p_281526_, p_282957_);
+    public void renderFg(GuiGraphics graphics, int p_283263_, int p_281526_, float p_282957_) {
+        this.name.render(graphics, p_283263_, p_281526_, p_282957_);
     }
 
-    protected void renderErrorIcon(GuiGraphics p_282905_, int p_283237_, int p_282237_) {
+    protected void renderErrorIcon(GuiGraphics graphics, int p_283237_, int p_282237_) {
         if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(this.menu.getResultSlot()).hasItem()) {
-            p_282905_.blitSprite(RenderType::guiTextured, ERROR_SPRITE, p_283237_ + 99, p_282237_ + 45, 28, 21);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ERROR_SPRITE, p_283237_ + 99, p_282237_ + 45, 28, 21);
         }
 
     }

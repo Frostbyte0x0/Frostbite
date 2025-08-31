@@ -2,10 +2,8 @@ package org.exodusstudio.frostbite.common.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -20,6 +18,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.FogType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
@@ -51,7 +50,7 @@ import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-@EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEvents {
     public static float blendLerp = 0;
     public static FrostbiteWeatherEffectRenderer weatherEffectRenderer = new FrostbiteWeatherEffectRenderer();
@@ -146,10 +145,9 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void weatherRender(RenderLevelStageEvent event) {
+    public static void weatherRender(RenderLevelStageEvent.AfterWeather event) {
         LevelRenderer renderer = event.getLevelRenderer();
-        if (Minecraft.getInstance().level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]") &&
-            event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_WEATHER)) {
+        if (Minecraft.getInstance().level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) {
             weatherEffectRenderer.render(Minecraft.getInstance().level, renderer.renderBuffers.bufferSource(),
                     renderer.getTicks(), event.getPartialTick().getGameTimeDeltaPartialTick(false),
                     event.getCamera().getPosition());
@@ -162,7 +160,7 @@ public class ModEvents {
         ClientLevel level = Minecraft.getInstance().level;
         if (player == null || !player.isAlive() || level == null) return;
 
-        if (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN || event.getMode() == FogRenderer.FogMode.FOG_SKY) {
+        if (event.getType() == FogType.ATMOSPHERIC) {
             float nearShrouded = Mth.lerp(blendLerp, event.getNearPlaneDistance(), -50f);
             float farShrouded = Mth.lerp(blendLerp, event.getFarPlaneDistance(), 100f);
 
@@ -208,7 +206,6 @@ public class ModEvents {
 
             event.setNearPlaneDistance(near);
             event.setFarPlaneDistance(far);
-            event.setCanceled(true);
         }
     }
 
@@ -266,12 +263,8 @@ public class ModEvents {
             if (player.level() instanceof ServerLevel serverLevel && FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
                 FrozenRemnantsEntity frozenRemnants = new FrozenRemnantsEntity(EntityRegistry.FROZEN_REMNANTS.get(), serverLevel);
                 frozenRemnants.setOwner(player);
-                frozenRemnants.moveTo(player.position(), 0.0F, 0.0F);
-                NonNullList<ItemStack> items = NonNullList.create();
-                items.addAll(player.getInventory().items);
-                items.addAll(player.getInventory().armor);
-                items.addAll(player.getInventory().offhand);
-                frozenRemnants.setItems(items);
+                frozenRemnants.moveOrInterpolateTo(player.position(), 0.0F, 0.0F);
+                frozenRemnants.setItems(player.getInventory().getNonEquipmentItems());
                 frozenRemnants.finalizeSpawn(serverLevel,
                         player.level().getCurrentDifficultyAt(BlockPos.containing(player.position())),
                         EntitySpawnReason.EVENT, null);

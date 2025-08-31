@@ -1,12 +1,11 @@
 package org.exodusstudio.frostbite.client.overlays;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -34,19 +33,8 @@ public class FireOverlay {
             FIRE4, FIRE5, FIRE6, FIRE7};
 
 
-    public static void drawTexture(int leftPos, int topPos, int width, int height, ResourceLocation texture, boolean blend) {
-        if (blend) {
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-        }
-
-        //RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, texture);
-        new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource()).blit(RenderType::guiTextured, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
-
-        if (blend) {
-            RenderSystem.disableBlend();
-        }
+    public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, ResourceLocation texture, boolean blend) {
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
     }
 
     public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -71,8 +59,7 @@ public class FireOverlay {
         int textureWidth = 24;
         int textureHeight = 24;
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        drawTexture(x, y, textureWidth, textureHeight, FIRES[fireToShow], false);
+        drawTexture(guiGraphics, x, y, textureWidth, textureHeight, FIRES[fireToShow], false);
 
         Font font = Minecraft.getInstance().font;
         Component text = Component.literal("§7" + innerTemp + "C").withStyle(ChatFormatting.RED);

@@ -59,12 +59,12 @@ public class FrostbitePortalBlock extends Block implements Portal {
         }
     }
 
-    @Override
+    /*@Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity.canUsePortal(false)) {
             entity.setAsInsidePortal(this, pos);
         }
-    }
+    }*/
 
     @Override
     public int getPortalTransitionTime(ServerLevel serverLevel, Entity entity) {

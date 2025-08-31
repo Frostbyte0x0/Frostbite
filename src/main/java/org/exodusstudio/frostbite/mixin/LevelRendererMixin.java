@@ -1,7 +1,5 @@
 package org.exodusstudio.frostbite.mixin;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
@@ -32,22 +30,6 @@ public class LevelRendererMixin {
     LevelRenderer frostbite$levelRenderer = (LevelRenderer) ((Object) this);
     @Unique
     Minecraft mc = Minecraft.getInstance();
-
-    @Inject(at = @At("HEAD"), method = "doEntityOutline", cancellable = true)
-    public void doEntityOutline(CallbackInfo ci) {
-        setFrostbite$levelRenderer();
-        // frostbite$shouldShowEntityOutlines() &&
-        if (frostbite$levelRenderer != null) {
-            if (frostbite$levelRenderer.shouldShowEntityOutlines()) {
-                RenderSystem.enableBlend();
-                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
-                frostbite$levelRenderer.entityOutlineTarget.blitAndBlendToScreen(mc.getWindow().getWidth(), mc.getWindow().getHeight());
-                RenderSystem.disableBlend();
-                RenderSystem.defaultBlendFunc();
-            }
-        }
-        ci.cancel();
-    }
     
     @Inject(at = @At("HEAD"), method = "renderEntities", cancellable = true)
     public void renderEntities(PoseStack poseStack, MultiBufferSource.BufferSource bufferSource, Camera camera, DeltaTracker deltaTracker, List<Entity> entities, CallbackInfo ci) {

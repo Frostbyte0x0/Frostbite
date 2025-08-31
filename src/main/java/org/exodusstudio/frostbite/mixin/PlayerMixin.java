@@ -1,15 +1,17 @@
 package org.exodusstudio.frostbite.mixin;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.LastStandEntity;
@@ -69,7 +71,7 @@ public class PlayerMixin implements LastStand {
                 frostbite$lastStandEntity.setReleaseTicks((int) (frostbite$accumulatedDamage * 2));
             }
 
-            frostbite$lastStandEntity.moveTo(frostbite$player.position());
+            frostbite$lastStandEntity.move(MoverType.PLAYER, frostbite$player.position());
         }
     }
 
@@ -92,14 +94,14 @@ public class PlayerMixin implements LastStand {
     }
 
     @Inject(at = @At("HEAD"), method = "addAdditionalSaveData")
-    private void addAdditionalSaveData(CompoundTag compound, CallbackInfo ci) {
-        compound.put("linings", Frostbite.savedLinings.save(new ListTag(), frostbite$player.level().registryAccess(),
+    private void addAdditionalSaveData(ValueOutput output, CallbackInfo ci) {
+        output.list("linings", Frostbite.savedLinings.save(new ListTag(), frostbite$player.level().registryAccess(),
                 frostbite$player.getStringUUID()));
     }
 
     @Inject(at = @At("HEAD"), method = "readAdditionalSaveData")
-    private void readAdditionalSaveData(CompoundTag compound, CallbackInfo ci) {
-        ListTag listtag = compound.getList("linings", 10);
+    private void readAdditionalSaveData(ValueInput input, CallbackInfo ci) {
+        ListTag listtag = input.list("linings", 10);
         Frostbite.savedLinings.load(listtag, frostbite$player.level().registryAccess(),
                 frostbite$player.getStringUUID());
     }
@@ -107,7 +109,7 @@ public class PlayerMixin implements LastStand {
     @Unique
     public void frostbite$startAccumulatingDamage(ServerLevel serverLevel) {
         frostbite$lastStandEntity = new LastStandEntity(EntityRegistry.LAST_STAND.get(), serverLevel);
-        frostbite$lastStandEntity.moveTo(frostbite$player.position());
+        frostbite$lastStandEntity.move(MoverType.PLAYER, frostbite$player.position());
         frostbite$lastStandEntity.setReleasing(false);
         serverLevel.addFreshEntityWithPassengers(frostbite$lastStandEntity);
         serverLevel.gameEvent(GameEvent.ENTITY_PLACE, frostbite$player.position(), GameEvent.Context.of(frostbite$player));

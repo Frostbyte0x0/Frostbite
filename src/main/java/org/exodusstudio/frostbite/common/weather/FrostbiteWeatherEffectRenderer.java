@@ -22,8 +22,6 @@ import org.exodusstudio.frostbite.Frostbite;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
-
 @OnlyIn(Dist.CLIENT)
 public class FrostbiteWeatherEffectRenderer {
     private static final ResourceLocation SNOW_LOCATION =

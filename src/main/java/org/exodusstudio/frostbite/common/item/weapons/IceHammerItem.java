@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.entity.custom.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class IceHammerItem extends Item {
     }
 
     public static Tool createToolProperties() {
-        return new Tool(List.of(), 1.0F, 2);
+        return new Tool(List.of(), 1.0F, 2, true);
     }
 
     public boolean canAttackBlock(BlockState blockState, Level level, BlockPos blockPos, Player player) {
@@ -79,7 +81,7 @@ public class IceHammerItem extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot) {
         if (stack.get(DataComponentTypeRegistry.CHARGE).charge() > 0) {
             stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(stack.get(DataComponentTypeRegistry.CHARGE).charge() - 1));
         }

@@ -55,7 +55,6 @@ public class Frostbite {
         EntityRegistry.ENTITY_TYPES.register(modEventBus);
         EffectRegistry.MOB_EFFECTS.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
-        AttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         MenuTypeRegistry.MENU_TYPES.register(modEventBus);
         ConsumeEffectRegistry.CONSUME_EFFECT_TYPES.register(modEventBus);
@@ -69,7 +68,7 @@ public class Frostbite {
         //NeoForge.EVENT_BUS.register(this);
     }
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
