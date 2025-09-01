@@ -1,14 +1,29 @@
 package org.exodusstudio.frostbite.common.weather;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
+import org.exodusstudio.frostbite.common.event.ModEvents;
 
 public class WeatherInfo {
+    private static final RandomSource source = RandomSource.create();
     public static final IntProvider BLIZZARD_DELAY = UniformInt.of(12000, 180000);
     public static final IntProvider BLIZZARD_DURATION = UniformInt.of(12000, 24000);
     public static final IntProvider WHITEOUT_DELAY = UniformInt.of(12000, 180000);
     public static final IntProvider WHITEOUT_DURATION = UniformInt.of(3600, 15600);
+    public static final float normalNearFog = 0;
+    public final float normalFarFog;
+    public static final float normalRed = 130 / 255f;
+    public static final float normalGreen = 128 / 255f;
+    public static final float normalBlue = 214 / 255f;
+    public static final float BLIZZARD_NEAR_FOG = -50f;
+    public static final float BLIZZARD_FAR_FOG = 100f;
+    public static final float WHITEOUT_NEAR_FOG = -50f;
+    public static final float WHITEOUT_FAR_FOG = 50f;
+    public static final float BLIZZARD_COLOUR = 150 / 255f;
+    public static final float WHITEOUT_COLOUR = 200 / 255f;
 
     public int snowTime;
     public int blizzardTime;
@@ -19,6 +34,17 @@ public class WeatherInfo {
     public float blizzardLevel;
     public float oWhiteoutLevel = 0;
     public float whiteoutLevel;
+    public float oNearFog;
+    public float oFarFog;
+    public float nearFog;
+    public float farFog;
+    public float oRed;
+    public float oGreen;
+    public float oBlue;
+    public float red;
+    public float green;
+    public float blue;
+    public double timeSinceLastUpdate = 0;
 
     public WeatherInfo(
             int snowTime,
@@ -29,6 +55,7 @@ public class WeatherInfo {
             float blizzardLevel,
             float whiteoutLevel
     ) {
+        normalFarFog = Minecraft.getInstance().options.getEffectiveRenderDistance() * 16;
         this.snowTime = snowTime;
         this.blizzardTime = blizzardTime;
         this.whiteoutTime = whiteoutTime;
@@ -36,23 +63,108 @@ public class WeatherInfo {
         this.isWhiteouting = isWhiteouting;
         this.blizzardLevel = blizzardLevel;
         this.whiteoutLevel = whiteoutLevel;
+        this.oNearFog = normalNearFog;
+        this.oFarFog = normalFarFog;
+        this.nearFog = normalNearFog;
+        this.farFog = normalFarFog;
+        this.oRed = normalRed;
+        this.oGreen = normalGreen;
+        this.oBlue = normalBlue;
+        this.red = normalRed;
+        this.green = normalGreen;
+        this.blue = normalBlue;
     }
 
     public WeatherInfo() {
-        this.snowTime = 0;
-        this.blizzardTime = 0;
-        this.whiteoutTime = 0;
-        this.isBlizzarding = false;
-        this.isWhiteouting = false;
-        this.blizzardLevel = 0;
-        this.whiteoutLevel = 0;
+        this(0, 0, 0, false, false, 0, 0);
     }
 
-    public float getBlizzardLevel(float partialTick) {
-        return Mth.lerp(partialTick, oBlizzardLevel, blizzardLevel);
+    public float getBlizzardLevel(double partialTick) {
+        return (float) Mth.lerp(partialTick, oBlizzardLevel, blizzardLevel);
     }
 
     public float getWhiteoutLevel(float partialTick) {
         return Mth.lerp(partialTick, oWhiteoutLevel, whiteoutLevel);
+    }
+
+    public float getLerp() {
+//        if (isBlizzarding) {
+//            return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
+//        } else {
+//            return (float) Mth.clamp(1 - (Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
+//        }
+
+//        double lerp = Mth.lerp(getBlizzardLevel(partialTick), 1 - (Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f,
+//                (Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f);
+//        return (float) Mth.clamp(lerp, 0, 1);
+
+        return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
+    }
+
+    public void setSnowing(float currentTime) {
+        snowTime = BLIZZARD_DELAY.sample(source);
+        blizzardTime = 0;
+        whiteoutTime = 0;
+        isBlizzarding = false;
+        isWhiteouting = false;
+        oNearFog = nearFog;
+        oFarFog = farFog;
+        oRed = red;
+        oGreen = green;
+        oBlue = blue;
+//        if (Minecraft.getInstance().level.getBiome(Minecraft.getInstance().player.blockPosition()).toString().contains("shrouded_forest")) {
+//            nearFog = -50f;
+//            farFog = 100f;
+//            red = 73 / 255f;
+//            green = 106 / 255f;
+//            blue = 184 / 255f;
+//        } else {
+        nearFog = normalNearFog;
+        farFog = normalFarFog;
+        red = normalRed;
+        green = normalGreen;
+        blue = normalBlue;
+
+        timeSinceLastUpdate = currentTime;
+    }
+
+    public void setBlizzarding(float currentTime) {
+        snowTime = 0;
+        int t = BLIZZARD_DELAY.sample(source);
+        blizzardTime = t;
+        whiteoutTime = t;
+        isBlizzarding = true;
+        isWhiteouting = false;
+        oNearFog = nearFog;
+        oFarFog = farFog;
+        nearFog = BLIZZARD_NEAR_FOG;
+        farFog = BLIZZARD_FAR_FOG;
+        oRed = red;
+        oGreen = green;
+        oBlue = blue;
+        red = BLIZZARD_COLOUR;
+        green = BLIZZARD_COLOUR;
+        blue = BLIZZARD_COLOUR;
+        timeSinceLastUpdate = currentTime;
+    }
+
+    public void setWhiteouting(float currentTime) {
+        snowTime = 0;
+        int t = WHITEOUT_DELAY.sample(source);
+        blizzardTime = t;
+        whiteoutTime = t;
+        isBlizzarding = true;
+        isWhiteouting = true;
+        oNearFog = nearFog;
+        oFarFog = farFog;
+        nearFog = WHITEOUT_NEAR_FOG;
+        farFog = WHITEOUT_FAR_FOG;
+        oRed = red;
+        oGreen = green;
+        oBlue = blue;
+        red = WHITEOUT_COLOUR;
+        green = WHITEOUT_COLOUR;
+        blue = WHITEOUT_COLOUR;
+        timeSinceLastUpdate = currentTime;
     }
 }

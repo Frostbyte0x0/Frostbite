@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.weather;
 
+import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,13 +23,12 @@ import org.exodusstudio.frostbite.Frostbite;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
-
 @OnlyIn(Dist.CLIENT)
 public class FrostbiteWeatherEffectRenderer {
     private static final ResourceLocation SNOW_LOCATION =
             ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
-    private int rainSoundTime;
+    private float uPos;
+    private float lastTime;
     private final float[] columnSizeX = new float[1024];
     private final float[] columnSizeZ = new float[1024];
 
@@ -48,6 +48,10 @@ public class FrostbiteWeatherEffectRenderer {
         if (((ClientLevel) level).effects().renderSnowAndRain((ClientLevel) level, ticks, partialTick,
                 cameraPosition.x, cameraPosition.y, cameraPosition.z))
             return;
+        uPos += (Minecraft.getInstance().level.getGameTime() + partialTick - lastTime) *
+                Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel(partialTick), 0.02f, 0.2f);
+        lastTime = (float) Minecraft.getInstance().level.getGameTime() + partialTick;
+        //uPos %= 1.0F;
         int r = 3;
         List<ColumnInstance> list1 = new ArrayList<>();
         this.collectColumnInstances(level, ticks, partialTick, cameraPosition, r, list1);
@@ -104,14 +108,12 @@ public class FrostbiteWeatherEffectRenderer {
             RandomSource random, int ticks, int x, int bottomY, int topY, int z, int lightCoords, float partialTick
     ) {
         float f = ticks + partialTick;
-        float level = Frostbite.weatherInfo.getBlizzardLevel(partialTick);
-        float hSpeed = Mth.lerp(level, 0.05f, 0.5f);
-        float f1 = (float)(random.nextDouble() + (f * hSpeed * random.nextDouble()));
+        float f1 = random.nextFloat();
         float f2 = (float)(random.nextDouble() + (f * random.nextDouble() * 0.001f));
         float f3 = -((float)(ticks & 511) + partialTick) / 512f;
         int i = LightTexture.pack((LightTexture.block(lightCoords) * 3 + 15) / 4,
                 (LightTexture.sky(lightCoords) * 3 + 15) / 4);
-        return new ColumnInstance(x, z, bottomY, topY, f1, f3 + f2, i);
+        return new ColumnInstance(x, z, bottomY, topY, uPos + f1, f3 + f2, i);
     }
 
     private void renderInstances(
