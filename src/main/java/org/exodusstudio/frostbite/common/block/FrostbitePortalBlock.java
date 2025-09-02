@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -59,12 +60,12 @@ public class FrostbitePortalBlock extends Block implements Portal {
         }
     }
 
-    /*@Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    @Override
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
         if (entity.canUsePortal(false)) {
             entity.setAsInsidePortal(this, pos);
         }
-    }*/
+    }
 
     @Override
     public int getPortalTransitionTime(ServerLevel serverLevel, Entity entity) {

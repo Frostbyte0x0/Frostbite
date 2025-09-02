@@ -17,7 +17,6 @@ import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ClientEvent {
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerOverlayEvent(RegisterGuiLayersEvent event) {
         event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "thermometer_overlay"),

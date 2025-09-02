@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
@@ -95,15 +96,12 @@ public class PlayerMixin implements LastStand {
 
     @Inject(at = @At("HEAD"), method = "addAdditionalSaveData")
     private void addAdditionalSaveData(ValueOutput output, CallbackInfo ci) {
-        output.list("linings", Frostbite.savedLinings.save(new ListTag(), frostbite$player.level().registryAccess(),
-                frostbite$player.getStringUUID()));
+        Frostbite.savedLinings.save(output.list("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
     }
 
     @Inject(at = @At("HEAD"), method = "readAdditionalSaveData")
     private void readAdditionalSaveData(ValueInput input, CallbackInfo ci) {
-        ListTag listtag = input.list("linings", 10);
-        Frostbite.savedLinings.load(listtag, frostbite$player.level().registryAccess(),
-                frostbite$player.getStringUUID());
+        Frostbite.savedLinings.load(input.listOrEmpty("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
     }
 
     @Unique

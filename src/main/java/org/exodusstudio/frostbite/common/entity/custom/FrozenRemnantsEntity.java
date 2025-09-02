@@ -3,8 +3,6 @@ package org.exodusstudio.frostbite.common.entity.custom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -12,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -57,39 +56,31 @@ public class FrozenRemnantsEntity extends Mob{
     @Override
     public void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
-        output.putUUID("ownerUUID", this.getOwnerUUID());
-        output.put("items", this.saveItems(new ListTag()));
+        output.putString("ownerUUID", this.getOwnerUUID().toString());
+        save(output.list("items", ItemStackWithSlot.CODEC));
     }
 
     @Override
     public void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        this.setOwnerUUID(input.getUUID("ownerUUID"));
-        ListTag listtag = input.getList("items", 10);
-        this.loadItems(listtag);
+        this.setOwnerUUID(UUID.fromString(input.getString("ownerUUID").get()));
+        this.load(input.listOrEmpty("items", ItemStackWithSlot.CODEC));
     }
 
-    public ListTag saveItems(ListTag listTag) {
+    public void save(ValueOutput.TypedOutputList<ItemStackWithSlot> output) {
         for (int i = 0; i < this.items.size(); ++i) {
-            if (!(this.items.get(i)).isEmpty()) {
-                CompoundTag compoundtag = new CompoundTag();
-                compoundtag.putByte("Slot", (byte)i);
-                listTag.add((this.items.get(i)).save(this.registryAccess(), compoundtag));
+            ItemStack itemstack = this.items.get(i);
+            if (!itemstack.isEmpty()) {
+                output.add(new ItemStackWithSlot(i, itemstack));
             }
         }
-
-        return listTag;
     }
 
-    public void loadItems(ListTag listTag) {
-        this.items = NonNullList.withSize(54, ItemStack.EMPTY);
+    public void load(ValueInput.TypedInputList<ItemStackWithSlot> input) {
+        this.items.clear();
 
-        for (int i = 0; i < listTag.size(); ++i) {
-            if (listTag.getCompound(i).isEmpty()) continue;
-            CompoundTag compoundtag = listTag.getCompound(i).get();
-            int j = compoundtag.getByteOr("Slot", (byte) 0) & 255;
-            ItemStack itemstack = ItemStack.parse(this.registryAccess(), compoundtag).orElse(ItemStack.EMPTY);
-            this.items.set(j, itemstack);
+        for (ItemStackWithSlot itemstackwithslot : input) {
+            this.items.add(itemstackwithslot.stack());
         }
     }
 

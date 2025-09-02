@@ -80,13 +80,24 @@ public class PrimaryLevelDataMixin {
         Frostbite.frostbiteSpawnPoint = new BlockPos(pos[0], pos[1], pos[2]);
         Frostbite.overworldSpawnPoint = new BlockPos(pos1[0], pos1[1], pos1[2]);
 
+        Boolean isBlizzarding = tag.get("isBlizzarding").asBoolean().getOrThrow();
+        Boolean isWhiteouting = tag.get("isWhiteouting").asBoolean().getOrThrow();
+
         Frostbite.weatherInfo = new WeatherInfo(
                 tag.get("snowTime").asInt(0),
                 tag.get("blizzardTime").asInt(0),
                 tag.get("whiteoutTime").asInt(0),
-                tag.get("isBlizzarding").asBoolean().getOrThrow(),
-                tag.get("isWhiteouting").asBoolean().getOrThrow(),
+                isBlizzarding,
+                isWhiteouting,
                 tag.get("blizzardLevel").asFloat(0),
                 tag.get("whiteoutLevel").asFloat(0));
+
+        if (isWhiteouting) {
+            Frostbite.weatherInfo.setWhiteouting(0);
+        } else if (isBlizzarding) {
+            Frostbite.weatherInfo.setBlizzarding(0);
+        } else {
+            Frostbite.weatherInfo.setSnowing(0);
+        }
     }
 }

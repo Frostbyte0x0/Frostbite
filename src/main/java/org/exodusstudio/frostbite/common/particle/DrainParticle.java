@@ -47,7 +47,6 @@ public class DrainParticle extends TextureSheetParticle {
         this.setSpriteFromAge(this.sprites);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public record Provider(SpriteSet sprite) implements ParticleProvider<DrainParticleOptions> {
         public Particle createParticle(
                 DrainParticleOptions drainParticleOptions,

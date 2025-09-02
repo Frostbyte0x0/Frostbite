@@ -11,7 +11,6 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class SnowflakeParticle extends TextureSheetParticle {
     private final double xStart;
     private final double yStart;
@@ -86,7 +85,6 @@ public class SnowflakeParticle extends TextureSheetParticle {
 
     }
 
-    @OnlyIn(Dist.CLIENT)
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

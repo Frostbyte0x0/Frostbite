@@ -109,7 +109,6 @@ public class ButterflyParticle extends TextureSheetParticle {
         return 240;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
         public Particle createParticle(
                 SimpleParticleType simpleParticleOption,

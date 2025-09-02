@@ -56,7 +56,6 @@ public class WeavingMenu extends ItemCombinerMenu {
             player.giveExperienceLevels(-this.cost.get());
         }
 
-        float breakChance = CommonHooks.onAnvilRepair(player, stack, this.inputSlots.getItem(0), this.inputSlots.getItem(1));
         if (this.repairItemCountCost > 0) {
             ItemStack itemstack = this.inputSlots.getItem(1);
             if (!itemstack.isEmpty() && itemstack.getCount() > this.repairItemCountCost) {
@@ -71,22 +70,7 @@ public class WeavingMenu extends ItemCombinerMenu {
 
         this.cost.set(0);
         this.inputSlots.setItem(0, ItemStack.EMPTY);
-        this.access.execute((p_150479_, p_150480_) -> {
-            BlockState blockstate = p_150479_.getBlockState(p_150480_);
-            if (!player.getAbilities().instabuild && blockstate.is(BlockTags.ANVIL) && player.getRandom().nextFloat() < breakChance) {
-                BlockState blockstate1 = AnvilBlock.damage(blockstate);
-                if (blockstate1 == null) {
-                    p_150479_.removeBlock(p_150480_, false);
-                    p_150479_.levelEvent(1029, p_150480_, 0);
-                } else {
-                    p_150479_.setBlock(p_150480_, blockstate1, 2);
-                    p_150479_.levelEvent(1030, p_150480_, 0);
-                }
-            } else {
-                p_150479_.levelEvent(1030, p_150480_, 0);
-            }
-
-        });
+        this.access.execute((level, pos) -> level.levelEvent(1030, pos, 0));
     }
 
     public void createResult() {
