@@ -18,4 +18,7 @@ public class TreeGrowers {
 
     public static final TreeGrower CHARM = new TreeGrower(Frostbite.MOD_ID + ":charm",
             Optional.empty(), Optional.of(ModConfiguredFeatures.CHARM_KEY), Optional.empty());
+
+    public static final TreeGrower LAVENDER = new TreeGrower(Frostbite.MOD_ID + ":lavender",
+            Optional.empty(), Optional.of(ModConfiguredFeatures.LAVENDER_KEY), Optional.empty());
 }

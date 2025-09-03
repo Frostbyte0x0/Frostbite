@@ -82,11 +82,8 @@ public class WeatherInfo {
         return (float) Mth.lerp(partialTick, oBlizzardLevel, blizzardLevel);
     }
 
-    public float getWhiteoutLevel(float partialTick) {
-        return Mth.lerp(partialTick, oWhiteoutLevel, whiteoutLevel);
-    }
-
     public float getLerp() {
+        assert Minecraft.getInstance().level != null;
         return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
     }
 

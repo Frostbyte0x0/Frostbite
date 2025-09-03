@@ -1,7 +1,10 @@
 package org.exodusstudio.frostbite.common.block;
 
 import net.minecraft.BlockUtil;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -51,13 +54,10 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        switch (state.getValue(AXIS)) {
-            case Z:
-                return Z_AXIS_AABB;
-            case X:
-            default:
-                return X_AXIS_AABB;
+        if (state.getValue(AXIS) == Direction.Axis.Z) {
+            return Z_AXIS_AABB;
         }
+        return X_AXIS_AABB;
     }
 
     @Override
@@ -92,19 +92,18 @@ public class FrostbitePortalBlock extends Block implements Portal {
             return null;
         } else {
             boolean flag = originLevel.dimension() == Level.OVERWORLD;
-            BlockPos blockpos = originLevel.dimension() == frostbiteKey ?
-                    new BlockPos(1, 100, 0) : new BlockPos(0, 100, 0);
-            return this.getExitPortal(destinationLevel, originLevel, entity, pos, blockpos, flag);
+            return this.getExitPortal(destinationLevel, entity, pos, flag);
         }
     }
 
     private TeleportTransition getExitPortal(
-            ServerLevel destinationLevel, ServerLevel originLevel, Entity entity, BlockPos pos, BlockPos exitPos, boolean isOriginDimensionOverworld
+            ServerLevel destinationLevel, Entity entity, BlockPos pos, boolean isOriginDimensionOverworld
     ) {
         TeleportTransition.PostTeleportTransition teleporttransition$postteleporttransition;
 
         Holder.Reference<Structure> p_structure = getStructure(destinationLevel);
 
+        BlockPos exitPos;
         if (isOriginDimensionOverworld) {
             try {
                 Structure structure = p_structure.value();
@@ -125,17 +124,6 @@ public class FrostbitePortalBlock extends Block implements Portal {
             } catch (IllegalStateException ignored) {}
             exitPos = Frostbite.frostbiteSpawnPoint.offset(0, -2, 0);
         } else {
-//            exitPos = destinationLevel.findNearestMapStructure(Tags.STRUCTURE_OTF,
-//                    entity.blockPosition(), 100, false);
-//
-//            for (int y = destinationLevel.getMaxY(); y > 0; y--) {
-//                BlockPos testPos = new BlockPos(exitPos.getX(), y, exitPos.getZ());
-//                if (isValidSpawnBlock(testPos, destinationLevel)) {
-//                    exitPos = testPos;
-//                    break;
-//                }
-//            }
-
             exitPos = Frostbite.overworldSpawnPoint.offset(0, -2, 0);
         }
 
@@ -216,37 +204,27 @@ public class FrostbitePortalBlock extends Block implements Portal {
             double d5 = ((double)p_221797_.nextFloat() - 0.5) * 0.5;
             int j = p_221797_.nextInt(2) * 2 - 1;
             if (!p_221795_.getBlockState(p_221796_.west()).is(this) && !p_221795_.getBlockState(p_221796_.east()).is(this)) {
-                d0 = (double)p_221796_.getX() + 0.5 + 0.25 * (double)j;
-                d3 = (double)(p_221797_.nextFloat() * 2.0F * (float)j);
+                d0 = p_221796_.getX() + 0.5 + 0.25 * (double)j;
+                d3 = (p_221797_.nextFloat() * 2.0F * (float)j);
             } else {
-                d2 = (double)p_221796_.getZ() + 0.5 + 0.25 * (double)j;
-                d5 = (double)(p_221797_.nextFloat() * 2.0F * (float)j);
+                d2 = p_221796_.getZ() + 0.5 + 0.25 * (double)j;
+                d5 = (p_221797_.nextFloat() * 2.0F * (float)j);
             }
 
             p_221795_.addParticle(ParticleRegistry.SNOWFLAKE_PARTICLE.get(), d0, d1, d2, d3, d4, d5);
         }
     }
 
-    protected boolean isValidSpawnBlock(BlockPos pos, Level level) {
-        return level.getBlockState(pos).isAir() && !level.getBlockState(pos.below()).isAir();
-    }
-
     @Override
     protected BlockState rotate(BlockState state, Rotation rot) {
-        switch (rot) {
-            case COUNTERCLOCKWISE_90:
-            case CLOCKWISE_90:
-                switch (state.getValue(AXIS)) {
-                    case Z:
-                        return state.setValue(AXIS, Direction.Axis.X);
-                    case X:
-                        return state.setValue(AXIS, Direction.Axis.Z);
-                    default:
-                        return state;
-                }
-            default:
-                return state;
-        }
+        return switch (rot) {
+            case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> switch (state.getValue(AXIS)) {
+                case Z -> state.setValue(AXIS, Direction.Axis.X);
+                case X -> state.setValue(AXIS, Direction.Axis.Z);
+                default -> state;
+            };
+            default -> state;
+        };
     }
 
     @Override
@@ -255,17 +233,9 @@ public class FrostbitePortalBlock extends Block implements Portal {
     }
 
     public static Holder.Reference<Structure> getStructure(ServerLevel level) {
-        return resolveKey(Registries.STRUCTURE, level);
-    }
-
-    private static <T> Holder.Reference<T> resolveKey(ResourceKey<Registry<T>> registryKey, ServerLevel level) {
-        ResourceKey<T> resourcekey = getRegistryKey(registryKey);
-        return level.getServer().registryAccess().lookupOrThrow(registryKey).get(resourcekey).orElse(null);
-    }
-
-    private static <T> ResourceKey<T> getRegistryKey(ResourceKey<Registry<T>> registryKey) {
         ResourceKey<?> resourcekey = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fto_portal"));
-        Optional<ResourceKey<T>> optional = resourcekey.cast(registryKey);
-        return optional.orElse(null);
+        Optional<ResourceKey<Structure>> optional = resourcekey.cast(Registries.STRUCTURE);
+        ResourceKey<Structure> structureKey = optional.orElseThrow();
+        return level.getServer().registryAccess().lookupOrThrow(Registries.STRUCTURE).get(structureKey).orElse(null);
     }
 }

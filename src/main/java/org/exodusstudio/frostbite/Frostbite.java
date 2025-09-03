@@ -47,7 +47,7 @@ public class Frostbite {
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
     public static WeatherInfo weatherInfo = new WeatherInfo();
 
-    public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
+    public Frostbite(IEventBus modEventBus, ModContainer ignored) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
@@ -62,10 +62,6 @@ public class Frostbite {
         StructureRegistry.STRUCTURES.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
         GameRuleRegistry.register();
-
-        // TemperatureValues.addTemperatures();
-
-        //NeoForge.EVENT_BUS.register(this);
     }
 
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)

@@ -23,7 +23,7 @@
       "entries": [
         {
           "data": {
-            "Name": "frostbite:charm_leaves",
+            "Name": "frostbite:lavender_leaves",
             "Properties": {
               "distance": "7",
               "persistent": "false",
@@ -54,15 +54,19 @@
       "upper_size": 2
     },
     "trunk_placer": {
-      "type": "minecraft:fancy_trunk_placer",
+      "type": "minecraft:upwards_branching_trunk_placer",
       "base_height": 7,
       "height_rand_a": 1,
-      "height_rand_b": 0
+      "height_rand_b": 0,
+      "extra_branch_steps": 1,
+      "extra_branch_length": 2,
+      "place_branch_per_log_probability": 0.25,
+      "can_grow_through": "#minecraft:air"
     },
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "frostbite:charm_log",
+        "Name": "frostbite:lavender_log",
         "Properties": {
           "axis": "y"
         }

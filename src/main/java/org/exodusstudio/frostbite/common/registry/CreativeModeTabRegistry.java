@@ -124,6 +124,15 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.MOSSY_STRIPPED_CHARM_WOOD);
                         output.accept(BlockRegistry.MOSSY_CHARM_PLANKS);
 
+                        // LAVENDER WOOD
+                        output.accept(BlockRegistry.LAVENDER_LOG);
+                        output.accept(BlockRegistry.LAVENDER_WOOD);
+                        output.accept(BlockRegistry.STRIPPED_LAVENDER_LOG);
+                        output.accept(BlockRegistry.STRIPPED_LAVENDER_WOOD);
+                        output.accept(BlockRegistry.LAVENDER_PLANKS);
+                        output.accept(BlockRegistry.LAVENDER_LEAVES);
+                        output.accept(BlockRegistry.LAVENDER_SAPLING);
+
                         // SHINNING CEDAR WOOD
                         output.accept(BlockRegistry.SHINNING_CEDAR_LOG);
                         output.accept(BlockRegistry.SHINNING_CEDAR_WOOD);

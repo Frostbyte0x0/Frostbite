@@ -22,6 +22,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DIM_KEY = registerKey("dim");
     public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_KEY = registerKey("silver");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CHARM_KEY = registerKey("charm");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LAVENDER_KEY = registerKey("lavender");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, MISTY_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -58,14 +59,24 @@ public class ModConfiguredFeatures {
                 BlockStateProvider.simple(BlockRegistry.CHARM_LEAVES.get()),
                 new BlobFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), 4),
                 new TwoLayersFeatureSize(1, 0, 2)).build());
+
+        register(context, LAVENDER_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(BlockRegistry.LAVENDER_LOG.get()),
+                new StraightTrunkPlacer(4, 5, 3),
+                BlockStateProvider.simple(BlockRegistry.LAVENDER_LEAVES.get()),
+                new BlobFoliagePlacer(ConstantInt.of(4), ConstantInt.of(2), 4),
+                new TwoLayersFeatureSize(1, 0, 2)).build());
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, name));
     }
 
-    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context,
-                                                                                          ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
+    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(
+            BootstrapContext<ConfiguredFeature<?, ?>> context,
+            ResourceKey<ConfiguredFeature<?, ?>> key,
+            F feature,
+            FC configuration) {
         context.register(key, new ConfiguredFeature<>(feature, configuration));
     }
 }

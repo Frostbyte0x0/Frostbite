@@ -15,8 +15,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.exodusstudio.frostbite.Frostbite;
 
 import java.util.ArrayList;
@@ -46,6 +44,7 @@ public class FrostbiteWeatherEffectRenderer {
         if (((ClientLevel) level).effects().renderSnowAndRain((ClientLevel) level, ticks, partialTick,
                 cameraPosition.x, cameraPosition.y, cameraPosition.z))
             return;
+        assert Minecraft.getInstance().level != null;
         uPos += (Minecraft.getInstance().level.getGameTime() + partialTick - lastTime) *
                 Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel(partialTick), 0.02f, 0.2f);
         lastTime = (float) Minecraft.getInstance().level.getGameTime() + partialTick;

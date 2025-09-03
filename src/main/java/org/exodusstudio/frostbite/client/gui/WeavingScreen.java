@@ -20,7 +20,6 @@ public class WeavingScreen extends ItemCombinerScreen<WeavingMenu> {
     private static final ResourceLocation TEXT_FIELD_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/anvil/text_field_disabled");
     private static final ResourceLocation ERROR_SPRITE = ResourceLocation.withDefaultNamespace("container/anvil/error");
     private static final ResourceLocation ANVIL_LOCATION = ResourceLocation.withDefaultNamespace("textures/gui/container/anvil.png");
-    private static final Component TOO_EXPENSIVE_TEXT = Component.translatable("container.repair.expensive");
     private EditBox name;
     private final Player player;
 
@@ -57,7 +56,7 @@ public class WeavingScreen extends ItemCombinerScreen<WeavingMenu> {
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == 256) {
-            this.minecraft.player.closeContainer();
+            this.player.closeContainer();
         }
 
         return this.name.keyPressed(keyCode, scanCode, modifiers) || this.name.canConsumeInput() || super.keyPressed(keyCode, scanCode, modifiers);
@@ -80,38 +79,34 @@ public class WeavingScreen extends ItemCombinerScreen<WeavingMenu> {
 
     protected void renderLabels(GuiGraphics graphics, int p_282417_, int p_283022_) {
         super.renderLabels(graphics, p_282417_, p_283022_);
-        int i = this.menu.getCost();
-        if (i > 0) {
-            int j = 8453920;
-            Component component;
-            if (i >= 40 && !this.minecraft.player.getAbilities().instabuild) {
-                component = TOO_EXPENSIVE_TEXT;
-                j = 16736352;
-            } else if (!this.menu.getSlot(2).hasItem()) {
-                component = null;
-            } else {
-                component = Component.translatable("container.repair.cost", new Object[]{i});
-                if (!this.menu.getSlot(2).mayPickup(this.player)) {
-                    j = 16736352;
-                }
-            }
-
-            if (component != null) {
-                int k = this.imageWidth - 8 - this.font.width(component) - 2;
-                graphics.fill(k - 2, 67, this.imageWidth - 8, 79, 1325400064);
-                graphics.drawString(this.font, component, k, 69, j);
-            }
-        }
+//        int i = this.menu.getCost();
+//        if (i > 0) {
+//            int j = 8453920;
+//            Component component;
+//            if (i >= 40 && !this.minecraft.player.getAbilities().instabuild) {
+//                component = TOO_EXPENSIVE_TEXT;
+//                j = 16736352;
+//            } else if (!this.menu.getSlot(2).hasItem()) {
+//                component = null;
+//            } else {
+//                component = Component.translatable("container.repair.cost", new Object[]{i});
+//                if (!this.menu.getSlot(2).mayPickup(this.player)) {
+//                    j = 16736352;
+//                }
+//            }
+//
+//            if (component != null) {
+//                int k = this.imageWidth - 8 - this.font.width(component) - 2;
+//                graphics.fill(k - 2, 67, this.imageWidth - 8, 79, 1325400064);
+//                graphics.drawString(this.font, component, k, 69, j);
+//            }
+//        }
 
     }
 
     protected void renderBg(GuiGraphics graphics, float p_283412_, int p_282871_, int p_281306_) {
         super.renderBg(graphics, p_283412_, p_282871_, p_281306_);
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.menu.getSlot(0).hasItem() ? TEXT_FIELD_SPRITE : TEXT_FIELD_DISABLED_SPRITE, this.leftPos + 59, this.topPos + 20, 110, 16);
-    }
-
-    public void renderFg(GuiGraphics graphics, int p_283263_, int p_281526_, float p_282957_) {
-        this.name.render(graphics, p_283263_, p_281526_, p_282957_);
     }
 
     protected void renderErrorIcon(GuiGraphics graphics, int p_283237_, int p_282237_) {
