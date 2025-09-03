@@ -101,8 +101,10 @@ public class ModEvents {
                         }
                     } else if (flag1) {
                         j = WeatherInfo.WHITEOUT_DURATION.sample(serverLevel.random);
+                        Frostbite.weatherInfo.setWhiteouting(Minecraft.getInstance().level.getGameTime());
                     } else {
                         j = WeatherInfo.WHITEOUT_DELAY.sample(serverLevel.random);
+                        Frostbite.weatherInfo.setSnowing(Minecraft.getInstance().level.getGameTime());
                     }
 
                     if (k > 0) {
@@ -111,8 +113,10 @@ public class ModEvents {
                         }
                     } else if (flag2) {
                         k = WeatherInfo.BLIZZARD_DURATION.sample(serverLevel.random);
+                        Frostbite.weatherInfo.setBlizzarding(Minecraft.getInstance().level.getGameTime());
                     } else {
                         k = WeatherInfo.BLIZZARD_DELAY.sample(serverLevel.random);
+                        Frostbite.weatherInfo.setSnowing(Minecraft.getInstance().level.getGameTime());
                     }
                 }
 

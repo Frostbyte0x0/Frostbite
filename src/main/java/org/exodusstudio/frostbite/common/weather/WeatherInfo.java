@@ -75,7 +75,7 @@ public class WeatherInfo {
     }
 
     public WeatherInfo() {
-        this(0, 0, 0, false, false, 0, 0);
+        normalFarFog = 0;
     }
 
     public float getBlizzardLevel(double partialTick) {

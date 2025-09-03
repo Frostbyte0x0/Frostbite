@@ -5,6 +5,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -62,6 +63,6 @@ public class ThermometerOverlay {
 
         Font font = Minecraft.getInstance().font;
         Component text = Component.literal("").append("§7" + outer_temp + "C").withStyle(ChatFormatting.BLUE);
-        guiGraphics.drawString(font, text, (x + (textureWidth - font.width(text)) / 2), y - textureHeight + 11, 0xFFFFFF);
+        guiGraphics.drawString(font, text, (x + (textureWidth - font.width(text)) / 2), y - textureHeight + 11, ARGB.color(255, 255, 255, 255));
     }
 }
