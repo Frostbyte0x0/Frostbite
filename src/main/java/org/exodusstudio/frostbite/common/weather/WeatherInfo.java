@@ -5,6 +5,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
+import org.exodusstudio.frostbite.common.event.ModEvents;
 
 public class WeatherInfo {
     private static final RandomSource source = RandomSource.create();
@@ -84,6 +85,10 @@ public class WeatherInfo {
 
     public float getLerp() {
         assert Minecraft.getInstance().level != null;
+        return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
+    }
+
+    public float getLerp() {
         return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
     }
 

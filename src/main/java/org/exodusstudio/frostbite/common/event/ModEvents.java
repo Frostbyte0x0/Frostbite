@@ -166,6 +166,7 @@ public class ModEvents {
 
         if (event.getType() == FogType.ATMOSPHERIC) {
             float t = Frostbite.weatherInfo.getLerp();
+
             float nearPlane = Mth.lerp(t, Frostbite.weatherInfo.oNearFog, Frostbite.weatherInfo.nearFog);
             float farPlane = Mth.lerp(t, Frostbite.weatherInfo.oFarFog, Frostbite.weatherInfo.farFog);
 
@@ -185,6 +186,7 @@ public class ModEvents {
         computeBlendLerp(level, player);
 
         float t = Frostbite.weatherInfo.getLerp();
+
         float red = Mth.lerp(t, Frostbite.weatherInfo.oRed, Frostbite.weatherInfo.red);
         float green = Mth.lerp(t, Frostbite.weatherInfo.oGreen, Frostbite.weatherInfo.green);
         float blue = Mth.lerp(t, Frostbite.weatherInfo.oBlue, Frostbite.weatherInfo.blue);
