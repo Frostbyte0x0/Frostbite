@@ -84,11 +84,7 @@ public class WeatherInfo {
     }
 
     public float getLerp() {
-        assert Minecraft.getInstance().level != null;
-        return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
-    }
-
-    public float getLerp() {
+        if (Minecraft.getInstance().level == null) return 0;
         return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
     }
 
