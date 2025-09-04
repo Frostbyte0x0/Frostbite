@@ -76,28 +76,19 @@ public class WeatherInfo {
     }
 
     public WeatherInfo() {
-        this(0, 0, 0, false, false, 0, 0);
+        normalFarFog = 0;
     }
 
     public float getBlizzardLevel(double partialTick) {
         return (float) Mth.lerp(partialTick, oBlizzardLevel, blizzardLevel);
     }
 
-    public float getWhiteoutLevel(float partialTick) {
-        return Mth.lerp(partialTick, oWhiteoutLevel, whiteoutLevel);
+    public float getLerp() {
+        assert Minecraft.getInstance().level != null;
+        return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
     }
 
     public float getLerp() {
-//        if (isBlizzarding) {
-//            return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
-//        } else {
-//            return (float) Mth.clamp(1 - (Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
-//        }
-
-//        double lerp = Mth.lerp(getBlizzardLevel(partialTick), 1 - (Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f,
-//                (Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f);
-//        return (float) Mth.clamp(lerp, 0, 1);
-
         return (float) Mth.clamp((Minecraft.getInstance().level.getGameTime() - timeSinceLastUpdate) / 100f, 0, 1);
     }
 
@@ -112,13 +103,6 @@ public class WeatherInfo {
         oRed = red;
         oGreen = green;
         oBlue = blue;
-//        if (Minecraft.getInstance().level.getBiome(Minecraft.getInstance().player.blockPosition()).toString().contains("shrouded_forest")) {
-//            nearFog = -50f;
-//            farFog = 100f;
-//            red = 73 / 255f;
-//            green = 106 / 255f;
-//            blue = 184 / 255f;
-//        } else {
         nearFog = normalNearFog;
         farFog = normalFarFog;
         red = normalRed;

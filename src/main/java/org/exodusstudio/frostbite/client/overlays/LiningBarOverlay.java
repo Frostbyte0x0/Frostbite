@@ -1,10 +1,9 @@
 package org.exodusstudio.frostbite.client.overlays;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
@@ -46,16 +45,6 @@ public class LiningBarOverlay {
     }
 
     public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, ResourceLocation texture, boolean blend) {
-        if (blend) {
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-        }
-
-        RenderSystem.setShaderTexture(0, texture);
-        graphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
-
-        if (blend) {
-            RenderSystem.disableBlend();
-        }
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
     }
 }

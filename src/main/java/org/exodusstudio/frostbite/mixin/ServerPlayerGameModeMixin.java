@@ -6,14 +6,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.server.level.ServerPlayerGameMode;
+import net.minecraft.util.TriState;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
@@ -62,7 +63,7 @@ public class ServerPlayerGameModeMixin {
                 ItemStack itemStack = frostbite$this.player.getItemInHand(InteractionHand.MAIN_HAND);
                 if (itemStack.get(DataComponentTypeRegistry.CHARGE).charge() <= 0) {
                     IceBlockEntity iceBlock = new IceBlockEntity(EntityRegistry.ICE_BLOCK.get(), frostbite$this.level);
-                    iceBlock.moveTo(Vec3.atCenterOf(destroyPos));
+                    iceBlock.move(MoverType.PLAYER, Vec3.atCenterOf(destroyPos));
                     iceBlock.disableDrop();
                     iceBlock.addDeltaMovement(new Vec3(0, 0.5, 0));
                     frostbite$this.level.addFreshEntity(iceBlock);
@@ -74,7 +75,7 @@ public class ServerPlayerGameModeMixin {
                 if (itemStack.get(DataComponentTypeRegistry.CHARGE).charge() <= 0) {
                     IceBlockEntity iceBlock = new IceBlockEntity(EntityRegistry.ICE_BLOCK.get(), frostbite$this.level);
                     iceBlock.disableDrop();
-                    iceBlock.moveTo(Vec3.atCenterOf(destroyPos));
+                    iceBlock.move(MoverType.PLAYER, Vec3.atCenterOf(destroyPos));
                     iceBlock.addDeltaMovement(new Vec3(0, 0.5, 0));
                     frostbite$this.level.addFreshEntity(iceBlock);
 
@@ -115,7 +116,7 @@ public class ServerPlayerGameModeMixin {
                         if (itemStack.get(DataComponentTypeRegistry.CHARGE).charge() <= 0) {
                             IceBlockEntity iceBlock = new IceBlockEntity(EntityRegistry.ICE_BLOCK.get(), frostbite$this.level);
                             iceBlock.disableDrop();
-                            iceBlock.moveTo(Vec3.atCenterOf(pos));
+                            iceBlock.move(MoverType.PLAYER, Vec3.atCenterOf(pos));
                             iceBlock.addDeltaMovement(new Vec3(0, 0.5, 0));
                             frostbite$this.level.addFreshEntity(iceBlock);
 
@@ -126,7 +127,7 @@ public class ServerPlayerGameModeMixin {
                         if (itemStack.get(DataComponentTypeRegistry.CHARGE).charge() <= 0) {
                             IceBlockEntity iceBlock = new IceBlockEntity(EntityRegistry.ICE_BLOCK.get(), frostbite$this.level);
                             iceBlock.disableDrop();
-                            iceBlock.moveTo(Vec3.atCenterOf(pos));
+                            iceBlock.move(MoverType.PLAYER, Vec3.atCenterOf(pos));
                             iceBlock.addDeltaMovement(new Vec3(0, 0.5, 0));
                             frostbite$this.level.addFreshEntity(iceBlock);
 

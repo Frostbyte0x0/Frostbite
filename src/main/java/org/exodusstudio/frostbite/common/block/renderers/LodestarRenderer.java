@@ -67,7 +67,7 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
     }
 
     @Override
-    public void render(LodestarBlockEntity lodestar, float partialTick, PoseStack pose, MultiBufferSource bufferSource, int i1, int i2) {
+    public void render(LodestarBlockEntity lodestar, float partialTick, PoseStack pose, MultiBufferSource bufferSource, int i1, int i2, Vec3 vec3) {
         float f = (float) lodestar.tickCount + partialTick;
         float f1 = lodestar.getActiveRotation(partialTick) * (180F / (float) Math.PI);
         float f2 = Mth.sin(f * 0.1F) / 2.0F + 0.5F;
@@ -105,11 +105,6 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
 
     @Override
     public boolean shouldRender(LodestarBlockEntity blockEntity, Vec3 cameraPos) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldRenderOffScreen(LodestarBlockEntity blockEntity) {
         return true;
     }
 

@@ -32,9 +32,9 @@ public class FrostbittenGemItem extends Item {
 
         if (state.getBlock() instanceof ReinforcedBlackIceReceptacleBlock block &&
                 level instanceof ServerLevel &&
-                !state.getValue(BlockStateProperties.ACTIVE)) {
+                !state.getValue(BlockStateProperties.LIT)) {
             stack.consume(1, player);
-            BlockState state1 = state.setValue(BlockStateProperties.ACTIVE, true);
+            BlockState state1 = state.setValue(BlockStateProperties.LIT, true);
             level.setBlock(pos, state1, 3);
             level.playSound(player, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.0F);
 

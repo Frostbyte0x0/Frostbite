@@ -8,13 +8,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.LodestoneTracker;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.registry.Tags;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public class StarseekingCompass extends CompassItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot equipmentSlot) {
         if ((!stack.has(DataComponents.LODESTONE_TRACKER) || stack.get(DataComponents.LODESTONE_TRACKER).target().isEmpty()) &&
                 level instanceof ServerLevel serverLevel) {
             BlockPos blockpos = serverLevel.findNearestMapStructure(Tags.STRUCTURE_OTF,

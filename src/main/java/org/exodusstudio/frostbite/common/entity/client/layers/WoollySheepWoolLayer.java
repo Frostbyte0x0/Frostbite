@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.state.SheepRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.models.WoollySheepFurModel;
@@ -49,11 +48,9 @@ public class WoollySheepWoolLayer extends RenderLayer<SheepRenderState, WoollySh
                     int j1 = l % i1;
                     int k1 = (l + 1) % i1;
                     float f = ((float)(k % 25) + Mth.frac(p_362704_.ageInTicks)) / 25.0F;
-                    int l1 = Sheep.getColor(DyeColor.byId(j1));
-                    int i2 = Sheep.getColor(DyeColor.byId(k1));
-                    i = ARGB.lerp(f, l1, i2);
+                    i = ARGB.lerp(f, DyeColor.byId(j1).getFireworkColor(), DyeColor.byId(k1).getFireworkColor());
                 } else {
-                    i = Sheep.getColor(p_362704_.woolColor);
+                    i = p_362704_.woolColor.getFireworkColor();
                 }
 
                 coloredCutoutModelCopyLayerRender(entitymodel, SHEEP_FUR_LOCATION, p_360648_, p_361412_, p_361724_, p_362704_, i);

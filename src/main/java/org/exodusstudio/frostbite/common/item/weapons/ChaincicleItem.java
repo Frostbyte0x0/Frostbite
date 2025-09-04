@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.item.weapons;
 
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
@@ -15,7 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class ChaincicleItem extends Item {
     private final String[] modes = {"swipe", "hook", "grapple"};
@@ -78,9 +79,9 @@ public class ChaincicleItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
         checkComponentDataForNull(stack);
-        tooltipComponents.add(Component.literal(String.format("Mode: %s",
+        tooltipAdder.accept(Component.literal(String.format("Mode: %s",
                 stack.get(DataComponentTypeRegistry.MODE.get()).mode())).withStyle(ChatFormatting.GRAY));
     }
 }

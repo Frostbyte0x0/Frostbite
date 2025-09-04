@@ -1,11 +1,10 @@
 package org.exodusstudio.frostbite.common.item.lining;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,25 +81,23 @@ public class SavedLinings {
         return ItemStack.EMPTY;
     }
 
-    public void load(ListTag listTag, RegistryAccess registryAccess, String playerUUID) {
-        for (int i = 0; i < listTag.size(); ++i) {
-            CompoundTag compoundtag = listTag.getCompound(i);
-            int j = compoundtag.getByte("Slot") & 255;
-            ItemStack itemstack = ItemStack.parse(registryAccess, compoundtag).orElse(ItemStack.EMPTY);
-            this.getLiningsForPlayerOrSetEmpty(playerUUID).set(j, itemstack);
+    public void load(ValueInput.TypedInputList<ItemStackWithSlot> input, String playerUUID) {
+        List<ItemStack> linings = new ArrayList<>();
+        for (int i = 0; i < 4; i++) linings.add(ItemStack.EMPTY);
+
+        for (ItemStackWithSlot itemstackwithslot : input) {
+            linings.set(itemstackwithslot.slot(), itemstackwithslot.stack());
         }
+        playerLinings.putIfAbsent(playerUUID, linings);
     }
 
-    public Tag save(ListTag listTag, RegistryAccess registryAccess, String playerUUID) {
+    public void save(ValueOutput.TypedOutputList<ItemStackWithSlot> output, String playerUUID) {
         List<ItemStack> linings = playerLinings.get(playerUUID);
         for (int i = 0; i < linings.size(); ++i) {
-            if (!(linings.get(i)).isEmpty()) {
-                CompoundTag compoundtag = new CompoundTag();
-                compoundtag.putByte("Slot", (byte)i);
-                listTag.add((linings.get(i)).save(registryAccess, compoundtag));
+            ItemStack itemstack = linings.get(i);
+            if (!itemstack.isEmpty()) {
+                output.add(new ItemStackWithSlot(i, itemstack));
             }
         }
-
-        return listTag;
     }
 }

@@ -225,6 +225,29 @@ public class BlockRegistry {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "mossy_charm_planks")))));
 
+    // LAVENDER WOOD
+    public static final DeferredBlock<Block> LAVENDER_LOG = registerBlock("lavender_log",
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_log")))));
+    public static final DeferredBlock<Block> LAVENDER_WOOD = registerBlock("lavender_wood",
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_wood")))));
+    public static final DeferredBlock<Block> STRIPPED_LAVENDER_LOG = registerBlock("stripped_lavender_log",
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_lavender_log")))));
+    public static final DeferredBlock<Block> STRIPPED_LAVENDER_WOOD = registerBlock("stripped_lavender_wood",
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stripped_lavender_wood")))));
+    public static final DeferredBlock<Block> LAVENDER_PLANKS = registerBlock("lavender_planks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_planks")))));
+    public static final DeferredBlock<Block> LAVENDER_LEAVES = registerBlock("lavender_leaves",
+            () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_leaves")))));
+    public static final DeferredBlock<Block> LAVENDER_SAPLING = registerBlock("lavender_sapling",
+            () -> new SaplingBlock(TreeGrowers.LAVENDER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_sapling")))));
+
     // SHINNING CEDAR WOOD
     public static final DeferredBlock<Block> SHINNING_CEDAR_LOG = registerBlock("shinning_cedar_log",
             () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)

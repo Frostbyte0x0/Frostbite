@@ -13,7 +13,7 @@ import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulle
 import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
-@EventBusSubscriber(modid = Frostbite.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {

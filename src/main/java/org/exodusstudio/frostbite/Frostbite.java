@@ -47,7 +47,7 @@ public class Frostbite {
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
     public static WeatherInfo weatherInfo = new WeatherInfo();
 
-    public Frostbite(IEventBus modEventBus, ModContainer modContainer) {
+    public Frostbite(IEventBus modEventBus, ModContainer ignored) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
@@ -55,7 +55,6 @@ public class Frostbite {
         EntityRegistry.ENTITY_TYPES.register(modEventBus);
         EffectRegistry.MOB_EFFECTS.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
-        AttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         MenuTypeRegistry.MENU_TYPES.register(modEventBus);
         ConsumeEffectRegistry.CONSUME_EFFECT_TYPES.register(modEventBus);
@@ -63,13 +62,9 @@ public class Frostbite {
         StructureRegistry.STRUCTURES.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
         GameRuleRegistry.register();
-
-        // TemperatureValues.addTemperatures();
-
-        //NeoForge.EVENT_BUS.register(this);
     }
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {

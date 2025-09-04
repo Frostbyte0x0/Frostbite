@@ -80,7 +80,6 @@ public class ConfettiParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public record Provider(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
         public Particle createParticle(
                 ColorParticleOption colorParticleOption,

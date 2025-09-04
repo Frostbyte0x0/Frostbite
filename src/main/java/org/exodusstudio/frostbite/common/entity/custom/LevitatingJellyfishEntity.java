@@ -3,7 +3,6 @@ package org.exodusstudio.frostbite.common.entity.custom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -22,6 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -55,15 +56,17 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putInt("MoveCooldown", this.getMoveCooldown());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("MoveCooldown", this.getMoveCooldown());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setMoveCooldown(tag.getInt("MoveCooldown"));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        if (input.getInt("MoveCooldown").isPresent()) {
+            this.setMoveCooldown(input.getInt("MoveCooldown").get());
+        }
     }
 
     public int getMoveCooldown() {
@@ -91,7 +94,7 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     }
 
     @Override
-    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+    public boolean causeFallDamage(double fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
@@ -119,14 +122,14 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
         this.zBodyRotO = this.zBodyRot;
 
         if (this.getMoveCooldown() <= 3) {
-            if (this.isControlledByLocalInstance()) {
+            if (this.canControlVehicle()) {
                 this.setDeltaMovement(this.movementVector.scale(this.getMoveCooldown() / 3f));
             }
 
             this.rotateSpeed = 1.0F;
         } else {
             this.rotateSpeed *= 0.8F;
-            if (this.isControlledByLocalInstance()) {
+            if (this.canControlVehicle()) {
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.9));
             }
         }

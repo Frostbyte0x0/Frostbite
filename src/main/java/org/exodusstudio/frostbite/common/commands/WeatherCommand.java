@@ -44,40 +44,19 @@ public class WeatherCommand {
         );
     }
 
-    private static int getDuration(CommandSourceStack source, int time, IntProvider timeProvider) {
-        return time == -1 ? timeProvider.sample(source.getServer().overworld().getRandom()) : time;
-    }
-
     private static int setSnow(CommandSourceStack source, int time) {
-//        Frostbite.weatherInfo.snowTime = getDuration(source, time, WeatherInfo.BLIZZARD_DELAY);
-//        Frostbite.weatherInfo.blizzardTime = 0;
-//        Frostbite.weatherInfo.whiteoutTime = 0;
-//        Frostbite.weatherInfo.isBlizzarding = false;
-//        Frostbite.weatherInfo.isWhiteouting = false;
         Frostbite.weatherInfo.setSnowing(Minecraft.getInstance().level.getGameTime());
         source.sendSuccess(() -> Component.literal("Set frostbite weather to snow"), true);
         return time;
     }
 
     private static int setBlizzard(CommandSourceStack source, int time) {
-//        Frostbite.weatherInfo.snowTime = 0;
-//        int t = getDuration(source, time, WeatherInfo.BLIZZARD_DELAY);
-//        Frostbite.weatherInfo.blizzardTime = t;
-//        Frostbite.weatherInfo.whiteoutTime = t;
-//        Frostbite.weatherInfo.isBlizzarding = true;
-//        Frostbite.weatherInfo.isWhiteouting = false;
         Frostbite.weatherInfo.setBlizzarding(Minecraft.getInstance().level.getGameTime());
         source.sendSuccess(() -> Component.literal("Set frostbite weather to blizzard"), true);
         return time;
     }
 
     private static int setWhiteout(CommandSourceStack source, int time) {
-//        Frostbite.weatherInfo.snowTime = 0;
-//        int t = getDuration(source, time, WeatherInfo.WHITEOUT_DELAY);
-//        Frostbite.weatherInfo.blizzardTime = t;
-//        Frostbite.weatherInfo.whiteoutTime = t;
-//        Frostbite.weatherInfo.isBlizzarding = true;
-//        Frostbite.weatherInfo.isWhiteouting = true;
         Frostbite.weatherInfo.setWhiteouting(Minecraft.getInstance().level.getGameTime());
         source.sendSuccess(() -> Component.literal("Set frostbite weather to whiteout"), true);
         return time;

@@ -4,8 +4,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DeathProtection;
@@ -59,37 +57,29 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> BLACK_ICE_HELMET = ITEMS.register("black_ice_helmet",
-            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.HELMET,
-                    new Item.Properties()//.durability(ArmorType.HELMET.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.HELMET)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLACK_ICE_CHESTPLATE = ITEMS.register("black_ice_chestplate",
-            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.CHESTPLATE,
-                    new Item.Properties()//.durability(ArmorType.CHESTPLATE.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.CHESTPLATE)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLACK_ICE_LEGGINGS = ITEMS.register("black_ice_leggings",
-            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.LEGGINGS,
-                    new Item.Properties()//.durability(ArmorType.LEGGINGS.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.LEGGINGS)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLACK_ICE_BOOTS = ITEMS.register("black_ice_boots",
-            (id) -> new ArmorItem(ArmorMaterials.BLACK_ICE, ArmorType.BOOTS,
-                    new Item.Properties()//.durability(ArmorType.BOOTS.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.BOOTS)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> FROSTBITTEN_HELMET = ITEMS.register("frostbitten_helmet",
-            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.HELMET,
-                    new Item.Properties()//.durability(ArmorType.HELMET.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.HELMET)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_CHESTPLATE = ITEMS.register("frostbitten_chestplate",
-            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.CHESTPLATE,
-                    new Item.Properties()//.durability(ArmorType.CHESTPLATE.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.CHESTPLATE)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_LEGGINGS = ITEMS.register("frostbitten_leggings",
-            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.LEGGINGS,
-                    new Item.Properties()//.durability(ArmorType.LEGGINGS.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.LEGGINGS)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_BOOTS = ITEMS.register("frostbitten_boots",
-            (id) -> new ArmorItem(ArmorMaterials.FROSTBITTEN, ArmorType.BOOTS,
-                    new Item.Properties()//.durability(ArmorType.BOOTS.getDurability(15))
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.BOOTS)
                             .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> WOOL_LINING_HELMET = ITEMS.register("wool_lining_helmet",

@@ -14,14 +14,11 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 import org.exodusstudio.frostbite.common.registry.FoliagePlacerRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
 
 public class CharmFoliagePlacer extends FoliagePlacer {
     public static final MapCodec<CharmFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) ->

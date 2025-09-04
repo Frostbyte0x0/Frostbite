@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 
 public class ReinforcedBlackIceReceptacleBlock extends DirectionalBlock {
-    public static final BooleanProperty ACTIVE = BlockStateProperties.ACTIVE;
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final MapCodec<ReinforcedBlackIceReceptacleBlock> CODEC = simpleCodec(ReinforcedBlackIceReceptacleBlock::new);
     private static BlockPattern portalShape;
 
@@ -24,7 +24,7 @@ public class ReinforcedBlackIceReceptacleBlock extends DirectionalBlock {
         super(properties);
         this.registerDefaultState(
                 this.stateDefinition.any()
-                .setValue(ACTIVE, false)
+                .setValue(LIT, false)
                 .setValue(FACING, Direction.NORTH));
     }
 
@@ -39,16 +39,16 @@ public class ReinforcedBlackIceReceptacleBlock extends DirectionalBlock {
             portalShape = BlockPatternBuilder.start().aisle("?vvv?", ">???<", ">???<", ">???<", "?^^^?")
                     .where('?', BlockInWorld.hasState(BlockStatePredicate.ANY))
                     .where('^', BlockInWorld.hasState(BlockStatePredicate.forBlock(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE.get())
-                            .where(ACTIVE, Predicates.equalTo(true))
+                            .where(LIT, Predicates.equalTo(true))
                             .where(FACING, Predicates.equalTo(Direction.SOUTH))))
                     .where('>', BlockInWorld.hasState(BlockStatePredicate.forBlock(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE.get())
-                            .where(ACTIVE, Predicates.equalTo(true))
+                            .where(LIT, Predicates.equalTo(true))
                             .where(FACING, Predicates.equalTo(Direction.WEST))))
                     .where('v', BlockInWorld.hasState(BlockStatePredicate.forBlock(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE.get())
-                            .where(ACTIVE, Predicates.equalTo(true))
+                            .where(LIT, Predicates.equalTo(true))
                             .where(FACING, Predicates.equalTo(Direction.NORTH))))
                     .where('<', BlockInWorld.hasState(BlockStatePredicate.forBlock(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE.get())
-                            .where(ACTIVE, Predicates.equalTo(true))
+                            .where(LIT, Predicates.equalTo(true))
                             .where(FACING, Predicates.equalTo(Direction.EAST))))
                     .build();
         }
@@ -70,7 +70,7 @@ public class ReinforcedBlackIceReceptacleBlock extends DirectionalBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ACTIVE);
+        builder.add(LIT);
         builder.add(FACING);
     }
 }

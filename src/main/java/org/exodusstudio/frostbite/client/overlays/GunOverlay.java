@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.client.overlays;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
@@ -55,17 +55,17 @@ public class GunOverlay {
         int l = (guiGraphics.guiHeight() - j) / 2;
         int i1 = k + i;
         int j1 = l + j;
-        guiGraphics.blit(RenderType::guiTextured, SNIPER_SCOPE_LOCATION, k, l, 0.0F, 0.0F, i, j, i, j);
-        guiGraphics.fill(RenderType.guiOverlay(), 0, j1, guiGraphics.guiWidth(), guiGraphics.guiHeight(), -90, -16777216);
-        guiGraphics.fill(RenderType.guiOverlay(), 0, 0, guiGraphics.guiWidth(), l, -90, -16777216);
-        guiGraphics.fill(RenderType.guiOverlay(), 0, l, k, j1, -90, -16777216);
-        guiGraphics.fill(RenderType.guiOverlay(), i1, l, guiGraphics.guiWidth(), j1, -90, -16777216);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, SNIPER_SCOPE_LOCATION, k, l, 0.0F, 0.0F, i, j, i, j);
+        guiGraphics.fill(RenderPipelines.GUI, 0, j1, guiGraphics.guiWidth(), guiGraphics.guiHeight(), -16777216);
+        guiGraphics.fill(RenderPipelines.GUI, 0, 0, guiGraphics.guiWidth(), l, -16777216);
+        guiGraphics.fill(RenderPipelines.GUI, 0, l, k, j1, -16777216);
+        guiGraphics.fill(RenderPipelines.GUI, i1, l, guiGraphics.guiWidth(), j1, -16777216);
     }
 
     private static void renderTextureOverlay(GuiGraphics guiGraphics, ResourceLocation shaderLocation, float alpha) {
         int i = ARGB.white(alpha);
         guiGraphics.blit(
-                RenderType::guiTexturedOverlay,
+                RenderPipelines.GUI_TEXTURED,
                 shaderLocation,
                 0,
                 0,

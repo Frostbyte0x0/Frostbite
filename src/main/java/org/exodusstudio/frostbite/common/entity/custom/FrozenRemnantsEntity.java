@@ -3,8 +3,6 @@ package org.exodusstudio.frostbite.common.entity.custom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -12,10 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -25,6 +22,8 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.GameRuleRegistry;
 
@@ -33,7 +32,7 @@ import java.util.UUID;
 
 public class FrozenRemnantsEntity extends Mob{
     protected NonNullList<ItemStack> items;
-    private static final EntityDataAccessor<Optional<UUID>> DATA_OWNER_UUID;
+    private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> DATA_OWNER_UUID;
     private static final EntityDataAccessor<Integer> DATA_OWNER_ID;
     private static final EntityDataAccessor<Boolean> DATA_IS_ON_SCREEN;
     private static final EntityDataAccessor<Float> DATA_HEAD_PITCH;
@@ -55,40 +54,33 @@ public class FrozenRemnantsEntity extends Mob{
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putUUID("ownerUUID", this.getOwnerUUID());
-        compound.put("items", this.saveItems(new ListTag()));
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putString("ownerUUID", this.getOwnerUUID().toString());
+        save(output.list("items", ItemStackWithSlot.CODEC));
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        this.setOwnerUUID(compound.getUUID("ownerUUID"));
-        ListTag listtag = compound.getList("items", 10);
-        this.loadItems(listtag);
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setOwnerUUID(UUID.fromString(input.getString("ownerUUID").get()));
+        this.load(input.listOrEmpty("items", ItemStackWithSlot.CODEC));
     }
 
-    public ListTag saveItems(ListTag listTag) {
+    public void save(ValueOutput.TypedOutputList<ItemStackWithSlot> output) {
         for (int i = 0; i < this.items.size(); ++i) {
-            if (!(this.items.get(i)).isEmpty()) {
-                CompoundTag compoundtag = new CompoundTag();
-                compoundtag.putByte("Slot", (byte)i);
-                listTag.add((this.items.get(i)).save(this.registryAccess(), compoundtag));
+            ItemStack itemstack = this.items.get(i);
+            if (!itemstack.isEmpty()) {
+                output.add(new ItemStackWithSlot(i, itemstack));
             }
         }
-
-        return listTag;
     }
 
-    public void loadItems(ListTag listTag) {
-        this.items = NonNullList.withSize(54, ItemStack.EMPTY);
+    public void load(ValueInput.TypedInputList<ItemStackWithSlot> input) {
+        this.items.clear();
 
-        for (int i = 0; i < listTag.size(); ++i) {
-            CompoundTag compoundtag = listTag.getCompound(i);
-            int j = compoundtag.getByte("Slot") & 255;
-            ItemStack itemstack = ItemStack.parse(this.registryAccess(), compoundtag).orElse(ItemStack.EMPTY);
-            this.items.set(j, itemstack);
+        for (ItemStackWithSlot itemstackwithslot : input) {
+            this.items.add(itemstackwithslot.stack());
         }
     }
 
@@ -128,7 +120,7 @@ public class FrozenRemnantsEntity extends Mob{
     }
 
     public void setOwner(Entity owner) {
-        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(owner.getUUID()));
+        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(new EntityReference<>(owner.getUUID())));
     }
 
     public Entity getOwner() {
@@ -144,11 +136,14 @@ public class FrozenRemnantsEntity extends Mob{
     }
 
     public void setOwnerUUID(UUID uuid) {
-        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(uuid));
+        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(new EntityReference<>(uuid)));
     }
 
     public UUID getOwnerUUID() {
-        return this.getEntityData().get(DATA_OWNER_UUID).orElse(null);
+        if (this.getEntityData().get(DATA_OWNER_UUID).isEmpty()) {
+            return null;
+        }
+        return this.getEntityData().get(DATA_OWNER_UUID).get().getUUID();
     }
 
     public void setItems(NonNullList<ItemStack> items) {
@@ -248,7 +243,7 @@ public class FrozenRemnantsEntity extends Mob{
     }
 
     static {
-        DATA_OWNER_UUID = SynchedEntityData.defineId(FrozenRemnantsEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+        DATA_OWNER_UUID = SynchedEntityData.defineId(FrozenRemnantsEntity.class, EntityDataSerializers.OPTIONAL_LIVING_ENTITY_REFERENCE);
         DATA_OWNER_ID = SynchedEntityData.defineId(FrozenRemnantsEntity.class, EntityDataSerializers.INT);
         DATA_IS_ON_SCREEN = SynchedEntityData.defineId(FrozenRemnantsEntity.class, EntityDataSerializers.BOOLEAN);
         DATA_HEAD_PITCH = SynchedEntityData.defineId(FrozenRemnantsEntity.class, EntityDataSerializers.FLOAT);

@@ -8,18 +8,21 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.SniperBulletItem;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractGun extends Item {
     private final float bulletVelocity;
@@ -88,8 +91,8 @@ public abstract class AbstractGun extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (isSelected && isReloading(stack)) {
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot) {
+        if (isReloading(stack)) {
             reduceReloadCooldown(1, stack);
         }
         if (isReloading(stack) && getReloadCooldown(stack) <= 0) {
@@ -97,7 +100,7 @@ public abstract class AbstractGun extends Item {
             setBulletsInMag(this.magSize, stack);
         }
 
-        if (isSelected && isChambering(stack)) {
+        if (isChambering(stack)) {
             reduceChamberCooldown(1, stack);
         }
         if (isChambering(stack) && getChamberCooldown(stack) <= 0) {
@@ -135,12 +138,12 @@ public abstract class AbstractGun extends Item {
     protected Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo) {
         if (ammo.getItem() instanceof SniperBulletItem sniperBulletItem) {
             SniperBulletEntity sniperBullet = sniperBulletItem.createBullet(level);
-            sniperBullet.moveTo(shooter.getX(), shooter.getY() + shooter.getEyeHeight(), shooter.getZ(), shooter.getYRot(), 0.0F);
+            sniperBullet.moveOrInterpolateTo(new Vec3(shooter.getX(), shooter.getY() + shooter.getEyeHeight(), shooter.getZ()), shooter.getYRot(), 0.0F);
             return sniperBullet;
         }
         else if (ammo.getItem() instanceof RevolverBulletItem revolverBulletItem) {
             SniperBulletEntity sniperBullet = revolverBulletItem.createBullet(level);
-            sniperBullet.moveTo(shooter.getX(), shooter.getY(), shooter.getZ(), shooter.getYRot(), 0.0F);
+            sniperBullet.moveOrInterpolateTo(new Vec3(shooter.getX(), shooter.getY(), shooter.getZ()), shooter.getYRot(), 0.0F);
             return sniperBullet;
         }
 

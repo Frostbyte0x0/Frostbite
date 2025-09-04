@@ -16,14 +16,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.exodusstudio.frostbite.Frostbite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
+
 public class FrostbiteWeatherEffectRenderer {
     private static final ResourceLocation SNOW_LOCATION =
             ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
@@ -48,6 +46,9 @@ public class FrostbiteWeatherEffectRenderer {
         if (((ClientLevel) level).effects().renderSnowAndRain((ClientLevel) level, ticks, partialTick,
                 cameraPosition.x, cameraPosition.y, cameraPosition.z))
             return;
+      
+        assert Minecraft.getInstance().level != null;
+
         uPos += (Minecraft.getInstance().level.getGameTime() + partialTick - lastTime) *
                 Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel(partialTick), 0.02f, 0.2f);
         lastTime = (float) Minecraft.getInstance().level.getGameTime() + partialTick;
@@ -149,70 +150,6 @@ public class FrostbiteWeatherEffectRenderer {
         }
     }
 
-//    public void tickRainParticles(ClientLevel level, Camera camera, int ticks, ParticleStatus particleStatus) {
-//        if (level.effects().tickRain(level, ticks, camera))
-//            return;
-//        float f = level.getRainLevel(1.0F) / (Minecraft.useFancyGraphics() ? 1.0F : 2.0F);
-//        if (!(f <= 0.0F)) {
-//            RandomSource randomsource = RandomSource.create((long)ticks * 312987231L);
-//            BlockPos blockpos = BlockPos.containing(camera.getPosition());
-//            BlockPos blockpos1 = null;
-//            int i = (int)(100.0F * f * f) / (particleStatus == ParticleStatus.DECREASED ? 2 : 1);
-//
-//            for (int j = 0; j < i; j++) {
-//                int k = randomsource.nextInt(21) - 10;
-//                int l = randomsource.nextInt(21) - 10;
-//                BlockPos blockpos2 = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos.offset(k, 0, l));
-//                if (blockpos2.getY() > level.getMinY()
-//                        && blockpos2.getY() <= blockpos.getY() + 10
-//                        && blockpos2.getY() >= blockpos.getY() - 10
-//                        && this.getPrecipitationAt(level, blockpos2) == Biome.Precipitation.RAIN) {
-//                    blockpos1 = blockpos2.below();
-//                    if (particleStatus == ParticleStatus.MINIMAL) {
-//                        break;
-//                    }
-//
-//                    double d0 = randomsource.nextDouble();
-//                    double d1 = randomsource.nextDouble();
-//                    BlockState blockstate = level.getBlockState(blockpos1);
-//                    FluidState fluidstate = level.getFluidState(blockpos1);
-//                    VoxelShape voxelshape = blockstate.getCollisionShape(level, blockpos1);
-//                    double d2 = voxelshape.max(Direction.Axis.Y, d0, d1);
-//                    double d3 = (double)fluidstate.getHeight(level, blockpos1);
-//                    double d4 = Math.max(d2, d3);
-//                    ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA)
-//                            && !blockstate.is(Blocks.MAGMA_BLOCK)
-//                            && !CampfireBlock.isLitCampfire(blockstate)
-//                            ? ParticleTypes.RAIN
-//                            : ParticleTypes.SMOKE;
-//                    level.addParticle(
-//                            particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0, 0.0, 0.0
-//                    );
-//                }
-//            }
-//
-//            if (blockpos1 != null && randomsource.nextInt(3) < this.rainSoundTime++) {
-//                this.rainSoundTime = 0;
-//                if (blockpos1.getY() > blockpos.getY() + 1
-//                        && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos).getY() > Mth.floor((float)blockpos.getY())) {
-//                    level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
-//                } else {
-//                    level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
-//                }
-//            }
-//        }
-//    }
-//
-//    private Biome.Precipitation getPrecipitationAt(Level level, BlockPos pos) {
-//        if (!level.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()))) {
-//            return Biome.Precipitation.NONE;
-//        } else {
-//            Biome biome = level.getBiome(pos).value();
-//            return biome.getPrecipitationAt(pos, level.getSeaLevel());
-//        }
-//    }
-
-    @OnlyIn(Dist.CLIENT)
     record ColumnInstance(int x, int z, int bottomY, int topY, float uOffset, float vOffset, int lightCoords) {
     }
 }

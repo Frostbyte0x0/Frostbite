@@ -1,19 +1,17 @@
 package org.exodusstudio.frostbite.common.entity.custom;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
@@ -52,19 +50,17 @@ public class LastStandEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compoundTag) {
-        if (compoundTag.contains("releaseTicks")) {
-            this.setReleaseTicks(compoundTag.getInt("releaseTicks"));
+    protected void readAdditionalSaveData(ValueInput input) {
+        if (input.getInt("releaseTicks").isPresent()) {
+            this.setReleaseTicks(input.getInt("releaseTicks").get());
         }
-        if (compoundTag.contains("isReleasing")) {
-            this.setReleasing(compoundTag.getBoolean("isReleasing"));
-        }
+        this.setReleasing(input.getBooleanOr("isReleasing", false));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compoundTag) {
-        compoundTag.putInt("releaseTicks", Math.min(getReleaseTicks(), maxReleaseTicks));
-        compoundTag.putBoolean("isReleasing", isReleasing());
+    protected void addAdditionalSaveData(ValueOutput valueOutput) {
+        valueOutput.putInt("releaseTicks", Math.min(getReleaseTicks(), maxReleaseTicks));
+        valueOutput.putBoolean("isReleasing", isReleasing());
     }
 
     @Override
@@ -104,7 +100,7 @@ public class LastStandEntity extends Entity {
             if (this.tickCount % hailcoilReleaseFrequency == 0) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     HailcoilEntity hailcoil = new HailcoilEntity(EntityRegistry.HAILCOIL.get(), serverLevel);
-                    hailcoil.moveTo(this.blockPosition(), 0.0F, 0.0F);
+                    hailcoil.move(MoverType.SELF, this.blockPosition().getCenter());
                     hailcoil.setInvulnerable(true);
                     hailcoils.add(hailcoil);
                     hailcoil.finalizeSpawn(serverLevel, this.level().getCurrentDifficultyAt(this.blockPosition()),

@@ -47,7 +47,6 @@ public class WindCircleParticle extends TextureSheetParticle {
         this.setSpriteFromAge(this.sprites);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public record Provider(SpriteSet sprite) implements ParticleProvider<WindCircleParticleOptions> {
         public Particle createParticle(
                 WindCircleParticleOptions options,

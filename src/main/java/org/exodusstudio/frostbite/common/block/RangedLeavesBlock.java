@@ -1,10 +1,12 @@
 package org.exodusstudio.frostbite.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -12,15 +14,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 
 import java.util.OptionalInt;
 
 public class RangedLeavesBlock extends LeavesBlock {
     public static final IntegerProperty DISTANCE;
 
-    public RangedLeavesBlock(Properties p_54422_) {
-        super(p_54422_);
+    public RangedLeavesBlock(Properties properties) {
+        super(0.01F, properties);
         this.registerDefaultState((((this.stateDefinition.any())
                 .setValue(DISTANCE, 11))
                 .setValue(PERSISTENT, false))
@@ -30,6 +31,11 @@ public class RangedLeavesBlock extends LeavesBlock {
     @Override
     protected boolean decaying(BlockState state) {
         return !(Boolean)state.getValue(PERSISTENT) && state.getValue(DISTANCE) == 11;
+    }
+
+    @Override
+    public MapCodec<? extends LeavesBlock> codec() {
+        return simpleCodec(RangedLeavesBlock::new);
     }
 
     @Override
@@ -72,6 +78,11 @@ public class RangedLeavesBlock extends LeavesBlock {
         } else {
             return state.hasProperty(DISTANCE) ? OptionalInt.of(state.getValue(DISTANCE)) : OptionalInt.empty();
         }
+    }
+
+    @Override
+    protected void spawnFallingLeavesParticle(Level level, BlockPos blockPos, RandomSource randomSource) {
+        // TODO
     }
 
     static {

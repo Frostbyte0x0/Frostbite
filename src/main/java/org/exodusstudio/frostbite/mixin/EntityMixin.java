@@ -1,8 +1,9 @@
 package org.exodusstudio.frostbite.mixin;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.Frostbite;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,18 +28,18 @@ public class EntityMixin {
     }
 
     @Inject(at = @At("HEAD"), method = "load")
-    private void load(CompoundTag compound, CallbackInfo ci) {
+    private void load(ValueInput input, CallbackInfo ci) {
         if (frostbite$entity instanceof LivingEntity livingEntity) {
             Frostbite.savedTemperatures.setTemperatures(livingEntity.getStringUUID(),
-                    List.of(compound.getFloat("innerTemperature"), compound.getFloat("outerTemperature")));
+                    List.of(input.getFloatOr("innerTemperature", 0f), input.getFloatOr("outerTemperature", 0f)));
         }
     }
 
     @Inject(at = @At("HEAD"), method = "saveWithoutId")
-    private void saveWithoutId(CompoundTag compound, CallbackInfoReturnable<CompoundTag> cir) {
+    private void saveWithoutId(ValueOutput output, CallbackInfo ci) {
         if (frostbite$entity instanceof LivingEntity livingEntity) {
-            compound.putFloat("innerTemperature", Frostbite.savedTemperatures.getTemperature(livingEntity, true));
-            compound.putFloat("outerTemperature", Frostbite.savedTemperatures.getTemperature(livingEntity, false));
+            output.putFloat("innerTemperature", Frostbite.savedTemperatures.getTemperature(livingEntity, true));
+            output.putFloat("outerTemperature", Frostbite.savedTemperatures.getTemperature(livingEntity, false));
         }
     }
 }

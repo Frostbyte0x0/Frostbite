@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.entity.custom;
 
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,6 +34,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
@@ -169,16 +170,16 @@ public class WoollySheepEntity extends Animal {
         return this.isAlive() && !this.isSheared() && !this.isBaby();
     }
 
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putBoolean("Sheared", this.isSheared());
-        compound.putByte("Color", (byte)this.getColor().getId());
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("Sheared", this.isSheared());
+        output.putByte("Color", (byte)this.getColor().getId());
     }
 
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        this.setSheared(compound.getBoolean("Sheared"));
-        this.setColor(DyeColor.byId(compound.getByte("Color")));
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setSheared(input.getBooleanOr("Sheared", false));
+        this.setColor(DyeColor.byId(input.getByteOr("Color", (byte) 0)));
     }
 
     protected SoundEvent getAmbientSound() {
