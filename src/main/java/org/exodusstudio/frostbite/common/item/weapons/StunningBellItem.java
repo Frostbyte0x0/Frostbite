@@ -13,7 +13,7 @@ import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 
 import java.util.List;
 
-import static org.exodusstudio.frostbite.common.util.MathsUtil.calculateDir;
+import static org.exodusstudio.frostbite.common.util.Util.calculateDir;
 
 public class StunningBellItem extends Item {
     private final int range = 10;

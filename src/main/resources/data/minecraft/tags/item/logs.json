@@ -15,6 +15,8 @@
     "frostbite:charm_log",
     "frostbite:stripped_charm_log",
     "frostbite:charm_wood",
-    "frostbite:stripped_charm_wood"
+    "frostbite:stripped_charm_wood",
+    "frostbite:lavender_wood",
+    "frostbite:stripped_lavender_wood"
   ]
 }

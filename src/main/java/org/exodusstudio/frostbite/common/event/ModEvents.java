@@ -48,6 +48,8 @@ import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
+
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEvents {
     public static String currentBiome = "";
@@ -149,7 +151,7 @@ public class ModEvents {
     public static void weatherRender(RenderLevelStageEvent.AfterWeather event) {
         LevelRenderer renderer = event.getLevelRenderer();
         assert Minecraft.getInstance().level != null;
-        if (Minecraft.getInstance().level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) {
+        if (isFrostbite(Minecraft.getInstance().level)) {
             weatherEffectRenderer.render(Minecraft.getInstance().level, renderer.renderBuffers.bufferSource(),
                     renderer.getTicks(), event.getPartialTick().getGameTimeDeltaPartialTick(false),
                     event.getCamera().getPosition());
@@ -162,7 +164,7 @@ public class ModEvents {
         ClientLevel level = Minecraft.getInstance().level;
 
         if (player == null || !player.isAlive() || level == null ||
-                !level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) return;
+                !isFrostbite(level)) return;
 
         if (event.getType() == FogType.ATMOSPHERIC) {
             float t = Frostbite.weatherInfo.getLerp();
@@ -181,7 +183,7 @@ public class ModEvents {
         ClientLevel level = Minecraft.getInstance().level;
 
         if (player == null || !player.isAlive() || level == null ||
-                !level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) return;
+                !isFrostbite(level)) return;
 
         computeBlendLerp(level, player);
 

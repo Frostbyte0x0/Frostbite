@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.exodusstudio.frostbite.common.util.MathsUtil.calculateDir;
-import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
+import static org.exodusstudio.frostbite.common.util.Util.calculateDir;
+import static org.exodusstudio.frostbite.common.util.Util.plusOrMinus;
 
 public class LastStandEntity extends Entity {
     private final int maxReleaseTicks = 200;

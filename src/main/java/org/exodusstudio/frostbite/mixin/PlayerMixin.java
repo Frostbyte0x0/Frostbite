@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.mixin;
 
-import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
@@ -25,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
+import static org.exodusstudio.frostbite.common.util.Util.plusOrMinus;
 
 @Mixin(Player.class)
 public class PlayerMixin implements LastStand {

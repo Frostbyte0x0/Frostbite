@@ -4,13 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MathsUtil {
+public class Util {
     static RandomSource random = RandomSource.create();
 
     public static Vec3 calculateDir(Entity e1, Entity e2, Vec3 multiplier) {
@@ -96,8 +97,11 @@ public class MathsUtil {
         return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2) + Math.pow(v1.z - v2.z, 2));
     }
 
-
     public static double distanceBetween(double v1, double v2) {
         return Math.sqrt(Math.pow(v1, 2) + Math.pow(v2, 2));
+    }
+
+    public static boolean isFrostbite(Level level) {
+        return level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]");
     }
 }

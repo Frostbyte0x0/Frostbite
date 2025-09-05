@@ -5,12 +5,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
-import org.exodusstudio.frostbite.common.util.MathsUtil;
+import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 public class SavedTemperatures {
     private final HashMap<String, List<Float>> entityTemperatures = new HashMap<>();
@@ -53,7 +55,7 @@ public class SavedTemperatures {
                     affectEntity(serverLevel, entity, innerTemperature);
                 }
 
-                if (entity.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) {
+                if (isFrostbite(entity.level())) {
                     outerTempChange -= 1.5f;
                 } else if (entity.level().dimension().toString().equals("ResourceKey[minecraft:dimension / minecraft:nether]")) {
                     outerTempChange += 5;
@@ -79,9 +81,9 @@ public class SavedTemperatures {
     public float calculateBlockTemperature(LivingEntity entity) {
         final float[] temp = {0};
 
-        AABB aabb = MathsUtil.squareAABB(entity.position(), 3f);
+        AABB aabb = Util.squareAABB(entity.position(), 3f);
         // List<BlockPos> l = MathsUtil.getBlockPositionsInAABB(aabb);
-        for (BlockPos pos : MathsUtil.getBlockPositionsInAABB(aabb)) {
+        for (BlockPos pos : Util.getBlockPositionsInAABB(aabb)) {
             String blockname = entity.level().getBlockState(pos).getBlock().toString().replace("Block{minecraft:", "").replace("}", "");
             if (tempsPerBlock.containsKey(blockname)) {
                 temp[0] += (float) (tempsPerBlock.get(blockname) / (0.5 + entity.distanceToSqr(pos.getCenter())));

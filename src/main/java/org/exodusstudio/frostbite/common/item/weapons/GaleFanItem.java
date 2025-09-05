@@ -20,7 +20,7 @@ import org.exodusstudio.frostbite.common.entity.custom.WindCircleEntity;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.util.MathsUtil;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -50,7 +50,7 @@ public class GaleFanItem extends Item {
                         Math.sin(angle * Math.PI / 180) * DIST);
                 WindCircleEntity entity = new WindCircleEntity(EntityRegistry.WIND_CIRCLE.get(), serverLevel);
 
-                for (LivingEntity livingEntity : serverLevel.getEntitiesOfClass(LivingEntity.class, MathsUtil.squareAABB(pos, LOCK_ON_RANGE))) {
+                for (LivingEntity livingEntity : serverLevel.getEntitiesOfClass(LivingEntity.class, Util.squareAABB(pos, LOCK_ON_RANGE))) {
                     pos = livingEntity.position();
                     if (livingEntity instanceof Player) break;
                 }

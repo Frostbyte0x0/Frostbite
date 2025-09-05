@@ -12,6 +12,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
+
 public class ThermometerOverlay {
     private static final ResourceLocation THERMOMETER0 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
             "textures/overlays/cold_bar/thermometer0.png");
@@ -47,7 +49,7 @@ public class ThermometerOverlay {
 
         float outer_temp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, false) * 10f) / 10f;
 
-        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]") && outer_temp == maxTemp) {
+        if (!isFrostbite(player.level()) && outer_temp == maxTemp) {
             return;
         }
 

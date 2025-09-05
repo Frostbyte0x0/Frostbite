@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-import static org.exodusstudio.frostbite.common.util.MathsUtil.spawnParticleRandomly;
+import static org.exodusstudio.frostbite.common.util.Util.spawnParticleRandomly;
 
 public class HailcoilEntity extends Monster {
     public HailcoilEntity(EntityType<? extends Monster> entityType, Level level) {

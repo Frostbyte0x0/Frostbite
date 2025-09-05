@@ -12,18 +12,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
+
 @Mixin(WeatherEffectRenderer.class)
 public class WeatherEffectRendererMixin {
     @Inject(at = @At("HEAD"), method = "render", cancellable = true)
     public void render(Level level, MultiBufferSource bufferSource, int ticks, float partialTick, Vec3 cameraPosition, CallbackInfo ci) {
-        if (level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) {
+        if (isFrostbite(level)) {
             ci.cancel();
         }
     }
 
     @Inject(at = @At("HEAD"), method = "tickRainParticles", cancellable = true)
     public void tickRainParticles(ClientLevel level, Camera camera, int ticks, ParticleStatus particleStatus, CallbackInfo ci) {
-        if (level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]")) {
+        if (isFrostbite(level)) {
             ci.cancel();
         }
     }

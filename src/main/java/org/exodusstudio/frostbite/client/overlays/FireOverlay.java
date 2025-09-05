@@ -12,6 +12,8 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
 
+import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
+
 public class FireOverlay {
     private static final ResourceLocation FIRE0 = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID,
             "textures/overlays/fire/fire0.png");
@@ -48,7 +50,7 @@ public class FireOverlay {
 
         float innerTemp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, true) * 10f) / 10f;
 
-        if (!player.level().dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]") && innerTemp == maxTemp) {
+        if (!isFrostbite(player.level()) && innerTemp == maxTemp) {
             return;
         }
 

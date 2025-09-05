@@ -242,8 +242,9 @@ public class BlockRegistry {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_planks")))));
     public static final DeferredBlock<Block> LAVENDER_LEAVES = registerBlock("lavender_leaves",
-            () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
-                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_leaves")))));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_leaves")))) {
+            });
     public static final DeferredBlock<Block> LAVENDER_SAPLING = registerBlock("lavender_sapling",
             () -> new SaplingBlock(TreeGrowers.LAVENDER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_sapling")))));

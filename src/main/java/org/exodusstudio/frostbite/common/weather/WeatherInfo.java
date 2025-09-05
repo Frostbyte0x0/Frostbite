@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
-import org.exodusstudio.frostbite.common.event.ModEvents;
 
 public class WeatherInfo {
     private static final RandomSource source = RandomSource.create();

@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.weather;
 
-import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -20,7 +19,6 @@ import org.exodusstudio.frostbite.Frostbite;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class FrostbiteWeatherEffectRenderer {
     private static final ResourceLocation SNOW_LOCATION =
@@ -52,8 +50,7 @@ public class FrostbiteWeatherEffectRenderer {
         uPos += (Minecraft.getInstance().level.getGameTime() + partialTick - lastTime) *
                 Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel(partialTick), 0.02f, 0.2f);
         lastTime = (float) Minecraft.getInstance().level.getGameTime() + partialTick;
-        //uPos %= 1.0F;
-        int r = 3;
+        int r = Minecraft.useFancyGraphics() ? 10 : 5;
         List<ColumnInstance> list1 = new ArrayList<>();
         this.collectColumnInstances(level, ticks, partialTick, cameraPosition, r, list1);
         if (!list1.isEmpty()) {

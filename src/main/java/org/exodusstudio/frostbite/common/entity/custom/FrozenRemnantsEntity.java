@@ -30,6 +30,8 @@ import org.exodusstudio.frostbite.common.registry.GameRuleRegistry;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
+
 public class FrozenRemnantsEntity extends Mob{
     protected NonNullList<ItemStack> items;
     private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> DATA_OWNER_UUID;
@@ -157,7 +159,7 @@ public class FrozenRemnantsEntity extends Mob{
     public static boolean shouldSpawnFrozenRemnants(ServerLevel serverLevel) {
         return !serverLevel.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)
                 && serverLevel.getGameRules().getBoolean(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS)
-                && serverLevel.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]");
+                && isFrostbite(serverLevel);
     }
 
     @Override

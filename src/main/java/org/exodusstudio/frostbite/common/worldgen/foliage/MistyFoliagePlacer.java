@@ -21,7 +21,7 @@ import org.exodusstudio.frostbite.common.registry.FoliagePlacerRegistry;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.exodusstudio.frostbite.common.util.MathsUtil.plusOrMinus;
+import static org.exodusstudio.frostbite.common.util.Util.plusOrMinus;
 
 public class MistyFoliagePlacer extends FoliagePlacer {
     public static final MapCodec<MistyFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) ->
