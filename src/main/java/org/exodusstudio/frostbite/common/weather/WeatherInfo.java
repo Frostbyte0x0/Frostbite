@@ -13,7 +13,6 @@ public class WeatherInfo {
     public static final IntProvider WHITEOUT_DELAY = UniformInt.of(12000, 180000);
     public static final IntProvider WHITEOUT_DURATION = UniformInt.of(3600, 15600);
     public static final float normalNearFog = 0;
-    public final float normalFarFog;
     public static final float normalRed = 130 / 255f;
     public static final float normalGreen = 128 / 255f;
     public static final float normalBlue = 214 / 255f;
@@ -24,6 +23,7 @@ public class WeatherInfo {
     public static final float BLIZZARD_COLOUR = 150 / 255f;
     public static final float WHITEOUT_COLOUR = 200 / 255f;
 
+    public float normalFarFog;
     public int snowTime;
     public int blizzardTime;
     public int whiteoutTime;

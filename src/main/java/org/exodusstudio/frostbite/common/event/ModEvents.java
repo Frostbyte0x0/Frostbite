@@ -80,6 +80,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void weatherControl(LevelTickEvent.Post event) {
         Level level = event.getLevel();
+        Frostbite.weatherInfo.normalFarFog = Minecraft.getInstance().options.getEffectiveRenderDistance() * 16;
 
         if (level instanceof ServerLevel serverLevel && serverLevel.dimensionType().hasSkyLight()) {
             long time = level.getGameTime();
@@ -287,8 +288,9 @@ public class ModEvents {
     public static void computeBlendLerp(ClientLevel level, Player player) {
         String name = level.getBiome(player.blockPosition()).toString();
 
-        if (!currentBiome.equals(name)) {
+        if (!currentBiome.equals(name) || level.getGameTime() < 20) {
             assert Minecraft.getInstance().level != null;
+            long e = Minecraft.getInstance().level.getGameTime();
             if (Minecraft.getInstance().level.getGameTime() - time > 100) {
                 if (name.contains("shrouded_forest") && !Frostbite.weatherInfo.isBlizzarding && !Frostbite.weatherInfo.isWhiteouting) {
                     Frostbite.weatherInfo.oNearFog = Frostbite.weatherInfo.nearFog;

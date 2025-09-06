@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.ArrayList;
@@ -56,7 +57,13 @@ public class SavedTemperatures {
                 }
 
                 if (isFrostbite(entity.level())) {
-                    outerTempChange -= 1.5f;
+                    float delta = 1.5f;
+                    if (Frostbite.weatherInfo.isWhiteouting) {
+                        delta = 3.5f;
+                    } else if (Frostbite.weatherInfo.isBlizzarding) {
+                        delta = 2.5f;
+                    }
+                    outerTempChange -= delta;
                 } else if (entity.level().dimension().toString().equals("ResourceKey[minecraft:dimension / minecraft:nether]")) {
                     outerTempChange += 5;
                 } else {
