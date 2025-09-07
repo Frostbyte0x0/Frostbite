@@ -186,7 +186,7 @@ public class ModEvents {
         if (player == null || !player.isAlive() || level == null ||
                 !isFrostbite(level)) return;
 
-        computeBlendLerp(level, player);
+        computeWeatherInfo(level, player);
 
         float t = Frostbite.weatherInfo.getLerp();
 
@@ -285,12 +285,11 @@ public class ModEvents {
         }
     }
 
-    public static void computeBlendLerp(ClientLevel level, Player player) {
+    public static void computeWeatherInfo(ClientLevel level, Player player) {
         String name = level.getBiome(player.blockPosition()).toString();
 
         if (!currentBiome.equals(name) || level.getGameTime() < 20) {
             assert Minecraft.getInstance().level != null;
-            long e = Minecraft.getInstance().level.getGameTime();
             if (Minecraft.getInstance().level.getGameTime() - time > 100) {
                 if (name.contains("shrouded_forest") && !Frostbite.weatherInfo.isBlizzarding && !Frostbite.weatherInfo.isWhiteouting) {
                     Frostbite.weatherInfo.oNearFog = Frostbite.weatherInfo.nearFog;

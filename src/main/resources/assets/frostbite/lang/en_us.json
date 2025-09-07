@@ -54,6 +54,7 @@
   "item.frostbite.charm_leaves": "Charm Leaves",
   "item.frostbite.flowering_charm_leaves": "Flowering Charm Leaves",
   "item.frostbite.charm_sapling": "Charm Sapling",
+  "item.frostbite.giant_reed": "Giant Reed",
 
   "item.frostbite.mossy_charm_log": "Mossy Charm Sapling",
   "item.frostbite.mossy_charm_wood": "Mossy Charm Sapling",
@@ -172,4 +173,5 @@
   "sounds.frostbite.chaincicle_hook_hit": "Chaincicle hooks",
   "sounds.frostbite.chaincicle_grapple_launch": "Chaincicle grapple launched",
   "sounds.frostbite.chaincicle_grapple_hit": "Chaincicle grapples"
+  "item.frostbite.lavender_petals": "Lavender petals Block",
 }

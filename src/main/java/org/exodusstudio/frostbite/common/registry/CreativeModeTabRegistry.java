@@ -117,6 +117,8 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.FLOWERING_CHARM_LEAVES);
                         output.accept(BlockRegistry.CHARM_SAPLING);
 
+                        output.accept(BlockRegistry.GIANT_REED);
+
                         // MOSSY CHARM WOOD
                         output.accept(BlockRegistry.MOSSY_CHARM_LOG);
                         output.accept(BlockRegistry.MOSSY_CHARM_WOOD);

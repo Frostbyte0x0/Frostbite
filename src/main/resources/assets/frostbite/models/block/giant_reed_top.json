@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "render_type": "translucent",
+  "textures": {
+    "cross": "frostbite:block/giant_reed_top"
+  }
+}

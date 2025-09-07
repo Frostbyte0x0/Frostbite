@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "frostbite:block/giant_reed_bottom"
+    },
+    "half=upper": {
+      "model": "frostbite:block/giant_reed_top"
+    }
+  }
+}
