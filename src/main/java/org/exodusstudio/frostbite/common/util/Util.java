@@ -2,17 +2,84 @@ package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Util {
     static RandomSource random = RandomSource.create();
+    static Item[] liningItems = new Item[] {
+            ItemRegistry.WOOLLY_WOOL.asItem(),
+            ItemRegistry.FROZEN_FUR.asItem(),
+            ItemRegistry.INSULATED_CLOTH.asItem(),
+            ItemRegistry.HEATED_COATING.asItem(),
+            ItemRegistry.FROZEN_PLATING.asItem(),
+    };
+    static Item[] weavingPatterns = new Item[] {
+            ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),
+            ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(),
+            ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),
+            ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),
+    };
+
+    public static HashMap<Item, HashMap<Item, Item>> linings = new HashMap<>() {{
+        put(Items.WHITE_WOOL.asItem(), new HashMap<>() {{
+            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.WOOL_LINING_HELMET.asItem());
+            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.WOOL_LINING_CHESTPLATE.asItem());
+            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.WOOL_LINING_LEGGINGS.asItem());
+            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.WOOL_LINING_BOOTS.asItem());
+        }});
+        put(ItemRegistry.WOOLLY_WOOL.asItem(), new HashMap<>() {{
+            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.WOOLLY_WOOL_LINING_HELMET.asItem());
+            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.WOOLLY_WOOL_LINING_CHESTPLATE.asItem());
+            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.WOOLLY_WOOL_LINING_LEGGINGS.asItem());
+            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.WOOLLY_WOOL_LINING_BOOTS.asItem());
+        }});
+        put(ItemRegistry.FROZEN_FUR.asItem(), new HashMap<>() {{
+            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.FROZEN_FUR_LINING_HELMET.asItem());
+            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.FROZEN_FUR_LINING_CHESTPLATE.asItem());
+            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.FROZEN_FUR_LINING_LEGGINGS.asItem());
+            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.FROZEN_FUR_LINING_BOOTS.asItem());
+        }});
+        put(ItemRegistry.INSULATED_CLOTH.asItem(), new HashMap<>() {{
+            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.INSULATED_CLOTH_LINING_HELMET.asItem());
+            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.INSULATED_CLOTH_LINING_CHESTPLATE.asItem());
+            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.INSULATED_CLOTH_LINING_LEGGINGS.asItem());
+            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.INSULATED_CLOTH_LINING_BOOTS.asItem());
+        }});
+        put(ItemRegistry.HEATED_COATING.asItem(), new HashMap<>() {{
+            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.HEATED_COATING_LINING_HELMET.asItem());
+            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.HEATED_COATING_LINING_CHESTPLATE.asItem());
+            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.HEATED_COATING_LINING_LEGGINGS.asItem());
+            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.HEATED_COATING_LINING_BOOTS.asItem());
+        }});
+        put(ItemRegistry.FROZEN_PLATING.asItem(), new HashMap<>() {{
+            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.FROZEN_PLATING_LINING_HELMET.asItem());
+            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.FROZEN_PLATING_LINING_CHESTPLATE.asItem());
+            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.FROZEN_PLATING_LINING_LEGGINGS.asItem());
+            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.FROZEN_PLATING_LINING_BOOTS.asItem());
+        }});
+    }};
+
+    public static boolean isLiningMaterial(ItemStack item) {
+        return Arrays.asList(liningItems).contains(item.getItem()) || item.is(ItemTags.WOOL);
+    }
+
+    public static boolean isWeavingPattern(Item item) {
+        return Arrays.asList(weavingPatterns).contains(item);
+    }
 
     public static Vec3 calculateDir(Entity e1, Entity e2, Vec3 multiplier) {
         double theta = 0;
@@ -91,7 +158,6 @@ public class Util {
 
         return positions;
     }
-
 
     public static double distanceBetweenVec(Vec3 v1, Vec3 v2) {
         return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2) + Math.pow(v1.z - v2.z, 2));
