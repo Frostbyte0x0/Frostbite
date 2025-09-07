@@ -7,11 +7,11 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
 
 import javax.annotation.Nullable;
@@ -57,7 +57,11 @@ public class WeavingMenu extends ItemCombinerMenu {
     }
 
     public void createResult() {
+        if (this.inputSlots.getItem(1).getItem() instanceof LiningItem) {
 
+        }
+
+        resultSlots.setItem(0, this.inputSlots.getItem(0).copy());
     }
 
     public boolean setItemName(String itemName) {

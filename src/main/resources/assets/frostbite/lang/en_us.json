@@ -69,6 +69,7 @@
   "item.frostbite.lavender_planks": "Lavender Planks",
   "item.frostbite.lavender_leaves": "Lavender Leaves",
   "item.frostbite.lavender_sapling": "Lavender Sapling",
+  "item.frostbite.lavender_petals": "Lavender Petals",
 
   "item.frostbite.small_heater": "Small Heater",
   "item.frostbite.medium_heater": "Medium Heater",
@@ -112,6 +113,12 @@
   "item.frostbite.insulating_jelly": "Insulating jelly",
   "item.frostbite.bottle_of_warmth": "Bottle of Warmth",
   "item.frostbite.bottle_of_heat": "Bottle of Heat",
+
+  "item.frostbite.woolly_wool": "Woolly wool",
+  "item.frostbite.frozen_fur": "Frozen fur",
+  "item.frostbite.insulated_cloth": "Insulated cloth",
+  "item.frostbite.heated_coating": "Heated coating",
+  "item.frostbite.frozen_plating": "Frozen plating",
 
   "item.frostbite.casting_staff": "Casting staff",
   "item.frostbite.gale_fan": "Gale fan",
@@ -173,5 +180,4 @@
   "sounds.frostbite.chaincicle_hook_hit": "Chaincicle hooks",
   "sounds.frostbite.chaincicle_grapple_launch": "Chaincicle grapple launched",
   "sounds.frostbite.chaincicle_grapple_hit": "Chaincicle grapples"
-  "item.frostbite.lavender_petals": "Lavender petals Block",
 }

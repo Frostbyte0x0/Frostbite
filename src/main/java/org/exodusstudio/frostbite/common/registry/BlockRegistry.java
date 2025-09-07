@@ -303,6 +303,10 @@ public class BlockRegistry {
             () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "giant_reed")))));
 
+//    public static final DeferredBlock<Block> LAVENDER_PETALS = registerBlock("lavender_petals",
+//            () -> new Block(BlockBehaviour.Properties.of().strength(10f)
+//                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_petals")))));
+
 
 
     public static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
@@ -314,9 +318,5 @@ public class BlockRegistry {
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
         ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()
                 .setId(ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, name)))));
-
-    public static final DeferredBlock<Block> LAVENDER_PETALS = registerBlock("lavender_petals",
-            () -> new Block(BlockBehaviour.Properties.of().strength(10f)
-                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_petals")))));
     }
 }

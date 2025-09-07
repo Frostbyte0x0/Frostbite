@@ -288,4 +288,20 @@ public class ItemRegistry {
     public static final DeferredItem<Item> STARSEEKING_COMPASS =
             ITEMS.register("starseeking_compass", (id) -> new StarseekingCompass(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> WOOLLY_WOOL =
+            ITEMS.register("woolly_wool", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_FUR =
+            ITEMS.register("frozen_fur", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> INSULATED_CLOTH =
+            ITEMS.register("insulated_cloth", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HEATED_COATING =
+            ITEMS.register("heated_coating", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROZEN_PLATING =
+            ITEMS.register("frozen_plating", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

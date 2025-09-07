@@ -9,22 +9,6 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import java.util.EnumMap;
 
 public interface LiningMaterials {
-    // Wool
-    // - Sheep
-    // Woolly Wool
-    // - Woolly Sheep
-    // Fur
-    // - Wild Wolf
-    // Frozen Fur
-    // - Frozen Wild Wolf
-    // Insulated Cloth
-    // - Need 4 jelly from Levitating Jellyfish transformed into insulating jelly
-    // - Combine with woven wool to make Insulated Cloth
-    // Enchantments:
-    // Freezing protection I-IV, take less damage from cold attacks
-    // Insulation I-IV, better cold resistance
-    // Softness,
-
     LiningMaterial WOOL = new LiningMaterial(5, Util.make(new EnumMap<>(ArmorType.class), (map) -> {
         map.put(ArmorType.BOOTS, 1);
         map.put(ArmorType.LEGGINGS, 2);

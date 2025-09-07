@@ -83,6 +83,12 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.FROZEN_PLATING_LINING_LEGGINGS);
                         output.accept(ItemRegistry.FROZEN_PLATING_LINING_BOOTS);
 
+                        output.accept(ItemRegistry.WOOLLY_WOOL);
+                        output.accept(ItemRegistry.FROZEN_FUR);
+                        output.accept(ItemRegistry.INSULATED_CLOTH);
+                        output.accept(ItemRegistry.HEATED_COATING);
+                        output.accept(ItemRegistry.FROZEN_PLATING);
+
                         output.accept(ItemRegistry.EXPLODING_SNOWBALL);
                         output.accept(ItemRegistry.HARDENED_SNOWBALL);
                         output.accept(ItemRegistry.PACKED_HARDENED_SNOWBALL);
