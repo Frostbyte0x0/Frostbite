@@ -61,8 +61,8 @@ public class FireOverlay {
 
         int width = guiGraphics.guiWidth();
         int height = guiGraphics.guiHeight();
-        int x = guiGraphics.guiWidth() - textureWidth - (int) (3 / 8f * guiGraphics.guiWidth()); //(int) ((580 * 2 / 1920f) * guiGraphics.guiWidth());
-        int y = guiGraphics.guiHeight() - textureHeight - 2; //(int) ((470 * 2 / 991f) * guiGraphics.guiHeight());
+        int x = width / 2 + 95;
+        int y = height - textureHeight - 2;
 
 
         drawTexture(guiGraphics, x, y, textureWidth, textureHeight, FIRES[fireToShow]);

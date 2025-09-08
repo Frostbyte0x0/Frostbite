@@ -2,15 +2,15 @@ package org.exodusstudio.frostbite.client.overlays;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.ARGB;
-import org.exodusstudio.frostbite.Frostbite;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
+import org.exodusstudio.frostbite.Frostbite;
 
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
@@ -36,11 +36,11 @@ public class ThermometerOverlay {
             THERMOMETER4, THERMOMETER5, THERMOMETER6, THERMOMETER7};
 
 
-    public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, ResourceLocation texture, boolean blend) {
+    public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, ResourceLocation texture) {
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
     }
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void render(GuiGraphics guiGraphics, DeltaTracker ignored) {
         Player player = Minecraft.getInstance().player;
         assert player != null;
 
@@ -55,13 +55,15 @@ public class ThermometerOverlay {
 
         int thermometerToShow = (int) Math.floor(Math.clamp(THERMOMETERS.length * (outer_temp - minTemp) / (maxTemp - minTemp), 0, THERMOMETERS.length - 1));
 
-        int x = 610;
-        int y = 470;
-
         int textureWidth = 24;
         int textureHeight = 24;
 
-        drawTexture(guiGraphics, x, y, textureWidth, textureHeight, THERMOMETERS[thermometerToShow], false);
+        int width = guiGraphics.guiWidth();
+        int height = guiGraphics.guiHeight();
+        int x = width / 2 + 130;
+        int y = height - textureHeight - 2;
+
+        drawTexture(guiGraphics, x, y, textureWidth, textureHeight, THERMOMETERS[thermometerToShow]);
 
         Font font = Minecraft.getInstance().font;
         Component text = Component.literal("").append("§7" + outer_temp + "C").withStyle(ChatFormatting.BLUE);

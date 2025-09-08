@@ -13,7 +13,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import org.exodusstudio.frostbite.client.FrostbiteClient;
 import org.exodusstudio.frostbite.common.block.HeaterStorage;
 import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
@@ -31,11 +30,6 @@ import java.util.List;
 
 @Mod(Frostbite.MOD_ID)
 public class Frostbite {
-    @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(FrostbiteClient::initClient);
-    }
-
     public static final String MOD_ID = "frostbite";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static SavedTemperatures savedTemperatures = SavedTemperatures.init();
