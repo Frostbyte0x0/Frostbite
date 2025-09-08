@@ -202,12 +202,6 @@ public class ItemRegistry {
                             .component(DataComponentTypeRegistry.GUN, GunData.EMPTY)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
-
-    public static final DeferredItem<Item> THERMOMETER =
-            ITEMS.register("thermometer", (id) -> new ThermometerItem(new Item.Properties()
-                    .stacksTo(1)
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-
     public static final DeferredItem<Item> LAST_STAND =
             ITEMS.register("last_stand", (id) -> new LastStandItem(new Item.Properties()
                     .stacksTo(1)

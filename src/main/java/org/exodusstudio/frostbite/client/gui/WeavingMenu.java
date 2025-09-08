@@ -2,6 +2,7 @@ package org.exodusstudio.frostbite.client.gui;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -35,12 +36,13 @@ public class WeavingMenu extends ItemCombinerMenu {
     }
 
     protected boolean mayPickup(Player player, boolean p_39024_) {
-        return player.hasInfiniteMaterials();
+        return true;
     }
 
     protected void onTake(Player player, ItemStack stack) {
-        this.inputSlots.setItem(0, ItemStack.EMPTY);
-        this.access.execute((level, pos) -> level.levelEvent(1030, pos, 0));
+        resultSlots.setItem(0, ItemStack.EMPTY);
+        inputSlots.getItem(0).shrink(1);
+        inputSlots.getItem(1).hurtAndBreak(1, player, (InteractionHand) null);
     }
 
     public void createResult() {
@@ -53,8 +55,23 @@ public class WeavingMenu extends ItemCombinerMenu {
             }
 
             resultSlots.setItem(0, new ItemStack(Util.linings.get(material).get(pattern)));
+        } else {
+            resultSlots.setItem(0, ItemStack.EMPTY);
         }
     }
+
+//    @Override
+//    public void synchronizeCarriedToRemote() {
+//        if (!suppressRemoteUpdates) {
+//            ItemStack itemstack = getCarried();
+//            if (!remoteCarried.matches(itemstack)) {
+//                setCarried(new ItemStack(((HashedStack.ActualItem) ((RemoteSlot.Synchronized) remoteCarried).remoteHash).item()));
+//                if (synchronizer != null) {
+//                    synchronizer.sendCarriedChange(this, itemstack.copy());
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public boolean stillValid(Player player) {
