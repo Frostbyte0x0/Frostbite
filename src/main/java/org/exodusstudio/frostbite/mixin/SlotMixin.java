@@ -18,7 +18,9 @@ public class SlotMixin {
 
     @Inject(at = @At("HEAD"), method = "isActive", cancellable = true)
     public void isActive(CallbackInfoReturnable<Boolean> cir) {
-        if (frostbite$slot instanceof ArmorSlot && Frostbite.shouldShowLining) cir.setReturnValue(false);
+        if (frostbite$slot instanceof ArmorSlot && Frostbite.shouldShowLining) {
+            cir.setReturnValue(false);
+        }
     }
 
     @Inject(at = @At("TAIL"), method = "mayPlace", cancellable = true)
