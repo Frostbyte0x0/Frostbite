@@ -1,6 +1,8 @@
 package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -9,6 +11,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.inventory.LiningSlot;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,6 +19,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import javax.annotation.Nullable;
 
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
@@ -60,20 +65,38 @@ public class AbstractContainerScreenMixin {
             if (itemstack.isEmpty() && slot.isActive()) {
                 ResourceLocation resourcelocation = slot.getNoItemIcon();
                 if (resourcelocation != null) {
-                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, resourcelocation, i, j, 0, 0, 16, 16, 16, 16);
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, resourcelocation, i, j - 100, 0, 0, 16, 16, 16, 16);
                     flag1 = true;
                 }
             }
 
             if (!flag1) {
                 if (flag) {
-                    guiGraphics.fill(i, j, i + 16, j + 16, -2130706433);
+                    guiGraphics.fill(i, j - 100, i + 16, j - 100 + 16, -2130706433);
                 }
 
                 frostbite$screen.renderSlotContents(guiGraphics, itemstack, slot, s);
             }
 
             guiGraphics.pose().popMatrix();
+            ci.cancel();
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "renderSlotContents", cancellable = true)
+    public void renderSlotContents(GuiGraphics guiGraphics, ItemStack itemstack, Slot slot, String countString, CallbackInfo ci) {
+        if (slot instanceof LiningSlot) {
+            int i = slot.x;
+            int j = slot.y - 100;
+            int j1 = slot.x + slot.y * 176;
+            if (slot.isFake()) {
+                guiGraphics.renderFakeItem(itemstack, i, j, j1);
+            } else {
+                guiGraphics.renderItem(itemstack, i, j, j1);
+            }
+
+            Font font = IClientItemExtensions.of(itemstack).getFont(itemstack, IClientItemExtensions.FontContext.ITEM_COUNT);
+            guiGraphics.renderItemDecorations(font != null ? font : Minecraft.getInstance().font, itemstack, i, j, countString);
             ci.cancel();
         }
     }

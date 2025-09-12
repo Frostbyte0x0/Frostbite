@@ -10,7 +10,7 @@
     "PlayerMixin",
     "PrimaryLevelDataMixin",
     "ServerPlayerGameModeMixin",
-    "SlotMixin"
+    "ArmorSlotMixin"
   ],
   "client": [
     "AbstractContainerScreenMixin",

@@ -30,18 +30,5 @@ public class AbstractContainerMenuMixin {
 
             ci.cancel();
         }
-
-//        assert Minecraft.getInstance().player != null;
-//        if (frostbite$container instanceof InventoryMenu && slotId >= 0 && slotId <= 50 &&
-//                frostbite$container.slots.get(slotId) instanceof LiningSlot liningSlot) {
-//            if (player instanceof ServerPlayer) {
-//                frostbite$container.setCarried(Minecraft.getInstance().player.containerMenu.getCarried());
-//                liningSlot.set(Frostbite.savedLinings.getSpecificLiningForPlayer(player.getStringUUID(), liningSlot.getSlot()));
-//            } else if (!frostbite$container.getCarried().equals(Minecraft.getInstance().player.containerMenu.getCarried())) {
-//                frostbite$container.setCarried(Minecraft.getInstance().player.containerMenu.getCarried());
-//            }
-//
-//            ci.cancel();
-//        }
     }
 }
