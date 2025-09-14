@@ -29,16 +29,18 @@ public class LevelRendererMixin {
     @Unique
     LevelRenderer frostbite$levelRenderer = (LevelRenderer) ((Object) this);
     @Unique
-    Minecraft mc = Minecraft.getInstance();
+    Minecraft frostbite$mc = Minecraft.getInstance();
     
     @Inject(at = @At("HEAD"), method = "renderEntities", cancellable = true)
     public void renderEntities(PoseStack poseStack, MultiBufferSource.BufferSource bufferSource, Camera camera, DeltaTracker deltaTracker, List<Entity> entities, CallbackInfo ci) {
+        assert frostbite$mc.level != null;
+
         setFrostbite$levelRenderer();
         Vec3 vec3 = camera.getPosition();
         double d0 = vec3.x();
         double d1 = vec3.y();
         double d2 = vec3.z();
-        TickRateManager tickratemanager = mc.level.tickRateManager();
+        TickRateManager tickratemanager = frostbite$mc.level.tickRateManager();
         boolean flag = frostbite$levelRenderer.shouldShowEntityOutlines();
 
         for (Entity entity : entities) {
@@ -53,9 +55,9 @@ public class LevelRendererMixin {
             }
 
             MultiBufferSource multibuffersource;
-            assert mc.player != null;
+            assert frostbite$mc.player != null;
 
-            if (frostbite$shouldShowEntityOutlines() && entity instanceof LivingEntity livingEntity && mc.player.distanceTo(entity) < 30) {
+            if (frostbite$shouldShowEntityOutlines() && entity instanceof LivingEntity livingEntity && frostbite$mc.player.distanceTo(entity) < 30) {
                 //Frostbite.LOGGER.debug("Z");
                 OutlineBufferSource outlinebuffersource = frostbite$levelRenderer.renderBuffers.outlineBufferSource();
                 multibuffersource = outlinebuffersource;
@@ -64,7 +66,7 @@ public class LevelRendererMixin {
                 outlinebuffersource.setColor(r, 0, b, 128);
             } else {
                 //Frostbite.LOGGER.debug("A");
-                if ((flag && mc.shouldEntityAppearGlowing(entity))) {
+                if ((flag && frostbite$mc.shouldEntityAppearGlowing(entity))) {
                     //Frostbite.LOGGER.debug("B");
                     OutlineBufferSource outlinebuffersource = frostbite$levelRenderer.renderBuffers.outlineBufferSource();
                     multibuffersource = outlinebuffersource;
@@ -84,10 +86,10 @@ public class LevelRendererMixin {
 
     @Unique
     public boolean frostbite$shouldShowEntityOutlines() {
-        Minecraft mc = Minecraft.getInstance();
-        return (mc.player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.THERMAL_LENS) ||
-                mc.player.getItemInHand(InteractionHand.OFF_HAND).is(ItemRegistry.THERMAL_LENS))
-                && mc.player.isUsingItem() && mc.options.getCameraType().isFirstPerson();
+        assert frostbite$mc.player != null;
+        return (frostbite$mc.player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.THERMAL_LENS) ||
+                frostbite$mc.player.getItemInHand(InteractionHand.OFF_HAND).is(ItemRegistry.THERMAL_LENS))
+                && frostbite$mc.player.isUsingItem() && frostbite$mc.options.getCameraType().isFirstPerson();
     }
 
     @Unique

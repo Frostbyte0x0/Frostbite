@@ -16,7 +16,7 @@ import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 @Mixin(WeatherEffectRenderer.class)
 public class WeatherEffectRendererMixin {
-    @Inject(at = @At("HEAD"), method = "render", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "render(Lnet/minecraft/world/level/Level;Lnet/minecraft/client/renderer/MultiBufferSource;IFLnet/minecraft/world/phys/Vec3;)V", cancellable = true)
     public void render(Level level, MultiBufferSource bufferSource, int ticks, float partialTick, Vec3 cameraPosition, CallbackInfo ci) {
         if (isFrostbite(level)) {
             ci.cancel();

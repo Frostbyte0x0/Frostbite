@@ -8,8 +8,6 @@ package org.exodusstudio.frostbite.common.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class SnowflakeParticle extends TextureSheetParticle {
     private final double xStart;
