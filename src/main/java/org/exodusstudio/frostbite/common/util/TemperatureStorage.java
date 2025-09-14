@@ -1,12 +1,12 @@
-package org.exodusstudio.frostbite.common.temperature;
+package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +15,11 @@ import java.util.Map;
 
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
-public class SavedTemperatures {
+public class TemperatureStorage {
     private final HashMap<String, List<Float>> entityTemperatures = new HashMap<>();
     private static final Map<String, Float> tempsPerBlock = new HashMap<>();
 
-    public static SavedTemperatures init() {
+    public static TemperatureStorage init() {
         tempsPerBlock.put("lava", 2f);
         tempsPerBlock.put("torch", 0.5f);
         tempsPerBlock.put("wall_torch", 1f);
@@ -31,7 +31,7 @@ public class SavedTemperatures {
         tempsPerBlock.put("furnace", 1.5f);
         tempsPerBlock.put("blast_furnace", 1.5f);
         tempsPerBlock.put("smoker", 1.5f);
-        return new SavedTemperatures();
+        return new TemperatureStorage();
     }
 
     public void updateEntityTemperatures(List<LivingEntity> entities) {
@@ -71,6 +71,9 @@ public class SavedTemperatures {
                 }
 
                 outerTempChange += calculateBlockTemperature(entity);
+                if (entity instanceof Player player) {
+                    outerTempChange -= calculateLiningDamping(player, outerTempChange);
+                }
                 innerTemperature = Math.clamp(updateInnerTemperature(innerTemperature, outerTemperature), -60, 20);
 
                 if (entity.isInWater()) {
@@ -85,11 +88,20 @@ public class SavedTemperatures {
         }
     }
 
+    public float calculateLiningDamping(Player player, float outerTempChange) {
+        int i = Frostbite.liningStorage.getLiningLevelForPlayer(player.getStringUUID());
+
+        if (i <= 12) {
+            return Mth.lerp(i / 12f, 0, outerTempChange);
+        } else {
+            return Mth.lerp((i - 12) / 12f, outerTempChange, outerTempChange - 5);
+        }
+    }
+
     public float calculateBlockTemperature(LivingEntity entity) {
         final float[] temp = {0};
 
         AABB aabb = Util.squareAABB(entity.position(), 3f);
-        // List<BlockPos> l = MathsUtil.getBlockPositionsInAABB(aabb);
         for (BlockPos pos : Util.getBlockPositionsInAABB(aabb)) {
             String blockname = entity.level().getBlockState(pos).getBlock().toString().replace("Block{minecraft:", "").replace("}", "");
             if (tempsPerBlock.containsKey(blockname)) {
@@ -97,14 +109,12 @@ public class SavedTemperatures {
             }
         }
 
-        //return Math.min(Math.round(temp[0] * 2) / 2f, 5);
         return Math.min(temp[0], 5);
     }
 
     public float updateInnerTemperature(float innerTemperature, float outerTemperature) {
         if (innerTemperature != outerTemperature) {
             float delta = outerTemperature - innerTemperature + 20;
-            //innerTemperature += (float) Math.round(delta / 10) / 2;
             innerTemperature += delta;
         }
         return innerTemperature;

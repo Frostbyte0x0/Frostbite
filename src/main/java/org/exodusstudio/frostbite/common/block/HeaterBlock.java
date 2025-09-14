@@ -30,7 +30,7 @@ public class HeaterBlock extends Block {
                         pos.getX() + h,
                         pos.getY() + h,
                         pos.getZ() + h)).forEach(entity -> {
-            Frostbite.savedTemperatures.increaseTemperature(entity, temp, false);
+            Frostbite.temperatureStorage.increaseTemperature(entity, temp, false);
         });
     }
 }

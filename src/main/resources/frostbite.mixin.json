@@ -5,18 +5,19 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractContainerMenuMixin",
+    "ArmorSlotMixin",
     "EntityMixin",
     "InventoryMenuMixin",
     "PlayerMixin",
     "PrimaryLevelDataMixin",
-    "ServerPlayerGameModeMixin",
-    "ArmorSlotMixin"
+    "ServerPlayerGameModeMixin"
   ],
   "client": [
     "AbstractContainerScreenMixin",
     "ClientLevelMixin",
     "CreativeModeInventoryScreenMixin",
     "EntityRenderDispatcherMixin",
+    "GuiMixin",
     "InventoryScreenMixin",
     "LevelRendererMixin",
     "WeatherEffectRendererMixin"

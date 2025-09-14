@@ -23,14 +23,14 @@ public class EntityMixin {
     private void isFullyFrozen(CallbackInfoReturnable<Boolean> cir) {
         if (frostbite$entity instanceof LivingEntity livingEntity) {
             cir.setReturnValue(frostbite$entity.getTicksFrozen() >= frostbite$entity.getTicksRequiredToFreeze()
-                    || Frostbite.savedTemperatures.getTemperature(livingEntity, true) < 10);
+                    || Frostbite.temperatureStorage.getTemperature(livingEntity, true) < 10);
         }
     }
 
     @Inject(at = @At("HEAD"), method = "load")
     private void load(ValueInput input, CallbackInfo ci) {
         if (frostbite$entity instanceof LivingEntity livingEntity) {
-            Frostbite.savedTemperatures.setTemperatures(livingEntity.getStringUUID(),
+            Frostbite.temperatureStorage.setTemperatures(livingEntity.getStringUUID(),
                     List.of(input.getFloatOr("innerTemperature", 0f), input.getFloatOr("outerTemperature", 0f)));
         }
     }
@@ -38,8 +38,8 @@ public class EntityMixin {
     @Inject(at = @At("HEAD"), method = "saveWithoutId")
     private void saveWithoutId(ValueOutput output, CallbackInfo ci) {
         if (frostbite$entity instanceof LivingEntity livingEntity) {
-            output.putFloat("innerTemperature", Frostbite.savedTemperatures.getTemperature(livingEntity, true));
-            output.putFloat("outerTemperature", Frostbite.savedTemperatures.getTemperature(livingEntity, false));
+            output.putFloat("innerTemperature", Frostbite.temperatureStorage.getTemperature(livingEntity, true));
+            output.putFloat("outerTemperature", Frostbite.temperatureStorage.getTemperature(livingEntity, false));
         }
     }
 }

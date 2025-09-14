@@ -22,6 +22,6 @@ public class LiningItem extends Item {
     }
 
     public int getLiningLevel() {
-        return material.coldProtection().get(this.armorType);
+        return material.coldProtection().get(armorType);
     }
 }

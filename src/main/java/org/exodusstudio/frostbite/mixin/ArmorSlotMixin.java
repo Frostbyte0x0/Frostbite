@@ -5,16 +5,12 @@ import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ArmorSlot.class)
 public class ArmorSlotMixin {
-    @Unique
-    ArmorSlot frostbite$slot = (ArmorSlot) ((Object) this);
-
     @Inject(at = @At("HEAD"), method = "isActive", cancellable = true)
     public void isActive(CallbackInfoReturnable<Boolean> cir) {
         if (Frostbite.shouldShowLining) {
@@ -25,7 +21,7 @@ public class ArmorSlotMixin {
     @Inject(at = @At("TAIL"), method = "mayPlace", cancellable = true)
     public void mayPlace(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (!Frostbite.shouldShowLining) {
-            cir.setReturnValue(cir.getReturnValueZ() && !(frostbite$slot.getItem().getItem() instanceof LiningItem));
+            cir.setReturnValue(cir.getReturnValueZ() && !(stack.getItem() instanceof LiningItem));
         }
     }
 }

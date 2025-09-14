@@ -1,16 +1,17 @@
-package org.exodusstudio.frostbite.common.item.lining;
+package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class SavedLinings {
+public class LiningStorage {
     private final HashMap<String, List<ItemStack>> playerLinings = new HashMap<>();
 
     public void setLiningsForPlayer(

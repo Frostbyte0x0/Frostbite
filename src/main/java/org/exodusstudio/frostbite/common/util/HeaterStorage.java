@@ -1,9 +1,10 @@
-package org.exodusstudio.frostbite.common.block;
+package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.block.HeaterBlock;
 
 public class HeaterStorage {
     HeaterBlock block;

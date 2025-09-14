@@ -34,12 +34,6 @@ public class LiningSlot extends Slot {
         return 1;
     }
 
-    @Override
-    public void onTake(Player player, ItemStack stack) {
-        super.onTake(player, stack);
-        Frostbite.LOGGER.debug("AAA");
-    }
-
     public boolean mayPlace(ItemStack stack) {
         return Frostbite.shouldShowLining && stack.canEquip(this.slot, this.owner) && stack.getItem() instanceof LiningItem;
     }
@@ -51,7 +45,7 @@ public class LiningSlot extends Slot {
 
     public ItemStack remove(int amount) {
         ItemStack stack = this.getItem();
-        Frostbite.savedLinings.setSpecificLiningForPlayer(owner.getStringUUID(), slot, ItemStack.EMPTY);
+        Frostbite.liningStorage.setSpecificLiningForPlayer(owner.getStringUUID(), slot, ItemStack.EMPTY);
         return stack;
     }
 
@@ -65,11 +59,11 @@ public class LiningSlot extends Slot {
     }
 
     public ItemStack getItem() {
-        return Frostbite.savedLinings.getSpecificLiningForPlayer(this.owner.getStringUUID(), slot);
+        return Frostbite.liningStorage.getSpecificLiningForPlayer(this.owner.getStringUUID(), slot);
     }
 
     public void set(ItemStack stack) {
-        Frostbite.savedLinings.setSpecificLiningForPlayer(this.owner.getStringUUID(), slot, stack);
+        Frostbite.liningStorage.setSpecificLiningForPlayer(this.owner.getStringUUID(), slot, stack);
         this.setChanged();
     }
 

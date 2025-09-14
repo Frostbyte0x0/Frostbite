@@ -95,12 +95,12 @@ public class PlayerMixin implements LastStand {
 
     @Inject(at = @At("HEAD"), method = "addAdditionalSaveData")
     private void addAdditionalSaveData(ValueOutput output, CallbackInfo ci) {
-        Frostbite.savedLinings.save(output.list("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
+        Frostbite.liningStorage.save(output.list("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
     }
 
     @Inject(at = @At("HEAD"), method = "readAdditionalSaveData")
     private void readAdditionalSaveData(ValueInput input, CallbackInfo ci) {
-        Frostbite.savedLinings.load(input.listOrEmpty("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
+        Frostbite.liningStorage.load(input.listOrEmpty("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
     }
 
     @Unique

@@ -59,7 +59,7 @@ public class LevelRendererMixin {
                 //Frostbite.LOGGER.debug("Z");
                 OutlineBufferSource outlinebuffersource = frostbite$levelRenderer.renderBuffers.outlineBufferSource();
                 multibuffersource = outlinebuffersource;
-                int r = (int) Mth.lerp((Frostbite.savedTemperatures.getTemperature(livingEntity, true) + 60) / 80, 0, 255);
+                int r = (int) Mth.lerp((Frostbite.temperatureStorage.getTemperature(livingEntity, true) + 60) / 80, 0, 255);
                 int b = 255 - r;
                 outlinebuffersource.setColor(r, 0, b, 128);
             } else {

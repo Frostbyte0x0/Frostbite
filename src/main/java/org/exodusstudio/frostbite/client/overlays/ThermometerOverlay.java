@@ -47,7 +47,7 @@ public class ThermometerOverlay {
         float maxTemp = 20f;
         float minTemp = -60f;
 
-        float outer_temp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, false) * 10f) / 10f;
+        float outer_temp = (float) Math.round(Frostbite.temperatureStorage.getTemperature(player, false) * 10f) / 10f;
 
         if (!isFrostbite(player.level()) && outer_temp == maxTemp) {
             return;

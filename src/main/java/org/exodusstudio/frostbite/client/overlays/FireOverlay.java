@@ -48,7 +48,7 @@ public class FireOverlay {
         float maxTemp = 20f;
         float minTemp = -60f;
 
-        float innerTemp = (float) Math.round(Frostbite.savedTemperatures.getTemperature(player, true) * 10f) / 10f;
+        float innerTemp = (float) Math.round(Frostbite.temperatureStorage.getTemperature(player, true) * 10f) / 10f;
 
         if (!isFrostbite(player.level()) && innerTemp == maxTemp) {
             return;

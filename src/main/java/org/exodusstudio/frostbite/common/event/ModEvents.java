@@ -33,7 +33,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
-import org.exodusstudio.frostbite.common.block.HeaterStorage;
+import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
@@ -60,7 +60,7 @@ public class ModEvents {
     public static void reset(ServerStoppingEvent event) {
         OTFPortal.canSpawn = true;
         FTOPortal.canSpawn = true;
-        Frostbite.savedTemperatures.clear();
+        Frostbite.temperatureStorage.clear();
     }
 
     @SubscribeEvent
@@ -239,14 +239,14 @@ public class ModEvents {
                 }
             });
             if (event.getServer().getTickCount() % 20 == 0) {
-                Frostbite.savedHeaters.forEach(heater -> {
+                Frostbite.heaterStorages.forEach(heater -> {
                     if (heater.getDimensionName().equals(level.dimension().location().toString())) heater.tickBlock(level);
                 });
-                Frostbite.savedHeaters.removeAll(Frostbite.heatersToRemove);
+                Frostbite.heaterStorages.removeAll(Frostbite.heatersToRemove);
                 Frostbite.heatersToRemove.clear();
             }
         });
-        Frostbite.savedTemperatures.updateEntityTemperatures(entities);
+        Frostbite.temperatureStorage.updateEntityTemperatures(entities);
     }
 
     @SubscribeEvent
@@ -258,10 +258,10 @@ public class ModEvents {
         if (stack.is(Items.FLINT_AND_STEEL) &&
                 event.getLevel() instanceof ServerLevel serverLevel &&
                 state.getBlock() instanceof HeaterBlock block &&
-                Frostbite.savedHeaters.stream().noneMatch(heater ->
+                Frostbite.heaterStorages.stream().noneMatch(heater ->
                         heater.getPos().equals(event.getPos()) &&
                                 heater.getDimensionName().equals(serverLevel.dimension().location().toString()))) {
-            Frostbite.savedHeaters.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().location().toString()));
+            Frostbite.heaterStorages.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().location().toString()));
             event.cancelWithResult(InteractionResult.FAIL);
 
         }
@@ -276,8 +276,8 @@ public class ModEvents {
     public static void playerTick(PlayerTickEvent.Pre event) {
         Player player = event.getEntity();
 
-        if (Frostbite.savedLinings.getLiningsForPlayerOrSetEmpty(player.getStringUUID()) == null) {
-            Frostbite.savedLinings.setLiningsForPlayer(player.getStringUUID(),
+        if (Frostbite.liningStorage.getLiningsForPlayerOrSetEmpty(player.getStringUUID()) == null) {
+            Frostbite.liningStorage.setLiningsForPlayer(player.getStringUUID(),
                     ItemStack.EMPTY,
                     ItemStack.EMPTY,
                     ItemStack.EMPTY,

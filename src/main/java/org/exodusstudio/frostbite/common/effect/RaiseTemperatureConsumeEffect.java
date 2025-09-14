@@ -24,8 +24,8 @@ public record RaiseTemperatureConsumeEffect(List<Float> temps) implements Consum
     }
 
     public boolean apply(Level level, ItemStack stack, LivingEntity entity) {
-        Frostbite.savedTemperatures.increaseTemperature(entity, temps.get(0), false);
-        Frostbite.savedTemperatures.increaseTemperature(entity, temps.get(1), true);
+        Frostbite.temperatureStorage.increaseTemperature(entity, temps.get(0), false);
+        Frostbite.temperatureStorage.increaseTemperature(entity, temps.get(1), true);
 
         return true;
     }

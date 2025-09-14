@@ -10,7 +10,7 @@ import net.minecraft.world.level.LevelSettings;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.storage.PrimaryLevelData;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.block.HeaterStorage;
+import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
@@ -27,7 +27,7 @@ public class PrimaryLevelDataMixin {
     @Inject(at = @At("HEAD"), method = "setTagData")
     public void save(RegistryAccess registry, CompoundTag nbt, CompoundTag playerNBT, CallbackInfo ci) {
         assert Minecraft.getInstance().level != null;
-        List<HeaterStorage> heaters = Frostbite.savedHeaters;
+        List<HeaterStorage> heaters = Frostbite.heaterStorages;
 
         nbt.putInt("heater_count", heaters.size());
         for (int i = 0; i < heaters.size(); i++) {
@@ -69,7 +69,7 @@ public class PrimaryLevelDataMixin {
                     tag.get("heater_posY" + i).asInt(0),
                     tag.get("heater_posZ" + i).asInt(0) - 1);
 
-            Frostbite.savedHeaters.add(new HeaterStorage(blockPos, null, tag.get(heaterDimensionKey).asString("")));
+            Frostbite.heaterStorages.add(new HeaterStorage(blockPos, null, tag.get(heaterDimensionKey).asString("")));
         }
 
         OTFPortal.canSpawn = tag.get("canSpawnOTF").asBoolean().getOrThrow();
