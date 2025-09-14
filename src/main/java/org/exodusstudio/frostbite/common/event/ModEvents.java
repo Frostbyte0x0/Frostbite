@@ -29,7 +29,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
@@ -37,7 +36,7 @@ import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
-import org.exodusstudio.frostbite.common.item.last_stand.LastStand;
+import org.exodusstudio.frostbite.common.util.PlayerWrapper;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
@@ -66,7 +65,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void entityDamaged(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player) {
-            ((LastStand) player).frostbite$addDamage(event.getNewDamage());
+            ((PlayerWrapper) player).frostbite$addDamage(event.getNewDamage());
         }
     }
 
@@ -203,7 +202,7 @@ public class ModEvents {
     public static void totem(LivingUseTotemEvent event) {
         if (event.getTotem().is(ItemRegistry.LAST_STAND) && event.getEntity() instanceof Player player &&
                 player.level() instanceof ServerLevel serverLevel) {
-            ((LastStand) player).frostbite$startAccumulatingDamage(serverLevel);
+            ((PlayerWrapper) player).frostbite$startAccumulatingDamage(serverLevel);
         }
     }
 
@@ -270,19 +269,6 @@ public class ModEvents {
     @SubscribeEvent
     public static void containerOpen(PlayerContainerEvent.Open event) {
         Frostbite.LOGGER.debug(event.getContainer().toString());
-    }
-
-    @SubscribeEvent
-    public static void playerTick(PlayerTickEvent.Pre event) {
-        Player player = event.getEntity();
-
-        if (Frostbite.liningStorage.getLiningsForPlayerOrSetEmpty(player.getStringUUID()) == null) {
-            Frostbite.liningStorage.setLiningsForPlayer(player.getStringUUID(),
-                    ItemStack.EMPTY,
-                    ItemStack.EMPTY,
-                    ItemStack.EMPTY,
-                    ItemStack.EMPTY);
-        }
     }
 
     public static void computeWeatherInfo(ClientLevel level, Player player) {

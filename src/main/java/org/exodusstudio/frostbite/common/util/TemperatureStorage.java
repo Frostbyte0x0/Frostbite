@@ -89,7 +89,7 @@ public class TemperatureStorage {
     }
 
     public float calculateLiningDamping(Player player, float outerTempChange) {
-        int i = Frostbite.liningStorage.getLiningLevelForPlayer(player.getStringUUID());
+        int i = ((PlayerWrapper) player).frostbite$getLiningLevel();
 
         if (i <= 12) {
             return Mth.lerp(i / 12f, 0, outerTempChange);

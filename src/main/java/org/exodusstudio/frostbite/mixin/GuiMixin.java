@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.util.PlayerWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +24,7 @@ public class GuiMixin {
     @Inject(at = @At("HEAD"), method = "renderArmor", cancellable = true)
     private static void renderArmor(GuiGraphics guiGraphics, Player player, int y, int heartRows, int height, int x, CallbackInfo ci) {
         int i = player.getArmorValue();
-        if (i > 0 || Frostbite.liningStorage.getLiningLevelForPlayer(player.getStringUUID()) > 0) {
+        if (i > 0 || ((PlayerWrapper) player).frostbite$getLiningLevel() > 0) {
             int j = y - (heartRows - 1) * height - 10;
 
             for (int k = 0; k < 10; ++k) {

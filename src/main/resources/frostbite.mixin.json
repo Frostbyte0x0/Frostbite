@@ -8,6 +8,7 @@
     "ArmorSlotMixin",
     "EntityMixin",
     "InventoryMenuMixin",
+    "InventoryMixin",
     "PlayerMixin",
     "PrimaryLevelDataMixin",
     "ServerPlayerGameModeMixin"

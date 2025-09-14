@@ -43,12 +43,6 @@ public class LiningSlot extends Slot {
         return Frostbite.shouldShowLining && !itemstack.isEmpty() && itemstack.getItem() instanceof LiningItem;
     }
 
-    public ItemStack remove(int amount) {
-        ItemStack stack = this.getItem();
-        Frostbite.liningStorage.setSpecificLiningForPlayer(owner.getStringUUID(), slot, ItemStack.EMPTY);
-        return stack;
-    }
-
     @Nullable
     public ResourceLocation getNoItemIcon() {
         return this.emptyIcon;
@@ -56,15 +50,6 @@ public class LiningSlot extends Slot {
 
     public boolean isActive() {
         return Frostbite.shouldShowLining;
-    }
-
-    public ItemStack getItem() {
-        return Frostbite.liningStorage.getSpecificLiningForPlayer(this.owner.getStringUUID(), slot);
-    }
-
-    public void set(ItemStack stack) {
-        Frostbite.liningStorage.setSpecificLiningForPlayer(this.owner.getStringUUID(), slot, stack);
-        this.setChanged();
     }
 
     public EquipmentSlot getSlot() {

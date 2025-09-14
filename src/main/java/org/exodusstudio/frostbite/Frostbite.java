@@ -13,15 +13,14 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
-import org.exodusstudio.frostbite.common.util.LiningStorage;
 import org.exodusstudio.frostbite.common.registry.*;
-import org.exodusstudio.frostbite.common.util.TemperatureStorage;
+import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
+import org.exodusstudio.frostbite.common.util.TemperatureStorage;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.slf4j.Logger;
 
@@ -35,7 +34,6 @@ public class Frostbite {
     public static TemperatureStorage temperatureStorage = TemperatureStorage.init();
     public static List<HeaterStorage> heaterStorages = new ArrayList<>();
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
-    public static LiningStorage liningStorage = new LiningStorage();
     public static boolean shouldShowLining = false;
     public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;

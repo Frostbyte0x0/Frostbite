@@ -52,7 +52,7 @@ public class InventoryMenuMixin {
             EquipmentSlot equipmentslot = SLOT_IDS[i];
             ResourceLocation resourcelocation = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
             frostbite$inventoryMenu.addSlot(new LiningSlot(playerInventory, owner,
-                    equipmentslot, 139 + i, 8, 8 + i * 18, resourcelocation));
+                    equipmentslot, 43 + i, 8, 8 + i * 18, resourcelocation));
         }
     }
 }

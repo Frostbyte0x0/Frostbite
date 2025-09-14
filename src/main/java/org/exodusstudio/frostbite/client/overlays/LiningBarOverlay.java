@@ -9,6 +9,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.util.PlayerWrapper;
 
 public class LiningBarOverlay {
     private static final ResourceLocation ARMOR_HALF_SPRITE =
@@ -29,7 +30,7 @@ public class LiningBarOverlay {
     }
 
     private static void renderLining(GuiGraphics guiGraphics, Player player, int y, int heartRows, int height, int x) {
-        int i = Frostbite.liningStorage.getLiningLevelForPlayer(player.getStringUUID());
+        int i = ((PlayerWrapper) player).frostbite$getLiningLevel();
         if (i > 0) {
             int j = y - (heartRows - 1) * height - 15;
 

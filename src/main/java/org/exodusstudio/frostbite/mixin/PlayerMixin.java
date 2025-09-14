@@ -4,19 +4,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityEquipment;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.LastStandEntity;
-import org.exodusstudio.frostbite.common.item.last_stand.LastStand;
+import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.InventoryWrapper;
+import org.exodusstudio.frostbite.common.util.PlayerWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static org.exodusstudio.frostbite.common.util.Util.plusOrMinus;
 
 @Mixin(Player.class)
-public class PlayerMixin implements LastStand {
+public class PlayerMixin implements PlayerWrapper {
     @Unique
     Player frostbite$player = (Player) ((Object) this);
 
@@ -95,12 +98,31 @@ public class PlayerMixin implements LastStand {
 
     @Inject(at = @At("HEAD"), method = "addAdditionalSaveData")
     private void addAdditionalSaveData(ValueOutput output, CallbackInfo ci) {
-        Frostbite.liningStorage.save(output.list("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
+        EntityEquipment equipment = ((InventoryWrapper) (frostbite$player.getInventory())).frostbite$getEquipment();
+        if (!equipment.isEmpty()) {
+            output.store("lining", EntityEquipment.CODEC, equipment);
+        }
     }
 
     @Inject(at = @At("HEAD"), method = "readAdditionalSaveData")
     private void readAdditionalSaveData(ValueInput input, CallbackInfo ci) {
-        Frostbite.liningStorage.load(input.listOrEmpty("linings", ItemStackWithSlot.CODEC), frostbite$player.getStringUUID());
+        ((InventoryWrapper) (frostbite$player.getInventory())).frostbite$getEquipment()
+                .setAll(input.read("lining", EntityEquipment.CODEC).orElseGet(EntityEquipment::new));
+    }
+
+    @Unique
+    public int frostbite$getLiningLevel() {
+        int total = 0;
+        InventoryWrapper linings = (InventoryWrapper) (frostbite$player.getInventory());
+        Item head = linings.frostbite$getEquipment().get(EquipmentSlot.HEAD).getItem();
+        Item chest = linings.frostbite$getEquipment().get(EquipmentSlot.CHEST).getItem();
+        Item legs = linings.frostbite$getEquipment().get(EquipmentSlot.LEGS).getItem();
+        Item feet = linings.frostbite$getEquipment().get(EquipmentSlot.FEET).getItem();
+        if (head instanceof LiningItem) total += ((LiningItem) head).getLiningLevel();
+        if (chest instanceof LiningItem) total += ((LiningItem) chest).getLiningLevel();
+        if (legs instanceof LiningItem) total += ((LiningItem) legs).getLiningLevel();
+        if (feet instanceof LiningItem) total += ((LiningItem) feet).getLiningLevel();
+        return total;
     }
 
     @Unique
