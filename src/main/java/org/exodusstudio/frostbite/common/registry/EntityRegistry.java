@@ -139,4 +139,11 @@ public class EntityRegistry {
                     .sized(1f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "boar"))));
+
+    public static final Supplier<EntityType<RoamingBlizzardEntity>> ROAMING_BLIZZARD =
+            ENTITY_TYPES.register("roaming_blizzard", () -> EntityType.Builder
+                    .of(RoamingBlizzardEntity::new, MobCategory.AMBIENT)
+                    .sized(2.5f, 2.5f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "roaming_blizzard"))));
 }

@@ -44,5 +44,6 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsEntity.createAttributes().build());
         event.put(EntityRegistry.HAILCOIL.get(), HailcoilEntity.createAttributes().build());
         event.put(EntityRegistry.BOAR.get(), BoarEntity.createAttributes().build());
+        event.put(EntityRegistry.ROAMING_BLIZZARD.get(), RoamingBlizzardEntity.createAttributes().build());
     }
 }
