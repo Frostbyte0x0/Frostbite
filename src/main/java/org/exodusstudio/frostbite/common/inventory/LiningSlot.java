@@ -51,8 +51,4 @@ public class LiningSlot extends Slot {
     public boolean isActive() {
         return Frostbite.shouldShowLining;
     }
-
-    public EquipmentSlot getSlot() {
-        return slot;
-    }
 }

@@ -72,7 +72,7 @@ public class TemperatureStorage {
 
                 outerTempChange += calculateBlockTemperature(entity);
                 if (entity instanceof Player player) {
-                    outerTempChange -= calculateLiningDamping(player, outerTempChange);
+                    outerTempChange = calculateLiningDamping(player, outerTempChange);
                 }
                 innerTemperature = Math.clamp(updateInnerTemperature(innerTemperature, outerTemperature), -60, 20);
 
@@ -92,9 +92,9 @@ public class TemperatureStorage {
         int i = ((PlayerWrapper) player).frostbite$getLiningLevel();
 
         if (i <= 12) {
-            return Mth.lerp(i / 12f, 0, outerTempChange);
+            return Mth.lerp(i / 12f, outerTempChange, 0);
         } else {
-            return Mth.lerp((i - 12) / 12f, outerTempChange, outerTempChange - 5);
+            return Mth.lerp((i - 12) / 12f, 0, 4);
         }
     }
 

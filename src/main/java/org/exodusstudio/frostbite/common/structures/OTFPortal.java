@@ -84,7 +84,7 @@ public class OTFPortal extends Structure {
 
     private static boolean extraSpawningChecks(Structure.GenerationContext context) {
         float dist = Mth.sqrt((float) context.chunkPos().getWorldPosition().distToCenterSqr(0, 0, 0));
-        return canSpawn && dist > 1500;
+        return canSpawn && dist > 750;
     }
 
     @Override

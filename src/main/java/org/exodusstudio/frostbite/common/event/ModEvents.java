@@ -29,6 +29,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
@@ -213,6 +214,15 @@ public class ModEvents {
     }
 
     @SubscribeEvent
+    public static void commands(PlayerTickEvent.Post event) {
+        if (event.getEntity().level() instanceof ServerLevel serverLevel && isFrostbite(serverLevel) && serverLevel.getGameTime() % 400 == 0) {
+            for (int i = 43; i < 48; i++) {
+                event.getEntity().getInventory().getItem(i).hurtAndBreak(1, serverLevel, (ServerPlayer) (event.getEntity()), (item) -> {});
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void livingDamagedEvent(LivingDamageEvent.Post event) {
         if (event.getEntity().isDeadOrDying() && event.getEntity() instanceof Player player) {
             if (player.level() instanceof ServerLevel serverLevel && FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
@@ -264,11 +274,6 @@ public class ModEvents {
             event.cancelWithResult(InteractionResult.FAIL);
 
         }
-    }
-
-    @SubscribeEvent
-    public static void containerOpen(PlayerContainerEvent.Open event) {
-        Frostbite.LOGGER.debug(event.getContainer().toString());
     }
 
     public static void computeWeatherInfo(ClientLevel level, Player player) {

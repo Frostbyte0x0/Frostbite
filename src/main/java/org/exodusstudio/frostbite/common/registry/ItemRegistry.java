@@ -29,6 +29,7 @@ import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.SniperBulletItem;
+import org.exodusstudio.frostbite.common.util.ArmorMaterials;
 
 import java.util.List;
 

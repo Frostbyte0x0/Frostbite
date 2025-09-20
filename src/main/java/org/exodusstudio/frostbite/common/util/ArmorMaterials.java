@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.registry;
+package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvents;
