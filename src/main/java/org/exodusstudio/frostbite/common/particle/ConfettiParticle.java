@@ -11,7 +11,6 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class ConfettiParticle extends TextureSheetParticle {
-    private final SpriteSet sprites;
     private final float rotationSpeed;
     private final Vector3f rotationDir;
     private final RandomSource random = RandomSource.create();
@@ -23,7 +22,6 @@ public class ConfettiParticle extends TextureSheetParticle {
     ) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.friction = 0.96F;
-        this.sprites = sprite;
         this.hasPhysics = true;
         this.rotationSpeed = random.nextFloat() * 0.5f + 0.5f;
         this.rotationDir = new Vector3f(random.nextFloat(), random.nextFloat(), random.nextFloat());

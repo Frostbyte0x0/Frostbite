@@ -1,11 +1,12 @@
 package org.exodusstudio.frostbite.common.registry;
 
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.particle.ConfettiParticleType;
+import org.exodusstudio.frostbite.common.particle.ColorParticleType;
 import org.exodusstudio.frostbite.common.particle.DrainParticleType;
 import org.exodusstudio.frostbite.common.particle.WindCircleParticleType;
 
@@ -21,8 +22,8 @@ public class ParticleRegistry {
     public static final Supplier<SimpleParticleType> SHOCKWAVE_PARTICLE =
             PARTICLE_TYPES.register("shockwave", () -> new SimpleParticleType(false));
 
-    public static final Supplier<ConfettiParticleType> CONFETTI_PARTICLE =
-            PARTICLE_TYPES.register("confetti", () -> new ConfettiParticleType(false));
+    public static final Supplier<ColorParticleType> CONFETTI_PARTICLE =
+            PARTICLE_TYPES.register("confetti", () -> new ColorParticleType(false));
 
     public static final Supplier<WindCircleParticleType> WIND_CIRCLE_PARTICLE =
             PARTICLE_TYPES.register("wind_circle", () -> new WindCircleParticleType(false));
@@ -35,4 +36,6 @@ public class ParticleRegistry {
 
     public static final Supplier<SimpleParticleType> SNOWFLAKE_PARTICLE =
             PARTICLE_TYPES.register("snowflake", () -> new SimpleParticleType(false));
-}
+
+    public static final Supplier<ColorParticleType> BLIZZARD_PARTICLE =
+            PARTICLE_TYPES.register("blizzard", () -> new ColorParticleType(false));}

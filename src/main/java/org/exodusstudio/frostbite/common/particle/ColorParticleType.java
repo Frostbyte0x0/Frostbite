@@ -8,8 +8,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
-public class ConfettiParticleType extends ParticleType<ColorParticleOption> implements ParticleOptions {
-    public ConfettiParticleType(boolean overrideLimiter) {
+public class ColorParticleType extends ParticleType<ColorParticleOption> implements ParticleOptions {
+    public ColorParticleType(boolean overrideLimiter) {
         super(overrideLimiter);
     }
 
