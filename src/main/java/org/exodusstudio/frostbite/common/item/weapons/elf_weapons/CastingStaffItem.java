@@ -1,11 +1,15 @@
 package org.exodusstudio.frostbite.common.item.weapons.elf_weapons;
 
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.particle.Vec3ParticleOptions;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class CastingStaffItem extends AbstractStaff {
     public CastingStaffItem(Properties properties) {
@@ -19,22 +23,42 @@ public class CastingStaffItem extends AbstractStaff {
                 double xPos = Math.sin(owner.yHeadRot * Math.PI / 180);
                 double zPos = Math.cos(owner.yHeadRot * Math.PI / 180);
                 if (level.isClientSide) {
-                    for (int i = 0; i < 80; i++) {
-                        level.addAlwaysVisibleParticle(
-                                ColorParticleOption.create(ParticleRegistry.BLIZZARD_PARTICLE.get(),
-                                        (random.nextInt(80) + 80) / 255f,
-                                        (random.nextInt(30) + 30) / 255f,
-                                        (random.nextInt(80) + 150) / 255f),
-                                owner.getX() + 0.5f * random.nextDouble() - xPos / 2f,
-                                owner.getY() + 0.5f * random.nextDouble() + 1,
-                                owner.getZ() + 0.5f * random.nextDouble() + zPos / 2f,
-//                                owner.getX() + 0.5f * random.nextDouble() - owner.getLookAngle().x / 1.5f,
-//                                owner.getY() + 0.5f * random.nextDouble(),
-//                                owner.getZ() + 0.5f * random.nextDouble() + owner.getLookAngle().z / 1.5f,
-                                (0.5D - random.nextDouble()) * 0.12 - xPos * 0.1f,
-                                (0.5D - random.nextDouble()) * 0.12,
-                                (0.5D - random.nextDouble()) * 0.12 + zPos * 0.1f);
+                    Vec3 vec3 = owner.position().add(owner.getAttachments().get(EntityAttachment.WARDEN_CHEST, 0, owner.getYRot()));
+                    Vec3 vec31 = owner.getLookAngle();
+                    Vec3 vec32 = vec31.normalize();
+                    Vec3 vec33 = vec3.add(vec32);
+                    for (int j = 0; j < 30; j++) {
+                        float angle = (float) (j * Math.PI / 15);
+                        float playerYAngle = (float) ((90 - owner.getYRot()) * Math.PI / 180);
+                        float playerXAngle = (float) (owner.getXRot() * Math.PI / 180);
+                        Quaternionf quaternion;
+                        if (Math.abs(vec32.x) < 0.5f) {
+                            quaternion = new Quaternionf()
+                                    .rotateLocalX(angle)
+                                    .rotateLocalZ(playerXAngle)
+                                    .rotateLocalY(playerYAngle);
+                        } else {
+                            quaternion = new Quaternionf()
+                                    .rotateLocalZ(angle)
+                                    .rotateLocalX(-playerXAngle)
+                                    .rotateLocalY((float) (playerYAngle + Math.PI / 2));
+                        }
+
+                        Vector3f add = vec32.toVector3f().rotate(quaternion);
+
+                        Vec3 vec34 = vec33.add(
+                                add.x,
+                                add.y,
+                                add.z);
+                        owner.level().addAlwaysVisibleParticle(
+                                Vec3ParticleOptions.create(ParticleRegistry.ICY_BREATH_PARTICLE.get(), add),
+                                vec34.x, vec34.y, vec34.z,
+                                vec32.x * 0.1f,
+                                vec32.y * 0.1f,
+                                vec32.z * 0.1f);
                     }
+
+
                 } else {
                     level.getEntitiesOfClass(LivingEntity.class,
                             owner.getBoundingBox().move(xPos, 0, zPos))

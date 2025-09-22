@@ -4,11 +4,14 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.ColorParticleOption;
+import org.joml.Vector3f;
 
-public class BlizzardParticle extends TextureSheetParticle {
-    public BlizzardParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
+public class IcyBreathParticle extends TextureSheetParticle {
+    Vector3f dir;
+
+    public IcyBreathParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, Vector3f dir) {
         super(level, x, y, z);
+        this.hasPhysics = true;
         this.xd = xd;
         this.yd = yd;
         this.zd = zd;
@@ -17,6 +20,7 @@ public class BlizzardParticle extends TextureSheetParticle {
         this.z = z;
         this.quadSize = (this.random.nextFloat() * 0.3F + 0.5F) * 0.2f;
         this.lifetime = 100;
+        this.dir = dir.normalize(0.01f);
     }
 
     public ParticleRenderType getRenderType() {
@@ -52,26 +56,23 @@ public class BlizzardParticle extends TextureSheetParticle {
     }
 
     public void tick() {
-        this.xo = this.x;
-        this.yo = this.y;
-        this.zo = this.z;
+        this.xd += dir.x;
+        this.yd += dir.y;
+        this.zd += dir.z;
 
-        this.move(xd, yd, zd);
-
-        if (this.age++ >= this.lifetime) {
-            this.remove();
-        }
+        super.tick();
     }
 
-    public record Provider(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
-        public Particle createParticle(ColorParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            BlizzardParticle particle = new BlizzardParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+    public record Provider(SpriteSet sprite) implements ParticleProvider<Vec3ParticleOptions> {
+        public Particle createParticle(Vec3ParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            IcyBreathParticle particle = new IcyBreathParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, type.vec3());
             particle.pickSprite(this.sprite);
 
             particle.setColor(
-                    type.getRed(),
-                    type.getGreen(),
-                    type.getBlue());
+                    particle.random.nextInt(80) + 80,
+                    particle.random.nextInt(30) + 30,
+                    particle.random.nextInt(80) + 150
+            );
             return particle;
         }
     }
