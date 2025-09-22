@@ -20,8 +20,10 @@ import net.minecraft.world.level.material.FogType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
@@ -35,6 +37,8 @@ import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
+import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.AbstractStaff;
+import org.exodusstudio.frostbite.common.network.StaffData;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
@@ -213,7 +217,7 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void commands(PlayerTickEvent.Post event) {
+    public static void damageLining(PlayerTickEvent.Post event) {
         if (event.getEntity().level() instanceof ServerLevel serverLevel && isFrostbite(serverLevel) && serverLevel.getGameTime() % 400 == 0) {
             for (int i = 43; i < 48; i++) {
                 event.getEntity().getInventory().getItem(i).hurtAndBreak(1, serverLevel, (ServerPlayer) (event.getEntity()), (item) -> {});
@@ -233,6 +237,22 @@ public class ModEvents {
 
                 serverLevel.addFreshEntityWithPassengers(frozenRemnants);
                 serverLevel.gameEvent(GameEvent.ENTITY_PLACE, player.position(), GameEvent.Context.of(player));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void staffControl(InputEvent.MouseButton.Pre event) {
+        if (event.getButton() == 1) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+                if (itemInHand.getItem() instanceof AbstractStaff staff && !player.getCooldowns().isOnCooldown(itemInHand)) {
+                    staff.attack(player.level(), player);
+                    player.getCooldowns().addCooldown(itemInHand, 20);
+                    event.setCanceled(true);
+                    ClientPacketDistributor.sendToServer(new StaffData(staff.mode));
+                }
             }
         }
     }

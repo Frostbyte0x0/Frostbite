@@ -38,4 +38,8 @@ public class ParticleRegistry {
             PARTICLE_TYPES.register("snowflake", () -> new SimpleParticleType(false));
 
     public static final Supplier<ColorParticleType> BLIZZARD_PARTICLE =
-            PARTICLE_TYPES.register("blizzard", () -> new ColorParticleType(false));}
+            PARTICLE_TYPES.register("blizzard", () -> new ColorParticleType(false));
+
+    public static final Supplier<ColorParticleType> ROAMING_BLIZZARD_PARTICLE =
+            PARTICLE_TYPES.register("roaming_blizzard", () -> new ColorParticleType(false));
+}

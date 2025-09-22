@@ -2,13 +2,17 @@ package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class Util {
     static RandomSource random = RandomSource.create();
@@ -169,5 +174,22 @@ public class Util {
 
     public static boolean isFrostbite(Level level) {
         return level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]");
+    }
+
+    public static <T extends Monster> void spawnMonsterRandomlyAroundPlayer(Supplier<T> monsterSupplier, ServerLevel serverLevel, Player player, int minDist, int maxDist) {
+        BlockPos blockpos = player.blockPosition().offset(
+                random.nextIntBetweenInclusive(minDist, maxDist) * plusOrMinus(),
+                random.nextIntBetweenInclusive(0, 4) * plusOrMinus(),
+                random.nextIntBetweenInclusive(minDist, maxDist) * plusOrMinus());
+
+        T monster = monsterSupplier.get();
+
+        if (getBlockPositionsInAABB(monster.getBoundingBox()).stream().allMatch(pos -> serverLevel.getBlockState(pos).isAir())) {
+            monster.setPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+            ((Ownable) monster).setOwner(player);
+
+            serverLevel.addFreshEntityWithPassengers(monster);
+            serverLevel.gameEvent(GameEvent.ENTITY_PLACE, blockpos, GameEvent.Context.of(player));
+        }
     }
 }

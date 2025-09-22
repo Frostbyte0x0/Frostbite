@@ -31,7 +31,7 @@ public class WindCircleParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float p_233987_) {
-        //this.alpha = (float) (Math.cos((double) this.age / 20));
+        //this.alpha = (float) (Math.cos((double) this.b / 20));
         Quaternionf quaternionf = new Quaternionf();
         quaternionf.rotationX((float) -Math.PI / 2);
         this.renderRotatedQuad(vertexConsumer, camera, quaternionf, p_233987_);

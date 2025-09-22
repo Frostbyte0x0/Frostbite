@@ -31,7 +31,7 @@ public class ConfettiParticle extends TextureSheetParticle {
 
     private double getOffset() {
         offset += 0.00001f * random.nextDouble();
-        offset %= 0.001f; // Keep the offset within a reasonable range
+        offset %= 0.001f;
         return offset;
     }
 

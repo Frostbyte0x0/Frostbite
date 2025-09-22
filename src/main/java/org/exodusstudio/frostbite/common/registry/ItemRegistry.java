@@ -25,6 +25,8 @@ import org.exodusstudio.frostbite.common.item.weapons.IceHammerItem;
 import org.exodusstudio.frostbite.common.item.weapons.StunningBellItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.DrainingStaffItem;
+import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.HealingStaffItem;
+import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.SummoningStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
@@ -267,7 +269,14 @@ public class ItemRegistry {
     public static final DeferredItem<Item> CASTING_STAFF =
             ITEMS.register("casting_staff", (id) -> new CastingStaffItem(new Item.Properties()
                     .stacksTo(1)
-                    .useCooldown(6)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> SUMMONING_STAFF =
+            ITEMS.register("summoning_staff", (id) -> new SummoningStaffItem(new Item.Properties()
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HEALING_STAFF =
+            ITEMS.register("healing_staff", (id) -> new HealingStaffItem(new Item.Properties()
+                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> GALE_FAN =
             ITEMS.register("gale_fan", (id) -> new GaleFanItem(new Item.Properties()

@@ -3,7 +3,10 @@ package org.exodusstudio.frostbite.common.event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
@@ -11,6 +14,8 @@ import org.exodusstudio.frostbite.common.entity.client.models.*;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.custom.*;
+import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
+import org.exodusstudio.frostbite.common.network.StaffData;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
@@ -45,5 +50,23 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.HAILCOIL.get(), HailcoilEntity.createAttributes().build());
         event.put(EntityRegistry.BOAR.get(), BoarEntity.createAttributes().build());
         event.put(EntityRegistry.ROAMING_BLIZZARD.get(), RoamingBlizzardEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void register(RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar("1");
+        registrar.playBidirectional(
+                StaffData.TYPE,
+                StaffData.STREAM_CODEC,
+                ServerPayloadHandler::handleDataOnMain
+        );
+    }
+
+    @SubscribeEvent
+    public static void register(RegisterClientPayloadHandlersEvent event) {
+        event.register(
+                StaffData.TYPE,
+                ServerPayloadHandler::handleDataOnMain
+        );
     }
 }

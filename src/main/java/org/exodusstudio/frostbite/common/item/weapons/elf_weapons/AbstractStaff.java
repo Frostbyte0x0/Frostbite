@@ -1,14 +1,19 @@
 package org.exodusstudio.frostbite.common.item.weapons.elf_weapons;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 
+import java.util.Arrays;
+
 public abstract class AbstractStaff extends Item {
     protected final String[] modes;
-    protected final String mode;
+    public String mode;
+    public static RandomSource random = RandomSource.create();
 
     public AbstractStaff(Properties properties, String[] modes) {
         super(properties);
@@ -17,7 +22,12 @@ public abstract class AbstractStaff extends Item {
     }
 
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
+        if (level.isClientSide) {
+            mode = modes[(Arrays.asList(modes).indexOf(mode) + 1) % modes.length];
+        }
+        return InteractionResult.SUCCESS;
+    }
 
-        return null;
+    public void attack(Level level, LivingEntity owner) {
     }
 }

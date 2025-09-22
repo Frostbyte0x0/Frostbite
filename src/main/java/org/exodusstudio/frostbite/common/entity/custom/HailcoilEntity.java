@@ -4,29 +4,38 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.custom.goals.OwnerHurtByTargetGoal;
+import org.exodusstudio.frostbite.common.entity.custom.goals.OwnerHurtTargetGoal;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.Ownable;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 import static org.exodusstudio.frostbite.common.util.Util.spawnParticleRandomly;
 
-public class HailcoilEntity extends Monster {
-    public HailcoilEntity(EntityType<? extends Monster> entityType, Level level) {
-        super(entityType, level);
+public class HailcoilEntity extends Monster implements Ownable {
+    private boolean hasLimitedLife;
+    private int limitedLifeTicks;
+    @Nullable
+    private EntityReference<LivingEntity> owner;
+
+    public HailcoilEntity(EntityType<? extends Monster> ignored, Level level) {
+        super(EntityRegistry.HAILCOIL.get(), level);
         this.moveControl = new HailcoilEntityMoveControl(this);
     }
 
@@ -35,10 +44,10 @@ public class HailcoilEntity extends Monster {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(4, new HailcoilChargeAttackGoal());
         this.goalSelector.addGoal(8, new HailcoilRandomMoveGoal());
-        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
-        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -55,11 +64,60 @@ public class HailcoilEntity extends Monster {
     }
 
     @Override
+    public boolean canFreeze() {
+        return false;
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        input.getInt("life_ticks").ifPresentOrElse(this::setLimitedLife, () -> this.hasLimitedLife = false);
+        this.owner = EntityReference.read(input, "owner");
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        if (this.hasLimitedLife) {
+            output.putInt("life_ticks", this.limitedLifeTicks);
+        }
+
+        EntityReference.store(this.owner, output, "owner");
+    }
+
+    public void setLimitedLife(int limitedLifeTicks) {
+        this.hasLimitedLife = true;
+        this.limitedLifeTicks = limitedLifeTicks;
+    }
+
+    @Nullable
+    public LivingEntity getOwner() {
+        return EntityReference.get(this.owner, this.level(), LivingEntity.class);
+    }
+
+    public void setOwner(LivingEntity owner) {
+        this.owner = new EntityReference<>(owner);
+    }
+
+    @Override
+    public void restoreFrom(Entity entity) {
+        super.restoreFrom(entity);
+        if (entity instanceof HailcoilEntity hailcoil) {
+            this.owner = hailcoil.owner;
+        }
+    }
+
+    @Override
     public void tick() {
         this.noPhysics = true;
         super.tick();
         this.noPhysics = false;
         this.setNoGravity(true);
+
+        if (this.hasLimitedLife && --this.limitedLifeTicks <= 0) {
+            this.limitedLifeTicks = 20;
+            this.hurt(this.damageSources().starve(), 1.0F);
+        }
 
         if (!this.isDeadOrDying()) {
             for (int i = 0; i < 2; ++i) {

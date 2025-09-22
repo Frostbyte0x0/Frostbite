@@ -41,6 +41,7 @@ public class ClientEvent {
         event.registerSpriteSet(ParticleRegistry.SWIRLING_LEAF_PARTICLE.get(), SwirlingLeafParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SNOWFLAKE_PARTICLE.get(), SnowflakeParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.BLIZZARD_PARTICLE.get(), BlizzardParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.ROAMING_BLIZZARD_PARTICLE.get(), RoamingBlizzardParticle.Provider::new);
     }
 
     @SubscribeEvent

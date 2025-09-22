@@ -1,13 +1,13 @@
 package org.exodusstudio.frostbite.common.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.util.Mth;
+import org.exodusstudio.frostbite.common.entity.custom.RoamingBlizzardEntity;
 
-public class BlizzardParticle extends TextureSheetParticle {
-    public BlizzardParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
+public class RoamingBlizzardParticle extends TextureSheetParticle {
+    public RoamingBlizzardParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
         super(level, x, y, z);
         this.xd = xd;
         this.yd = yd;
@@ -16,7 +16,7 @@ public class BlizzardParticle extends TextureSheetParticle {
         this.y = y;
         this.z = z;
         this.quadSize = (this.random.nextFloat() * 0.3F + 0.5F) * 0.2f;
-        this.lifetime = 100;
+        this.lifetime = 20;
     }
 
     public ParticleRenderType getRenderType() {
@@ -26,6 +26,11 @@ public class BlizzardParticle extends TextureSheetParticle {
     public void move(double x, double y, double z) {
         this.setBoundingBox(this.getBoundingBox().move(x, y, z));
         this.setLocationFromBoundingbox();
+    }
+
+    public float getQuadSize(float scaleFactor) {
+        float f = Math.min(Mth.lerp((float) age / lifetime, 0, 15), 1);
+        return this.quadSize * f;
     }
 
     public int getLightColor(float partialTick) {
@@ -43,14 +48,6 @@ public class BlizzardParticle extends TextureSheetParticle {
         return j | k << 16;
     }
 
-    @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-        super.render(buffer, renderInfo, partialTicks);
-        if (age > 60) {
-            this.alpha = 1f - (float) (age - 60) / 40;
-        }
-    }
-
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;
@@ -61,11 +58,19 @@ public class BlizzardParticle extends TextureSheetParticle {
         if (this.age++ >= this.lifetime) {
             this.remove();
         }
+
+        if (level.getEntitiesOfClass(RoamingBlizzardEntity.class, this.getBoundingBox().inflate(0.25f)).isEmpty()) {
+            this.quadSize *= 0.77f;
+            if (quadSize < 0.1f) {
+                this.remove();
+            }
+        }
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
+
         public Particle createParticle(ColorParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            BlizzardParticle particle = new BlizzardParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+            RoamingBlizzardParticle particle = new RoamingBlizzardParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(this.sprite);
 
             particle.setColor(
