@@ -56,16 +56,20 @@ public class IcyBreathParticle extends TextureSheetParticle {
     }
 
     public void tick() {
-        this.xd += dir.x;
-        this.yd += dir.y;
-        this.zd += dir.z;
+        this.xd += dir.x*dir.x * 3;
+        if (!this.onGround) {
+            this.yd += dir.y*dir.y * 3;
+            this.yd -= 0.004;
+        }
+        this.zd += dir.z*dir.z * 3;
 
         super.tick();
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<Vec3ParticleOptions> {
         public Particle createParticle(Vec3ParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            IcyBreathParticle particle = new IcyBreathParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, type.vec3());
+            IcyBreathParticle particle = new IcyBreathParticle(level, x, y, z, xSpeed, ySpeed, zSpeed,
+                    type.vec3().scale(0.01).toVector3f());
             particle.pickSprite(this.sprite);
 
             particle.setColor(
