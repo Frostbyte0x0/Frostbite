@@ -146,4 +146,11 @@ public class EntityRegistry {
                     .sized(2.5f, 2.5f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "roaming_blizzard"))));
+
+    public static final Supplier<EntityType<HealingCircleEntity>> HEALING_CIRCLE =
+            ENTITY_TYPES.register("healing_circle", () -> EntityType.Builder
+                    .of(HealingCircleEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "healing_circle"))));
 }

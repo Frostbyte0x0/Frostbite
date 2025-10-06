@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import org.exodusstudio.frostbite.common.particle.options.DrainParticleOption;
 import org.joml.Quaternionf;
 
 public class DrainParticle extends TextureSheetParticle {
@@ -45,9 +46,9 @@ public class DrainParticle extends TextureSheetParticle {
         this.setSpriteFromAge(this.sprites);
     }
 
-    public record Provider(SpriteSet sprite) implements ParticleProvider<DrainParticleOptions> {
+    public record Provider(SpriteSet sprite) implements ParticleProvider<DrainParticleOption> {
         public Particle createParticle(
-                DrainParticleOptions drainParticleOptions,
+                DrainParticleOption drainParticleOptions,
                 ClientLevel clientLevel,
                 double p_233920_,
                 double p_233921_,

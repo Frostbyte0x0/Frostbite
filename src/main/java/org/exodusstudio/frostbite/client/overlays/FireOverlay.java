@@ -12,6 +12,8 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
 
+import static org.exodusstudio.frostbite.common.util.TemperatureStorage.MAX_TEMP;
+import static org.exodusstudio.frostbite.common.util.TemperatureStorage.MIN_TEMP;
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 public class FireOverlay {
@@ -45,16 +47,13 @@ public class FireOverlay {
         assert player != null;
 
 
-        float maxTemp = 20f;
-        float minTemp = -60f;
-
         float innerTemp = (float) Math.round(Frostbite.temperatureStorage.getTemperature(player, true) * 10f) / 10f;
 
-        if (!isFrostbite(player.level()) && innerTemp == maxTemp) {
+        if (!isFrostbite(player.level()) && innerTemp == MAX_TEMP) {
             return;
         }
 
-        int fireToShow = (int) Math.floor(Math.clamp(FIRES.length * (innerTemp - minTemp) / (maxTemp - minTemp), 0, FIRES.length - 1));
+        int fireToShow = (int) Math.floor(Math.clamp(FIRES.length * (innerTemp - MIN_TEMP) / (MAX_TEMP - MIN_TEMP), 0, FIRES.length - 1));
 
         int textureWidth = 24;
         int textureHeight = 24;

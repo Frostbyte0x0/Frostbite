@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.item.weapons.elf_weapons;
+package org.exodusstudio.frostbite.common.item.weapons.elf;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;

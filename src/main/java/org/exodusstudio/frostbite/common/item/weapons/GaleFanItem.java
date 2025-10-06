@@ -56,7 +56,7 @@ public class GaleFanItem extends Item {
                 }
 
                 entity.move(MoverType.SELF, pos);
-                serverLevel.addFreshEntityWithPassengers(entity);
+                serverLevel.addFreshEntity(entity);
                 serverLevel.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(player));
             }
         } else {
@@ -68,23 +68,8 @@ public class GaleFanItem extends Item {
             for (int i = 1; i < range; i++) {
                 Vec3 vec33 = vec3.add(vec32.scale(i));
                 for (int j = 0; j < 30; j++) {
-                    float angle = (float) (j * Math.PI / 15);
-                    float playerYAngle = (float) ((90 - player.getYRot()) * Math.PI / 180);
-                    float playerXAngle = (float) (player.getXRot() * Math.PI / 180);
-                    Quaternionf quaternion;
-                    if (Math.abs(vec32.x) < 0.5f) {
-                        quaternion = new Quaternionf()
-                                .rotateLocalX(angle)
-                                .rotateLocalZ(playerXAngle)
-                                .rotateLocalY(playerYAngle);
-                    } else {
-                        quaternion = new Quaternionf()
-                                .rotateLocalZ(angle)
-                                .rotateLocalX(-playerXAngle)
-                                .rotateLocalY((float) (playerYAngle + Math.PI / 2));
-                    }
-
-                    Vector3f add = vec32.toVector3f().rotate(quaternion).mul(2);
+                    Vector3f add = vec32.toVector3f()
+                            .rotate(Util.getRotationQuaternionAroundLookVector(j, 30, player, vec32)).mul(2);
 
                     Vec3 vec34 = vec33.add(
                             add.x + random.nextFloat() * 2,

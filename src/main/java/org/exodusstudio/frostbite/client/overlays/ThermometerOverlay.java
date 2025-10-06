@@ -12,6 +12,8 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
 
+import static org.exodusstudio.frostbite.common.util.TemperatureStorage.MAX_TEMP;
+import static org.exodusstudio.frostbite.common.util.TemperatureStorage.MIN_TEMP;
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 public class ThermometerOverlay {
@@ -44,16 +46,13 @@ public class ThermometerOverlay {
         Player player = Minecraft.getInstance().player;
         assert player != null;
 
-        float maxTemp = 20f;
-        float minTemp = -60f;
-
         float outer_temp = (float) Math.round(Frostbite.temperatureStorage.getTemperature(player, false) * 10f) / 10f;
 
-        if (!isFrostbite(player.level()) && outer_temp == maxTemp) {
+        if (!isFrostbite(player.level()) && outer_temp == MAX_TEMP) {
             return;
         }
 
-        int thermometerToShow = (int) Math.floor(Math.clamp(THERMOMETERS.length * (outer_temp - minTemp) / (maxTemp - minTemp), 0, THERMOMETERS.length - 1));
+        int thermometerToShow = (int) Math.floor(Math.clamp(THERMOMETERS.length * (outer_temp - MIN_TEMP) / (MAX_TEMP - MIN_TEMP), 0, THERMOMETERS.length - 1));
 
         int textureWidth = 24;
         int textureHeight = 24;

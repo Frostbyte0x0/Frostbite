@@ -28,7 +28,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
-import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -37,12 +37,13 @@ import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
-import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.AbstractStaff;
+import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
 import org.exodusstudio.frostbite.common.network.StaffData;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
+import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
 import org.exodusstudio.frostbite.common.weather.FrostbiteWeatherEffectRenderer;
@@ -60,7 +61,7 @@ public class ModEvents {
     public static FrostbiteWeatherEffectRenderer weatherEffectRenderer = new FrostbiteWeatherEffectRenderer();
 
     @SubscribeEvent
-    public static void reset(ServerStoppingEvent event) {
+    public static void reset(ServerStoppedEvent event) {
         OTFPortal.canSpawn = true;
         FTOPortal.canSpawn = true;
         Frostbite.temperatureStorage.clear();
@@ -275,6 +276,9 @@ public class ModEvents {
             }
         });
         Frostbite.temperatureStorage.updateEntityTemperatures(entities);
+        Frostbite.breathEntityLikes.forEach(BreathEntityLike::tick);
+        Frostbite.breathEntityLikes.removeAll(Frostbite.breathEntityLikesToRemove);
+        Frostbite.breathEntityLikesToRemove.clear();
     }
 
     @SubscribeEvent

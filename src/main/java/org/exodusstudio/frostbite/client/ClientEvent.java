@@ -36,12 +36,14 @@ public class ClientEvent {
         event.registerSpriteSet(ParticleRegistry.DRAIN_PARTICLE.get(), DrainParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SHOCKWAVE_PARTICLE.get(), ShockwaveParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.CONFETTI_PARTICLE.get(), ConfettiParticle.Provider::new);
-        event.registerSpriteSet(ParticleRegistry.WIND_CIRCLE_PARTICLE.get(), WindCircleParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.EXPANDING_CIRCLE_PARTICLE.get(), ExpandingCircleParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.BUTTERFLY_PARTICLE.get(), ButterflyParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SWIRLING_LEAF_PARTICLE.get(), SwirlingLeafParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SNOWFLAKE_PARTICLE.get(), SnowflakeParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.ICY_BREATH_PARTICLE.get(), IcyBreathParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.ROAMING_BLIZZARD_PARTICLE.get(), RoamingBlizzardParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.DEBUG_PARTICLE.get(), DebugParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.HEAL_PARTICLE.get(), HealParticle.Provider::new);
     }
 
     @SubscribeEvent

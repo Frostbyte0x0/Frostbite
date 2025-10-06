@@ -104,13 +104,13 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
             for (int i = 0; i < 20; ++i) {
                 level().addParticle(
                         ColorParticleOption.create(ParticleRegistry.ROAMING_BLIZZARD_PARTICLE.get(),
-                                random.nextInt(80) + 80,
-                                random.nextInt(30) + 30,
-                                random.nextInt(80) + 150
+                                (random.nextInt(80) + 80) / 255f,
+                                (random.nextInt(30) + 30) / 255f,
+                                (random.nextInt(80) + 150) / 255f
                         ),
-                        this.getRandomX(0.7F) - windDir.x,
-                        this.getRandomY() - windDir.y,
-                        this.getRandomZ(0.7F) - windDir.z,
+                        getRandomX(0.7F) - windDir.x,
+                        getRandomY() - windDir.y,
+                        getRandomZ(0.7F) - windDir.z,
                         windDir.x,
                         windDir.y,
                         windDir.z);

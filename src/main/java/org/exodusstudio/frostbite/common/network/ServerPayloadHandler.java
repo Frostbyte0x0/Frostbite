@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.network;
 
 import net.minecraft.world.InteractionHand;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.exodusstudio.frostbite.common.item.weapons.elf_weapons.AbstractStaff;
+import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
 
 public class ServerPayloadHandler {
     public static void handleDataOnMain(final StaffData data, final IPayloadContext context) {

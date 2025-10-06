@@ -5,7 +5,7 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import org.exodusstudio.frostbite.common.particle.DrainParticleOptions;
+import org.exodusstudio.frostbite.common.particle.options.DrainParticleOption;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class DrainCircleEntity extends AreaEffectCloud {
 
         if (this.tickCount % 20 == 0) {
             if (this.level().isClientSide) {
-                this.level().addParticle(new DrainParticleOptions(0), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+                this.level().addParticle(new DrainParticleOption(0), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
             }
 
             if (this.level() instanceof ServerLevel serverLevel) {

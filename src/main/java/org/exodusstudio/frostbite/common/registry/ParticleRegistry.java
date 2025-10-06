@@ -9,7 +9,10 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.particle.*;
+import org.exodusstudio.frostbite.common.particle.options.BooleanParticleOption;
+import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
+import org.exodusstudio.frostbite.common.particle.types.ColorParticleType;
+import org.exodusstudio.frostbite.common.particle.types.DrainParticleType;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -27,8 +30,8 @@ public class ParticleRegistry {
     public static final Supplier<ColorParticleType> CONFETTI_PARTICLE =
             PARTICLE_TYPES.register("confetti", () -> new ColorParticleType(false));
 
-    public static final Supplier<WindCircleParticleType> WIND_CIRCLE_PARTICLE =
-            PARTICLE_TYPES.register("wind_circle", () -> new WindCircleParticleType(false));
+    public static final Supplier<ColorParticleType> EXPANDING_CIRCLE_PARTICLE =
+            PARTICLE_TYPES.register("wind_circle", () -> new ColorParticleType(false));
 
     public static final Supplier<SimpleParticleType> BUTTERFLY_PARTICLE =
             PARTICLE_TYPES.register("butterfly", () -> new SimpleParticleType(false));
@@ -39,12 +42,16 @@ public class ParticleRegistry {
     public static final Supplier<SimpleParticleType> SNOWFLAKE_PARTICLE =
             PARTICLE_TYPES.register("snowflake", () -> new SimpleParticleType(false));
 
-    public static final Supplier<ParticleType<Vec3ParticleOptions>> ICY_BREATH_PARTICLE =
+    public static final Supplier<ParticleType<Vec3ParticleOption>> ICY_BREATH_PARTICLE =
             PARTICLE_TYPES.register("icy_breath",
-                    makeSupplier(Vec3ParticleOptions::codec, Vec3ParticleOptions::streamCodec));
+                    makeSupplier(Vec3ParticleOption::codec, Vec3ParticleOption::streamCodec));
 
     public static final Supplier<ColorParticleType> ROAMING_BLIZZARD_PARTICLE =
             PARTICLE_TYPES.register("roaming_blizzard", () -> new ColorParticleType(false));
+
+    public static final Supplier<ParticleType<BooleanParticleOption>> HEAL_PARTICLE =
+            PARTICLE_TYPES.register("heal",
+                    makeSupplier(BooleanParticleOption::codec, BooleanParticleOption::streamCodec));
 
 
     private static <T extends ParticleOptions> Supplier<ParticleType<T>> makeSupplier(
@@ -63,4 +70,7 @@ public class ParticleRegistry {
             }
         };
     }
+
+    public static final Supplier<SimpleParticleType> DEBUG_PARTICLE =
+            PARTICLE_TYPES.register("debug", () -> new SimpleParticleType(false));
 }

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Monster;
@@ -16,6 +17,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.joml.Quaternionf;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -191,5 +194,76 @@ public class Util {
             serverLevel.addFreshEntityWithPassengers(monster);
             serverLevel.gameEvent(GameEvent.ENTITY_PLACE, blockpos, GameEvent.Context.of(player));
         }
+    }
+
+    public static void spawnParticlesFromAABB(Level level, AABB aabb, int count) {
+        int[] xyz = new int[]{1, 0, 0};
+
+        for (int j = 0; j < 3; j++) {
+            for (float i = 0; i <= count; i++) {
+                double x = Mth.lerp(xyz[0] * i / count, aabb.minX, aabb.maxX);
+                double y = Mth.lerp(xyz[1] * i / count, aabb.minY, aabb.maxY);
+                double z = Mth.lerp(xyz[2] * i / count, aabb.minZ, aabb.maxZ);
+
+                level.addAlwaysVisibleParticle(
+                        ParticleRegistry.DEBUG_PARTICLE.get(),
+                        x,
+                        y,
+                        z,
+                        0,
+                        0,
+                        0);
+            }
+            rotateArrayByOneRight(xyz);
+        }
+
+        for (int j = 0; j < 3; j++) {
+            for (float i = 0; i <= count; i++) {
+                double x = Mth.lerp(xyz[0] * i / count, aabb.maxX, aabb.minX);
+                double y = Mth.lerp(xyz[1] * i / count, aabb.maxY, aabb.minY);
+                double z = Mth.lerp(xyz[2] * i / count, aabb.maxZ, aabb.minZ);
+
+                level.addAlwaysVisibleParticle(
+                        ParticleRegistry.DEBUG_PARTICLE.get(),
+                        x,
+                        y,
+                        z,
+                        0,
+                        0,
+                        0);
+            }
+            rotateArrayByOneRight(xyz);
+        }
+    }
+
+    public static void rotateArrayByOneRight(int[] arr) {
+        if (arr == null || arr.length <= 1) return;
+
+        int lastElement = arr[arr.length - 1];
+        for (int i = arr.length - 1; i > 0; i--) {
+            arr[i] = arr[i - 1];
+        }
+
+        arr[0] = lastElement;
+    }
+
+    public static Quaternionf getRotationQuaternionAroundLookVector(int j, int count, Entity owner, Vec3 vec32) {
+        float angle = (float) (j * 2 * Math.PI / count);
+        float playerYAngle = (float) ((90 - owner.getYRot()) * Math.PI / 180);
+        float playerXAngle = (float) (owner.getXRot() * Math.PI / 180);
+        Quaternionf quaternion;
+        if (Math.abs(vec32.x) < 0.5f) {
+            quaternion = new Quaternionf()
+                    .rotateLocalX(angle)
+                    .rotateLocalZ(playerXAngle)
+                    .rotateLocalY(playerYAngle);
+        } else {
+            quaternion = new Quaternionf()
+                    .rotateLocalZ(angle)
+                    .rotateLocalX(-playerXAngle)
+                    .rotateLocalY((float) (playerYAngle + Math.PI / 2));
+        }
+
+        return quaternion;
     }
 }

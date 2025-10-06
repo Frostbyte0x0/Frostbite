@@ -16,6 +16,8 @@ import java.util.Map;
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 public class TemperatureStorage {
+    public static final float MAX_TEMP = 20f;
+    public static final float MIN_TEMP = -60f;
     private final HashMap<String, List<Float>> entityTemperatures = new HashMap<>();
     private static final Map<String, Float> tempsPerBlock = new HashMap<>();
 
@@ -39,7 +41,7 @@ public class TemperatureStorage {
             float outerTempChange = 0;
             String entityUUID = entity.getStringUUID();
             if (!entityTemperatures.containsKey(entityUUID)) {
-                entityTemperatures.put(entityUUID, List.of(20f, 20f));
+                entityTemperatures.put(entityUUID, List.of(MAX_TEMP, MAX_TEMP));
             }
 
             List<Float> temperatures = entityTemperatures.get(entityUUID);
@@ -74,7 +76,7 @@ public class TemperatureStorage {
                 if (entity instanceof Player player) {
                     outerTempChange = calculateLiningDamping(player, outerTempChange);
                 }
-                innerTemperature = Math.clamp(updateInnerTemperature(innerTemperature, outerTemperature), -60, 20);
+                innerTemperature = Math.clamp(updateInnerTemperature(innerTemperature, outerTemperature), MIN_TEMP, MAX_TEMP);
 
                 if (entity.isInWater()) {
                     outerTempChange -= 1;
@@ -82,7 +84,7 @@ public class TemperatureStorage {
                     outerTempChange += 3;
                 }
 
-                outerTemperature = Math.clamp(outerTempChange + outerTemperature, -60, 20);
+                outerTemperature = Math.clamp(outerTempChange + outerTemperature, MIN_TEMP, MAX_TEMP);
                 entityTemperatures.put(entityUUID, List.of(innerTemperature, outerTemperature));
             }
         }
@@ -141,25 +143,25 @@ public class TemperatureStorage {
         if (entityTemperatures.containsKey(entityUUID) && (list = entityTemperatures.get(entityUUID)) != null) {
             return list.get(inner ? 0 : 1);
         }
-        return 20f;
+        return MAX_TEMP;
     }
 
     public float getTemperature(String uuid, boolean inner) {
         if (entityTemperatures.containsKey(uuid)) {
             return entityTemperatures.get(uuid).get(inner ? 0 : 1);
         }
-        return 20f;
+        return MAX_TEMP;
     }
 
     public void decreaseTemperature(LivingEntity entity, float temperature, boolean inner) {
         String entityUUID = entity.getStringUUID();
         if (!entityTemperatures.containsKey(entityUUID)) {
-            entityTemperatures.put(entityUUID, List.of(20f, 20f));
+            entityTemperatures.put(entityUUID, List.of(MAX_TEMP, MAX_TEMP));
         }
 
         List<Float> temperatures = new ArrayList<>(entityTemperatures.get(entityUUID));
         byte index = (byte) (inner ? 0 : 1);
-        temperatures.set(index, Math.max(-temperature + temperatures.get(index), 60));
+        temperatures.set(index, Math.clamp(-temperature + temperatures.get(index), MIN_TEMP, MAX_TEMP));
 
         entityTemperatures.put(entityUUID, temperatures);
     }
@@ -167,12 +169,12 @@ public class TemperatureStorage {
     public void increaseTemperature(LivingEntity entity, float temperature, boolean inner) {
         String entityUUID = entity.getStringUUID();
         if (!entityTemperatures.containsKey(entityUUID)) {
-            entityTemperatures.put(entityUUID, List.of(20f, 20f));
+            entityTemperatures.put(entityUUID, List.of(MAX_TEMP, MAX_TEMP));
         }
 
         List<Float> temperatures = new ArrayList<>(entityTemperatures.get(entityUUID));
         byte index = (byte) (inner ? 0 : 1);
-        temperatures.set(index, Math.min(temperature + temperatures.get(index), 20));
+        temperatures.set(index, Math.min(temperature + temperatures.get(index), MAX_TEMP));
 
         entityTemperatures.put(entityUUID, temperatures);
     }

@@ -91,7 +91,8 @@ public class ConfettiParticle extends TextureSheetParticle {
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
 
-            confettiParticle.setColor(colorParticleOption.getRed(),
+            confettiParticle.setColor(
+                    colorParticleOption.getRed(),
                     colorParticleOption.getGreen(),
                     colorParticleOption.getBlue());
 

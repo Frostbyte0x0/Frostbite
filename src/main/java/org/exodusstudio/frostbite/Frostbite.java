@@ -18,6 +18,7 @@ import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
 import org.exodusstudio.frostbite.common.registry.*;
+import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.exodusstudio.frostbite.common.util.TemperatureStorage;
@@ -34,6 +35,8 @@ public class Frostbite {
     public static TemperatureStorage temperatureStorage = TemperatureStorage.init();
     public static List<HeaterStorage> heaterStorages = new ArrayList<>();
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
+    public static List<BreathEntityLike> breathEntityLikes = new ArrayList<>();
+    public static List<BreathEntityLike> breathEntityLikesToRemove = new ArrayList<>();
     public static boolean shouldShowLining = false;
     public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
@@ -77,6 +80,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.FERAL_WOLF.get(), FeralWolfRenderer::new);
             EntityRenderers.register(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsRenderer::new);
             EntityRenderers.register(EntityRegistry.WIND_CIRCLE.get(), GenericEntityRenderer::new);
+            EntityRenderers.register(EntityRegistry.HEALING_CIRCLE.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.BOAR.get(), BoarRenderer::new);
             EntityRenderers.register(EntityRegistry.ROAMING_BLIZZARD.get(), GenericEntityRenderer::new);
 

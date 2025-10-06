@@ -1,9 +1,8 @@
 package org.exodusstudio.frostbite.common.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.joml.Vector3f;
 
 public class IcyBreathParticle extends TextureSheetParticle {
@@ -19,8 +18,7 @@ public class IcyBreathParticle extends TextureSheetParticle {
         this.y = y;
         this.z = z;
         this.quadSize = (this.random.nextFloat() * 0.3F + 0.5F) * 0.2f;
-        this.lifetime = 100;
-        this.dir = dir.normalize(0.01f);
+        this.dir = dir;
     }
 
     public ParticleRenderType getRenderType() {
@@ -34,7 +32,7 @@ public class IcyBreathParticle extends TextureSheetParticle {
 
     public int getLightColor(float partialTick) {
         int i = super.getLightColor(partialTick);
-        float f = (float)this.age / (float)this.lifetime;
+        float f = (float) age / (float) lifetime;
         f *= f;
         f *= f;
         int j = i & 255;
@@ -47,35 +45,34 @@ public class IcyBreathParticle extends TextureSheetParticle {
         return j | k << 16;
     }
 
-    @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-        super.render(buffer, renderInfo, partialTicks);
-        if (age > 60) {
-            this.alpha = 1f - (float) (age - 60) / 40;
-        }
-    }
-
     public void tick() {
-        this.xd += dir.x*dir.x * 3;
-        if (!this.onGround) {
-            this.yd += dir.y*dir.y * 3;
-            this.yd -= 0.004;
+        if (age > 40) {
+            setAlpha(1 - (float) (age - 40) / 10);
         }
-        this.zd += dir.z*dir.z * 3;
+
+        xd += dir.x;
+        if (!onGround) {
+            yd += dir.y;
+            yd -= 0.001;
+        } else {
+            yd = 0;
+        }
+        zd += dir.z;
 
         super.tick();
     }
 
-    public record Provider(SpriteSet sprite) implements ParticleProvider<Vec3ParticleOptions> {
-        public Particle createParticle(Vec3ParticleOptions type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+    public record Provider(SpriteSet sprite) implements ParticleProvider<Vec3ParticleOption> {
+        public Particle createParticle(Vec3ParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             IcyBreathParticle particle = new IcyBreathParticle(level, x, y, z, xSpeed, ySpeed, zSpeed,
-                    type.vec3().scale(0.01).toVector3f());
-            particle.pickSprite(this.sprite);
+                    type.vec3f());
+            particle.pickSprite(sprite);
 
+            particle.setLifetime(50);
             particle.setColor(
-                    particle.random.nextInt(80) + 80,
-                    particle.random.nextInt(30) + 30,
-                    particle.random.nextInt(80) + 150
+                    (particle.random.nextInt(40) + 20) / 255f,
+                    (particle.random.nextInt(40) + 20) / 255f,
+                    (particle.random.nextInt(80) + 110) / 255f
             );
             return particle;
         }

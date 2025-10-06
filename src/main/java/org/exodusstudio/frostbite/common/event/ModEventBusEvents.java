@@ -33,7 +33,6 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.LEVITATING_JELLYFISH, LevitatingJellyfishModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FROZEN_REMNANTS, FrozenRemnantsModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.WIND_CIRCLE, WindCircleModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_EYE, LodestarRenderer::createEyeLayer);

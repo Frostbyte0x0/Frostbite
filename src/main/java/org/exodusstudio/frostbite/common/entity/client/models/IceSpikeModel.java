@@ -6,10 +6,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.EvokerFangsRenderState;
 import net.minecraft.util.Mth;
+import org.exodusstudio.frostbite.common.entity.client.states.IceSpikeRenderState;
 
-public class IceSpikeModel extends EntityModel<EvokerFangsRenderState> {
+public class IceSpikeModel extends EntityModel<IceSpikeRenderState> {
     private final ModelPart bb_main;
 
     public IceSpikeModel(ModelPart root) {
@@ -30,10 +30,12 @@ public class IceSpikeModel extends EntityModel<EvokerFangsRenderState> {
         return LayerDefinition.create(meshdefinition, 16, 32);
     }
 
-    public void setupAnim(EvokerFangsRenderState p_362081_) {
-        super.setupAnim(p_362081_);
-        float f = p_362081_.biteProgress;
-        this.bb_main.y = ((10.5f + Math.max(-Math.max(Mth.abs(1 / (f - 0.6f)), -4), -4f)) * 5);
+    public void setupAnim(IceSpikeRenderState state) {
+        super.setupAnim(state);
+        float f = state.biteProgress;
+        if (state.isRising) {
+            this.bb_main.y = ((10.5f + Math.max(-Math.max(Mth.abs(1 / (f - 0.6f)), -4), -4f)) * 5);
+        }
     }
 
     @Override
