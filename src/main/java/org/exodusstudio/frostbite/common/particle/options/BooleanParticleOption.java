@@ -1,22 +1,25 @@
 package org.exodusstudio.frostbite.common.particle.options;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.phys.Vec3;
 
 public record BooleanParticleOption(ParticleType<BooleanParticleOption> type, Boolean bool) implements ParticleOptions {
     public static MapCodec<BooleanParticleOption> codec(ParticleType<BooleanParticleOption> particleType) {
-        return ExtraCodecs.VECTOR3F.xmap((p_333828_) -> new BooleanParticleOption(particleType, p_333828_),
-                BooleanParticleOption::bool).fieldOf("bool");
+        return RecordCodecBuilder.mapCodec((instance) ->
+                instance.group(Codec.BOOL.fieldOf("delay")
+                                .forGetter((p_235954_) -> p_235954_.bool))
+                        .apply(instance, (b) -> new BooleanParticleOption(particleType, b)));
     }
 
+
     public static StreamCodec<? super ByteBuf, BooleanParticleOption> streamCodec(ParticleType<BooleanParticleOption> type) {
-        return ByteBufCodecs.BOOL.map((p_333912_) -> new BooleanParticleOption(type, p_333912_),
+        return ByteBufCodecs.BOOL.map((b) -> new BooleanParticleOption(type, b),
                 BooleanParticleOption::bool);
     }
 

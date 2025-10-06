@@ -2,17 +2,15 @@ package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.core.particles.SimpleParticleType;
 import org.exodusstudio.frostbite.common.particle.options.BooleanParticleOption;
 
 public class HealParticle extends TextureSheetParticle {
     public HealParticle(
-            ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
+            ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet ignored
     ) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.friction = 0.96F;
         this.hasPhysics = false;
-        this.setSpriteFromAge(sprite);
         this.setLifetime(15);
     }
 
@@ -34,7 +32,7 @@ public class HealParticle extends TextureSheetParticle {
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<BooleanParticleOption> {
         public Particle createParticle(
-                BooleanParticleOption simpleParticleOption,
+                BooleanParticleOption option,
                 ClientLevel clientLevel,
                 double p_233920_,
                 double p_233921_,
@@ -46,6 +44,12 @@ public class HealParticle extends TextureSheetParticle {
             HealParticle healParticleParticle = new HealParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
+
+            if (option.bool()) {
+                healParticleParticle.setSprite(sprite.get(1, 1));
+            } else {
+                healParticleParticle.setSprite(sprite.get(0, 1));
+            }
 
             healParticleParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
             return healParticleParticle;

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.exodusstudio.frostbite.common.particle.options.BooleanParticleOption;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 
@@ -23,6 +24,12 @@ public class HealingCircleEntity extends AreaEffectCloud {
 
     public HealingCircleEntity(EntityType<? extends AreaEffectCloud> ignored, Level level) {
         super(EntityRegistry.HEALING_CIRCLE.get(), level);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_IS_BLESSING, false);
     }
 
     @Override
@@ -50,9 +57,9 @@ public class HealingCircleEntity extends AreaEffectCloud {
             if (!list1.isEmpty()) {
                 for (LivingEntity livingentity : list1) {
                     if (isBlessing()) {
-                        MobEffectInstance regeneration = new MobEffectInstance(MobEffects.REGENERATION, 30, 1);
-                        MobEffectInstance strength = new MobEffectInstance(MobEffects.STRENGTH, 10, 1);
-                        MobEffectInstance resistance = new MobEffectInstance(MobEffects.RESISTANCE, 30, 1);
+                        MobEffectInstance regeneration = new MobEffectInstance(MobEffects.REGENERATION, 600, 0);
+                        MobEffectInstance strength = new MobEffectInstance(MobEffects.STRENGTH, 200, 1);
+                        MobEffectInstance resistance = new MobEffectInstance(MobEffects.RESISTANCE, 600, 0);
                         livingentity.addEffect(regeneration);
                         livingentity.addEffect(strength);
                         livingentity.addEffect(resistance);
@@ -63,7 +70,7 @@ public class HealingCircleEntity extends AreaEffectCloud {
             }
 
             for (int i = 0; i < 50; i++) {
-                this.level().addParticle(ParticleRegistry.HEAL_PARTICLE.get(),
+                this.level().addParticle(BooleanParticleOption.create(ParticleRegistry.HEAL_PARTICLE.get(), isBlessing()),
                         getX() + (0.5 - random.nextDouble()) * 2.5,
                         getY() + 0.2f + (0.5 - random.nextDouble()) * 1.5,
                         getZ() + (0.5 - random.nextDouble()) * 2.5,
@@ -72,11 +79,6 @@ public class HealingCircleEntity extends AreaEffectCloud {
         }
 
         if (this.tickCount > lifetime) this.discard();
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_IS_BLESSING, false);
     }
 
     public void setBlessing(boolean isBlessing) {

@@ -1,5 +1,6 @@
 {
   "textures": [
-    "frostbite:heal"
+    "frostbite:heal",
+    "frostbite:bless"
   ]
 }
