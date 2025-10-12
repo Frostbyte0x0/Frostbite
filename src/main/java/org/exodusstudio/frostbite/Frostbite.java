@@ -2,9 +2,7 @@ package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.core.BlockPos;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -83,6 +81,10 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.HEALING_CIRCLE.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.BOAR.get(), BoarRenderer::new);
             EntityRenderers.register(EntityRegistry.ROAMING_BLIZZARD.get(), GenericEntityRenderer::new);
+            EntityRenderers.register(EntityRegistry.ICED_SKELETON.get(), IcedSkeletonRenderer::new);
+            EntityRenderers.register(EntityRegistry.ICED_ZOMBIE.get(), IcedZombieRenderer::new);
+            EntityRenderers.register(EntityRegistry.ICED_CREEPER.get(), IcedCreeperRenderer::new);
+            EntityRenderers.register(EntityRegistry.FROZEN_ARROW.get(), FrozenArrowRenderer::new);
 
             BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
             ModItemProperties.addCustomItemProperties();

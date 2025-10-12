@@ -114,21 +114,21 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<FeralWolfEntity>> FERAL_WOLF =
             ENTITY_TYPES.register("feral_wolf", () -> EntityType.Builder
-                    .of(FeralWolfEntity::new, MobCategory.AMBIENT)
+                    .of(FeralWolfEntity::new, MobCategory.MONSTER)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "feral_wolf"))));
 
     public static final Supplier<EntityType<FrozenRemnantsEntity>> FROZEN_REMNANTS =
             ENTITY_TYPES.register("frozen_remnants", () -> EntityType.Builder
-                    .of(FrozenRemnantsEntity::new, MobCategory.AMBIENT)
+                    .of(FrozenRemnantsEntity::new, MobCategory.CREATURE)
                     .sized(0.75f, 2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_remnants"))));
 
     public static final Supplier<EntityType<WindCircleEntity>> WIND_CIRCLE =
             ENTITY_TYPES.register("wind_circle", () -> EntityType.Builder
-                    .of(WindCircleEntity::new, MobCategory.AMBIENT)
+                    .of(WindCircleEntity::new, MobCategory.MISC)
                     .sized(2.5f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "wind_circle"))));
@@ -142,15 +142,41 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<RoamingBlizzardEntity>> ROAMING_BLIZZARD =
             ENTITY_TYPES.register("roaming_blizzard", () -> EntityType.Builder
-                    .of(RoamingBlizzardEntity::new, MobCategory.AMBIENT)
+                    .of(RoamingBlizzardEntity::new, MobCategory.MISC)
                     .sized(2.5f, 2.5f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "roaming_blizzard"))));
 
     public static final Supplier<EntityType<HealingCircleEntity>> HEALING_CIRCLE =
             ENTITY_TYPES.register("healing_circle", () -> EntityType.Builder
-                    .of(HealingCircleEntity::new, MobCategory.AMBIENT)
+                    .of(HealingCircleEntity::new, MobCategory.MISC)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "healing_circle"))));
+
+    public static final Supplier<EntityType<IcedSkeletonEntity>> ICED_SKELETON =
+            ENTITY_TYPES.register("iced_skeleton", () -> EntityType.Builder
+                    .of(IcedSkeletonEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.99F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "iced_skeleton"))));
+    public static final Supplier<EntityType<IcedZombieEntity>> ICED_ZOMBIE =
+            ENTITY_TYPES.register("iced_zombie", () -> EntityType.Builder
+                    .of(IcedZombieEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "iced_zombie"))));
+    public static final Supplier<EntityType<IcedCreeperEntity>> ICED_CREEPER =
+            ENTITY_TYPES.register("iced_creeper", () -> EntityType.Builder
+                    .of(IcedCreeperEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.7F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "iced_creeper"))));
+
+    public static final Supplier<EntityType<FrozenArrow>> FROZEN_ARROW =
+            ENTITY_TYPES.register("frozen_arrow", () -> EntityType.Builder
+                    .<FrozenArrow>of(FrozenArrow::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_arrow"))));
 }

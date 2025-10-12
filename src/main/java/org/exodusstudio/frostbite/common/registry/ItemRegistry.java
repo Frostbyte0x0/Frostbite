@@ -308,4 +308,8 @@ public class ItemRegistry {
     public static final DeferredItem<Item> FROZEN_PLATING =
             ITEMS.register("frozen_plating", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> FROZEN_ARROW =
+            ITEMS.register("frozen_arrow", (id) -> new FrozenArrowItem(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

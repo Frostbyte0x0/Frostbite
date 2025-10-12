@@ -1,10 +1,19 @@
 package org.exodusstudio.frostbite.common.event;
 
+import net.minecraft.client.model.CreeperModel;
+import net.minecraft.client.model.SkeletonModel;
+import net.minecraft.client.model.ZombieModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.exodusstudio.frostbite.Frostbite;
@@ -37,6 +46,10 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_EYE, LodestarRenderer::createEyeLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_SHELL, LodestarRenderer::createShellLayer);
+        event.registerLayerDefinition(ModModelLayers.ICED_CREEPER, () -> CreeperModel.createBodyLayer(CubeDeformation.NONE));
+        event.registerLayerDefinition(ModModelLayers.ICED_ZOMBIE,
+                () -> LayerDefinition.create(ZombieModel.createMesh(CubeDeformation.NONE, 0), 64, 64));
+        event.registerLayerDefinition(ModModelLayers.ICED_SKELETON, SkeletonModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -44,6 +57,9 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.RAIN_FROG.get(), RainFrogEntity.createAttributes().build());
         event.put(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepEntity.createAttributes().build());
         event.put(EntityRegistry.LEVITATING_JELLYFISH.get(), LevitatingJellyfishEntity.createAttributes().build());
+        event.put(EntityRegistry.ICED_SKELETON.get(), IcedSkeletonEntity.createAttributes().build());
+        event.put(EntityRegistry.ICED_ZOMBIE.get(), IcedZombieEntity.createAttributes().build());
+        event.put(EntityRegistry.ICED_CREEPER.get(), IcedCreeperEntity.createAttributes().build());
         event.put(EntityRegistry.FERAL_WOLF.get(), FeralWolfEntity.createAttributes().build());
         event.put(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsEntity.createAttributes().build());
         event.put(EntityRegistry.HAILCOIL.get(), HailcoilEntity.createAttributes().build());
@@ -67,5 +83,27 @@ public class ModEventBusEvents {
                 StaffData.TYPE,
                 ServerPayloadHandler::handleDataOnMain
         );
+    }
+
+    @SubscribeEvent
+    public static void register(RegisterSpawnPlacementsEvent event) {
+        event.register(
+                EntityRegistry.ICED_SKELETON.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.ICED_CREEPER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.ICED_ZOMBIE.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

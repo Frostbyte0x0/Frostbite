@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,15 +154,19 @@ public class TemperatureStorage {
         return MAX_TEMP;
     }
 
-    public void decreaseTemperature(LivingEntity entity, float temperature, boolean inner) {
+    public void decreaseTemperature(LivingEntity entity, float decrease, boolean inner) {
         String entityUUID = entity.getStringUUID();
         if (!entityTemperatures.containsKey(entityUUID)) {
             entityTemperatures.put(entityUUID, List.of(MAX_TEMP, MAX_TEMP));
         }
 
+        if (entity.hasEffect(EffectRegistry.COLD_WEAKNESS)) {
+            decrease *= (1 + 0.2f * entity.getEffect(EffectRegistry.COLD_WEAKNESS).getAmplifier());
+        }
+
         List<Float> temperatures = new ArrayList<>(entityTemperatures.get(entityUUID));
         byte index = (byte) (inner ? 0 : 1);
-        temperatures.set(index, Math.clamp(-temperature + temperatures.get(index), MIN_TEMP, MAX_TEMP));
+        temperatures.set(index, Math.clamp(temperatures.get(index) - decrease, MIN_TEMP, MAX_TEMP));
 
         entityTemperatures.put(entityUUID, temperatures);
     }

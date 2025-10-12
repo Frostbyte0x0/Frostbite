@@ -43,4 +43,13 @@ public class ModModelLayers {
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar"), "cage");
     public static final ModelLayerLocation LODESTAR_SHELL = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar"), "shell");
+
+    public static final ModelLayerLocation ICED_SKELETON = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "iced_skeleton"), "main");
+
+    public static final ModelLayerLocation ICED_ZOMBIE = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "iced_zombie"), "main");
+
+    public static final ModelLayerLocation ICED_CREEPER = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "iced_creeper"), "main");
 }

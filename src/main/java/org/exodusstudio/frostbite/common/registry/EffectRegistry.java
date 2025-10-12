@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.effect.GenericEffect;
 import org.exodusstudio.frostbite.common.effect.RageEffect;
 
 public class EffectRegistry {
@@ -26,4 +27,7 @@ public class EffectRegistry {
                             0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .addAttributeModifier(Attributes.ARMOR, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_armor"),
                             0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
+    public static final Holder<MobEffect> COLD_WEAKNESS = MOB_EFFECTS.register("cold_weakness",
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x5bc0de));
 }

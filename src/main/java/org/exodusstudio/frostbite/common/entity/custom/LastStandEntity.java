@@ -33,7 +33,7 @@ public class LastStandEntity extends Entity {
     private static final EntityDataAccessor<Boolean> DATA_IS_RELEASING = SynchedEntityData.defineId(LastStandEntity.class, EntityDataSerializers.BOOLEAN);
     private List<HailcoilEntity> hailcoils = new ArrayList<>();
 
-    public LastStandEntity(EntityType<?> entityType, Level level) {
+    public LastStandEntity(EntityType<?> ignored, Level level) {
         super(EntityRegistry.LAST_STAND.get(), level);
         this.noPhysics = true;
     }

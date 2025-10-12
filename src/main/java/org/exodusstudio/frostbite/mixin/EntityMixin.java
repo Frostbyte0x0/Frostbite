@@ -23,7 +23,7 @@ public class EntityMixin {
     private void isFullyFrozen(CallbackInfoReturnable<Boolean> cir) {
         if (frostbite$entity instanceof LivingEntity livingEntity) {
             cir.setReturnValue(frostbite$entity.getTicksFrozen() >= frostbite$entity.getTicksRequiredToFreeze()
-                    || Frostbite.temperatureStorage.getTemperature(livingEntity, true) < 10);
+                    || (Frostbite.temperatureStorage.getTemperature(livingEntity, true) < 10 && livingEntity.canFreeze()));
         }
     }
 
