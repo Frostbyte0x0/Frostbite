@@ -179,4 +179,11 @@ public class EntityRegistry {
                     .sized(0.5F, 0.5F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_arrow"))));
+
+    public static final Supplier<EntityType<SpecterEntity>> SPECTER =
+            ENTITY_TYPES.register("specter", () -> EntityType.Builder
+                    .of(SpecterEntity::new, MobCategory.AMBIENT)
+                    .sized(0.8f, 2.3f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "specter"))));
 }

@@ -52,4 +52,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation ICED_CREEPER = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "iced_creeper"), "main");
+
+    public static final ModelLayerLocation SPECTER = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "specter"), "main");
 }

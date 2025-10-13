@@ -50,6 +50,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.ICED_ZOMBIE,
                 () -> LayerDefinition.create(ZombieModel.createMesh(CubeDeformation.NONE, 0), 64, 64));
         event.registerLayerDefinition(ModModelLayers.ICED_SKELETON, SkeletonModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SPECTER, SpecterModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -65,6 +66,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.HAILCOIL.get(), HailcoilEntity.createAttributes().build());
         event.put(EntityRegistry.BOAR.get(), BoarEntity.createAttributes().build());
         event.put(EntityRegistry.ROAMING_BLIZZARD.get(), RoamingBlizzardEntity.createAttributes().build());
+        event.put(EntityRegistry.SPECTER.get(), SpecterEntity.createAttributes().build());
     }
 
     @SubscribeEvent

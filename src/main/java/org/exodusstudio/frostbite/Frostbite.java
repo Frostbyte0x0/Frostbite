@@ -87,6 +87,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.FROZEN_ARROW.get(), FrozenArrowRenderer::new);
 
             BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
+            EntityRenderers.register(EntityRegistry.SPECTER.get(), SpecterRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

@@ -18,10 +18,10 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
 public class FeralWolfEntity extends Monster {
-    private static final EntityDataAccessor<Boolean> DATA_IS_FROZEN = SynchedEntityData.defineId(FeralWolfEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_IS_FROZEN =
+            SynchedEntityData.defineId(FeralWolfEntity.class, EntityDataSerializers.BOOLEAN);
 
-
-    public FeralWolfEntity(EntityType<? extends Monster> entityType, Level level) {
+    public FeralWolfEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.FERAL_WOLF.get(), level);
     }
 
