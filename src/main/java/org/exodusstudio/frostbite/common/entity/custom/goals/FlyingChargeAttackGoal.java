@@ -49,7 +49,7 @@ public class FlyingChargeAttackGoal<T extends Monster> extends Goal {
                 monster.doHurtTarget(getServerLevel(monster.level()), livingentity);
             } else {
                 double d0 = monster.distanceToSqr(livingentity);
-                if (d0 < (double)9.0F) {
+                if (d0 < 10) {
                     Vec3 vec3 = livingentity.getEyePosition();
                     monster.getMoveControl().setWantedPosition(vec3.x, vec3.y, vec3.z, speedModifier);
                 }

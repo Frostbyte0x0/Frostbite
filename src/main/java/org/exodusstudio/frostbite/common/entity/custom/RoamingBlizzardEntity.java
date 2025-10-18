@@ -121,8 +121,7 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
     }
 
     @Override
-    protected void doPush(Entity entity) {
-    }
+    protected void doPush(Entity entity) {}
 
     @Override
     public boolean isPushable() {
@@ -130,8 +129,7 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
     }
 
     @Override
-    protected void pushEntities() {
-    }
+    protected void pushEntities() {}
 
     @Override
     public void tick() {

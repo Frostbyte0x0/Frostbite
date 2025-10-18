@@ -9,15 +9,26 @@ public class SpecterDashAttackGoal extends FlyingChargeAttackGoal<SpecterEntity>
         super(monster, speedModifier);
     }
 
+    @Override
+    public void start() {
+        super.start();
+        monster.setAttacking(true);
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        monster.setAttacking(false);
+    }
+
     public void tick() {
         LivingEntity livingentity = monster.getTarget();
         if (livingentity != null) {
             if (monster.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                 monster.doHurtTarget(getServerLevel(monster.level()), livingentity);
-                monster.setTransparent(false);
             } else {
                 double d0 = monster.distanceToSqr(livingentity);
-                if (d0 < (double)9.0F) {
+                if (d0 < 10) {
                     Vec3 vec3 = livingentity.getEyePosition();
                     monster.getMoveControl().setWantedPosition(vec3.x, vec3.y, vec3.z, speedModifier);
                 }
