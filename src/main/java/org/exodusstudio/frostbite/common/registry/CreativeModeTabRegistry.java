@@ -175,6 +175,8 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.LEGGINGS_WEAVING_PATTERN);
                         output.accept(ItemRegistry.BOOTS_WEAVING_PATTERN);
 
+                        output.accept(ItemRegistry.SILVER_STAKE);
+                        output.accept(ItemRegistry.SILVER);
                         output.accept(ItemRegistry.BOTTLE_OF_WARMTH);
                         output.accept(ItemRegistry.BOTTLE_OF_HEAT);
                         output.accept(ItemRegistry.JELLY);

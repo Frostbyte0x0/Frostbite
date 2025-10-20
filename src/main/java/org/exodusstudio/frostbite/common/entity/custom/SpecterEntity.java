@@ -51,7 +51,7 @@ public class SpecterEntity extends Monster {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
-                .add(Attributes.FOLLOW_RANGE, 10)
+                .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.MOVEMENT_SPEED, 0.15);
     }
 

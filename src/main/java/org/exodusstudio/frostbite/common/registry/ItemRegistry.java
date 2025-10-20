@@ -312,4 +312,10 @@ public class ItemRegistry {
     public static final DeferredItem<Item> FROZEN_ARROW =
             ITEMS.register("frozen_arrow", (id) -> new FrozenArrowItem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> SILVER_STAKE =
+            ITEMS.register("silver_stake", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> SILVER =
+            ITEMS.register("silver", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

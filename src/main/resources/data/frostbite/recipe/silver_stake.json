@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": "minecraft:glass"
+    "S": "frostbite:silver"
   },
   "pattern": [
-    " G ",
-    "G G",
-    " G "
+    "S  ",
+    "S  ",
+    "   "
   ],
   "result": {
     "count": 1,
-    "id": "frostbite:vial"
+    "id": "frostbite:silver_stake"
   }
 }

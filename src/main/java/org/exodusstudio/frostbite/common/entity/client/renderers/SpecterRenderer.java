@@ -32,7 +32,7 @@ public class SpecterRenderer extends MobRenderer<SpecterEntity, SpecterRenderSta
     @Override
     protected @Nullable RenderType getRenderType(SpecterRenderState renderState, boolean isVisible, boolean renderTranslucent, boolean appearsGlowing) {
         return renderState.isTransparent ?
-                RenderType.entityTranslucentEmissive(SPECTER_TRANSPARENT_TEXTURE) :
+                RenderType.entityTranslucent(SPECTER_TRANSPARENT_TEXTURE) :
                 RenderType.entityCutoutNoCull(SPECTER_SOLID_TEXTURE);
     }
 

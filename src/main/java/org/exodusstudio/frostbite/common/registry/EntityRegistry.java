@@ -186,4 +186,11 @@ public class EntityRegistry {
                     .sized(0.8f, 2.3f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "specter"))));
+
+    public static final Supplier<EntityType<RevenantEntity>> REVENANT =
+            ENTITY_TYPES.register("revenant", () -> EntityType.Builder
+                    .of(RevenantEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revenant"))));
 }

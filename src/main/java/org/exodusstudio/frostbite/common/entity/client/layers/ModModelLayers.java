@@ -55,4 +55,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation SPECTER = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "specter"), "main");
+
+    public static final ModelLayerLocation REVENANT = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revenant"), "main");
 }
