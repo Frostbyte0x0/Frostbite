@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
@@ -31,15 +32,17 @@ public class RevenantEntity extends Monster {
             SynchedEntityData.defineId(RevenantEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_IS_RISING =
             SynchedEntityData.defineId(RevenantEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_RISING_TICKS =
+            SynchedEntityData.defineId(RevenantEntity.class, EntityDataSerializers.INT);
     public final AnimationState risingAnimationState = new AnimationState();
 
     public RevenantEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.REVENANT.get(), level);
+        risingAnimationState.startIfStopped(tickCount);
     }
 
     @Override
     protected void registerGoals() {
-        //this.goalSelector.addGoal(0, new RevenantRecoverGoal(this));
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -54,6 +57,7 @@ public class RevenantEntity extends Monster {
         builder.define(DATA_IS_RECOVERING, false);
         builder.define(DATA_RECOVERING_TICKS, 0);
         builder.define(DATA_IS_RISING, false);
+        builder.define(DATA_RISING_TICKS, 0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -79,16 +83,15 @@ public class RevenantEntity extends Monster {
     }
 
     @Override
-    public void die(DamageSource damageSource) {
-        if (isAttackedWithSilverStake(damageSource)) {
-            super.die(damageSource);
-        }
-    }
-
-    @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-        if (this.isRecovering() && !isAttackedWithSilverStake(source)) {
-            return false;
+        if (amount < 3.4E38) {
+            if (this.isRecovering() && !isAttackedWithSilverStake(source)) {
+                return false;
+            }
+            if (amount > getHealth() && !isAttackedWithSilverStake(source)) {
+                setHealth(1);
+                return false;
+            }
         }
         return super.hurtServer(level, source, amount);
     }
@@ -111,13 +114,35 @@ public class RevenantEntity extends Monster {
             setRecovering(false);
         }
 
+        if (isRising()) {
+            if (getRisingTicks() >= risingAnimationState.getTimeInMillis(tickCount) * 20 * 1000) {
+                setRising(false);
+            } else {
+                setRisingTicks(getRisingTicks() + 1);
+            }
+        } else {
+            setRisingTicks(0);
+        }
+
         if (isRecovering()) {
             setRecoveringTicks(getRecoveringTicks() + 1);
             if (getRecoveringTicks() > 80 && getRecoveringTicks() % 10 == 0 && getHealth() < 20) {
                 setHealth(getHealth() + 1);
             }
         } else {
+            if (getRecoveringTicks() > 0 && level() instanceof ServerLevel serverLevel) {
+                RevenantEntity revenant = new RevenantEntity(null, level());
+                revenant.setPos(getX(), getY(), getZ());
+                revenant.setRising(true);
+
+                serverLevel.addFreshEntityWithPassengers(revenant);
+                serverLevel.gameEvent(GameEvent.ENTITY_PLACE, getOnPos(), GameEvent.Context.of(revenant));
+            }
             setRecoveringTicks(0);
+        }
+
+        if (dead) {
+            this.discard();
         }
     }
 
@@ -144,8 +169,18 @@ public class RevenantEntity extends Monster {
     public void setRising(boolean rising) {
         if (rising) {
             this.risingAnimationState.start(this.tickCount);
+        } else {
+            this.risingAnimationState.stop();
         }
         this.entityData.set(DATA_IS_RISING, rising);
+    }
+
+    public int getRisingTicks() {
+        return this.entityData.get(DATA_RISING_TICKS);
+    }
+
+    public void setRisingTicks(int ticks) {
+        this.entityData.set(DATA_RISING_TICKS, ticks);
     }
 
     @Override

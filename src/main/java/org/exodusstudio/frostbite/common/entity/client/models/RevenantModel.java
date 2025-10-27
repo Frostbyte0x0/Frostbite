@@ -1,13 +1,11 @@
 package org.exodusstudio.frostbite.common.entity.client.models;
 
 import net.minecraft.client.animation.KeyframeAnimation;
-import net.minecraft.client.animation.definitions.SnifferAnimation;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.entity.state.SnifferRenderState;
 import org.exodusstudio.frostbite.common.entity.client.animations.RevenantAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.RevenantRenderState;
 

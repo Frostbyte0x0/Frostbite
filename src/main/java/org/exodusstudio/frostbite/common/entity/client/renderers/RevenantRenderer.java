@@ -6,15 +6,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.RevenantModel;
 import org.exodusstudio.frostbite.common.entity.client.states.RevenantRenderState;
-import org.exodusstudio.frostbite.common.entity.client.states.SpecterRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.RevenantEntity;
 import org.jetbrains.annotations.Nullable;
 
