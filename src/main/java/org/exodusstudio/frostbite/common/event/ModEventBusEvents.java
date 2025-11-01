@@ -44,6 +44,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
+        event.registerLayerDefinition(ModModelLayers.BANDIT, BanditModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.REVENANT, RevenantModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_EYE, LodestarRenderer::createEyeLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_SHELL, LodestarRenderer::createShellLayer);
@@ -69,6 +70,8 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.ROAMING_BLIZZARD.get(), RoamingBlizzardEntity.createAttributes().build());
         event.put(EntityRegistry.SPECTER.get(), SpecterEntity.createAttributes().build());
         event.put(EntityRegistry.REVENANT.get(), RevenantEntity.createAttributes().build());
+        event.put(EntityRegistry.BANDIT.get(), BanditEntity.createAttributes().build());
+
     }
 
     @SubscribeEvent
@@ -105,6 +108,12 @@ public class ModEventBusEvents {
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(
                 EntityRegistry.ICED_ZOMBIE.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.REVENANT.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules,

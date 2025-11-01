@@ -58,4 +58,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation REVENANT = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revenant"), "main");
+
+    public static final ModelLayerLocation BANDIT = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "bandit"), "main");
 }
