@@ -200,4 +200,11 @@ public class EntityRegistry {
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "bandit"))));
+
+    public static final Supplier<EntityType<TorchEntity>> TORCH =
+            ENTITY_TYPES.register("torch", () -> EntityType.Builder
+                    .of(TorchEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "torch"))));
 }

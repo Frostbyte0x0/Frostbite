@@ -25,7 +25,8 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
 
 public class BanditEntity extends Animal {
-    private static final EntityDataAccessor<Boolean> DATA_STEALING = SynchedEntityData.defineId(BanditEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_STEALING =
+            SynchedEntityData.defineId(BanditEntity.class, EntityDataSerializers.BOOLEAN);
     public final AnimationState stealingAnimationState = new AnimationState();
 
     public BanditEntity(EntityType<? extends Animal> ignored, Level level) {
@@ -56,6 +57,7 @@ public class BanditEntity extends Animal {
         builder.define(DATA_STEALING, false);
     }
 
+    @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (DATA_STEALING.equals(accessor)) {
             this.stealingAnimationState.stop();

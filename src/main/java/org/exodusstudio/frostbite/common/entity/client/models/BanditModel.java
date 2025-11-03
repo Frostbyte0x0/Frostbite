@@ -49,14 +49,6 @@ public class BanditModel extends QuadrupedModel<BanditRenderState> {
     @Override
     public void setupAnim(BanditRenderState state) {
         super.setupAnim(state);
-//        this.head.xRot = state.xRot * ((float)Math.PI / 180F);
-//        this.head.yRot = state.yRot * ((float)Math.PI / 180F);
-//        float f = state.walkAnimationPos;
-//        float f1 = state.walkAnimationSpeed;
-//        this.rightHindLeg.xRot = Mth.cos(f * 0.6662F) * 1.4F * f1;
-//        this.leftHindLeg.xRot = Mth.cos(f * 0.6662F + (float)Math.PI) * 1.4F * f1;
-//        this.rightFrontLeg.xRot = Mth.cos(f * 0.6662F + (float)Math.PI) * 1.4F * f1;
-//        this.leftFrontLeg.xRot = Mth.cos(f * 0.6662F) * 1.4F * f1;
         stealingAnimation.apply(state.stealingAnimationState, state.ageInTicks);
     }
 

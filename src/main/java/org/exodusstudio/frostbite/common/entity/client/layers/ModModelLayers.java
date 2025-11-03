@@ -61,4 +61,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation BANDIT = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "bandit"), "main");
+
+    public static final ModelLayerLocation TORCH = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "torch"), "main");
 }

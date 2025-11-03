@@ -44,6 +44,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
+        event.registerLayerDefinition(ModModelLayers.TORCH, TorchModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BANDIT, BanditModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.REVENANT, RevenantModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_EYE, LodestarRenderer::createEyeLayer);
@@ -71,7 +72,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.SPECTER.get(), SpecterEntity.createAttributes().build());
         event.put(EntityRegistry.REVENANT.get(), RevenantEntity.createAttributes().build());
         event.put(EntityRegistry.BANDIT.get(), BanditEntity.createAttributes().build());
-
+        event.put(EntityRegistry.TORCH.get(), TorchEntity.createAttributes().build());
     }
 
     @SubscribeEvent
