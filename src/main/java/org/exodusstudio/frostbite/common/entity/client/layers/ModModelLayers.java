@@ -67,4 +67,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation FIRE_SLICE = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_slice"), "main");
+
+    public static final ModelLayerLocation TANUKI = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "tanuki"), "main");
 }

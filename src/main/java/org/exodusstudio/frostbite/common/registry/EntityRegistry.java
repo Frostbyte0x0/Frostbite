@@ -214,4 +214,11 @@ public class EntityRegistry {
                     .sized(1.5f, 0.25f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_slice"))));
+
+    public static final Supplier<EntityType<TanukiEntity>> TANUKI =
+            ENTITY_TYPES.register("tanuki", () -> EntityType.Builder
+                    .of(TanukiEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "tanuki"))));
 }
