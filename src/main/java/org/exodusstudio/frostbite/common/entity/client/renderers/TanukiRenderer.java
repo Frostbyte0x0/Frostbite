@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
@@ -26,6 +25,8 @@ public class TanukiRenderer extends MobRenderer<TanukiEntity, TanukiRenderState,
     @Override
     public void extractRenderState(TanukiEntity tanuki, TanukiRenderState state, float partialTick) {
         super.extractRenderState(tanuki, state, partialTick);
+        state.isEating = tanuki.isEating();
+        state.sitAmount = tanuki.getSitAmount(partialTick);
     }
 
     @Override
