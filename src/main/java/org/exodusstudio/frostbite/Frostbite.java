@@ -91,6 +91,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.REVENANT.get(), RevenantRenderer::new);
             EntityRenderers.register(EntityRegistry.BANDIT.get(), BanditRenderer::new);
             EntityRenderers.register(EntityRegistry.TORCH.get(), TorchRenderer::new);
+            EntityRenderers.register(EntityRegistry.FIRE_SLICE.get(), FireSliceRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

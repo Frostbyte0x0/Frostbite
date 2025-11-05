@@ -207,4 +207,11 @@ public class EntityRegistry {
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "torch"))));
+
+    public static final Supplier<EntityType<FireSliceEntity>> FIRE_SLICE =
+            ENTITY_TYPES.register("fire_slice", () -> EntityType.Builder
+                    .<FireSliceEntity>of(FireSliceEntity::new, MobCategory.AMBIENT)
+                    .sized(1.5f, 0.25f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_slice"))));
 }

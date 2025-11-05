@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
@@ -93,6 +94,9 @@ public class PlayerMixin implements PlayerWrapper {
     private void dropEquipment(ServerLevel serverLevel, CallbackInfo ci) {
         if (FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
             ci.cancel();
+        } else if (!serverLevel.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+            EntityEquipment equipment = ((InventoryWrapper) (frostbite$player.getInventory())).frostbite$getEquipment();
+            equipment.dropAll(frostbite$player);
         }
     }
 

@@ -318,4 +318,7 @@ public class ItemRegistry {
     public static final DeferredItem<Item> SILVER =
             ITEMS.register("silver", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> EMBERS =
+            ITEMS.register("embers", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

@@ -10,7 +10,8 @@
     "InventoryMixin",
     "PlayerMixin",
     "PrimaryLevelDataMixin",
-    "ServerPlayerGameModeMixin"
+    "ServerPlayerGameModeMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
     "AbstractContainerScreenMixin",
