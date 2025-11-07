@@ -23,6 +23,7 @@ import org.exodusstudio.frostbite.common.entity.client.models.*;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.custom.*;
+import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
 import org.exodusstudio.frostbite.common.network.StaffData;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
@@ -44,6 +45,9 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
+        event.registerLayerDefinition(ModModelLayers.SUMMONER_ELF, SummonerElfModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.CASTER_ELF, CasterElfModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.HEALER_ELF, HealerElfModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.TANUKI, TanukiModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FIRE_SLICE, FireSliceModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.TORCH, TorchModel::createBodyLayer);
@@ -76,6 +80,9 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.BANDIT.get(), BanditEntity.createAttributes().build());
         event.put(EntityRegistry.TORCH.get(), TorchEntity.createAttributes().build());
         event.put(EntityRegistry.TANUKI.get(), TanukiEntity.createAttributes().build());
+        event.put(EntityRegistry.HEALER_ELF.get(), ElfEntity.createAttributes().build());
+        event.put(EntityRegistry.CASTER_ELF.get(), ElfEntity.createAttributes().build());
+        event.put(EntityRegistry.SUMMONER_ELF.get(), ElfEntity.createAttributes().build());
     }
 
     @SubscribeEvent

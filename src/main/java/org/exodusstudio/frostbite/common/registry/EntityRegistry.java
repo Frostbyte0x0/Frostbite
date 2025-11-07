@@ -11,6 +11,9 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
+import org.exodusstudio.frostbite.common.entity.custom.elves.CasterElfEntity;
+import org.exodusstudio.frostbite.common.entity.custom.elves.HealerElfEntity;
+import org.exodusstudio.frostbite.common.entity.custom.elves.SummonerElfEntity;
 
 import java.util.function.Supplier;
 
@@ -221,4 +224,25 @@ public class EntityRegistry {
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "tanuki"))));
+
+    public static final Supplier<EntityType<HealerElfEntity>> HEALER_ELF =
+            ENTITY_TYPES.register("healer_elf", () -> EntityType.Builder
+                    .of(HealerElfEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "healer_elf"))));
+
+    public static final Supplier<EntityType<CasterElfEntity>> CASTER_ELF =
+            ENTITY_TYPES.register("caster_elf", () -> EntityType.Builder
+                    .of(CasterElfEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "caster_elf"))));
+
+    public static final Supplier<EntityType<SummonerElfEntity>> SUMMONER_ELF =
+            ENTITY_TYPES.register("summoner_elf", () -> EntityType.Builder
+                    .of(SummonerElfEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "summoner_elf"))));
 }

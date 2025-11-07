@@ -70,4 +70,13 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation TANUKI = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "tanuki"), "main");
+
+    public static final ModelLayerLocation HEALER_ELF = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "healer_elf"), "main");
+
+    public static final ModelLayerLocation CASTER_ELF = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "caster_elf"), "main");
+
+    public static final ModelLayerLocation SUMMONER_ELF = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "summoner_elf"), "main");
 }

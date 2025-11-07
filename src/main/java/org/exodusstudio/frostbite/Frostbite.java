@@ -93,6 +93,9 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.TORCH.get(), TorchRenderer::new);
             EntityRenderers.register(EntityRegistry.FIRE_SLICE.get(), FireSliceRenderer::new);
             EntityRenderers.register(EntityRegistry.TANUKI.get(), TanukiRenderer::new);
+            EntityRenderers.register(EntityRegistry.HEALER_ELF.get(), HealerElfRenderer::new);
+            EntityRenderers.register(EntityRegistry.CASTER_ELF.get(), CasterElfRenderer::new);
+            EntityRenderers.register(EntityRegistry.SUMMONER_ELF.get(), SummonerElfRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }
