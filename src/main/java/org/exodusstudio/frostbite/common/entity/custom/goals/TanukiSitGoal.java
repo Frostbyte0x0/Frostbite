@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.custom.goals;
 
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,7 @@ public class TanukiSitGoal extends Goal {
     }
 
     public boolean canUse() {
-        return !tanuki.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
+        return tanuki.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTags.FOX_FOOD);
     }
 
     public boolean canContinueToUse() {
@@ -24,7 +25,7 @@ public class TanukiSitGoal extends Goal {
     }
 
     public void tick() {
-        if (!tanuki.isSitting() && !tanuki.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
+        if (!tanuki.isSitting() && tanuki.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTags.FOX_FOOD)) {
             tanuki.tryToSit();
         }
     }
@@ -34,12 +35,6 @@ public class TanukiSitGoal extends Goal {
     }
 
     public void stop() {
-        ItemStack itemstack = tanuki.getItemBySlot(EquipmentSlot.MAINHAND);
-        if (!itemstack.isEmpty()) {
-            tanuki.spawnAtLocation(getServerLevel(tanuki.level()), itemstack);
-            tanuki.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-        }
-
         tanuki.sit(false);
     }
 }

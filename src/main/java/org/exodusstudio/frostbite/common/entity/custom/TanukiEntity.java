@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.custom.goals.TanukiDigGoal;
 import org.exodusstudio.frostbite.common.entity.custom.goals.TanukiSitGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -43,8 +44,9 @@ public class TanukiEntity extends Animal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new TanukiSitGoal(this));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1, (stack) -> stack.is(ItemTags.FOX_FOOD), false));
+        this.goalSelector.addGoal(2, new TanukiSitGoal(this));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1, (stack) -> stack.is(ItemTags.FOX_FOOD), false));
+        this.goalSelector.addGoal(4, new TanukiDigGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
