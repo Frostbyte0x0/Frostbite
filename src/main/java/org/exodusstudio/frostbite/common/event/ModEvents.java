@@ -37,8 +37,9 @@ import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
-import org.exodusstudio.frostbite.common.network.StaffData;
+import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
@@ -46,6 +47,7 @@ import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.weather.FrostbiteWeatherEffectRenderer;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
@@ -252,7 +254,7 @@ public class ModEvents {
                     staff.attack(player.level(), player);
                     player.getCooldowns().addCooldown(itemInHand, 20);
                     event.setCanceled(true);
-                    ClientPacketDistributor.sendToServer(new StaffData(staff.mode));
+                    ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(staff.mode, player.getUUID())));
                 }
             }
         }

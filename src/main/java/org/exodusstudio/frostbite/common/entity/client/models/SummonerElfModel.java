@@ -6,6 +6,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.common.entity.client.states.ElfRenderState;
 
 public class SummonerElfModel extends HumanoidModel<ElfRenderState> {
@@ -43,6 +44,7 @@ public class SummonerElfModel extends HumanoidModel<ElfRenderState> {
     public void setupAnim(ElfRenderState state) {
         super.setupAnim(state);
         rightArm.xRot -= (float) (Math.PI / 5);
+        rightArm.xRot -= Mth.lerp(state.attackTicks, 0, (float) (Math.PI / 40));
     }
 
     @Override

@@ -236,6 +236,21 @@ public class Util {
         }
     }
 
+    public static void spawnParticlesFromVector(Level level, Vec3 origin, Vec3 vector, int count) {
+        Vec3 pos = origin;
+        for (int i = 0; i <= count; i++) {
+            pos = Mth.lerp((double) i / count, pos, origin.add(vector));
+            level.addAlwaysVisibleParticle(
+                    ParticleRegistry.DEBUG_PARTICLE.get(),
+                    pos.x,
+                    pos.y,
+                    pos.z,
+                    0,
+                    0,
+                    0);
+        }
+    }
+
     public static void rotateArrayByOneRight(int[] arr) {
         if (arr == null || arr.length <= 1) return;
 

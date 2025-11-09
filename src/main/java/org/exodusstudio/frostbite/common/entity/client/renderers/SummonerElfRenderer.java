@@ -20,6 +20,13 @@ public class SummonerElfRenderer extends MobRenderer<SummonerElfEntity, ElfRende
     }
 
     @Override
+    public void extractRenderState(SummonerElfEntity elf, ElfRenderState state, float partialTick) {
+        super.extractRenderState(elf, state, partialTick);
+        state.isAttacking = elf.isAttacking();
+        state.attackTicks = elf.getAttackTicks(partialTick);
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(ElfRenderState renderState) {
         return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/summoner_elf/summoner_elf.png");
     }

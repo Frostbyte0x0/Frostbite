@@ -20,6 +20,13 @@ public class HealerElfRenderer extends MobRenderer<HealerElfEntity, ElfRenderSta
     }
 
     @Override
+    public void extractRenderState(HealerElfEntity elf, ElfRenderState state, float partialTick) {
+        super.extractRenderState(elf, state, partialTick);
+        state.isAttacking = elf.isAttacking();
+        state.attackTicks = elf.getAttackTicks(partialTick);
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(ElfRenderState renderState) {
         return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/healer_elf/healer_elf.png");
     }

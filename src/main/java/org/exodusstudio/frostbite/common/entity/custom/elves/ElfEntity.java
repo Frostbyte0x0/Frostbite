@@ -1,21 +1,168 @@
 package org.exodusstudio.frostbite.common.entity.custom.elves;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.exodusstudio.frostbite.common.entity.custom.goals.ElfHuddleAroundHealerGoal;
+import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
 
-public abstract class ElfEntity extends Monster {
-    protected ElfEntity(EntityType<? extends Monster> type, Level level) {
+import java.util.Optional;
+
+public abstract class ElfEntity extends Monster implements RangedAttackMob {
+    private static final EntityDataAccessor<Integer> DATA_COOLDOWN_TICKS =
+            SynchedEntityData.defineId(ElfEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_OLD_ATTACK_TICKS =
+            SynchedEntityData.defineId(ElfEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ATTACK_TICKS =
+            SynchedEntityData.defineId(ElfEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_IS_ATTACKING =
+            SynchedEntityData.defineId(ElfEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Optional<BlockPos>> DATA_HEALER_POSITION =
+            SynchedEntityData.defineId(ElfEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
+    protected final int cooldownTicks;
+
+    protected ElfEntity(EntityType<? extends Monster> type, Level level, int cooldownTicks) {
         super(type, level);
+        this.cooldownTicks = cooldownTicks;
+    }
+
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new ElfHuddleAroundHealerGoal(this, 1.3f));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_COOLDOWN_TICKS, 0);
+        builder.define(DATA_OLD_ATTACK_TICKS, 0);
+        builder.define(DATA_ATTACK_TICKS, 0);
+        builder.define(DATA_IS_ATTACKING, false);
+        builder.define(DATA_HEALER_POSITION, Optional.empty());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 50)
-                .add(Attributes.FOLLOW_RANGE, 10)
-                .add(Attributes.MOVEMENT_SPEED, 0.25);
+                .add(Attributes.FOLLOW_RANGE, 15)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (isAttacking()) {
+            int ticks = getAttackTicks();
+            setAttackTicks(ticks + 1);
+            if (ticks >= 20) {
+                performRangedAttack(this, 0);
+                level().playSound(null, this.blockPosition(), SoundEvents.EVOKER_PREPARE_WOLOLO, this.getSoundSource(),
+                        1.0f, 1.0f / (this.getRandom().nextFloat() * 0.4f + 0.8f));
+            }
+        } else {
+            setAttackTicks(Math.max(0, getAttackTicks() - 1));
+        }
+
+        setCooldownTicks(Math.max(0, getCooldownTicks() - 1));
+
+        if (getHealth() > 0.8 * getMaxHealth()) {
+            setHealerPosition(null);
+        }
+
+        if (getTarget() != null && getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AbstractStaff staff) {
+            if (getTarget().distanceTo(this) < 5) {
+                staff.setFirstMode();
+            } else {
+                staff.setSecondMode();
+            }
+        }
+    }
+
+
+    @Override
+    public void performRangedAttack(LivingEntity livingEntity, float v) {
+        if (getCooldownTicks() > 0) return;
+
+        ItemStack itemInHand = getItemInHand(InteractionHand.MAIN_HAND);
+        if (itemInHand.getItem() instanceof AbstractStaff staff) {
+            staff.attack(level(), this);
+            staff.attack(Minecraft.getInstance().level, (LivingEntity) Minecraft.getInstance().level.getEntity(uuid));
+            //ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(staff.mode, uuid)));
+        }
+
+        this.entityData.set(DATA_IS_ATTACKING, false);
+        this.entityData.set(DATA_COOLDOWN_TICKS, cooldownTicks);
+    }
+
+    public void tryStartAttacking() {
+        if (getCooldownTicks() > 0 || isAttacking()) return;
+        this.entityData.set(DATA_IS_ATTACKING, true);
+        this.entityData.set(DATA_ATTACK_TICKS, 0);
+    }
+
+    public void setAttacking(boolean attacking) {
+        this.entityData.set(DATA_IS_ATTACKING, attacking);
+    }
+
+    public boolean isAttacking() {
+        return this.entityData.get(DATA_IS_ATTACKING);
+    }
+
+    public void setAttackTicks(int ticks) {
+        this.entityData.set(DATA_OLD_ATTACK_TICKS, getAttackTicks());
+        this.entityData.set(DATA_ATTACK_TICKS, ticks);
+    }
+
+    public int getAttackTicks() {
+        return this.entityData.get(DATA_ATTACK_TICKS);
+    }
+
+    public float getAttackTicks(float partialTick) {
+        return Mth.lerp(partialTick, this.entityData.get(DATA_OLD_ATTACK_TICKS), this.entityData.get(DATA_ATTACK_TICKS));
+    }
+
+    public void setCooldownTicks(int ticks) {
+        this.entityData.set(DATA_COOLDOWN_TICKS, ticks);
+    }
+
+    public int getCooldownTicks() {
+        return this.entityData.get(DATA_COOLDOWN_TICKS);
+    }
+
+    public void setHealerPosition(BlockPos pos) {
+        if (pos == null) {
+            this.entityData.set(DATA_HEALER_POSITION, Optional.empty());
+        } else {
+            this.entityData.set(DATA_HEALER_POSITION, Optional.of(pos));
+        }
+    }
+
+    public Optional<BlockPos> getHealerPosition() {
+        return this.entityData.get(DATA_HEALER_POSITION);
     }
 
     @Override

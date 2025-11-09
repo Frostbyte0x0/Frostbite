@@ -20,6 +20,13 @@ public class CasterElfRenderer extends MobRenderer<CasterElfEntity, ElfRenderSta
     }
 
     @Override
+    public void extractRenderState(CasterElfEntity elf, ElfRenderState state, float partialTick) {
+        super.extractRenderState(elf, state, partialTick);
+        state.isAttacking = elf.isAttacking();
+        state.attackTicks = elf.getAttackTicks(partialTick);
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(ElfRenderState renderState) {
         return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/caster_elf/caster_elf.png");
     }

@@ -118,7 +118,7 @@ public class IceSpikeEntity extends EvokerFangs {
         if (target.isAlive() && target != livingentity) {
             if (livingentity == null) {
                 if (level() instanceof ServerLevel serverLevel) {
-                    target.actuallyHurt(serverLevel, this.damageSources().magic(), 4);
+                    target.hurtServer(serverLevel, this.damageSources().magic(), 4);
                 }
             } else {
                 if (livingentity.isAlliedTo(target)) {

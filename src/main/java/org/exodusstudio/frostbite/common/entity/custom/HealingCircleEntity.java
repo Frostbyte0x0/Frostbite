@@ -10,7 +10,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.particle.options.BooleanParticleOption;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
@@ -56,6 +58,7 @@ public class HealingCircleEntity extends AreaEffectCloud {
             List<LivingEntity> list1 = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 3, 0));
             if (!list1.isEmpty()) {
                 for (LivingEntity livingentity : list1) {
+                    if (getOwner() instanceof ElfEntity && livingentity instanceof Player) continue;
                     if (isBlessing()) {
                         MobEffectInstance regeneration = new MobEffectInstance(MobEffects.REGENERATION, 600, 0);
                         MobEffectInstance strength = new MobEffectInstance(MobEffects.STRENGTH, 200, 1);

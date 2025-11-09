@@ -25,7 +25,7 @@ import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulle
 import org.exodusstudio.frostbite.common.entity.custom.*;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
-import org.exodusstudio.frostbite.common.network.StaffData;
+import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
@@ -89,8 +89,8 @@ public class ModEventBusEvents {
     public static void register(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.playBidirectional(
-                StaffData.TYPE,
-                StaffData.STREAM_CODEC,
+                StaffPayload.TYPE,
+                StaffPayload.STREAM_CODEC,
                 ServerPayloadHandler::handleDataOnMain
         );
     }
@@ -98,7 +98,7 @@ public class ModEventBusEvents {
     @SubscribeEvent
     public static void register(RegisterClientPayloadHandlersEvent event) {
         event.register(
-                StaffData.TYPE,
+                StaffPayload.TYPE,
                 ServerPayloadHandler::handleDataOnMain
         );
     }

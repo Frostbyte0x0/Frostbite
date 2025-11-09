@@ -30,4 +30,12 @@ public abstract class AbstractStaff extends Item {
 
     public void attack(Level level, LivingEntity owner) {
     }
+
+    public void setFirstMode() {
+        this.mode = modes[0];
+    }
+
+    public void setSecondMode() {
+        this.mode = modes[1];
+    }
 }

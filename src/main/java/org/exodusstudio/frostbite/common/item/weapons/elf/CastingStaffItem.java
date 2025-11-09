@@ -9,6 +9,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.IceSpikeEntity;
+import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
@@ -109,6 +110,7 @@ public class CastingStaffItem extends AbstractStaff {
                         LivingEntity tracked = null;
 
                         for (Entity entity1 : owner.level().getEntities(owner, new AABB(vec3, end).inflate(1.0))) {
+                            if (owner instanceof ElfEntity && entity1 instanceof ElfEntity) continue;
                             AABB aabb = entity1.getBoundingBox().inflate(1);
                             Optional<Vec3> optional1 = aabb.clip(vec3, end);
                             if (optional1.isPresent() && entity1 instanceof LivingEntity livingEntity
