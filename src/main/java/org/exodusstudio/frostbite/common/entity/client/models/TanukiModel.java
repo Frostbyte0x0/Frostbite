@@ -22,20 +22,16 @@ public class TanukiModel extends QuadrupedModel<TanukiRenderState> {
         PartDefinition partdefinition = meshdefinition.getRoot();
 
         PartDefinition all = partdefinition.addOrReplaceChild("all", CubeListBuilder.create(), PartPose.offset(0.0F, 18.0F, 0.0F));
-
-        PartDefinition leg1 = all.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(28, 27).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 3.0F, 6.0F));
-        PartDefinition leg2 = all.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(0, 28).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, 3.0F, 6.0F));
-        PartDefinition leg3 = all.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(8, 28).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 3.0F, -6.0F));
-        PartDefinition leg4 = all.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(20, 27).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, 3.0F, -6.0F));
-
-        PartDefinition body = all.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -3.0F, -7.0F, 10.0F, 6.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition head = all.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 20).addBox(-3.0F, -2.0F, -1.0F, 6.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
+        all.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(28, 27).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 3.0F, 6.0F));
+        all.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(0, 28).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, 3.0F, 6.0F));
+        all.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(8, 28).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, 3.0F, -6.0F));
+        all.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(20, 27).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, 3.0F, -6.0F));
+        all.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -3.0F, -7.0F, 10.0F, 6.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        all.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 20).addBox(-3.0F, -2.0F, -1.0F, 6.0F, 4.0F, 4.0F, new CubeDeformation(0.0F))
                 .texOffs(24, 32).addBox(-2.99F, -3.5F, 0.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(30, 32).addBox(0.99F, -3.5F, 0.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
                 .texOffs(16, 32).addBox(-1.0F, -0.01F, -1.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.0F, -9.0F));
-
-        PartDefinition tail = all.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(20, 20).addBox(-1.0F, -8.0F, 7.0F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 6.0F, 0.0F));
+        all.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(20, 20).addBox(-1.0F, -8.0F, 7.0F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 6.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

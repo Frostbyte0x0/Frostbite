@@ -118,7 +118,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<FeralWolfEntity>> FERAL_WOLF =
             ENTITY_TYPES.register("feral_wolf", () -> EntityType.Builder
                     .of(FeralWolfEntity::new, MobCategory.MONSTER)
-                    .sized(0.75f, 0.75f)
+                    .sized(1.25f, 1.25f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "feral_wolf"))));
 

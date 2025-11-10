@@ -22,11 +22,9 @@ public class SpecterModel extends EntityModel<SpecterRenderState> {
 
         PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -31.0F, -4.0F, 16.0F, 20.0F, 8.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 48).addBox(-7.0F, -41.0F, -4.0F, 14.0F, 10.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
-
-        PartDefinition cube_r1 = bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(48, 23).addBox(3.0F, -18.0F, -4.0F, 5.0F, 18.0F, 5.0F, new CubeDeformation(0.0F))
+        bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(48, 23).addBox(3.0F, -18.0F, -4.0F, 5.0F, 18.0F, 5.0F, new CubeDeformation(0.0F))
                 .texOffs(48, 0).addBox(-18.0F, -18.0F, -4.0F, 5.0F, 18.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, -24.0F, -16.0F, -1.5708F, 0.0F, 0.0F));
-
-        PartDefinition cube_r2 = bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 28).addBox(-7.99F, -16.0F, -4.0F, 16.0F, 12.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 6.0F, 0.3927F, 0.0F, 0.0F));
+        bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 28).addBox(-7.99F, -16.0F, -4.0F, 16.0F, 12.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 6.0F, 0.3927F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }

@@ -22,9 +22,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.custom.goals.BanditStealGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class BanditEntity extends Animal {
+public class BanditEntity extends Animal implements CustomTemperatureEntity {
     private static final EntityDataAccessor<Boolean> DATA_STEALING =
             SynchedEntityData.defineId(BanditEntity.class, EntityDataSerializers.BOOLEAN);
     public final AnimationState stealingAnimationState = new AnimationState();
@@ -112,16 +113,16 @@ public class BanditEntity extends Animal {
         return EntityRegistry.BANDIT.get().create(serverLevel, EntitySpawnReason.BREEDING);
     }
 
-    @Override
-    public boolean canFreeze() {
-        return false;
-    }
-
     public boolean isStealing() {
         return this.getEntityData().get(DATA_STEALING);
     }
 
     public void setStealing(boolean stealing) {
         this.getEntityData().set(DATA_STEALING, stealing);
+    }
+
+    @Override
+    public int getBaseOuterTempIncrease() {
+        return 2;
     }
 }

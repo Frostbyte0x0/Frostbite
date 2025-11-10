@@ -23,18 +23,19 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.UUID;
 
-public class BoarEntity extends Animal implements NeutralMob {
+public class BoarEntity extends Animal implements NeutralMob, CustomTemperatureEntity {
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME;
     private static final UniformInt PERSISTENT_ANGER_TIME;
     @Nullable
     private UUID persistentAngerTarget;
 
-    public BoarEntity(EntityType<? extends Animal> entityType, Level level) {
+    public BoarEntity(EntityType<? extends Animal> ignored, Level level) {
         super(EntityRegistry.BOAR.get(), level);
     }
 
@@ -120,8 +121,8 @@ public class BoarEntity extends Animal implements NeutralMob {
     }
 
     @Override
-    public boolean canFreeze() {
-        return false;
+    public int getBaseOuterTempIncrease() {
+        return 2;
     }
 
     static {

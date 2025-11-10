@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -25,12 +24,8 @@ public class FeralWolfRenderer extends MobRenderer<FeralWolfEntity, FeralWolfRen
     public void extractRenderState(FeralWolfEntity feralWolf, FeralWolfRenderState state, float p_363384_) {
         super.extractRenderState(feralWolf, state, p_363384_);
         state.isFrozen = feralWolf.isFrozen();
-    }
-
-    @Override
-    public void render(FeralWolfRenderState state, PoseStack stack, MultiBufferSource bufferSource, int p_115313_) {
-        super.render(state, stack, bufferSource, p_115313_);
-
+        state.isBiting = feralWolf.isBiting();
+        state.bitingAnimationState.copyFrom(feralWolf.bitingAnimationState);
     }
 
     @Override

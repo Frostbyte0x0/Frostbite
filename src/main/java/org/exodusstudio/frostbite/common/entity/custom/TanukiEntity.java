@@ -27,9 +27,10 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.goals.TanukiDigGoal;
 import org.exodusstudio.frostbite.common.entity.custom.goals.TanukiSitGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class TanukiEntity extends Animal {
+public class TanukiEntity extends Animal implements CustomTemperatureEntity {
     private static final EntityDataAccessor<Byte> DATA_ID_FLAGS =
             SynchedEntityData.defineId(TanukiEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> EAT_COUNTER =
@@ -230,7 +231,7 @@ public class TanukiEntity extends Animal {
     }
 
     @Override
-    public boolean canFreeze() {
-        return false;
+    public int getBaseOuterTempIncrease() {
+        return 3;
     }
 }

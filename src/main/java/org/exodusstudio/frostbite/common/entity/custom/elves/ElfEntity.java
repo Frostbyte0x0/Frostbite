@@ -5,10 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -102,6 +105,11 @@ public abstract class ElfEntity extends Monster implements RangedAttackMob {
         }
     }
 
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource p_21385_, boolean p_21387_) {
+        super.dropCustomDeathLoot(serverLevel, p_21385_, p_21387_);
+        if (random.nextFloat() < 0.1f) this.spawnAtLocation(serverLevel, this.equipment.get(EquipmentSlot.MAINHAND));
+    }
 
     @Override
     public void performRangedAttack(LivingEntity livingEntity, float v) {
@@ -111,7 +119,6 @@ public abstract class ElfEntity extends Monster implements RangedAttackMob {
         if (itemInHand.getItem() instanceof AbstractStaff staff) {
             staff.attack(level(), this);
             staff.attack(Minecraft.getInstance().level, (LivingEntity) Minecraft.getInstance().level.getEntity(uuid));
-            //ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(staff.mode, uuid)));
         }
 
         this.entityData.set(DATA_IS_ATTACKING, false);
@@ -122,10 +129,6 @@ public abstract class ElfEntity extends Monster implements RangedAttackMob {
         if (getCooldownTicks() > 0 || isAttacking()) return;
         this.entityData.set(DATA_IS_ATTACKING, true);
         this.entityData.set(DATA_ATTACK_TICKS, 0);
-    }
-
-    public void setAttacking(boolean attacking) {
-        this.entityData.set(DATA_IS_ATTACKING, attacking);
     }
 
     public boolean isAttacking() {
