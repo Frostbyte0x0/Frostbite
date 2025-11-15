@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "spicy_fish_soup",
+  "ingredients": [
+    "minecraft:bowl",
+    "minecraft:cooked_cod",
+    "minecraft:cooked_salmon",
+    "minecraft:cooked_kelp",
+    "frostbite:chilli_pepper"
+  ],
+  "result": {
+    "components": {
+      "frostbite:charge":
+      {
+        "charge": 1
+      }
+    },
+    "count": 1,
+    "id": "frostbite:spicy_fish_soup"
+  }
+}

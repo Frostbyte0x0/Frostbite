@@ -179,8 +179,15 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.SILVER);
                         output.accept(ItemRegistry.BOTTLE_OF_WARMTH);
                         output.accept(ItemRegistry.BOTTLE_OF_HEAT);
+                        output.accept(ItemRegistry.CHILLI_PEPPER);
+                        output.accept(ItemRegistry.RAW_BOAR_MEAT);
+                        output.accept(ItemRegistry.COOKED_BOAR_MEAT);
+                        output.accept(ItemRegistry.SPICY_VEGETABLE_STEW);
+                        output.accept(ItemRegistry.SPICY_FISH_SOUP);
+                        output.accept(ItemRegistry.SPICY_MEAT_STEW);
                         output.accept(ItemRegistry.JELLY);
                         output.accept(ItemRegistry.INSULATING_JELLY);
+                        output.accept(ItemRegistry.EMBERS);
                         output.accept(ItemRegistry.CASTING_STAFF);
                         output.accept(ItemRegistry.HEALING_STAFF);
                         output.accept(ItemRegistry.SUMMONING_STAFF);

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "spicy_meat_stew",
+  "ingredients": [
+    "minecraft:bowl",
+    "minecraft:chicken",
+    "minecraft:beef",
+    "minecraft:brown_mushroom",
+    "frostbite:chilli_pepper",
+    "frostbite:chilli_pepper"
+  ],
+  "result": {
+    "components": {
+      "frostbite:charge":
+      {
+        "charge": 2
+      }
+    },
+    "count": 1,
+    "id": "frostbite:spicy_meat_stew"
+  }
+}

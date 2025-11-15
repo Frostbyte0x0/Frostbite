@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "spicy_vegetable_stew",
+  "ingredients": [
+    "minecraft:bowl",
+    "minecraft:brown_mushroom",
+    "minecraft:red_mushroom",
+    "minecraft:baked_potato",
+    "frostbite:chilli_pepper",
+    "minecraft:carrot"
+  ],
+  "result": {
+    "components": {
+      "frostbite:charge":
+        {
+          "charge": 1
+        }
+    },
+    "count": 1,
+    "id": "frostbite:spicy_vegetable_stew"
+  }
+}

@@ -117,6 +117,13 @@
   "item.frostbite.insulating_jelly": "Insulating jelly",
   "item.frostbite.bottle_of_warmth": "Bottle of Warmth",
   "item.frostbite.bottle_of_heat": "Bottle of Heat",
+  "item.frostbite.raw_boar_meat": "Raw Boar",
+  "item.frostbite.cooked_boar_meat": "Cooked Boar",
+  "item.frostbite.chilli_pepper": "Chilli Pepper",
+  "item.frostbite.spicy_vegetable_stew": "Spicy vegetable stew",
+  "item.frostbite.spicy_fish_soup": "Spicy fish soup",
+  "item.frostbite.spicy_meat_stew": "Spicy meat stew",
+
 
   "item.frostbite.woolly_wool": "Woolly wool",
   "item.frostbite.frozen_fur": "Frozen fur",
@@ -165,6 +172,7 @@
 
 
   "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",
+  "tooltip.frostbite.spicy_stew.tooltip": "Spicyness",
   "tooltip.frostbite.thermometer.tooltip": "Shows you the biome you are in and its temperature",
   "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge",
 

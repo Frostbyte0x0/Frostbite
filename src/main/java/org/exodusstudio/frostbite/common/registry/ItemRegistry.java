@@ -321,4 +321,36 @@ public class ItemRegistry {
     public static final DeferredItem<Item> EMBERS =
             ITEMS.register("embers", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> RAW_BOAR_MEAT =
+            ITEMS.register("raw_boar_meat", (id) -> new Item(new Item.Properties()
+                    .food(FoodRegistry.RAW_BOAR)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> COOKED_BOAR_MEAT =
+            ITEMS.register("cooked_boar_meat", (id) -> new Item(new Item.Properties()
+                    .food(FoodRegistry.COOKED_BOAR)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CHILLI_PEPPER =
+            ITEMS.register("chilli_pepper", (id) -> new Item(new Item.Properties()
+                    .food(FoodRegistry.CHILLI, ConsumableRegistry.CHILLI)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> SPICY_VEGETABLE_STEW =
+            ITEMS.register("spicy_vegetable_stew", (id) -> new SpicyStewItem(new Item.Properties()
+                    .food(FoodRegistry.SPICY_VEGETABLE_STEW)
+                    .stacksTo(1)
+                    .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> SPICY_FISH_SOUP =
+            ITEMS.register("spicy_fish_soup", (id) -> new SpicyStewItem(new Item.Properties()
+                    .food(FoodRegistry.SPICY_FISH_SOUP)
+                    .stacksTo(1)
+                    .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> SPICY_MEAT_STEW =
+            ITEMS.register("spicy_meat_stew", (id) -> new SpicyStewItem(new Item.Properties()
+                    .food(FoodRegistry.SPICY_MEAT_STEW)
+                    .stacksTo(1)
+                    .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

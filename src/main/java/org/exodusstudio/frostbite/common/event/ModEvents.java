@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +27,7 @@ import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
@@ -37,9 +39,10 @@ import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
-import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
@@ -47,7 +50,6 @@ import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
-import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.weather.FrostbiteWeatherEffectRenderer;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
@@ -181,6 +183,18 @@ public class ModEvents {
 
             event.setNearPlaneDistance(nearPlane);
             event.setFarPlaneDistance(farPlane);
+        }
+    }
+
+    @SubscribeEvent
+    public static void spicyStew(LivingEntityUseItemEvent.Tick event) {
+        if (
+                (event.getItem().is(ItemRegistry.SPICY_VEGETABLE_STEW) ||
+                event.getItem().is(ItemRegistry.SPICY_FISH_SOUP) ||
+                event.getItem().is(ItemRegistry.SPICY_MEAT_STEW)) &&
+                event.getDuration() == 1) {
+            event.getEntity().addEffect(new MobEffectInstance(EffectRegistry.SATIATED, 4800,
+                    event.getItem().get(DataComponentTypeRegistry.CHARGE.get()).charge()));
         }
     }
 

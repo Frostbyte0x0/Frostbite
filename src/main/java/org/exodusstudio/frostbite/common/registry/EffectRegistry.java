@@ -11,11 +11,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.effect.GenericEffect;
 import org.exodusstudio.frostbite.common.effect.RageEffect;
+import org.exodusstudio.frostbite.common.effect.SatiatedEffect;
 
 public class EffectRegistry {
     public static final DeferredRegister<MobEffect> MOB_EFFECTS =
             DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Frostbite.MOD_ID);
-
 
     public static final Holder<MobEffect> RAGE = MOB_EFFECTS.register("rage",
             () -> new RageEffect(MobEffectCategory.BENEFICIAL, 0x8c1111)
@@ -30,4 +30,7 @@ public class EffectRegistry {
 
     public static final Holder<MobEffect> COLD_WEAKNESS = MOB_EFFECTS.register("cold_weakness",
             () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x5bc0de));
+
+    public static final Holder<MobEffect> SATIATED = MOB_EFFECTS.register("satiated",
+            () -> new SatiatedEffect(MobEffectCategory.BENEFICIAL, 0xf5b642));
 }
