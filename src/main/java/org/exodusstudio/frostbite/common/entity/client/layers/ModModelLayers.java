@@ -79,4 +79,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation SUMMONER_ELF = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "summoner_elf"), "main");
+
+    public static final ModelLayerLocation BOREAL_BEAR = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "boreal_bear"), "main");
 }

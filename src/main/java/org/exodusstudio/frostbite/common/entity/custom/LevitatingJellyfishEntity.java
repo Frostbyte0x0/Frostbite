@@ -38,7 +38,7 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     public float zBodyRot;
     public float zBodyRotO;
 
-    public LevitatingJellyfishEntity(EntityType<? extends LevitatingJellyfishEntity> entityType, Level level) {
+    public LevitatingJellyfishEntity(EntityType<? extends LevitatingJellyfishEntity> ignored, Level level) {
         super(EntityRegistry.LEVITATING_JELLYFISH.get(), level);
         this.setPathfindingMalus(PathType.WATER, 10.0F);
         this.movementVector = Vec3.ZERO;

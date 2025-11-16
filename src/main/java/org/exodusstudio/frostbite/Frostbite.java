@@ -96,6 +96,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.HEALER_ELF.get(), HealerElfRenderer::new);
             EntityRenderers.register(EntityRegistry.CASTER_ELF.get(), CasterElfRenderer::new);
             EntityRenderers.register(EntityRegistry.SUMMONER_ELF.get(), SummonerElfRenderer::new);
+            EntityRenderers.register(EntityRegistry.BOREAL_BEAR.get(), BorealBearRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

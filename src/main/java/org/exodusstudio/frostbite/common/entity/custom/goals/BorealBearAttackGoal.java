@@ -2,24 +2,24 @@ package org.exodusstudio.frostbite.common.entity.custom.goals;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import org.exodusstudio.frostbite.common.entity.custom.FeralWolfEntity;
+import org.exodusstudio.frostbite.common.entity.custom.BorealBearEntity;
 
-public class FeralWolfBiteGoal extends Goal {
-    private final FeralWolfEntity feralWolf;
+public class BorealBearAttackGoal extends Goal {
+    private final BorealBearEntity bear;
     private final double speedModifier;
     private int ticksUntilNextPathRecalculation;
     private double pathedTargetX;
     private double pathedTargetY;
     private double pathedTargetZ;
 
-    public FeralWolfBiteGoal(FeralWolfEntity feralWolf, double speedModifier) {
-        this.feralWolf = feralWolf;
+    public BorealBearAttackGoal(BorealBearEntity bear, double speedModifier) {
+        this.bear = bear;
         this.speedModifier = speedModifier;
     }
 
     @Override
     public boolean canUse() {
-        return feralWolf.getTarget() != null;
+        return bear.getTarget() != null;
     }
 
     @Override
@@ -32,33 +32,33 @@ public class FeralWolfBiteGoal extends Goal {
     public void tick() {
         super.tick();
 
-        LivingEntity livingentity = feralWolf.getTarget();
+        LivingEntity livingentity = bear.getTarget();
         if (livingentity != null) {
-            feralWolf.getLookControl().setLookAt(livingentity, 30, 30);
+            bear.getLookControl().setLookAt(livingentity, 30, 30);
             ticksUntilNextPathRecalculation = Math.max(ticksUntilNextPathRecalculation - 1, 0);
-            if (feralWolf.getSensing().hasLineOfSight(livingentity) && ticksUntilNextPathRecalculation <= 0 &&
+            if (bear.getSensing().hasLineOfSight(livingentity) && ticksUntilNextPathRecalculation <= 0 &&
                     (pathedTargetX == 0 && pathedTargetY == 0 && pathedTargetZ == 0 ||
                             livingentity.distanceToSqr(pathedTargetX, pathedTargetY, pathedTargetZ) >= 1 ||
-                            feralWolf.getRandom().nextFloat() < 0.05)) {
+                            bear.getRandom().nextFloat() < 0.05)) {
                 pathedTargetX = livingentity.getX();
                 pathedTargetY = livingentity.getY();
                 pathedTargetZ = livingentity.getZ();
-                ticksUntilNextPathRecalculation = 4 + feralWolf.getRandom().nextInt(7);
-                double d0 = feralWolf.distanceToSqr(livingentity);
+                ticksUntilNextPathRecalculation = 4 + bear.getRandom().nextInt(7);
+                double d0 = bear.distanceToSqr(livingentity);
                 if (d0 > 1024) {
                     ticksUntilNextPathRecalculation += 10;
                 } else if (d0 > 256) {
                     ticksUntilNextPathRecalculation += 5;
                 }
 
-                if (!feralWolf.getNavigation().moveTo(livingentity, speedModifier)) {
+                if (!bear.getNavigation().moveTo(livingentity, speedModifier)) {
                     ticksUntilNextPathRecalculation += 15;
                 }
 
                 ticksUntilNextPathRecalculation = adjustedTickDelay(ticksUntilNextPathRecalculation);
             }
 
-            feralWolf.setBiting(feralWolf.distanceToSqr(livingentity) < 4);
+            bear.setAttacking(bear.distanceToSqr(livingentity) < 4);
         }
     }
 }

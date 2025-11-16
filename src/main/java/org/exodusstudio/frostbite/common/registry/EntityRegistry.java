@@ -245,4 +245,11 @@ public class EntityRegistry {
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "summoner_elf"))));
+
+    public static final Supplier<EntityType<BorealBearEntity>> BOREAL_BEAR =
+            ENTITY_TYPES.register("boreal_bear", () -> EntityType.Builder
+                    .of(BorealBearEntity::new, MobCategory.AMBIENT)
+                    .sized(1.2f, 1.2f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "boreal_bear"))));
 }

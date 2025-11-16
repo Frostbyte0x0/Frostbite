@@ -27,6 +27,8 @@ public class FeralWolfEntity extends Monster {
             SynchedEntityData.defineId(FeralWolfEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_IS_BITING =
             SynchedEntityData.defineId(FeralWolfEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_BITE =
+            SynchedEntityData.defineId(FeralWolfEntity.class, EntityDataSerializers.INT);
     public final AnimationState bitingAnimationState = new AnimationState();
 
     public FeralWolfEntity(EntityType<? extends Monster> ignored, Level level) {
@@ -55,6 +57,7 @@ public class FeralWolfEntity extends Monster {
         super.defineSynchedData(builder);
         builder.define(DATA_IS_FROZEN, false);
         builder.define(DATA_IS_BITING, false);
+        builder.define(DATA_TICKS_SINCE_LAST_BITE, 0);
     }
 
     @Override
@@ -94,6 +97,15 @@ public class FeralWolfEntity extends Monster {
                 bitingAnimationState.getTimeInMillis(tickCount) / 50 == 5) {
             player.hurtServer(serverLevel, damageSources().freeze(), isFrozen() ? 5 : 2.5f);
         }
+
+        if (isBiting()) {
+            setTicksSinceLastAttack(getTicksSinceLastAttack() + 1);
+        }
+
+        if (getTicksSinceLastAttack() > 30) {
+            setBiting(false);
+            setTicksSinceLastAttack(0);
+        }
     }
 
     public void freeze() {
@@ -122,5 +134,13 @@ public class FeralWolfEntity extends Monster {
 
     public void setBiting(boolean biting) {
         this.entityData.set(DATA_IS_BITING, biting);
+    }
+
+    public int getTicksSinceLastAttack() {
+        return this.entityData.get(DATA_TICKS_SINCE_LAST_BITE);
+    }
+
+    public void setTicksSinceLastAttack(int ticks) {
+        this.entityData.set(DATA_TICKS_SINCE_LAST_BITE, ticks);
     }
 }
