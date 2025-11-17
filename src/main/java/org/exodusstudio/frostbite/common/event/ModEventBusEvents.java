@@ -44,6 +44,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.FROZEN_REMNANTS, FrozenRemnantsModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.MONK, MonkModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOREAL_BEAR, BorealBearModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
         event.registerLayerDefinition(ModModelLayers.SUMMONER_ELF, SummonerElfModel::createBodyLayer);
@@ -85,6 +86,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.CASTER_ELF.get(), ElfEntity.createAttributes().build());
         event.put(EntityRegistry.SUMMONER_ELF.get(), ElfEntity.createAttributes().build());
         event.put(EntityRegistry.BOREAL_BEAR.get(), BorealBearEntity.createAttributes().build());
+        event.put(EntityRegistry.MONK.get(), MonkEntity.createAttributes().build());
     }
 
     @SubscribeEvent

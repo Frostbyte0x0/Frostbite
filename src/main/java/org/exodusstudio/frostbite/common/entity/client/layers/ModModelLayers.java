@@ -82,4 +82,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation BOREAL_BEAR = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "boreal_bear"), "main");
+
+    public static final ModelLayerLocation MONK = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"), "main");
 }
