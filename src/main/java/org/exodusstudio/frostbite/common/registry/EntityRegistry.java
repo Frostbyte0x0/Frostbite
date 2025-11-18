@@ -200,7 +200,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<BanditEntity>> BANDIT =
             ENTITY_TYPES.register("bandit", () -> EntityType.Builder
                     .of(BanditEntity::new, MobCategory.AMBIENT)
-                    .sized(0.75f, 0.75f)
+                    .sized(0.75f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "bandit"))));
 

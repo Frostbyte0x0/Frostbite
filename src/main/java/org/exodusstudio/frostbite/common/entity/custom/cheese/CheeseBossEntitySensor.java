@@ -24,23 +24,23 @@ public class CheeseBossEntitySensor extends NearestLivingEntitySensor<CheeseBoss
         return ImmutableSet.copyOf(Iterables.concat(super.requires(), List.of(MemoryModuleType.NEAREST_ATTACKABLE)));
     }
 
-    @Override
-    protected void doTick(ServerLevel level, CheeseBoss entity) {
-        super.doTick(level, entity);
-        CheeseBossEntitySensor.getClosest(entity, arg -> arg.getType() == EntityType.PLAYER).or(() -> CheeseBossEntitySensor.getClosest(entity, arg -> arg.getType() != EntityType.PLAYER)).ifPresentOrElse(arg2 -> entity.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, arg2), () -> entity.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE));
-    }
+//    @Override
+//    protected void doTick(ServerLevel level, CheeseBoss entity) {
+//        super.doTick(level, entity);
+//        CheeseBossEntitySensor.getClosest(entity, arg -> arg.getType() == EntityType.PLAYER).or(() -> CheeseBossEntitySensor.getClosest(entity, arg -> arg.getType() != EntityType.PLAYER)).ifPresentOrElse(arg2 -> entity.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, arg2), () -> entity.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE));
+//    }
 
-    private static Optional<LivingEntity> getClosest(CheeseBoss cheeseBoss, Predicate<LivingEntity> predicate) {
-        return cheeseBoss.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).stream().flatMap(Collection::stream).filter(cheeseBoss::canTargetEntity).filter(predicate).findFirst();
-    }
+//    private static Optional<LivingEntity> getClosest(CheeseBoss cheeseBoss, Predicate<LivingEntity> predicate) {
+//        return cheeseBoss.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).stream().flatMap(Collection::stream).filter(cheeseBoss::canTargetEntity).filter(predicate).findFirst();
+//    }
 
-    @Override
-    protected int radiusXZ() {
-        return 32;
-    }
-
-    @Override
-    protected int radiusY() {
-        return 24;
-    }
+//    @Override
+//    protected int radiusXZ() {
+//        return 32;
+//    }
+//
+//    @Override
+//    protected int radiusY() {
+//        return 24;
+//    }
 }

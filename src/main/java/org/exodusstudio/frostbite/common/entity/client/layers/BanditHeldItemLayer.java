@@ -21,7 +21,7 @@ public class BanditHeldItemLayer extends RenderLayer<BanditRenderState, BanditMo
             boolean flag1 = state.isBaby;
             stack.pushPose();
 
-            stack.translate(getParentModel().getHead().x / 16.0F, getParentModel().getHead().y / 16.0F + 1.2, getParentModel().getHead().z / 16.0F);
+            //stack.translate(getParentModel().getHead().x / 16.0F, getParentModel().getHead().y / 16.0F + 1.2, getParentModel().getHead().z / 16.0F);
             stack.scale(0.75f, 0.75f, 0.75f);
             if (flag1) {
                 stack.scale(0.75F, 0.75F, 0.75F);

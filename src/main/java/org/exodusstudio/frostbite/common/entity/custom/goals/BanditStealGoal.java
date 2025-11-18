@@ -58,7 +58,9 @@ public class BanditStealGoal extends Goal {
                 ticksUntilNextPathRecalculation = adjustedTickDelay(ticksUntilNextPathRecalculation);
             }
 
-            bandit.setStealing(bandit.distanceToSqr(livingentity) < 1.5);
+            if (bandit.distanceToSqr(livingentity) < 1.5) {
+                bandit.setStealing();
+            }
         }
     }
 }

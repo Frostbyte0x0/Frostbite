@@ -48,7 +48,7 @@ public class CheeseBoss extends Monster implements Enemy {
 
     public CheeseBoss(EntityType<? extends CheeseBoss> type, Level level) {
         super(type, level);
-        switchPhase("camembert");
+        //switchPhase("camembert");
     }
 
     // TODO real attributes
@@ -88,17 +88,17 @@ public class CheeseBoss extends Monster implements Enemy {
 //        }
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (this.level().isClientSide()) {
-            setupAnimationStates();
-        }
-        if  (this.getBrain().getMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get()).isEmpty()) {
-            this.getBrain().setMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get(), "cheddar");
-        }
-        tickAllCooldowns();
-}
+//    @Override
+//    public void tick() {
+//        super.tick();
+//        if (this.level().isClientSide()) {
+//            setupAnimationStates();
+//        }
+//        if  (this.getBrain().getMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get()).isEmpty()) {
+//            this.getBrain().setMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get(), "cheddar");
+//        }
+//        tickAllCooldowns();
+//    }
 
     @Override
     protected void registerGoals() {
@@ -115,21 +115,21 @@ public class CheeseBoss extends Monster implements Enemy {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
     }
 
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        boolean bl = super.hurt(source, amount);
-        if (!this.level().isClientSide && !this.isNoAi() && bl && source.getEntity() != null && source.getEntity() != this) {
-            Entity entity = source.getEntity();
-            if (this.brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty() && entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity)entity;
-                if (source.isDirect() || this.closerThan(livingEntity, 5.0F)) {
-                    this.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, livingEntity);
-                }
-            }
-        }
-
-        return bl;
-    }
+//    @Override
+//    public boolean hurt(DamageSource source, float amount) {
+//        boolean bl = super.hurt(source, amount);
+//        if (!this.level().isClientSide && !this.isNoAi() && bl && source.getEntity() != null && source.getEntity() != this) {
+//            Entity entity = source.getEntity();
+//            if (this.brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty() && entity instanceof LivingEntity) {
+//                LivingEntity livingEntity = (LivingEntity)entity;
+//                if (source.isDirect() || this.closerThan(livingEntity, 5.0F)) {
+//                    this.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, livingEntity);
+//                }
+//            }
+//        }
+//
+//        return bl;
+//    }
 
 
     /**boss bar event*/
@@ -151,70 +151,70 @@ public class CheeseBoss extends Monster implements Enemy {
         this.bossEvent.removePlayer(serverPlayer);
     }
 
-    public void tickAllCooldowns() {
-        this.getBrain().getMemory(MemoryModuleTypeRegistry.SWITCH_COOLDOWN.get()).ifPresent(cooldown -> {
-            if (cooldown > 0) {
-                this.getBrain().setMemory(MemoryModuleTypeRegistry.SWITCH_COOLDOWN.get(), cooldown - 1);
-            }
-        });
-        if (getCurrentPhase().equals("cheddar")) {
-            this.getBrain().getMemory(MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get()).ifPresent(cooldown -> {
-                if (cooldown > 0) {
-                    this.getBrain().setMemory(MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get(), cooldown - 1);
-                }
-            });
-            this.getBrain().getMemory(MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get()).ifPresent(cooldown -> {
-                if (cooldown > 0) {
-                    this.getBrain().setMemory(MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get(), cooldown - 1);
-                }
-            });
-        }
-        else if (getCurrentPhase().equals("camembert")) {
-            this.getBrain().getMemory(MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get()).ifPresent(cooldown -> {
-                if (cooldown > 0) {
-                    this.getBrain().setMemory(MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get(), cooldown - 1);
-                }
-            });
-            this.getBrain().getMemory(MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get()).ifPresent(cooldown -> {
-                if (cooldown > 0) {
-                    this.getBrain().setMemory(MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get(), cooldown - 1);
-                }
-            });
-        }
-    }
+//    public void tickAllCooldowns() {
+//        this.getBrain().getMemory(MemoryModuleTypeRegistry.SWITCH_COOLDOWN.get()).ifPresent(cooldown -> {
+//            if (cooldown > 0) {
+//                this.getBrain().setMemory(MemoryModuleTypeRegistry.SWITCH_COOLDOWN.get(), cooldown - 1);
+//            }
+//        });
+//        if (getCurrentPhase().equals("cheddar")) {
+//            this.getBrain().getMemory(MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get()).ifPresent(cooldown -> {
+//                if (cooldown > 0) {
+//                    this.getBrain().setMemory(MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get(), cooldown - 1);
+//                }
+//            });
+//            this.getBrain().getMemory(MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get()).ifPresent(cooldown -> {
+//                if (cooldown > 0) {
+//                    this.getBrain().setMemory(MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get(), cooldown - 1);
+//                }
+//            });
+//        }
+//        else if (getCurrentPhase().equals("camembert")) {
+//            this.getBrain().getMemory(MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get()).ifPresent(cooldown -> {
+//                if (cooldown > 0) {
+//                    this.getBrain().setMemory(MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get(), cooldown - 1);
+//                }
+//            });
+//            this.getBrain().getMemory(MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get()).ifPresent(cooldown -> {
+//                if (cooldown > 0) {
+//                    this.getBrain().setMemory(MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get(), cooldown - 1);
+//                }
+//            });
+//        }
+//    }
 
-    @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
-        return NetworkManager.createAddEntityPacket(this, entity);
-    }
+//    @Override
+//    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+//        return NetworkManager.createAddEntityPacket(this, entity);
+//    }
 
     @Override
     protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
         return CheeseBossAi.makeBrain(this, dynamic);
     }
 
-    @Contract(value = "null->false")
-    public boolean canTargetEntity(@Nullable Entity entity) {
-        if (!(entity instanceof LivingEntity livingEntity) ||
-                this.level() != entity.level() ||
-                !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
-                this.isAlliedTo(entity) ||
-                livingEntity.getType() == EntityType.ARMOR_STAND ||
-                livingEntity.getType() == EntityRegistry.CHEESE_BOSS.get() ||
-                livingEntity.isInvulnerable() || livingEntity.isDeadOrDying()) {
-            return false;
-        }
-        return this.level().getWorldBorder().isWithinBounds(livingEntity.getBoundingBox());
-    }
-
-    public String getCurrentPhase() {
-        return this.getBrain().getMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get()).orElse("cheddar");
-    }
-
-    public void switchPhase(String phase) {
-        this.getBrain().setMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get(), phase);
-        this.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE);
-    }
+//    @Contract(value = "null->false")
+//    public boolean canTargetEntity(@Nullable Entity entity) {
+//        if (!(entity instanceof LivingEntity livingEntity) ||
+//                this.level() != entity.level() ||
+//                !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
+//                this.isAlliedTo(entity) ||
+//                livingEntity.getType() == EntityType.ARMOR_STAND ||
+//                livingEntity.getType() == EntityRegistry.CHEESE_BOSS.get() ||
+//                livingEntity.isInvulnerable() || livingEntity.isDeadOrDying()) {
+//            return false;
+//        }
+//        return this.level().getWorldBorder().isWithinBounds(livingEntity.getBoundingBox());
+//    }
+//
+//    public String getCurrentPhase() {
+//        return this.getBrain().getMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get()).orElse("cheddar");
+//    }
+//
+//    public void switchPhase(String phase) {
+//        this.getBrain().setMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get(), phase);
+//        this.playSound(SoundEvents.ZOMBIE_VILLAGER_CURE);
+//    }
 
     protected static void spawnCheeseSpikes(CheeseBoss cheeseBoss) {
         // Logic to spawn cheese spikes around or in front of the Cheese Boss

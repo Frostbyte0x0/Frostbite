@@ -33,7 +33,7 @@ public class CheeseBossAi {
     protected static Brain<?> makeBrain(CheeseBoss cheeseBoss, Dynamic<?> ops) {
         Brain.Provider<CheeseBoss> provider = Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
         Brain<CheeseBoss> brain = provider.makeBrain(ops);
-        initCoreActivity(brain);
+        //initCoreActivity(brain);
         initIdleActivity(brain);
         initFightActivity(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
@@ -43,10 +43,10 @@ public class CheeseBossAi {
         return brain;
     }
 
-    private static void initCoreActivity(Brain<CheeseBoss> brain) {
-        brain.addActivity(Activity.CORE, 0, ImmutableList.of(new Swim(0.8F),
-                new MoveToTargetSink(500, 700), new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)));
-    }
+//    private static void initCoreActivity(Brain<CheeseBoss> brain) {
+//        brain.addActivity(Activity.CORE, 0, ImmutableList.of(new Swim(0.8F),
+//                new MoveToTargetSink(500, 700), new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)));
+//    }
 
     private static void initFightActivity(Brain<CheeseBoss> brain) {
         brain.addActivityWithConditions(Activity.FIGHT, ImmutableList.of(Pair.of(0, new Switch())),
@@ -65,14 +65,14 @@ public class CheeseBossAi {
 
     public static void setupCooldowns(Brain<CheeseBoss> brain) {
         brain.setMemory(MemoryModuleTypeRegistry.SWITCH_COOLDOWN.get(), SWITCH_COOLDOWN);
-        brain.setMemory(MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get(), SPIKES_COOLDOWN);
-        brain.setMemory(MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get(), CHEESE_RAIN_COOLDOWN);
-        brain.setMemory(MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get(), CHEESE_WHEEL_COOLDOWN);
-        brain.setMemory(MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get(), MOLD_BOMB_COOLDOWN);
+//        brain.setMemory(MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get(), SPIKES_COOLDOWN);
+//        brain.setMemory(MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get(), CHEESE_RAIN_COOLDOWN);
+//        brain.setMemory(MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get(), CHEESE_WHEEL_COOLDOWN);
+//        brain.setMemory(MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get(), MOLD_BOMB_COOLDOWN);
     }
 
     static {
-        SENSOR_TYPES = List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.CHEESE_BOSS_SENSOR.get());
+        SENSOR_TYPES = List.of(SensorType.NEAREST_PLAYERS);//, EntityRegistry.CHEESE_BOSS_SENSOR.get());
         MEMORY_TYPES = List.of(MemoryModuleType.NEAREST_LIVING_ENTITIES,
                 MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
                 MemoryModuleType.NEAREST_VISIBLE_PLAYER,
@@ -85,11 +85,11 @@ public class CheeseBossAi {
                 MemoryModuleType.ATTACK_TARGET,
                 MemoryModuleType.ATTACK_COOLING_DOWN,
                 MemoryModuleType.NEAREST_ATTACKABLE,
-                MemoryModuleTypeRegistry.CURRENT_PHASE.get(),
-                MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get(),
-                MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get(),
-                MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get(),
-                MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get(),
+//                MemoryModuleTypeRegistry.CURRENT_PHASE.get(),
+//                MemoryModuleTypeRegistry.SPIKES_COOLDOWN.get(),
+//                MemoryModuleTypeRegistry.CHEESE_RAIN_COOLDOWN.get(),
+//                MemoryModuleTypeRegistry.MOLD_BOMB_COOLDOWN.get(),
+//                MemoryModuleTypeRegistry.CHEESE_WHEEL_COOLDOWN.get(),
                 MemoryModuleTypeRegistry.SWITCH_COOLDOWN.get());
     }
 
@@ -132,15 +132,15 @@ public class CheeseBossAi {
             return false; // This behavior should only run once
         }
 
-        @Override
-        protected void start(ServerLevel serverLevel, CheeseBoss cheeseBoss, long l) {
-            serverLevel.getServer().sendSystemMessage(Component.literal(cheeseBoss.getCurrentPhase()));
-            switch (cheeseBoss.getBrain().getMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get()).orElse("cheddar")) {
-                case "cheddar" -> cheeseBoss.switchPhase("camembert");
-                case "camembert" -> cheeseBoss.switchPhase("babybel");
-                default -> cheeseBoss.switchPhase("cheddar");
-            }
-        }
+//        @Override
+//        protected void start(ServerLevel serverLevel, CheeseBoss cheeseBoss, long l) {
+//            serverLevel.getServer().sendSystemMessage(Component.literal(cheeseBoss.getCurrentPhase()));
+//            switch (cheeseBoss.getBrain().getMemory(MemoryModuleTypeRegistry.CURRENT_PHASE.get()).orElse("cheddar")) {
+//                case "cheddar" -> cheeseBoss.switchPhase("camembert");
+//                case "camembert" -> cheeseBoss.switchPhase("babybel");
+//                default -> cheeseBoss.switchPhase("cheddar");
+//            }
+//        }
 
         @Override
         protected void stop(ServerLevel serverLevel, CheeseBoss cheeseBoss, long l) {
