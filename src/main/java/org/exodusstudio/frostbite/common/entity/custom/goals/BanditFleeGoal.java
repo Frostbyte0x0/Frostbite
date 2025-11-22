@@ -23,6 +23,14 @@ public class BanditFleeGoal extends AvoidEntityGoal<Player> {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (path != null) {
+            bandit.getLookControl().setLookAt(path.getNextNode().x, path.getNextNode().y, path.getNextNode().z, 30, 30);
+        }
+    }
+
+    @Override
     public boolean canUse() {
         return super.canUse() && !bandit.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
     }

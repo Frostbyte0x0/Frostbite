@@ -1,11 +1,13 @@
 package org.exodusstudio.frostbite.common.util;
 
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -286,5 +288,23 @@ public class Util {
         float xRot = (float) Math.toDegrees(Math.asin(-dir.y));
         float yRot = (float) Math.toDegrees(Math.atan2(dir.x, dir.z));
         return new float[]{xRot, yRot};
+    }
+
+    public static void blendAnimations(
+            int ticksSinceLastChange,
+            int blendTicks,
+            float partialTick,
+            float ageInTicks,
+            KeyframeAnimation lastAnimation,
+            AnimationState lastAnimationState,
+            KeyframeAnimation newAnimation,
+            AnimationState newAnimationState
+    ) {
+        if (ticksSinceLastChange < blendTicks) {
+            float blendProgress = Mth.clamp((ticksSinceLastChange + partialTick) / blendTicks, 0f, 1f);
+
+            lastAnimationState.ifStarted((state) -> lastAnimation.apply((long)((float)state.getTimeInMillis(ageInTicks)), 1 - blendProgress));
+            newAnimationState.ifStarted((state) -> newAnimation.apply((long)((float)state.getTimeInMillis(ageInTicks)), blendProgress));
+        }
     }
 }

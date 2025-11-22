@@ -22,17 +22,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.custom.goals.BanditFleeGoal;
 import org.exodusstudio.frostbite.common.entity.custom.goals.BanditStealGoal;
+import org.exodusstudio.frostbite.common.entity.custom.goals.BanditStrollGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class BanditEntity extends Animal implements CustomTemperatureEntity {
+    private static final EntityDataAccessor<String> DATA_LAST_STATE =
+            SynchedEntityData.defineId(BanditEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_STATE =
             SynchedEntityData.defineId(BanditEntity.class, EntityDataSerializers.STRING);
-    public final AnimationState stealingAnimationState = new AnimationState();
-    public final AnimationState walkingAnimationState = new AnimationState();
-    public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState fleeingAnimationState = new AnimationState();
+    private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
+            SynchedEntityData.defineId(BanditEntity.class, EntityDataSerializers.INT);
+    public final AnimationState currentAnimationState = new AnimationState();
+    public final AnimationState lastAnimationState = new AnimationState();
+    public static final int BLEND_TICKS = 10;
 
     public BanditEntity(EntityType<? extends Animal> ignored, Level level) {
         super(EntityRegistry.BANDIT.get(), level);
@@ -44,7 +48,7 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
         this.goalSelector.addGoal(3, new BanditStealGoal(this, 0.8));
         this.goalSelector.addGoal(4,
                 new BanditFleeGoal(this, 10, 1.1, 1.4));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(5, new BanditStrollGoal(this, 0.8));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -60,27 +64,17 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_STATE, "idle");
-    }
-
-    public void resetAnimationStates() {
-        this.stealingAnimationState.stop();
-        this.walkingAnimationState.stop();
-        this.idleAnimationState.stop();
-        this.fleeingAnimationState.stop();
+        builder.define(DATA_LAST_STATE, "idle");
+        builder.define(DATA_TICKS_SINCE_LAST_CHANGE, BLEND_TICKS);
     }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (DATA_STATE.equals(accessor)) {
-            resetAnimationStates();
-            String state = this.getEntityData().get(DATA_STATE);
-            switch (state) {
-                case "stealing" -> this.stealingAnimationState.startIfStopped(tickCount);
-                case "walking" -> this.walkingAnimationState.startIfStopped(tickCount);
-                case "idle" -> this.idleAnimationState.startIfStopped(tickCount);
-                case "fleeing" -> this.fleeingAnimationState.startIfStopped(tickCount);
-            }
-
+            this.lastAnimationState.copyFrom(currentAnimationState);
+            this.currentAnimationState.stop();
+            this.currentAnimationState.startIfStopped(tickCount);
+            setTicksSinceLastChange(0);
             this.refreshDimensions();
         }
 
@@ -91,8 +85,14 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
     public void tick() {
         super.tick();
 
-        if (getTarget() instanceof Player player && isStealing() && stealingAnimationState.getTimeInMillis(tickCount) / 50 == 10) {
+        if (getTarget() instanceof Player player && isStealing() && currentAnimationState.getTimeInMillis(tickCount) / 50 == 10) {
             stealItemFromPlayer(player);
+        }
+
+        setTicksSinceLastChange(getTicksSinceLastChange() + 1);
+
+        if (getTicksSinceLastChange() > BLEND_TICKS) {
+            lastAnimationState.stop();
         }
     }
 
@@ -133,6 +133,7 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
     }
 
     public void setStealing() {
+        this.getEntityData().set(DATA_LAST_STATE, getCurrentState());
         this.getEntityData().set(DATA_STATE, "stealing");
     }
 
@@ -141,6 +142,7 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
     }
 
     public void setFleeing() {
+        this.getEntityData().set(DATA_LAST_STATE, getCurrentState());
         this.getEntityData().set(DATA_STATE, "fleeing");
     }
 
@@ -149,11 +151,33 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
     }
 
     public void setIdle() {
+        this.getEntityData().set(DATA_LAST_STATE, getCurrentState());
         this.getEntityData().set(DATA_STATE, "idle");
+    }
+
+    public boolean isWalking() {
+        return this.getEntityData().get(DATA_STATE).equals("walking");
+    }
+
+    public void setWalking() {
+        this.getEntityData().set(DATA_LAST_STATE, getCurrentState());
+        this.getEntityData().set(DATA_STATE, "walking");
     }
 
     public String getCurrentState() {
         return this.getEntityData().get(DATA_STATE);
+    }
+
+    public String getLastState() {
+        return this.getEntityData().get(DATA_LAST_STATE);
+    }
+
+    public int getTicksSinceLastChange() {
+        return this.getEntityData().get(DATA_TICKS_SINCE_LAST_CHANGE);
+    }
+
+    public void setTicksSinceLastChange(int ticks) {
+        this.getEntityData().set(DATA_TICKS_SINCE_LAST_CHANGE, ticks);
     }
 
     @Override

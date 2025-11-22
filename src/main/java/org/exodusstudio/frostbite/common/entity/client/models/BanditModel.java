@@ -9,6 +9,8 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.BanditAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.BanditRenderState;
+import org.exodusstudio.frostbite.common.entity.custom.BanditEntity;
+import org.exodusstudio.frostbite.common.util.Util;
 
 public class BanditModel extends EntityModel<BanditRenderState> {
     private final KeyframeAnimation stealingAnimation;
@@ -21,7 +23,7 @@ public class BanditModel extends EntityModel<BanditRenderState> {
     public BanditModel(ModelPart root) {
         super(root);
         this.stealingAnimation = BanditAnimations.IDLE_PLACEHOLDER.bake(root);
-        this.walkingAnimation = BanditAnimations.WALK_PLACEHOLDER.bake(root);
+        this.walkingAnimation = BanditAnimations.WALK.bake(root);
         this.idleAnimation = BanditAnimations.IDLE_PLACEHOLDER.bake(root);
         this.fleeingAnimation = BanditAnimations.FLEEING_DOUBLE_PEEK.bake(root);
         this.model = root.getChild("Model");
@@ -68,12 +70,36 @@ public class BanditModel extends EntityModel<BanditRenderState> {
         super.setupAnim(state);
         this.head.xRot = state.xRot * ((float)Math.PI / 180F);
         this.head.yRot = state.yRot * ((float)Math.PI / 180F);
-        switch (state.currentState) {
-            case "idle" -> idleAnimation.apply(state.idleAnimationState, state.ageInTicks);
-            case "walking" -> walkingAnimation.apply(state.walkingAnimationState, state.ageInTicks);
-            case "fleeing" -> fleeingAnimation.apply(state.fleeingAnimationState, state.ageInTicks);
-            case "stealing" -> stealingAnimation.apply(state.stealingAnimationState, state.ageInTicks);
+
+        if (state.ticksSinceLastChange < BanditEntity.BLEND_TICKS) {
+            KeyframeAnimation currentAnimation = switch (state.currentState) {
+                case "walking" -> walkingAnimation;
+                case "fleeing" -> fleeingAnimation;
+                case "stealing" -> stealingAnimation;
+                default -> idleAnimation;
+            };
+            KeyframeAnimation lastAnimation = switch (state.lastState) {
+                case "walking" -> walkingAnimation;
+                case "fleeing" -> fleeingAnimation;
+                case "stealing" -> stealingAnimation;
+                default -> idleAnimation;
+            };
+            Util.blendAnimations(
+                    state.ticksSinceLastChange,
+                    BanditEntity.BLEND_TICKS,
+                    state.partialTick,
+                    state.ageInTicks,
+                    lastAnimation, state.lastAnimationState,
+                    currentAnimation, state.currentAnimationState);
+        } else {
+            switch (state.currentState) {
+                case "idle" -> idleAnimation.apply(state.currentAnimationState, state.ageInTicks);
+                case "walking" -> walkingAnimation.apply(state.currentAnimationState, state.ageInTicks);
+                case "fleeing" -> fleeingAnimation.apply(state.currentAnimationState, state.ageInTicks);
+                case "stealing" -> stealingAnimation.apply(state.currentAnimationState, state.ageInTicks);
+            }
         }
+
     }
 
     @Override

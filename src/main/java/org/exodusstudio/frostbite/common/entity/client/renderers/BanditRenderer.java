@@ -26,11 +26,11 @@ public class BanditRenderer extends MobRenderer<BanditEntity, BanditRenderState,
     public void extractRenderState(BanditEntity bandit, BanditRenderState state, float p_361157_) {
         super.extractRenderState(bandit, state, p_361157_);
         HoldingEntityRenderState.extractHoldingEntityRenderState(bandit, state, itemModelResolver);
-        state.stealingAnimationState.copyFrom(bandit.stealingAnimationState);
-        state.walkingAnimationState.copyFrom(bandit.walkingAnimationState);
-        state.idleAnimationState.copyFrom(bandit.idleAnimationState);
-        state.fleeingAnimationState.copyFrom(bandit.fleeingAnimationState);
+        state.currentAnimationState.copyFrom(bandit.currentAnimationState);
+        state.lastAnimationState.copyFrom(bandit.lastAnimationState);
+        state.ticksSinceLastChange = bandit.getTicksSinceLastChange();
         state.currentState = bandit.getCurrentState();
+        state.lastState = bandit.getLastState();
     }
 
     @Override

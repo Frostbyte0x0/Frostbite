@@ -26,6 +26,13 @@ public class BanditStealGoal extends Goal {
     public void start() {
         super.start();
         this.ticksUntilNextPathRecalculation = 0;
+        bandit.setWalking();
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        bandit.setIdle();
     }
 
     @Override
