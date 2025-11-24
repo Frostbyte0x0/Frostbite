@@ -46,6 +46,7 @@ public class Frostbite {
         BlockRegistry.BLOCKS.register(modEventBus);
         CreativeModeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
         EntityRegistry.ENTITY_TYPES.register(modEventBus);
+        EntityRegistry.SENSOR.register(modEventBus);
         EffectRegistry.MOB_EFFECTS.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
@@ -54,6 +55,7 @@ public class Frostbite {
         FoliagePlacerRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
+        MemoryModuleTypeRegistry.MEMORY_MODULE_TYPES.register(modEventBus);
         GameRuleRegistry.register();
     }
 

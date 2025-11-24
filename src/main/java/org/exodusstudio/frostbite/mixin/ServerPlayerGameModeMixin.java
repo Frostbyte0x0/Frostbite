@@ -18,7 +18,7 @@ import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
-import org.exodusstudio.frostbite.common.entity.custom.IceBlockEntity;
+import org.exodusstudio.frostbite.common.entity.custom.projectiles.IceBlockEntity;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;

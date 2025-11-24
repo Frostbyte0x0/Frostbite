@@ -9,7 +9,7 @@ import org.exodusstudio.frostbite.common.entity.client.layers.BanditHeldItemLaye
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.BanditModel;
 import org.exodusstudio.frostbite.common.entity.client.states.BanditRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.BanditEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.BanditEntity;
 
 public class BanditRenderer extends MobRenderer<BanditEntity, BanditRenderState, BanditModel> {
     public BanditRenderer(EntityRendererProvider.Context context) {

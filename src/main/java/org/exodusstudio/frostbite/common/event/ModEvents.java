@@ -38,7 +38,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
-import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;

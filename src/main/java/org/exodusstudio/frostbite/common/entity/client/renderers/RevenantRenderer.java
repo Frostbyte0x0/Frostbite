@@ -11,7 +11,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.RevenantModel;
 import org.exodusstudio.frostbite.common.entity.client.states.RevenantRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.RevenantEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.RevenantEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class RevenantRenderer extends HumanoidMobRenderer<RevenantEntity, RevenantRenderState, RevenantModel> {

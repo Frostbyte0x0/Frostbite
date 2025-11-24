@@ -4,8 +4,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.exodusstudio.frostbite.common.entity.custom.HailcoilEntity;
-import org.exodusstudio.frostbite.common.entity.custom.RoamingBlizzardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.HailcoilEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.RoamingBlizzardEntity;
 
 public class SummoningStaffItem extends AbstractStaff {
     public SummoningStaffItem(Properties properties) {

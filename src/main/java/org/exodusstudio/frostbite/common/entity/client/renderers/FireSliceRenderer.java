@@ -13,7 +13,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.FireSliceModel;
 import org.exodusstudio.frostbite.common.entity.client.states.FireSliceRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.FireSliceEntity;
+import org.exodusstudio.frostbite.common.entity.custom.projectiles.FireSliceEntity;
 
 public class FireSliceRenderer extends EntityRenderer<FireSliceEntity, FireSliceRenderState> {
     protected final FireSliceModel model;

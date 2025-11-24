@@ -7,7 +7,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.TorchModel;
 import org.exodusstudio.frostbite.common.entity.client.states.TorchRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.TorchEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.TorchEntity;
 
 public class TorchRenderer extends MobRenderer<TorchEntity, TorchRenderState, TorchModel> {
     public TorchRenderer(EntityRendererProvider.Context context) {

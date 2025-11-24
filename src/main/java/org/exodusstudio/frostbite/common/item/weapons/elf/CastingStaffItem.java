@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.custom.IceSpikeEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;

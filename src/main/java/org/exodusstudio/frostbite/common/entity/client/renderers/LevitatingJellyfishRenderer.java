@@ -11,7 +11,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.LevitatingJellyfishModel;
 import org.exodusstudio.frostbite.common.entity.client.states.LevitatingJellyfishRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.LevitatingJellyfishEntity;
+import org.exodusstudio.frostbite.common.entity.custom.animals.LevitatingJellyfishEntity;
 
 public class LevitatingJellyfishRenderer extends LivingEntityRenderer<LevitatingJellyfishEntity, LevitatingJellyfishRenderState, LevitatingJellyfishModel> {
     public LevitatingJellyfishRenderer(EntityRendererProvider.Context context) {

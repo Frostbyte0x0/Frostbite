@@ -8,7 +8,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.layers.WoollySheepWoolLayer;
 import org.exodusstudio.frostbite.common.entity.client.models.WoollySheepModel;
-import org.exodusstudio.frostbite.common.entity.custom.WoollySheepEntity;
+import org.exodusstudio.frostbite.common.entity.custom.animals.WoollySheepEntity;
 
 public class WoollySheepRenderer extends AgeableMobRenderer<WoollySheepEntity, SheepRenderState, WoollySheepModel> {
     private static final ResourceLocation SHEEP_LOCATION = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/woolly_sheep/woolly_sheep.png");

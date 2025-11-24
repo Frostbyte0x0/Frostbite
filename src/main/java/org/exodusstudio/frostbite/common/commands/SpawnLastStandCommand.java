@@ -8,7 +8,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.exodusstudio.frostbite.common.entity.custom.LastStandEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.LastStandEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
 public class SpawnLastStandCommand {

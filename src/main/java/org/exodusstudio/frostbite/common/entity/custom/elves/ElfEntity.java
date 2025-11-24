@@ -25,7 +25,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.exodusstudio.frostbite.common.entity.custom.goals.ElfHuddleAroundHealerGoal;
+import org.exodusstudio.frostbite.common.entity.goals.ElfHuddleAroundHealerGoal;
 import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
 
 import java.util.Optional;

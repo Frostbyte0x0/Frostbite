@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.item.weapons.elf;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import org.exodusstudio.frostbite.common.entity.custom.HealingCircleEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.HealingCircleEntity;
 
 public class HealingStaffItem extends AbstractStaff {
     public HealingStaffItem(Properties properties) {

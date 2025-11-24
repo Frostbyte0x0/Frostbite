@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.RainFrogModel;
-import org.exodusstudio.frostbite.common.entity.custom.RainFrogEntity;
+import org.exodusstudio.frostbite.common.entity.custom.animals.RainFrogEntity;
 
 public class RainFrogRenderer extends MobRenderer<RainFrogEntity, LivingEntityRenderState, RainFrogModel> {
     public RainFrogRenderer(EntityRendererProvider.Context context) {

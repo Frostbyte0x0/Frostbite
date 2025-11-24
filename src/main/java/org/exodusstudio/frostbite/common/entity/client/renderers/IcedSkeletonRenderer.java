@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
 import net.minecraft.resources.ResourceLocation;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.custom.IcedSkeletonEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedSkeletonEntity;
 
 public class IcedSkeletonRenderer extends AbstractSkeletonRenderer<IcedSkeletonEntity, SkeletonRenderState> {
     public IcedSkeletonRenderer(EntityRendererProvider.Context p_174380_) {

@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.states;
 
 import net.minecraft.client.renderer.entity.state.HoldingEntityRenderState;
 import net.minecraft.world.entity.AnimationState;
-import org.exodusstudio.frostbite.common.entity.custom.BanditEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.BanditEntity;
 
 public class BanditRenderState extends HoldingEntityRenderState {
     public final AnimationState currentAnimationState = new AnimationState();

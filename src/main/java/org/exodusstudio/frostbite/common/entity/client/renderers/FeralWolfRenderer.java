@@ -8,7 +8,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.FeralWolfModel;
 import org.exodusstudio.frostbite.common.entity.client.states.FeralWolfRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.FeralWolfEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.FeralWolfEntity;
 
 public class FeralWolfRenderer extends MobRenderer<FeralWolfEntity, FeralWolfRenderState, FeralWolfModel> {
     public FeralWolfRenderer(EntityRendererProvider.Context context) {

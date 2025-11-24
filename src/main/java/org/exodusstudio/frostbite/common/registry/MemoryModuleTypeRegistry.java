@@ -13,7 +13,7 @@ public class MemoryModuleTypeRegistry {
     public static final DeferredRegister<MemoryModuleType<?>> MEMORY_MODULE_TYPES =
             DeferredRegister.create(Registries.MEMORY_MODULE_TYPE, Frostbite.MOD_ID);
 
-    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<Integer>> SWITCH_COOLDOWN =
-            MEMORY_MODULE_TYPES.register("switch_cooldown",
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<Integer>> ATTACK_COOLDOWN =
+            MEMORY_MODULE_TYPES.register("attack_cooldown",
                     () -> new MemoryModuleType<>(Optional.of(Codec.INT)));
 }

@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.BanditAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.BanditRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.BanditEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.BanditEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
 public class BanditModel extends EntityModel<BanditRenderState> {

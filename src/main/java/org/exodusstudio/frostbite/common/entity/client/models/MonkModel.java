@@ -2,10 +2,12 @@ package org.exodusstudio.frostbite.common.entity.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import org.exodusstudio.frostbite.common.entity.client.animations.MonkAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.MonkRenderState;
 
 public class MonkModel extends EntityModel<MonkRenderState> {
@@ -15,6 +17,7 @@ public class MonkModel extends EntityModel<MonkRenderState> {
     private final ModelPart right_arm;
     private final ModelPart left_leg;
     private final ModelPart right_leg;
+    private final KeyframeAnimation clapAnimation;
 
     public MonkModel(ModelPart root) {
         super(root);
@@ -24,6 +27,7 @@ public class MonkModel extends EntityModel<MonkRenderState> {
         this.right_arm = root.getChild("right_arm");
         this.left_leg = root.getChild("left_leg");
         this.right_leg = root.getChild("right_leg");
+        this.clapAnimation = MonkAnimations.CLAP.bake(root);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -45,7 +49,14 @@ public class MonkModel extends EntityModel<MonkRenderState> {
     }
 
     @Override
+    public void setupAnim(MonkRenderState state) {
+        super.setupAnim(state);
+        clapAnimation.apply(state.clapAnimationState, state.ageInTicks);
+    }
+
+    @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        poseStack.translate(0, -0.5, 0);
         head.render(poseStack, buffer, packedLight, packedOverlay, color);
         body.render(poseStack, buffer, packedLight, packedOverlay, color);
         left_arm.render(poseStack, buffer, packedLight, packedOverlay, color);

@@ -9,7 +9,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.FrozenRemnantsModel;
 import org.exodusstudio.frostbite.common.entity.client.states.FrozenRemnantsRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.FrozenRemnantsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 
 public class FrozenRemnantsRenderer extends LivingEntityRenderer<FrozenRemnantsEntity, FrozenRemnantsRenderState, FrozenRemnantsModel> {
     public FrozenRemnantsRenderer(EntityRendererProvider.Context context) {

@@ -1,0 +1,372 @@
+package org.exodusstudio.frostbite.common.entity.custom.monk;
+
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.serialization.Dynamic;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileDeflection;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static net.minecraft.world.level.block.EnchantingTableBlock.BOOKSHELF_OFFSETS;
+
+public class MonkEntity extends Monster {
+    private static final EntityDataAccessor<Boolean> DATA_CLAPPING =
+            SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_ILLUSION =
+            SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<String> DATA_LAST_CONFUSION =
+            SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.STRING);
+    private static final Component CHEESE_BOSS_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
+    private final ServerBossEvent bossEvent = (ServerBossEvent)
+            new ServerBossEvent(CHEESE_BOSS_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
+    public final AnimationState clapAnimationState = new AnimationState();
+    public static final int DIAMETER = 15;
+    public static final int ILLUSION_AMOUNT = 10;
+    public static final int ATTACK_COOLDOWN = 100;
+
+    public MonkEntity(EntityType<? extends Monster> ignored, Level level) {
+        super(EntityRegistry.MONK.get(), level);
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 8)
+                .add(Attributes.FOLLOW_RANGE, 10)
+                .add(Attributes.MOVEMENT_SPEED, 0.2);
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("illusion", isIllusion());
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        setIllusion(input.getBooleanOr("illusion", false));
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_CLAPPING, false);
+        builder.define(DATA_ILLUSION, false);
+        builder.define(DATA_LAST_CONFUSION, "");
+    }
+
+    @Override
+    protected void customServerAiStep(ServerLevel serverLevel) {
+        super.customServerAiStep(serverLevel);
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+        MonkAI.updateActivity(this);
+        ((Brain<MonkEntity>) getBrain()).tick(serverLevel, this);
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer serverPlayer) {
+        super.startSeenByPlayer(serverPlayer);
+        if (!isIllusion()) {
+            this.bossEvent.addPlayer(serverPlayer);
+        }
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
+        super.stopSeenByPlayer(serverPlayer);
+        if (!isIllusion()) {
+            this.bossEvent.removePlayer(serverPlayer);
+        }
+    }
+
+    @Override
+    protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
+        return MonkAI.makeBrain(this, dynamic);
+    }
+
+    @Contract(value = "null->false")
+    public boolean canTargetEntity(@Nullable Entity entity) {
+        if (!(entity instanceof LivingEntity livingEntity) ||
+                this.level() != entity.level() ||
+                !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
+                this.isAlliedTo(entity) ||
+                livingEntity.getType() == EntityType.ARMOR_STAND ||
+                livingEntity.getType() == EntityRegistry.MONK.get() ||
+                livingEntity.isInvulnerable() || livingEntity.isDeadOrDying()) {
+            return false;
+        }
+        return this.level().getWorldBorder().isWithinBounds(livingEntity.getBoundingBox());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!isDeadOrDying() && getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).isPresent()) {
+            getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(),
+                    getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).get() - 1);
+
+            if (getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).get() == 30 && level() instanceof ServerLevel serverLevel && isClapping()) {
+                for (int i = 0; i < 5; i++) {
+                    for (BlockPos blockpos : BOOKSHELF_OFFSETS) {
+                        serverLevel.sendParticles(
+                                ParticleTypes.ENCHANT,
+                                getX() + (0.5 - level().random.nextFloat()) * 0.5,
+                                getEyeY() + (0.5 - level().random.nextFloat()) * 0.5 + 1,
+                                getZ() + (0.5 - level().random.nextFloat()) * 0.5,
+                                0,
+                                blockpos.getX() + level().random.nextFloat() - 0.5,
+                                blockpos.getY() - level().random.nextFloat() - 1.0F,
+                                blockpos.getZ() + level().random.nextFloat() - 0.5,
+                                1
+                        );
+                    }
+                }
+            }
+        }
+
+        if (getAttackableFromBrain() != null && isClapping() && clapAnimationState.getTimeInMillis(tickCount) / 50 == 9) {
+            level().playSound(null, this.getOnPos(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.HOSTILE,
+                    1f, level().getRandom().nextFloat() * 0.1F + 0.9F);
+            if (!getLastConfusionAttack().isEmpty()) {
+                undoLastConfusionAttack();
+            }
+
+            switch (chooseAttack()) {
+                case "confuse" -> confuseAttack();
+                case "clone" -> cloneAttack();
+                case "repel" -> repelAttack(getAttackableFromBrain());
+                case "tp" -> tpAttack();
+                case "swirl" -> swirlAttack(getAttackableFromBrain());
+            }
+            setClapping(false);
+        }
+    }
+
+    @Nullable
+    protected LivingEntity getAttackableFromBrain() {
+        return this.getBrain().getMemory(MemoryModuleType.NEAREST_ATTACKABLE).orElse(null);
+    }
+
+    public String chooseAttack() {
+        if (isIllusion()) return "tp";
+        return "confuse";
+    }
+
+    public void confuseAttack() {
+        // TODO confuse attack
+        invertControls();
+        setLastConfusionAttack("invert_controls");
+    }
+
+    public void invertControls() {
+        Options options = Minecraft.getInstance().options;
+        InputConstants.Key keyLeft = options.keyLeft.getKey();
+        options.keyLeft.setKey(options.keyRight.getKey());
+        options.keyRight.setKey(keyLeft);
+        InputConstants.Key keyUp = options.keyUp.getKey();
+        options.keyUp.setKey(options.keyDown.getKey());
+        options.keyDown.setKey(keyUp);
+        KeyMapping.resetMapping();
+        //Frostbite.LOGGER.debug(String.valueOf(options.keyUp.isDown()));
+    }
+
+    public void cloneAttack() {
+        tpRandomly(level());
+        if (level() instanceof ServerLevel serverLevel) {
+            for (int i = 0; i < ILLUSION_AMOUNT; i++) {
+                MonkEntity monk = new MonkEntity(null, serverLevel);
+                monk.setPos(this.blockPosition().getX(), this.blockPosition().getY(), this.blockPosition().getZ());
+                monk.setIllusion(true);
+                monk.tpRandomly(serverLevel);
+                serverLevel.addFreshEntityWithPassengers(monk);
+                serverLevel.gameEvent(GameEvent.ENTITY_PLACE, this.blockPosition(), GameEvent.Context.of(this));
+            }
+        }
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        if (!getLastConfusionAttack().isEmpty()) {
+            undoLastConfusionAttack();
+        }
+    }
+
+    public void tpAttack() {
+        tpRandomly(level());
+    }
+
+    public void repelAttack(LivingEntity target) {
+        // TODO repel attack
+        tpRandomly(level());
+    }
+
+    public void swirlAttack(LivingEntity target) {
+        // TODO swirl attack
+    }
+
+    public void undoLastConfusionAttack() {
+        String lastAttack = getLastConfusionAttack();
+        switch (lastAttack) {
+            case "invert_controls" -> invertControls();
+        }
+        setLastConfusionAttack("");
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        if (DATA_CLAPPING.equals(accessor)) {
+            this.clapAnimationState.stop();
+            if (isClapping()) {
+                this.clapAnimationState.startIfStopped(tickCount);
+            }
+            this.refreshDimensions();
+        }
+
+        super.onSyncedDataUpdated(accessor);
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float p_376610_) {
+        if (isIllusion()) {
+            Player player = Minecraft.getInstance().player;
+            assert player != null;
+            for (int i = 0; i < 80; i++) {
+                player.level().addAlwaysVisibleParticle(
+                        ParticleRegistry.SWIRLING_LEAF_PARTICLE.get(),
+                        this.getX() + 0.5f * random.nextDouble() - Math.sin(this.yHeadRot * Math.PI / 180) / 1.5f,
+                        player.getY() + 0.5f * random.nextDouble() + 1.25f,
+                        this.getZ() + 0.5f * random.nextDouble() + Math.cos(this.yHeadRot * Math.PI / 180) / 1.5f,
+                        (0.5 - random.nextDouble()) * 0.3,
+                        (0.5 - random.nextDouble()) * 0.3,
+                        (0.5 - random.nextDouble()) * 0.3);
+
+            }
+            serverLevel.playSound(null, this.getOnPos(), SoundEvents.LAVA_EXTINGUISH, SoundSource.HOSTILE, 1f, serverLevel.getRandom().nextFloat() * 0.1F + 0.9F);
+            this.discard();
+            return false;
+        }
+
+        if (source.is(DamageTypeTags.IS_PROJECTILE)) {
+            if (source.getDirectEntity() instanceof Projectile projectile && projectile.getOwner() instanceof LivingEntity livingEntity) {
+                reflectProjectile(projectile, livingEntity);
+            }
+
+            return false;
+        }
+
+        if (random.nextFloat() < 0.2f) {
+            if (source.getEntity() instanceof Player) {
+                Minecraft.getInstance().cameraEntity.setYRot(Minecraft.getInstance().cameraEntity.yRotO + 180);
+            }
+            if (random.nextFloat() < 0.33f) {
+                tpRandomly(serverLevel);
+            }
+            return false;
+        }
+
+        return super.hurtServer(serverLevel, source, p_376610_);
+    }
+
+    public void reflectProjectile(Projectile projectile, LivingEntity owner) {
+        double t = owner.distanceTo(this) / 5;
+        double vx = (projectile.getX() - owner.getX()) / t;
+        double vy = (projectile.getY() - owner.getY()  - 3 * t * t) / t;
+        double vz = (projectile.getZ() - owner.getZ()) / t;
+        projectile.setDeltaMovement(vx, vy, vz);
+    }
+
+    @Override
+    public ProjectileDeflection deflection(Projectile projectile) {
+        return ProjectileDeflection.NONE;
+    }
+
+    public void tpRandomly(Level level) {
+        for (int i = 0; i < 16; i++) {
+            double d0 = this.getX() + (this.getRandom().nextDouble() - 0.5) * DIAMETER;
+            double d1 = Mth.clamp(
+                    this.getY() + (this.getRandom().nextDouble() - 0.5) * DIAMETER,
+                    level.getMinY(),
+                    (level.getMinY() + ((ServerLevel)level).getLogicalHeight() - 1)
+            );
+            double d2 = this.getZ() + (this.getRandom().nextDouble() - 0.5) * DIAMETER;
+            if (this.isPassenger()) {
+                this.stopRiding();
+            }
+
+            Vec3 vec3 = this.position();
+            if (this.randomTeleport(d0, d1, d2, true)) {
+                level.gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
+                level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS);
+                this.resetFallDistance();
+                break;
+            }
+        }
+    }
+
+    public void setClapping(boolean clapping) {
+        this.entityData.set(DATA_CLAPPING, clapping);
+        if (!clapping) {
+            getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ATTACK_COOLDOWN);
+        }
+    }
+
+    public boolean isClapping() {
+        return this.entityData.get(DATA_CLAPPING);
+    }
+
+    public void setIllusion(boolean illusion) {
+        this.entityData.set(DATA_ILLUSION, illusion);
+    }
+
+    public boolean isIllusion() {
+        return this.entityData.get(DATA_ILLUSION);
+    }
+
+    public void setLastConfusionAttack(String attack) {
+        this.entityData.set(DATA_LAST_CONFUSION, attack);
+    }
+
+    public String getLastConfusionAttack() {
+        return this.entityData.get(DATA_LAST_CONFUSION);
+    }
+
+    @Override
+    public boolean canFreeze() {
+        return false;
+    }
+}

@@ -7,7 +7,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.BorealBearModel;
 import org.exodusstudio.frostbite.common.entity.client.states.BorealBearRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.BorealBearEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.BorealBearEntity;
 
 public class BorealBearRenderer extends MobRenderer<BorealBearEntity, BorealBearRenderState, BorealBearModel> {
     public BorealBearRenderer(EntityRendererProvider.Context context) {

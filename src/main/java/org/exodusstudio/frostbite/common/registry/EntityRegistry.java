@@ -6,14 +6,21 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.custom.*;
+import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
+import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntitySensor;
 import org.exodusstudio.frostbite.common.entity.custom.elves.CasterElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.HealerElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.SummonerElfEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
+import org.exodusstudio.frostbite.common.entity.custom.misc.*;
+import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
+import org.exodusstudio.frostbite.common.entity.custom.projectiles.*;
 
 import java.util.function.Supplier;
 
@@ -185,14 +192,14 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<SpecterEntity>> SPECTER =
             ENTITY_TYPES.register("specter", () -> EntityType.Builder
-                    .of(SpecterEntity::new, MobCategory.AMBIENT)
+                    .of(SpecterEntity::new, MobCategory.MONSTER)
                     .sized(0.8f, 2.3f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "specter"))));
 
     public static final Supplier<EntityType<RevenantEntity>> REVENANT =
             ENTITY_TYPES.register("revenant", () -> EntityType.Builder
-                    .of(RevenantEntity::new, MobCategory.AMBIENT)
+                    .of(RevenantEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "revenant"))));
@@ -206,14 +213,14 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<TorchEntity>> TORCH =
             ENTITY_TYPES.register("torch", () -> EntityType.Builder
-                    .of(TorchEntity::new, MobCategory.AMBIENT)
+                    .of(TorchEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "torch"))));
 
     public static final Supplier<EntityType<FireSliceEntity>> FIRE_SLICE =
             ENTITY_TYPES.register("fire_slice", () -> EntityType.Builder
-                    .<FireSliceEntity>of(FireSliceEntity::new, MobCategory.AMBIENT)
+                    .<FireSliceEntity>of(FireSliceEntity::new, MobCategory.MISC)
                     .sized(1.5f, 0.25f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_slice"))));
@@ -227,36 +234,43 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<HealerElfEntity>> HEALER_ELF =
             ENTITY_TYPES.register("healer_elf", () -> EntityType.Builder
-                    .of(HealerElfEntity::new, MobCategory.AMBIENT)
+                    .of(HealerElfEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "healer_elf"))));
 
     public static final Supplier<EntityType<CasterElfEntity>> CASTER_ELF =
             ENTITY_TYPES.register("caster_elf", () -> EntityType.Builder
-                    .of(CasterElfEntity::new, MobCategory.AMBIENT)
+                    .of(CasterElfEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "caster_elf"))));
 
     public static final Supplier<EntityType<SummonerElfEntity>> SUMMONER_ELF =
             ENTITY_TYPES.register("summoner_elf", () -> EntityType.Builder
-                    .of(SummonerElfEntity::new, MobCategory.AMBIENT)
+                    .of(SummonerElfEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "summoner_elf"))));
 
     public static final Supplier<EntityType<BorealBearEntity>> BOREAL_BEAR =
             ENTITY_TYPES.register("boreal_bear", () -> EntityType.Builder
-                    .of(BorealBearEntity::new, MobCategory.AMBIENT)
+                    .of(BorealBearEntity::new, MobCategory.MONSTER)
                     .sized(1.2f, 1.2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "boreal_bear"))));
 
     public static final Supplier<EntityType<MonkEntity>> MONK =
             ENTITY_TYPES.register("monk", () -> EntityType.Builder
-                    .of(MonkEntity::new, MobCategory.AMBIENT)
-                    .sized(0.75f, 0.75f)
+                    .of(MonkEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"))));
+
+    // Entity Sensor
+    public static final DeferredRegister<SensorType<?>> SENSOR =
+            DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
+    public static final DeferredHolder<SensorType<?>, SensorType<MonkEntitySensor>> MONK_SENSOR =
+            SENSOR.register("monk_sensor", () -> new SensorType<>(MonkEntitySensor::new));
+
 }

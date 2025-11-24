@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
-import org.exodusstudio.frostbite.common.entity.custom.IcedCreeperEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedCreeperEntity;
 
 public class IcedCreeperRenderer extends MobRenderer<IcedCreeperEntity, CreeperRenderState, CreeperModel> {
     public IcedCreeperRenderer(EntityRendererProvider.Context context) {

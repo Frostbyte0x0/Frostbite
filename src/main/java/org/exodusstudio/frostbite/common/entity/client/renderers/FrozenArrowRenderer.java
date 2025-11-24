@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.state.TippableArrowRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.custom.FrozenArrow;
+import org.exodusstudio.frostbite.common.entity.custom.projectiles.FrozenArrow;
 
 public class FrozenArrowRenderer extends ArrowRenderer<FrozenArrow, TippableArrowRenderState> {
     public FrozenArrowRenderer(EntityRendererProvider.Context context) {

@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.item;
 
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.entity.custom.ExplodingSnowballProjectileEntity;
+import org.exodusstudio.frostbite.common.entity.custom.projectiles.ExplodingSnowballProjectileEntity;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

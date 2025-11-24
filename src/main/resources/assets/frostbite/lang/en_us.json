@@ -162,13 +162,7 @@
   "item.frostbite.frozen_plating_lining_boots": "Frozen plating lining boots",
 
 
-  "effect.frostbite.irritation": "Irritation",
-  "effect.frostbite.twitching": "Twitching",
-  "effect.frostbite.paranoia": "Paranoia",
-  "effect.frostbite.fatigue": "Fatigue",
-  "effect.frostbite.corruption": "Corruption",
-  "effect.frostbite.mold": "Mold",
-  "effect.frostbite.decay": "Decay",
+  "entity.monk.boss_bar": "Monk",
 
 
   "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",

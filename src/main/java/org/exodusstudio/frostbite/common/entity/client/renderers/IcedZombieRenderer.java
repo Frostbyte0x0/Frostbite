@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.state.ZombieRenderState;
 import net.minecraft.resources.ResourceLocation;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
-import org.exodusstudio.frostbite.common.entity.custom.IcedZombieEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedZombieEntity;
 
 public class IcedZombieRenderer extends MobRenderer<IcedZombieEntity, ZombieRenderState, ZombieModel<ZombieRenderState>> {
     public IcedZombieRenderer(EntityRendererProvider.Context context) {

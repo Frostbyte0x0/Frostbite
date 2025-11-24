@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.item;
 
-import org.exodusstudio.frostbite.common.entity.custom.BlueHardenedSnowballProjectileEntity;
+import org.exodusstudio.frostbite.common.entity.custom.projectiles.BlueHardenedSnowballProjectileEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

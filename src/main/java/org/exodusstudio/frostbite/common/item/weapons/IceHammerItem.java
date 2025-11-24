@@ -18,7 +18,7 @@ import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.exodusstudio.frostbite.common.component.ChargeData;
-import org.exodusstudio.frostbite.common.entity.custom.IceSpikeEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.jetbrains.annotations.Nullable;
 

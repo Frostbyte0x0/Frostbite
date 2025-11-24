@@ -10,7 +10,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.TanukiModel;
 import org.exodusstudio.frostbite.common.entity.client.states.TanukiRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.TanukiEntity;
+import org.exodusstudio.frostbite.common.entity.custom.animals.TanukiEntity;
 
 public class TanukiRenderer extends MobRenderer<TanukiEntity, TanukiRenderState, TanukiModel> {
     public TanukiRenderer(EntityRendererProvider.Context context) {

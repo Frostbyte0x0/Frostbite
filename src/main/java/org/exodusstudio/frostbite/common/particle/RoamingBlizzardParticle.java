@@ -4,7 +4,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
-import org.exodusstudio.frostbite.common.entity.custom.RoamingBlizzardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.RoamingBlizzardEntity;
 
 public class RoamingBlizzardParticle extends TextureSheetParticle {
     public RoamingBlizzardParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {

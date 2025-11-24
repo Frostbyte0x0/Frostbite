@@ -16,13 +16,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.ModeData;
-import org.exodusstudio.frostbite.common.entity.custom.WindCircleEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.WindCircleEntity;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.Optional;

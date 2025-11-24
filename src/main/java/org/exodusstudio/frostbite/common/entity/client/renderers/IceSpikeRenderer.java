@@ -12,7 +12,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.IceSpikeModel;
 import org.exodusstudio.frostbite.common.entity.client.states.IceSpikeRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.IceSpikeEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 
 public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRenderState> {
     private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(
