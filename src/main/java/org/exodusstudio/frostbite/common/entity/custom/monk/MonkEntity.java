@@ -33,15 +33,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import static net.minecraft.world.level.block.EnchantingTableBlock.BOOKSHELF_OFFSETS;
+import static org.exodusstudio.frostbite.common.util.Util.calculateDir;
 
 public class MonkEntity extends Monster {
     private static final EntityDataAccessor<Boolean> DATA_CLAPPING =
@@ -57,6 +62,7 @@ public class MonkEntity extends Monster {
     public static final int DIAMETER = 15;
     public static final int ILLUSION_AMOUNT = 10;
     public static final int ATTACK_COOLDOWN = 100;
+    public static final int REPEL_RANGE = 6;
 
     public MonkEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.MONK.get(), level);
@@ -120,16 +126,14 @@ public class MonkEntity extends Monster {
 
     @Contract(value = "null->false")
     public boolean canTargetEntity(@Nullable Entity entity) {
-        if (!(entity instanceof LivingEntity livingEntity) ||
+        if (!(entity instanceof Player player) ||
                 this.level() != entity.level() ||
                 !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
                 this.isAlliedTo(entity) ||
-                livingEntity.getType() == EntityType.ARMOR_STAND ||
-                livingEntity.getType() == EntityRegistry.MONK.get() ||
-                livingEntity.isInvulnerable() || livingEntity.isDeadOrDying()) {
+                player.isInvulnerable() || player.isDeadOrDying()) {
             return false;
         }
-        return this.level().getWorldBorder().isWithinBounds(livingEntity.getBoundingBox());
+        return this.level().getWorldBorder().isWithinBounds(player.getBoundingBox());
     }
 
     @Override
@@ -158,18 +162,18 @@ public class MonkEntity extends Monster {
             }
         }
 
+
         if (getAttackableFromBrain() != null && isClapping() && clapAnimationState.getTimeInMillis(tickCount) / 50 == 9) {
             level().playSound(null, this.getOnPos(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.HOSTILE,
                     1f, level().getRandom().nextFloat() * 0.1F + 0.9F);
-            if (!getLastConfusionAttack().isEmpty()) {
-                undoLastConfusionAttack();
-            }
+            undoLastConfusionAttack();
 
-            switch (chooseAttack()) {
-                case "confuse" -> confuseAttack();
+            String attack = chooseAttack();
+            switch (attack) {
+                case "confuse" -> confuseAttack(getAttackableFromBrain());
                 case "clone" -> cloneAttack();
-                case "repel" -> repelAttack(getAttackableFromBrain());
-                case "tp" -> tpAttack();
+                case "repel" -> repelAttack();
+                case "tp" -> tpRandomly(level());
                 case "swirl" -> swirlAttack(getAttackableFromBrain());
             }
             setClapping(false);
@@ -183,13 +187,19 @@ public class MonkEntity extends Monster {
 
     public String chooseAttack() {
         if (isIllusion()) return "tp";
-        return "confuse";
+        return "repel";
     }
 
-    public void confuseAttack() {
-        // TODO confuse attack
-        invertControls();
-        setLastConfusionAttack("invert_controls");
+    public void confuseAttack(LivingEntity target) {
+        if (getRandom().nextFloat() < 0.3) {
+            invertControls();
+            setLastConfusionAttack("invert_controls");
+        } else if (getRandom().nextFloat() < 0.3) {
+            swapPlaces(target);
+        } else {
+            invertCamera();
+            setLastConfusionAttack("invert_camera");
+        }
     }
 
     public void invertControls() {
@@ -200,8 +210,27 @@ public class MonkEntity extends Monster {
         InputConstants.Key keyUp = options.keyUp.getKey();
         options.keyUp.setKey(options.keyDown.getKey());
         options.keyDown.setKey(keyUp);
+
+        options.keyLeft.setDown(false);
+        options.keyRight.setDown(false);
+        options.keyUp.setDown(false);
+        options.keyDown.setDown(false);
+
         KeyMapping.resetMapping();
-        //Frostbite.LOGGER.debug(String.valueOf(options.keyUp.isDown()));
+    }
+
+    public void invertCamera() {
+        Options options = Minecraft.getInstance().options;
+        options.invertYMouse().set(!options.invertYMouse().get());
+    }
+
+    public void swapPlaces(LivingEntity target) {
+        double monkPosX = this.position().x;
+        double monkPosY = this.position().y;
+        double monkPosZ = this.position().z;
+        Vec3 targetPos = target.position();
+        this.setPos(targetPos.x, targetPos.y, targetPos.z);
+        target.teleportTo(monkPosX, monkPosY, monkPosZ);
     }
 
     public void cloneAttack() {
@@ -218,21 +247,27 @@ public class MonkEntity extends Monster {
         }
     }
 
-    @Override
-    public void die(DamageSource damageSource) {
-        super.die(damageSource);
-        if (!getLastConfusionAttack().isEmpty()) {
-            undoLastConfusionAttack();
+    public void repelAttack() {
+        List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class,
+                new AABB(new Vec3(getBlockX() - REPEL_RANGE, getBlockY() - REPEL_RANGE, getBlockZ() - REPEL_RANGE),
+                        new Vec3(getBlockX() + REPEL_RANGE, getBlockY() + REPEL_RANGE, getBlockZ() + REPEL_RANGE)));
+
+        if (!entities.isEmpty()) {
+            for (LivingEntity entity : entities) {
+                if (!entity.is(this)) {
+                    float num = 10f / (distanceTo(entity) + 3f);
+                    Vec3 mul = new Vec3(num, num * 0.5, num);
+                    Vec3 v = calculateDir(this, entity, mul);
+                    if (entity instanceof Player) {
+                        Minecraft.getInstance().player.push(v);
+                        continue;
+                    }
+                    entity.push(v);
+                }
+            }
         }
-    }
 
-    public void tpAttack() {
-        tpRandomly(level());
-    }
-
-    public void repelAttack(LivingEntity target) {
-        // TODO repel attack
-        tpRandomly(level());
+        level().playSound(null, blockPosition(), SoundRegistry.STUNNING_BELL_RING.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 
     public void swirlAttack(LivingEntity target) {
@@ -241,8 +276,10 @@ public class MonkEntity extends Monster {
 
     public void undoLastConfusionAttack() {
         String lastAttack = getLastConfusionAttack();
+        if (lastAttack.isEmpty()) return;
         switch (lastAttack) {
             case "invert_controls" -> invertControls();
+            case "invert_camera" -> invertCamera();
         }
         setLastConfusionAttack("");
     }
@@ -300,6 +337,12 @@ public class MonkEntity extends Monster {
         }
 
         return super.hurtServer(serverLevel, source, p_376610_);
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        if (!level().isClientSide) undoLastConfusionAttack();
     }
 
     public void reflectProjectile(Projectile projectile, LivingEntity owner) {
