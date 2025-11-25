@@ -39,9 +39,11 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -55,9 +57,11 @@ public class MonkEntity extends Monster {
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> DATA_LAST_CONFUSION =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.STRING);
-    private static final Component CHEESE_BOSS_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
+    private static final EntityDataAccessor<Float> DATA_SWIRL_LENGTH =
+            SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.FLOAT);
+    private static final Component MONK_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
-            new ServerBossEvent(CHEESE_BOSS_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
+            new ServerBossEvent(MONK_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
     public final AnimationState clapAnimationState = new AnimationState();
     public static final int DIAMETER = 15;
     public static final int ILLUSION_AMOUNT = 10;
@@ -93,6 +97,7 @@ public class MonkEntity extends Monster {
         builder.define(DATA_CLAPPING, false);
         builder.define(DATA_ILLUSION, false);
         builder.define(DATA_LAST_CONFUSION, "");
+        builder.define(DATA_SWIRL_LENGTH, 0f);
     }
 
     @Override
@@ -174,9 +179,16 @@ public class MonkEntity extends Monster {
                 case "clone" -> cloneAttack();
                 case "repel" -> repelAttack();
                 case "tp" -> tpRandomly(level());
-                case "swirl" -> swirlAttack(getAttackableFromBrain());
+                case "swirl" -> swirlAttack();
             }
             setClapping(false);
+        }
+
+        if (getSwirlLength() >= 0.1 && getSwirlLength() < 10f) {
+            setSwirlLength(getSwirlLength() + 0.1f);
+            doSwirl();
+        } else {
+            setSwirlLength(0f);
         }
     }
 
@@ -187,7 +199,7 @@ public class MonkEntity extends Monster {
 
     public String chooseAttack() {
         if (isIllusion()) return "tp";
-        return "repel";
+        return "swirl";
     }
 
     public void confuseAttack(LivingEntity target) {
@@ -270,8 +282,33 @@ public class MonkEntity extends Monster {
         level().playSound(null, blockPosition(), SoundRegistry.STUNNING_BELL_RING.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 
-    public void swirlAttack(LivingEntity target) {
-        // TODO swirl attack
+    public void swirlAttack() {
+        setSwirlLength(0.1f);
+    }
+
+    public void doSwirl() {
+        LivingEntity target = getAttackableFromBrain();
+        if (target == null) return;
+        Vec3 vec3 = position().add(0, getEyeHeight(), 0);
+        Vec3 vec31 = target.position().subtract(position());
+        Vec3 vec32 = vec31.normalize();
+
+        Vec3 vec33 = vec3.add(vec32.scale(getSwirlLength()));
+
+        Vector3f add = vec32.toVector3f()
+                .rotate(Util.getRotationQuaternionAroundVector(getSwirlLength() * 5, vec32));
+
+        Vec3 vec34 = vec33.add(
+                add.x,
+                add.y,
+                add.z);
+        ((ServerLevel) level()).sendParticles(ParticleRegistry.SHOCKWAVE_PARTICLE.get(),
+                vec34.x, vec34.y, vec34.z,
+                0,
+                0,
+                0,
+                0,
+                1);
     }
 
     public void undoLastConfusionAttack() {
@@ -406,6 +443,14 @@ public class MonkEntity extends Monster {
 
     public String getLastConfusionAttack() {
         return this.entityData.get(DATA_LAST_CONFUSION);
+    }
+
+    public void setSwirlLength(float length) {
+        this.entityData.set(DATA_SWIRL_LENGTH, length);
+    }
+
+    public float getSwirlLength() {
+        return this.entityData.get(DATA_SWIRL_LENGTH);
     }
 
     @Override

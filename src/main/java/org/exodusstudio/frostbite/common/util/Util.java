@@ -284,6 +284,25 @@ public class Util {
         return quaternion;
     }
 
+    public static Quaternionf getRotationQuaternionAroundVector(float angle, Vec3 vec32) {
+        float playerYAngle = (float) (Math.atan2(vec32.z, vec32.x) + Math.PI / 4);
+        float playerXAngle = (float) -Math.atan2(vec32.y, vec32.x);
+        Quaternionf quaternion;
+        if (Math.abs(vec32.x) < 0.5f) {
+            quaternion = new Quaternionf()
+                    .rotateLocalX(angle)
+                    .rotateLocalZ(playerXAngle)
+                    .rotateLocalY(playerYAngle);
+        } else {
+            quaternion = new Quaternionf()
+                    .rotateLocalZ(angle)
+                    .rotateLocalX(-playerXAngle)
+                    .rotateLocalY((float) (playerYAngle + Math.PI / 2));
+        }
+
+        return quaternion;
+    }
+
     public static float[] getXYRot(Vec3 dir) {
         float xRot = (float) Math.toDegrees(Math.asin(-dir.y));
         float yRot = (float) Math.toDegrees(Math.atan2(dir.x, dir.z));
