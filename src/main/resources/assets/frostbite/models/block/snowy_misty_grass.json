@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "frostbite:block/misty_grass_bottom",
+    "particle": "frostbite:block/misty_grass_bottom",
+    "side": "frostbite:block/snowy_misty_grass_side",
+    "top": "frostbite:block/snowy_misty_grass_top"
+  }
+}

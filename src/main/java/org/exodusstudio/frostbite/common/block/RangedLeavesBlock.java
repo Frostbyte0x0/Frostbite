@@ -6,8 +6,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,12 +20,15 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.OptionalInt;
 
+import static net.minecraft.world.level.block.SnowyDirtBlock.SNOWY;
+
 public class RangedLeavesBlock extends LeavesBlock {
     public static final IntegerProperty DISTANCE;
 
     public RangedLeavesBlock(Properties properties) {
         super(0.01F, properties);
         this.registerDefaultState((((this.stateDefinition.any())
+                .setValue(SNOWY, false)
                 .setValue(DISTANCE, 11))
                 .setValue(PERSISTENT, false))
                 .setValue(WATERLOGGED, false));
@@ -65,7 +71,20 @@ public class RangedLeavesBlock extends LeavesBlock {
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(DISTANCE);
+        builder.add(DISTANCE, SNOWY);
+    }
+
+    protected BlockState updateShape(BlockState state, LevelReader reader, ScheduledTickAccess access, BlockPos pos, Direction dir, BlockPos pos1, BlockState state1, RandomSource source) {
+        return dir == Direction.UP ? state.setValue(SNOWY, isSnowySetting(state1)) : super.updateShape(state, reader, access, pos, dir, pos1, state1, source);
+    }
+
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos().above());
+        return this.defaultBlockState().setValue(SNOWY, isSnowySetting(blockstate));
+    }
+
+    protected static boolean isSnowySetting(BlockState state) {
+        return state.is(BlockTags.SNOW);
     }
 
     private static int getDistanceAt(BlockState neighbor) {

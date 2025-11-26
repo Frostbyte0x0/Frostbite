@@ -104,7 +104,7 @@ public class MonkAI {
 
         @Override
         protected void stop(ServerLevel serverLevel, MonkEntity monk, long l) {
-            monk.getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ATTACK_COOLDOWN);
+            monk.getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), monk.getRandom().nextFloat() < 0.5 ? (ATTACK_COOLDOWN) : (ATTACK_COOLDOWN / 2));
         }
     }
 }

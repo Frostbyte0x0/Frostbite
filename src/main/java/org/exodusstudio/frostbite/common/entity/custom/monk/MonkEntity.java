@@ -59,13 +59,15 @@ public class MonkEntity extends Monster {
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Float> DATA_SWIRL_LENGTH =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Vector3f> DATA_SWIRL_DIR =
+            SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.VECTOR3);
     private static final Component MONK_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(MONK_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
     public final AnimationState clapAnimationState = new AnimationState();
-    public static final int DIAMETER = 15;
+    public static final int TP_DIAMETER = 15;
     public static final int ILLUSION_AMOUNT = 10;
-    public static final int ATTACK_COOLDOWN = 100;
+    public static final int ATTACK_COOLDOWN = 60;
     public static final int REPEL_RANGE = 6;
 
     public MonkEntity(EntityType<? extends Monster> ignored, Level level) {
@@ -74,7 +76,7 @@ public class MonkEntity extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 8)
+                .add(Attributes.MAX_HEALTH, 300)
                 .add(Attributes.FOLLOW_RANGE, 10)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
     }
@@ -98,6 +100,7 @@ public class MonkEntity extends Monster {
         builder.define(DATA_ILLUSION, false);
         builder.define(DATA_LAST_CONFUSION, "");
         builder.define(DATA_SWIRL_LENGTH, 0f);
+        builder.define(DATA_SWIRL_DIR, new Vector3f(0, 0, 0));
     }
 
     @Override
@@ -145,8 +148,10 @@ public class MonkEntity extends Monster {
     public void tick() {
         super.tick();
         if (!isDeadOrDying() && getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).isPresent()) {
-            getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(),
-                    getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).get() - 1);
+            this.getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).get() - 1);
+            if (getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).get() < -10) {
+                getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ATTACK_COOLDOWN);
+            }
 
             if (getBrain().getMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get()).get() == 30 && level() instanceof ServerLevel serverLevel && isClapping()) {
                 for (int i = 0; i < 5; i++) {
@@ -173,19 +178,19 @@ public class MonkEntity extends Monster {
                     1f, level().getRandom().nextFloat() * 0.1F + 0.9F);
             undoLastConfusionAttack();
 
-            String attack = chooseAttack();
+            String attack = chooseAttack(getAttackableFromBrain());
             switch (attack) {
                 case "confuse" -> confuseAttack(getAttackableFromBrain());
                 case "clone" -> cloneAttack();
                 case "repel" -> repelAttack();
                 case "tp" -> tpRandomly(level());
-                case "swirl" -> swirlAttack();
+                case "swirl" -> swirlAttack(getAttackableFromBrain());
             }
             setClapping(false);
         }
 
         if (getSwirlLength() >= 0.1 && getSwirlLength() < 10f) {
-            setSwirlLength(getSwirlLength() + 0.1f);
+            setSwirlLength(getSwirlLength() + 0.3f);
             doSwirl();
         } else {
             setSwirlLength(0f);
@@ -197,9 +202,18 @@ public class MonkEntity extends Monster {
         return this.getBrain().getMemory(MemoryModuleType.NEAREST_ATTACKABLE).orElse(null);
     }
 
-    public String chooseAttack() {
+    public String chooseAttack(LivingEntity target) {
         if (isIllusion()) return "tp";
-        return "swirl";
+
+        if (getRandom().nextFloat() < 0.2) {
+            return "confuse";
+        } else if (getRandom().nextFloat() < 0.2) {
+            return "clone";
+        } else if (getRandom().nextFloat() < 0.2 && target.distanceTo(this) < REPEL_RANGE - 2) {
+            return "repel";
+        } else {
+            return "swirl";
+        }
     }
 
     public void confuseAttack(LivingEntity target) {
@@ -271,7 +285,7 @@ public class MonkEntity extends Monster {
                     Vec3 mul = new Vec3(num, num * 0.5, num);
                     Vec3 v = calculateDir(this, entity, mul);
                     if (entity instanceof Player) {
-                        Minecraft.getInstance().player.push(v);
+                        Minecraft.getInstance().player.push(v); // no idea why this works, but it does
                         continue;
                     }
                     entity.push(v);
@@ -282,21 +296,21 @@ public class MonkEntity extends Monster {
         level().playSound(null, blockPosition(), SoundRegistry.STUNNING_BELL_RING.get(), SoundSource.PLAYERS, 1f, 1f);
     }
 
-    public void swirlAttack() {
+    public void swirlAttack(LivingEntity target) {
         setSwirlLength(0.1f);
+        setSwirlDir(target.position().subtract(position()).normalize().toVector3f());
     }
 
     public void doSwirl() {
         LivingEntity target = getAttackableFromBrain();
         if (target == null) return;
         Vec3 vec3 = position().add(0, getEyeHeight(), 0);
-        Vec3 vec31 = target.position().subtract(position());
-        Vec3 vec32 = vec31.normalize();
+        Vec3 vec32 = new Vec3(getSwirlDir());
 
         Vec3 vec33 = vec3.add(vec32.scale(getSwirlLength()));
 
         Vector3f add = vec32.toVector3f()
-                .rotate(Util.getRotationQuaternionAroundVector(getSwirlLength() * 5, vec32));
+                .rotate(Util.getRotationQuaternionAroundVector(getSwirlLength() * 2, vec32)).mul(0.75f);
 
         Vec3 vec34 = vec33.add(
                 add.x,
@@ -309,6 +323,11 @@ public class MonkEntity extends Monster {
                 0,
                 0,
                 1);
+
+        if (vec34.distanceTo(target.position().add(0, target.getEyeHeight(), 0)) < 2.5 && level() instanceof ServerLevel serverLevel) {
+            serverLevel.explode(this, vec34.x, vec34.y, vec34.z, 3f, false, Level.ExplosionInteraction.NONE);
+            setSwirlLength(0);
+        }
     }
 
     public void undoLastConfusionAttack() {
@@ -363,7 +382,7 @@ public class MonkEntity extends Monster {
             return false;
         }
 
-        if (random.nextFloat() < 0.2f) {
+        if (random.nextFloat() < 0.3f) {
             if (source.getEntity() instanceof Player) {
                 Minecraft.getInstance().cameraEntity.setYRot(Minecraft.getInstance().cameraEntity.yRotO + 180);
             }
@@ -397,13 +416,13 @@ public class MonkEntity extends Monster {
 
     public void tpRandomly(Level level) {
         for (int i = 0; i < 16; i++) {
-            double d0 = this.getX() + (this.getRandom().nextDouble() - 0.5) * DIAMETER;
+            double d0 = this.getX() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
             double d1 = Mth.clamp(
-                    this.getY() + (this.getRandom().nextDouble() - 0.5) * DIAMETER,
+                    this.getY() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER,
                     level.getMinY(),
                     (level.getMinY() + ((ServerLevel)level).getLogicalHeight() - 1)
             );
-            double d2 = this.getZ() + (this.getRandom().nextDouble() - 0.5) * DIAMETER;
+            double d2 = this.getZ() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
             if (this.isPassenger()) {
                 this.stopRiding();
             }
@@ -451,6 +470,14 @@ public class MonkEntity extends Monster {
 
     public float getSwirlLength() {
         return this.entityData.get(DATA_SWIRL_LENGTH);
+    }
+
+    public void setSwirlDir(Vector3f dir) {
+        this.entityData.set(DATA_SWIRL_DIR, dir);
+    }
+
+    public Vector3f getSwirlDir() {
+        return this.entityData.get(DATA_SWIRL_DIR);
     }
 
     @Override

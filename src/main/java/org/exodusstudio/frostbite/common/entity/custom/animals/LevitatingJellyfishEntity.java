@@ -31,6 +31,7 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     private static final int MAX_DISTANCE_ABOVE_GROUND = 6;
     private static final EntityDataAccessor<Integer> DATA_MOVE_COOLDOWN;
     public final AnimationState swimmingAnimationState = new AnimationState();
+    public final AnimationState idleAnimationState = new AnimationState();
     public float rotateSpeed;
     public Vec3 movementVector;
     public float xBodyRot;
@@ -86,11 +87,12 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     @Override
     public void tick() {
         super.tick();
-        this.move(MoverType.SELF, this.getDeltaMovement());
+        //this.move(MoverType.SELF, this.getDeltaMovement());
         if (this.getMoveCooldown() == 50 && this.level().isClientSide) {
-            this.swimmingAnimationState.start(this.tickCount);
+            //this.swimmingAnimationState.start(this.tickCount);
         }
         this.setMoveCooldown(this.getMoveCooldown() + 1);
+        idleAnimationState.startIfStopped(tickCount);
     }
 
     @Override
@@ -185,6 +187,11 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     @Override
     public @Nullable AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return null;
+    }
+
+    @Override
+    public boolean canFreeze() {
+        return false;
     }
 
     static {

@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Mixin(PrimaryLevelData.class)
@@ -72,16 +73,18 @@ public class PrimaryLevelDataMixin {
             Frostbite.heaterStorages.add(new HeaterStorage(blockPos, null, tag.get(heaterDimensionKey).asString("")));
         }
 
-        OTFPortal.canSpawn = tag.get("canSpawnOTF").asBoolean().getOrThrow();
-        FTOPortal.canSpawn = tag.get("canSpawnFTO").asBoolean().getOrThrow();
+        OTFPortal.canSpawn = tag.get("canSpawnOTF").asBoolean(true);
+        FTOPortal.canSpawn = tag.get("canSpawnFTO").asBoolean(true);
 
         int[] pos = tag.get("frostbiteSpawnPoint").asIntStream().toArray();
         int[] pos1 = tag.get("overworldSpawnPoint").asIntStream().toArray();
-        Frostbite.frostbiteSpawnPoint = new BlockPos(pos[0], pos[1], pos[2]);
-        Frostbite.overworldSpawnPoint = new BlockPos(pos1[0], pos1[1], pos1[2]);
+        if (Arrays.stream(pos).findAny().isPresent() && Arrays.stream(pos1).findAny().isPresent()) {
+            Frostbite.frostbiteSpawnPoint = new BlockPos(pos[0], pos[1], pos[2]);
+            Frostbite.overworldSpawnPoint = new BlockPos(pos1[0], pos1[1], pos1[2]);
+        }
 
-        Boolean isBlizzarding = tag.get("isBlizzarding").asBoolean().getOrThrow();
-        Boolean isWhiteouting = tag.get("isWhiteouting").asBoolean().getOrThrow();
+        boolean isBlizzarding = tag.get("isBlizzarding").asBoolean(false);
+        boolean isWhiteouting = tag.get("isWhiteouting").asBoolean(false);
 
         Frostbite.weatherInfo = new WeatherInfo(
                 tag.get("snowTime").asInt(0),

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "frostbite:block/misty_leaves",
+    "particle": "frostbite:block/misty_leaves",
+    "side": "frostbite:block/snowy_misty_leaves_side",
+    "top": "frostbite:block/snowy_misty_leaves_top"
+  }
+}

@@ -42,6 +42,8 @@ public class CreativeModeTabRegistry {
                         output.accept(BlockRegistry.MARBLE_PILLAR);
 
                         output.accept(BlockRegistry.LODESTAR);
+                        output.accept(BlockRegistry.STONE_LANTERN);
+                        output.accept(BlockRegistry.FROZEN_STONE_LANTERN);
 
                         output.accept(ItemRegistry.BLACK_ICE_HELMET);
                         output.accept(ItemRegistry.BLACK_ICE_CHESTPLATE);
@@ -106,12 +108,15 @@ public class CreativeModeTabRegistry {
 
                         // MISTY WOOD
                         output.accept(BlockRegistry.MISTY_LOG);
+                        output.accept(BlockRegistry.FROZEN_MISTY_LOG);
                         output.accept(BlockRegistry.MISTY_WOOD);
                         output.accept(BlockRegistry.STRIPPED_MISTY_LOG);
                         output.accept(BlockRegistry.STRIPPED_MISTY_WOOD);
                         output.accept(BlockRegistry.MISTY_PLANKS);
                         output.accept(BlockRegistry.MISTY_LEAVES);
                         output.accept(BlockRegistry.MISTY_SAPLING);
+                        output.accept(BlockRegistry.MISTY_GRASS);
+                        output.accept(BlockRegistry.SNOWY_MISTY_GRASS);
 
                         // CHARM WOOD
                         output.accept(BlockRegistry.CHARM_LOG);
@@ -193,6 +198,7 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.SUMMONING_STAFF);
                         output.accept(ItemRegistry.GALE_FAN);
 
+                        output.accept(BlockRegistry.WEAVING_TABLE);
                         output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
                         output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);
                         output.accept(BlockRegistry.BIG_HEATER_BLOCK);

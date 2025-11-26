@@ -474,7 +474,7 @@
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": {
-                      "Name": "minecraft:snow_block"
+                      "Name": "frostbite:snowy_misty_grass"
                     }
                   }
                 }
@@ -491,7 +491,7 @@
                 "then_run": {
                   "type": "minecraft:block",
                   "result_state": {
-                    "Name": "minecraft:grass_block"
+                    "Name": "frostbite:misty_grass"
                   }
                 }
               }

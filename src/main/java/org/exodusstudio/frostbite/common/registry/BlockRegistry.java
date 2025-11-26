@@ -90,6 +90,9 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> MISTY_LOG = registerBlock("misty_log",
             () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_log")))));
+    public static final DeferredBlock<Block> FROZEN_MISTY_LOG = registerBlock("frozen_misty_log",
+            () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_misty_log")))));
     public static final DeferredBlock<Block> MISTY_WOOD = registerBlock("misty_wood",
             () -> new FrostbiteWoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_wood")))));
@@ -127,7 +130,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_leaves")))));
     public static final DeferredBlock<Block> MISTY_SAPLING = registerBlock("misty_sapling",
-            () -> new SnowySaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).noCollission()
+            () -> new MistySaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_sapling")))));
     public static final DeferredBlock<Block> MISTY_SIGN = registerBlock("misty_sign",
             () -> new StandingSignBlock(WoodType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)
@@ -135,6 +138,12 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> MISTY_HANGING_SIGN = registerBlock("misty_hanging_sign",
             () -> new WallHangingSignBlock(WoodType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_hanging_sign")))));
+    public static final DeferredBlock<Block> MISTY_GRASS = registerBlock("misty_grass",
+            () -> new GrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_grass")))));
+    public static final DeferredBlock<Block> SNOWY_MISTY_GRASS = registerBlock("snowy_misty_grass",
+            () -> new GrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "snowy_misty_grass")))));
 
     // DIM WOOD
     public static final DeferredBlock<Block> DIM_LOG = registerBlock("dim_log",
@@ -298,6 +307,15 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> LODESTAR = registerBlock("lodestar",
             () -> new LodestarBlock(BlockBehaviour.Properties.of().strength(10f)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lodestar"))).noOcclusion()));
+
+    public static final DeferredBlock<Block> STONE_LANTERN = registerBlock("stone_lantern",
+            () -> new StoneLantern(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_WALL)
+                    .lightLevel((state) -> 15)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stone_lantern")))));
+    public static final DeferredBlock<Block> FROZEN_STONE_LANTERN = registerBlock("frozen_stone_lantern",
+            () -> new StoneLantern(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_WALL)
+                    .lightLevel((state) -> 15)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_stone_lantern")))));
 
     public static final DeferredBlock<Block> GIANT_REED = registerBlock("giant_reed",
             () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH).noCollission()
