@@ -310,16 +310,30 @@ public class BlockRegistry {
 
     public static final DeferredBlock<Block> STONE_LANTERN = registerBlock("stone_lantern",
             () -> new StoneLantern(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_WALL)
-                    .lightLevel((state) -> 15)
+                    .lightLevel((state) -> 7)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "stone_lantern")))));
     public static final DeferredBlock<Block> FROZEN_STONE_LANTERN = registerBlock("frozen_stone_lantern",
             () -> new StoneLantern(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_WALL)
-                    .lightLevel((state) -> 15)
+                    .lightLevel((state) -> 7)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_stone_lantern")))));
 
     public static final DeferredBlock<Block> GIANT_REED = registerBlock("giant_reed",
             () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH).noCollission()
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "giant_reed")))));
+
+    public static final DeferredBlock<Block> MISTY_TALL_GRASS = registerBlock("misty_tall_grass",
+            () -> new FrostbiteTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_tall_grass")))));
+    public static final DeferredBlock<Block> GLIMMERING_BUSH = registerBlock("glimmering_bush",
+            () -> new FrostbiteTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "glimmering_bush")))));
+    public static final DeferredBlock<Block> GRASSY_GLIMMERING_BUSH = registerBlock("grassy_glimmering_bush",
+            () -> new FrostbiteTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "grassy_glimmering_bush")))));
+    public static final DeferredBlock<Block> SNOWY_FERN = registerBlock("snowy_fern",
+            () -> new FrostbiteTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "snowy_fern")))));
+
 
 //    public static final DeferredBlock<Block> LAVENDER_PETALS = registerBlock("lavender_petals",
 //            () -> new Block(BlockBehaviour.Properties.of().strength(10f)
