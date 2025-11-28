@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> MISTY_KEY = registerKey("trees_misty");
+    public static final ResourceKey<PlacedFeature> MISTY_FOLIAGE_KEY = registerKey("placed_misty_foliage");
     public static final ResourceKey<PlacedFeature> MEGA_MISTY_KEY = registerKey("mega_trees_misty");
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
@@ -23,8 +24,11 @@ public class ModPlacedFeatures {
         Holder<ConfiguredFeature<?, ?>> holder = holdergetter.getOrThrow(ModConfiguredFeatures.MISTY_KEY);
         register(context, MISTY_KEY, holder, List.of());
 
-        Holder<ConfiguredFeature<?, ?>> holder1 = holdergetter.getOrThrow(ModConfiguredFeatures.MEGA_MISTY_KEY);
-        register(context, MEGA_MISTY_KEY, holder1, List.of());
+        Holder<ConfiguredFeature<?, ?>> holder1 = holdergetter.getOrThrow(ModConfiguredFeatures.MISTY_FOLIAGE_KEY);
+        register(context, MISTY_FOLIAGE_KEY, holder1, List.of());
+
+        Holder<ConfiguredFeature<?, ?>> holder2 = holdergetter.getOrThrow(ModConfiguredFeatures.MEGA_MISTY_KEY);
+        register(context, MEGA_MISTY_KEY, holder2, List.of());
     }
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {
