@@ -33,4 +33,10 @@ public class EffectRegistry {
 
     public static final Holder<MobEffect> SATIATED = MOB_EFFECTS.register("satiated",
             () -> new SatiatedEffect(MobEffectCategory.BENEFICIAL, 0xf5b642));
+
+    public static final Holder<MobEffect> FATIGUE = MOB_EFFECTS.register("fatigue",
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x3e374f));
+
+    public static final Holder<MobEffect> TWITCHING = MOB_EFFECTS.register("twitching",
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x2f6363));
 }

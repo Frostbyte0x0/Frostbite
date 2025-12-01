@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "frostbite:block/frozen_stone_lantern"
+    "model": "frostbite:item/frozen_stone_lantern"
   }
 }

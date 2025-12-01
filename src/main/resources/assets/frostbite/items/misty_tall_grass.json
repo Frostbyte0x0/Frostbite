@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "frostbite:block/misty_tall_grass"
+    "model": "frostbite:item/misty_tall_grass"
   }
 }

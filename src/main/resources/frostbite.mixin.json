@@ -21,6 +21,7 @@
     "GuiMixin",
     "InventoryScreenMixin",
     "LevelRendererMixin",
+    "MouseHandlerMixin",
     "WeatherEffectRendererMixin"
   ],
   "injectors": {

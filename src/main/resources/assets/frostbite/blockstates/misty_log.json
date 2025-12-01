@@ -1,16 +1,58 @@
 {
-  "variants": {
-    "axis=x": {
-      "model": "frostbite:block/misty_log_horizontal",
-      "x": 90,
-      "y": 90
+  "multipart": [
+    {
+      "apply": {
+        "model": "frostbite:block/misty_log_horizontal",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x"
+      }
     },
-    "axis=y": {
-      "model": "frostbite:block/misty_log"
+    {
+      "apply": {
+        "model": "frostbite:block/misty_log"
+      },
+      "when": {
+        "axis": "y"
+      }
     },
-    "axis=z": {
-      "model": "frostbite:block/misty_log_horizontal",
-      "x": 90
+    {
+      "apply": {
+        "model": "frostbite:block/misty_log_horizontal",
+        "x": 90
+      },
+      "when": {
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/misty_log_horizontal_emissive",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/misty_log_emissive"
+      },
+      "when": {
+        "axis": "y"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/misty_log_horizontal_emissive",
+        "x": 90
+      },
+      "when": {
+        "axis": "z"
+      }
     }
-  }
+  ]
 }

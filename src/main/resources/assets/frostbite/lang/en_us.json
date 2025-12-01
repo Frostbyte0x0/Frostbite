@@ -37,6 +37,7 @@
   "item.frostbite.misty_leaves": "Misty Leaves",
   "item.frostbite.misty_sapling": "Misty Sapling",
   "item.frostbite.misty_grass": "Misty Grass",
+  "item.frostbite.frozen_dirt": "Frozen Dirt",
   "item.frostbite.snowy_misty_grass": "Snowy Misty Grass",
   "item.frostbite.misty_tall_grass": "Tall Snowy Grass",
   "item.frostbite.glimmering_bush": "Glimmering Bush",
@@ -170,6 +171,9 @@
   "item.frostbite.frozen_plating_lining_leggings": "Frozen plating lining leggings",
   "item.frostbite.frozen_plating_lining_boots": "Frozen plating lining boots",
 
+
+  "effect.frostbite.twitching": "Twitching",
+  "effect.frostbite.fatigue": "Fatigue",
 
   "entity.monk.boss_bar": "Monk",
 

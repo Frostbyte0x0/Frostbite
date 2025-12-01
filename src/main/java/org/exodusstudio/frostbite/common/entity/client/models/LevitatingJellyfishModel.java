@@ -25,7 +25,6 @@ public class LevitatingJellyfishModel extends EntityModel<LevitatingJellyfishRen
         PartDefinition partdefinition = meshdefinition.getRoot();
 
         PartDefinition Model = partdefinition.addOrReplaceChild("Model", CubeListBuilder.create(), PartPose.offset(0.0F, 2.0F, 0.0F));
-
         PartDefinition Cap = Model.addOrReplaceChild("Cap", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -2.0F, -5.0F, 10.0F, 3.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
         Cap.addOrReplaceChild("Tendrils", CubeListBuilder.create().texOffs(17, 34).addBox(-4.0F, 1.0F, -4.0F, 8.0F, 5.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
         Cap.addOrReplaceChild("Cap_Top", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, -26.0F, -4.0F, 8.0F, 2.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 22.0F, 0.0F));

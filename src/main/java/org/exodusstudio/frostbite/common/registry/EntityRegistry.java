@@ -267,10 +267,16 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"))));
 
+    public static final Supplier<EntityType<BigLevitatingJellyfishEntity>> BIG_LEVITATING_JELLYFISH =
+            ENTITY_TYPES.register("big_levitating_jellyfish", () -> EntityType.Builder
+                    .of(BigLevitatingJellyfishEntity::new, MobCategory.AMBIENT)
+                    .sized(1.8f, 2.4f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "big_levitating_jellyfish"))));
+
     // Entity Sensor
     public static final DeferredRegister<SensorType<?>> SENSOR =
             DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
     public static final DeferredHolder<SensorType<?>, SensorType<MonkEntitySensor>> MONK_SENSOR =
             SENSOR.register("monk_sensor", () -> new SensorType<>(MonkEntitySensor::new));
-
 }

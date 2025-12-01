@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "frostbite:block/grassy_glimmering_bush"
+    "model": "frostbite:item/grassy_glimmering_bush"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "frostbite:item/snowy_fern"
+    "layer0": "frostbite:block/snowy_fern"
   }
 }

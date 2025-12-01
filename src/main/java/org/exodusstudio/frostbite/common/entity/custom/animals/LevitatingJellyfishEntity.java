@@ -12,11 +12,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.AgeableWaterCreature;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -24,7 +26,7 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.jetbrains.annotations.Nullable;
 
 public class LevitatingJellyfishEntity extends AgeableWaterCreature {
@@ -39,8 +41,8 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     public float zBodyRot;
     public float zBodyRotO;
 
-    public LevitatingJellyfishEntity(EntityType<? extends LevitatingJellyfishEntity> ignored, Level level) {
-        super(EntityRegistry.LEVITATING_JELLYFISH.get(), level);
+    public LevitatingJellyfishEntity(EntityType<? extends LevitatingJellyfishEntity> type, Level level) {
+        super(type, level);
         this.setPathfindingMalus(PathType.WATER, 10.0F);
         this.movementVector = Vec3.ZERO;
         this.rotateSpeed = 0;
@@ -96,6 +98,12 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     }
 
     @Override
+    public void playerTouch(Player player) {
+        super.playerTouch(player);
+        player.addEffect(new MobEffectInstance(EffectRegistry.TWITCHING, 9600));
+    }
+
+    @Override
     public boolean causeFallDamage(double fallDistance, float multiplier, DamageSource source) {
         return false;
     }
@@ -146,6 +154,10 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
+        if (source.getEntity() instanceof Player && random.nextFloat() < 0.25f) {
+            ((Player) source.getEntity()).addEffect(new MobEffectInstance(EffectRegistry.TWITCHING, 2400));
+        }
+
         if (super.hurtServer(level, source, damage) && this.getLastHurtByMob() != null) {
             this.spawnInk();
             return true;

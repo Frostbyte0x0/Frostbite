@@ -139,10 +139,13 @@ public class BlockRegistry {
             () -> new WallHangingSignBlock(WoodType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_hanging_sign")))));
     public static final DeferredBlock<Block> MISTY_GRASS = registerBlock("misty_grass",
-            () -> new GrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+            () -> new MistyGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_grass")))));
+    public static final DeferredBlock<Block> FROZEN_DIRT = registerBlock("frozen_dirt",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)
+                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_dirt")))));
     public static final DeferredBlock<Block> SNOWY_MISTY_GRASS = registerBlock("snowy_misty_grass",
-            () -> new GrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+            () -> new MistyGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "snowy_misty_grass")))));
 
     // DIM WOOD
@@ -333,12 +336,6 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> SNOWY_FERN = registerBlock("snowy_fern",
             () -> new FrostbiteTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)
                     .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "snowy_fern")))));
-
-
-//    public static final DeferredBlock<Block> LAVENDER_PETALS = registerBlock("lavender_petals",
-//            () -> new Block(BlockBehaviour.Properties.of().strength(10f)
-//                    .setId(ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_petals")))));
-
 
 
     public static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {

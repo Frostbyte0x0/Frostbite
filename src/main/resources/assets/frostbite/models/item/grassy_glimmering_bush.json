@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "frostbite:item/grassy_glimmering_bush"
+    "layer0": "frostbite:block/grassy_glimmering_bush"
   }
 }

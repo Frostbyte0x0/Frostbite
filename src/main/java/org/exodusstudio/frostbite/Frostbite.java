@@ -2,7 +2,10 @@ package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.resources.model.SpriteGetter;
 import net.minecraft.core.BlockPos;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -100,6 +103,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.SUMMONER_ELF.get(), SummonerElfRenderer::new);
             EntityRenderers.register(EntityRegistry.BOREAL_BEAR.get(), BorealBearRenderer::new);
             EntityRenderers.register(EntityRegistry.MONK.get(), MonkRenderer::new);
+            EntityRenderers.register(EntityRegistry.BIG_LEVITATING_JELLYFISH.get(), BigLevitatingJellyfishRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }
