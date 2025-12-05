@@ -7,7 +7,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.HailcoilEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.RoamingBlizzardEntity;
 
-public class SummoningStaffItem extends AbstractStaff {
+public class SummoningStaffItem extends ModeWeapon {
     public SummoningStaffItem(Properties properties) {
         super(properties, new String[]{"roaming blizzard", "hailcoil"});
     }

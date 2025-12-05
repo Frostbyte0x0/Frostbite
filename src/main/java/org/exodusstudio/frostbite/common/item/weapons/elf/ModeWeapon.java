@@ -10,12 +10,12 @@ import net.minecraft.world.level.Level;
 
 import java.util.Arrays;
 
-public abstract class AbstractStaff extends Item {
+public abstract class ModeWeapon extends Item {
     protected final String[] modes;
     public String mode;
     public static RandomSource random = RandomSource.create();
 
-    public AbstractStaff(Properties properties, String[] modes) {
+    public ModeWeapon(Properties properties, String[] modes) {
         super(properties);
         this.modes = modes;
         this.mode = modes[0];

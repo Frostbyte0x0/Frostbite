@@ -197,10 +197,12 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.JELLY);
                         output.accept(ItemRegistry.INSULATING_JELLY);
                         output.accept(ItemRegistry.EMBERS);
+
                         output.accept(ItemRegistry.CASTING_STAFF);
                         output.accept(ItemRegistry.HEALING_STAFF);
                         output.accept(ItemRegistry.SUMMONING_STAFF);
                         output.accept(ItemRegistry.GALE_FAN);
+                        output.accept(ItemRegistry.LYRE);
 
                         output.accept(BlockRegistry.WEAVING_TABLE);
                         output.accept(BlockRegistry.SMALL_HEATER_BLOCK);

@@ -23,6 +23,7 @@ import org.exodusstudio.frostbite.common.entity.client.models.*;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
+import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
@@ -44,6 +45,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY, () -> WoollySheepModel.createBodyLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY_FUR, () -> WoollySheepFurModel.createFurLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
         event.registerLayerDefinition(ModModelLayers.LEVITATING_JELLYFISH, LevitatingJellyfishModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.BARD, BardModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BIG_LEVITATING_JELLYFISH, BigLevitatingJellyfishModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FROZEN_REMNANTS, FrozenRemnantsModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
@@ -92,6 +94,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.SUMMONER_ELF.get(), ElfEntity.createAttributes().build());
         event.put(EntityRegistry.BOREAL_BEAR.get(), BorealBearEntity.createAttributes().build());
         event.put(EntityRegistry.MONK.get(), MonkEntity.createAttributes().build());
+        event.put(EntityRegistry.BARD.get(), BardEntity.createAttributes().build());
     }
 
     @SubscribeEvent

@@ -39,7 +39,7 @@ import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
-import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
+import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
@@ -264,7 +264,7 @@ public class ModEvents {
             Player player = Minecraft.getInstance().player;
             if (player != null) {
                 ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-                if (itemInHand.getItem() instanceof AbstractStaff staff && !player.getCooldowns().isOnCooldown(itemInHand)) {
+                if (itemInHand.getItem() instanceof ModeWeapon staff && !player.getCooldowns().isOnCooldown(itemInHand)) {
                     staff.attack(player.level(), player);
                     player.getCooldowns().addCooldown(itemInHand, 20);
                     event.setCanceled(true);

@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
+import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntitySensor;
@@ -266,6 +267,13 @@ public class EntityRegistry {
                     .sized(0.75f, 2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"))));
+
+    public static final Supplier<EntityType<BardEntity>> BARD =
+            ENTITY_TYPES.register("bard", () -> EntityType.Builder
+                    .of(BardEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "bard"))));
 
     public static final Supplier<EntityType<BigLevitatingJellyfishEntity>> BIG_LEVITATING_JELLYFISH =
             ENTITY_TYPES.register("big_levitating_jellyfish", () -> EntityType.Builder

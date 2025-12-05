@@ -4,7 +4,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.custom.misc.HealingCircleEntity;
 
-public class HealingStaffItem extends AbstractStaff {
+public class HealingStaffItem extends ModeWeapon {
     public HealingStaffItem(Properties properties) {
         super(properties, new String[]{"circle", "blessing"});
     }

@@ -19,10 +19,7 @@ import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.weapons.ChaincicleItem;
-import org.exodusstudio.frostbite.common.item.weapons.GaleFanItem;
-import org.exodusstudio.frostbite.common.item.weapons.IceHammerItem;
-import org.exodusstudio.frostbite.common.item.weapons.StunningBellItem;
+import org.exodusstudio.frostbite.common.item.weapons.*;
 import org.exodusstudio.frostbite.common.item.weapons.elf.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.DrainingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
@@ -352,5 +349,8 @@ public class ItemRegistry {
                     .food(FoodRegistry.SPICY_MEAT_STEW)
                     .stacksTo(1)
                     .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> LYRE =
+            ITEMS.register("lyre", (id) -> new LyreItem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 }

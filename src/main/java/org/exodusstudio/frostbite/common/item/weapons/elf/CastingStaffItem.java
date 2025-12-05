@@ -18,7 +18,7 @@ import org.joml.Vector3f;
 
 import java.util.Optional;
 
-public class CastingStaffItem extends AbstractStaff {
+public class CastingStaffItem extends ModeWeapon {
     public CastingStaffItem(Properties properties) {
         super(properties, new String[]{"icy breath", "spikes"});
     }

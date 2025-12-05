@@ -26,7 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.goals.ElfHuddleAroundHealerGoal;
-import org.exodusstudio.frostbite.common.item.weapons.elf.AbstractStaff;
+import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 
 import java.util.Optional;
 
@@ -96,7 +96,7 @@ public abstract class ElfEntity extends Monster implements RangedAttackMob {
             setHealerPosition(null);
         }
 
-        if (getTarget() != null && getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof AbstractStaff staff) {
+        if (getTarget() != null && getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof ModeWeapon staff) {
             if (getTarget().distanceTo(this) < 5) {
                 staff.setFirstMode();
             } else {
@@ -116,7 +116,7 @@ public abstract class ElfEntity extends Monster implements RangedAttackMob {
         if (getCooldownTicks() > 0) return;
 
         ItemStack itemInHand = getItemInHand(InteractionHand.MAIN_HAND);
-        if (itemInHand.getItem() instanceof AbstractStaff staff) {
+        if (itemInHand.getItem() instanceof ModeWeapon staff) {
             staff.attack(level(), this);
             staff.attack(Minecraft.getInstance().level, (LivingEntity) Minecraft.getInstance().level.getEntity(uuid));
         }
