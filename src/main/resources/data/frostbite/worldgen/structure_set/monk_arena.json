@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "frostbite:monk_arena",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1224466880,
+    "spacing": 10,
+    "separation": 0
+  }
+}

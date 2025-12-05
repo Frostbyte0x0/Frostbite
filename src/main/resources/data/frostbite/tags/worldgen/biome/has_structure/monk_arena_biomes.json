@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#frostbite:is_shrouded_forest",
+    {
+      "id": "#frostbite:is_shrouded_forest",
+      "required": true
+    }
+  ]
+}

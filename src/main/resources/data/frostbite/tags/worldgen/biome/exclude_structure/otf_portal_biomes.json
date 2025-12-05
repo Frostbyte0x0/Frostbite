@@ -4,7 +4,6 @@
     "#minecraft:is_ocean",
     "#minecraft:is_river",
     "#minecraft:is_deep_ocean",
-    "#minecraft:is_beach",
-    "#minecraft:is_ocean"
+    "#minecraft:is_beach"
   ]
 }

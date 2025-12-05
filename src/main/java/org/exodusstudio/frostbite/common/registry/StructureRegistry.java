@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
+import org.exodusstudio.frostbite.common.structures.MonkArena;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
 
 public class StructureRegistry {
@@ -18,6 +19,8 @@ public class StructureRegistry {
             STRUCTURES.register("otf_portal", () -> explicitStructureTypeTyping(OTFPortal.CODEC));
     public static final DeferredHolder<StructureType<?>, StructureType<FTOPortal>> FTO_PORTAL =
             STRUCTURES.register("fto_portal", () -> explicitStructureTypeTyping(FTOPortal.CODEC));
+    public static final DeferredHolder<StructureType<?>, StructureType<MonkArena>> MONK_ARENA =
+            STRUCTURES.register("monk_arena", () -> explicitStructureTypeTyping(MonkArena.CODEC));
 
 
     private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(MapCodec<T> structureCodec) {

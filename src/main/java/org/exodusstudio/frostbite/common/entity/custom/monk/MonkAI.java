@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
@@ -67,9 +66,6 @@ public class MonkAI {
     private static void initIdleActivity(Brain<MonkEntity> brain) {
         brain.addActivityWithConditions(Activity.IDLE, ImmutableList.of(Pair.of(2, new LookAtTargetSink(45, 90)),
                         Pair.of(4, new RunOne<>(ImmutableList.of(
-                                Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 2),
-                                Pair.of(SetEntityLookTarget.create(EntityType.PLAYER, 6.0F), 1),
-                                Pair.of(RandomStroll.stroll(1.0F), 1),
                                 Pair.of(new DoNothing(5, 20), 2))))),
                 Set.of());
     }
