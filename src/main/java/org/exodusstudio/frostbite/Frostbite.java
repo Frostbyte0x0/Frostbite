@@ -105,6 +105,9 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.MONK.get(), MonkRenderer::new);
             EntityRenderers.register(EntityRegistry.BIG_LEVITATING_JELLYFISH.get(), BigLevitatingJellyfishRenderer::new);
             EntityRenderers.register(EntityRegistry.BARD.get(), BardRenderer::new);
+            EntityRenderers.register(EntityRegistry.ETHEREAL_SWORD.get(), EtherealSwordRenderer::new);
+            EntityRenderers.register(EntityRegistry.ETHEREAL_HANDS.get(), EtherealHandsRenderer::new);
+            EntityRenderers.register(EntityRegistry.ETHEREAL_HAMMER.get(), EtherealHammerRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

@@ -44,6 +44,9 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_FUR, WoollySheepFurModel::createFurLayer);
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY, () -> WoollySheepModel.createBodyLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY_FUR, () -> WoollySheepFurModel.createFurLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
+        event.registerLayerDefinition(ModModelLayers.ETHEREAL_HAMMER, EtherealHammerModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.ETHEREAL_HANDS, EtherealHandsModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.ETHEREAL_SWORD, EtherealSwordModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.LEVITATING_JELLYFISH, LevitatingJellyfishModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BARD, BardModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BIG_LEVITATING_JELLYFISH, BigLevitatingJellyfishModel::createBodyLayer);

@@ -305,7 +305,7 @@ public class Util {
 
     public static float[] getXYRot(Vec3 dir) {
         float xRot = (float) Math.toDegrees(Math.asin(-dir.y));
-        float yRot = (float) Math.toDegrees(Math.atan2(dir.x, dir.z));
+        float yRot = (float) -Math.toDegrees(Math.atan2(dir.x, dir.z));
         return new float[]{xRot, yRot};
     }
 

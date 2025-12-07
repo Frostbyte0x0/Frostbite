@@ -91,4 +91,13 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation BARD = new ModelLayerLocation(
             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "bard"), "main");
+
+    public static final ModelLayerLocation ETHEREAL_SWORD = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_sword"), "main");
+
+    public static final ModelLayerLocation ETHEREAL_HANDS = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hands"), "main");
+
+    public static final ModelLayerLocation ETHEREAL_HAMMER = new ModelLayerLocation(
+            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hammer"), "main");
 }

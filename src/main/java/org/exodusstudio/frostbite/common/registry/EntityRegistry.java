@@ -287,4 +287,25 @@ public class EntityRegistry {
             DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
     public static final DeferredHolder<SensorType<?>, SensorType<MonkEntitySensor>> MONK_SENSOR =
             SENSOR.register("monk_sensor", () -> new SensorType<>(MonkEntitySensor::new));
+
+    public static final Supplier<EntityType<EtherealSwordEntity>> ETHEREAL_SWORD =
+            ENTITY_TYPES.register("ethereal_sword", () -> EntityType.Builder
+                    .of(EtherealSwordEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_sword"))));
+
+    public static final Supplier<EntityType<EtherealHandsEntity>> ETHEREAL_HANDS =
+            ENTITY_TYPES.register("ethereal_hands", () -> EntityType.Builder
+                    .of(EtherealHandsEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hands"))));
+
+    public static final Supplier<EntityType<EtherealHammerEntity>> ETHEREAL_HAMMER =
+            ENTITY_TYPES.register("ethereal_hammer", () -> EntityType.Builder
+                    .of(EtherealHammerEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hammer"))));
 }
