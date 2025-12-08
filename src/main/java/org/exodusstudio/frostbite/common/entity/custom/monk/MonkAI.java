@@ -40,7 +40,7 @@ public class MonkAI {
             MemoryModuleType.NEAREST_ATTACKABLE,
             MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get());
 
-    protected static Brain<?> makeBrain(MonkEntity monk, Dynamic<?> ops) {
+    protected static Brain<?> makeBrain(MonkEntity ignored, Dynamic<?> ops) {
         Brain.Provider<MonkEntity> provider = Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
         Brain<MonkEntity> brain = provider.makeBrain(ops);
         initCoreActivity(brain);
