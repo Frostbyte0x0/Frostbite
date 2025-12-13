@@ -39,7 +39,7 @@ public class FireSliceRenderer extends EntityRenderer<FireSliceEntity, FireSlice
     public void render(FireSliceRenderState state, PoseStack stack, MultiBufferSource source, int i) {
         stack.pushPose();
         stack.scale(2, 2, 2);
-        stack.mulPose(Axis.YP.rotationDegrees(state.yRot + 180));
+        stack.mulPose(Axis.YP.rotationDegrees(-state.yRot + 180));
         stack.mulPose(Axis.XP.rotationDegrees(-state.xRot));
         stack.translate(0, -1.4, 0);
         VertexConsumer vertexconsumer = source.getBuffer(RenderType.entityCutout(this.getTextureLocation(state)));

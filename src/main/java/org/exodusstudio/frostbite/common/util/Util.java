@@ -322,8 +322,8 @@ public class Util {
         if (ticksSinceLastChange < blendTicks) {
             float blendProgress = Mth.clamp((ticksSinceLastChange + partialTick) / blendTicks, 0f, 1f);
 
-            lastAnimationState.ifStarted((state) -> lastAnimation.apply((long)((float)state.getTimeInMillis(ageInTicks)), 1 - blendProgress));
-            newAnimationState.ifStarted((state) -> newAnimation.apply((long)((float)state.getTimeInMillis(ageInTicks)), blendProgress));
+            lastAnimationState.ifStarted((state) -> lastAnimation.apply(state.getTimeInMillis(ageInTicks), 1 - blendProgress));
+            newAnimationState.ifStarted((state) -> newAnimation.apply(state.getTimeInMillis(ageInTicks), blendProgress));
         }
     }
 }
