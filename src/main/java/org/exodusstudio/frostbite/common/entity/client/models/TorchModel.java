@@ -9,12 +9,12 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.TorchAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.TorchRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.ennemies.BanditEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.TorchEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
 public class TorchModel extends EntityModel<TorchRenderState> {
     private final ModelPart model;
+    private final ModelPart body;
     private final ModelPart head;
     private final KeyframeAnimation slicingAnimationState;
     private final KeyframeAnimation idleAnimationState;
@@ -25,7 +25,7 @@ public class TorchModel extends EntityModel<TorchRenderState> {
         this.idleAnimationState = TorchAnimations.IDLE.bake(root);
         ModelPart torch = root.getChild("torch");
         this.model = torch.getChild("model");
-        ModelPart body = this.model.getChild("body");
+        this.body = this.model.getChild("body");
         this.head = body.getChild("head");
     }
 
@@ -57,11 +57,6 @@ public class TorchModel extends EntityModel<TorchRenderState> {
         super.setupAnim(state);
         head.xRot = state.xRot * ((float) Math.PI / 180F);
         head.yRot = state.yRot * ((float) Math.PI / 180F);
-//        if (state.isSlicing) {
-//            slicingAnimationState.apply(state.stealingAnimationState, state.ageInTicks);
-//        } else {
-//            idleAnimationState.apply(state.idleAnimationState, state.ageInTicks);
-//        }
 
         KeyframeAnimation currentAnimation = state.isSlicing ? slicingAnimationState : idleAnimationState;
         KeyframeAnimation lastAnimation = state.isSlicing ? idleAnimationState : slicingAnimationState;
@@ -83,5 +78,13 @@ public class TorchModel extends EntityModel<TorchRenderState> {
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.translate(0, 1.5, 0);
         model.render(poseStack, buffer, packedLight, packedOverlay, color);
+    }
+
+    public ModelPart getModel() {
+        return model;
+    }
+
+    public ModelPart getBody() {
+        return body;
     }
 }

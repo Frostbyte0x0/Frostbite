@@ -2,6 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.HoldingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
@@ -24,6 +25,7 @@ public class TorchRenderer extends MobRenderer<TorchEntity, TorchRenderState, To
     @Override
     public void extractRenderState(TorchEntity torch, TorchRenderState state, float p_361157_) {
         super.extractRenderState(torch, state, p_361157_);
+        HoldingEntityRenderState.extractHoldingEntityRenderState(torch, state, itemModelResolver);
         state.isSlicing = torch.isSlicing();
         state.currentAnimationState.copyFrom(torch.currentAnimationState);
         state.lastAnimationState.copyFrom(torch.lastAnimationState);

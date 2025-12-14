@@ -353,4 +353,8 @@ public class ItemRegistry {
     public static final DeferredItem<Item> LYRE =
             ITEMS.register("lyre", (id) -> new LyreItem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> FIRE =
+            ITEMS.register("fire", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }

@@ -9,6 +9,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -50,6 +52,7 @@ import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.weather.FrostbiteWeatherEffectRenderer;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
@@ -69,6 +72,7 @@ public class ModEvents {
         OTFPortal.canSpawn = true;
         FTOPortal.canSpawn = true;
         Frostbite.temperatureStorage.clear();
+        time = 0;
     }
 
     @SubscribeEvent
@@ -290,6 +294,20 @@ public class ModEvents {
                 Frostbite.heaterStorages.removeAll(Frostbite.heatersToRemove);
                 Frostbite.heatersToRemove.clear();
             }
+            if (isFrostbite(level)) {
+                Frostbite.bossesToAdd.forEach((pos, boss) -> {
+                    boolean isPlayerAround =
+                            !level.getEntitiesOfClass(Player.class, Util.squareAABB(pos.getCenter(), 100)).isEmpty();
+                    if (Frostbite.addedBosses.containsKey(pos) || !isPlayerAround) return;
+
+                    Entity e = boss.create(level, EntitySpawnReason.STRUCTURE);
+                    e.setPos(pos.getX(), pos.getY(), pos.getZ());
+                    level.addFreshEntityWithPassengers(e);
+                    level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(e));
+                    Frostbite.addedBosses.put(pos, boss);
+                    Frostbite.bossesToAdd.remove(pos);
+                });
+            }
         });
         Frostbite.temperatureStorage.updateEntityTemperatures(entities);
         Frostbite.breathEntityLikes.forEach(BreathEntityLike::tick);
@@ -318,9 +336,9 @@ public class ModEvents {
     public static void computeWeatherInfo(ClientLevel level, Player player) {
         String name = level.getBiome(player.blockPosition()).toString();
 
-        if (!currentBiome.equals(name) || level.getGameTime() < 20) {
+        if (!currentBiome.equals(name) || level.getGameTime() < 100) {
             assert Minecraft.getInstance().level != null;
-            if (Minecraft.getInstance().level.getGameTime() - time > 100) {
+            if (Minecraft.getInstance().level.getGameTime() - time > 100 || level.getGameTime() < 100) {
                 if (name.contains("shrouded_forest") && !Frostbite.weatherInfo.isBlizzarding && !Frostbite.weatherInfo.isWhiteouting) {
                     Frostbite.weatherInfo.oNearFog = Frostbite.weatherInfo.nearFog;
                     Frostbite.weatherInfo.oFarFog = Frostbite.weatherInfo.farFog;

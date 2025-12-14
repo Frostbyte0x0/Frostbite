@@ -4,6 +4,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,8 +21,10 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.projectiles.FireSliceEntity;
 import org.exodusstudio.frostbite.common.entity.goals.TorchSliceGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
 
-public class TorchEntity extends Monster implements RangedAttackMob {
+public class TorchEntity extends Monster implements RangedAttackMob, CustomTemperatureEntity {
     private static final EntityDataAccessor<String> DATA_STATE =
             SynchedEntityData.defineId(TorchEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_LAST_STATE =
@@ -35,6 +38,7 @@ public class TorchEntity extends Monster implements RangedAttackMob {
     public TorchEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.TORCH.get(), level);
         currentAnimationState.start(tickCount);
+        setItemInHand(InteractionHand.MAIN_HAND, ItemRegistry.FIRE.asItem().getDefaultInstance());
     }
 
     @Override
@@ -79,7 +83,7 @@ public class TorchEntity extends Monster implements RangedAttackMob {
     public void tick() {
         super.tick();
 
-        if (getTarget() instanceof Player player && isSlicing() && currentAnimationState.getTimeInMillis(tickCount) / 50 == 20) {
+        if (getTarget() instanceof Player player && isSlicing() && currentAnimationState.getTimeInMillis(tickCount) / 50 == 25) {
             if (this.level() instanceof ServerLevel serverLevel) {
                 Vec3 dir = player.position().subtract(this.position()).normalize();
                 Vec3 pos = (new Vec3(this.getX(), this.getEyeY() - 0.2, this.getZ())).add(dir);
@@ -136,5 +140,10 @@ public class TorchEntity extends Monster implements RangedAttackMob {
     @Override
     public boolean canFreeze() {
         return false;
+    }
+
+    @Override
+    public int getBaseOuterTempIncrease() {
+        return 5;
     }
 }

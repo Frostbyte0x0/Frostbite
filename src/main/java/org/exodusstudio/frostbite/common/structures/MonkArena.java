@@ -5,12 +5,21 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
@@ -18,9 +27,13 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class MonkArena extends Structure {
     public static final MapCodec<MonkArena> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -64,6 +77,31 @@ public class MonkArena extends Structure {
         this.maxDistanceFromCenter = maxDistanceFromCenter;
         this.dimensionPadding = dimensionPadding;
         this.liquidSettings = liquidSettings;
+    }
+
+    @Override
+    public StructureStart generate(
+            Holder<Structure> structure,
+            ResourceKey<Level> level,
+            RegistryAccess registryAccess,
+            ChunkGenerator chunkGenerator,
+            BiomeSource biomeSource,
+            RandomState randomState,
+            StructureTemplateManager structureTemplateManager,
+            long seed,
+            ChunkPos chunkPos,
+            int references,
+            LevelHeightAccessor heightAccessor,
+            Predicate<Holder<Biome>> validBiome
+    ) {
+        StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
+        randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
+
+        if (structureStart != StructureStart.INVALID_START) {
+            Frostbite.bossesToAdd.put(structureStart.getBoundingBox().getCenter(), EntityRegistry.MONK.get());
+        }
+
+        return structureStart;
     }
 
     @Override

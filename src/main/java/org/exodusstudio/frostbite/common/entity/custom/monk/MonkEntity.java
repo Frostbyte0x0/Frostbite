@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
@@ -35,10 +36,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
-import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.registry.SoundRegistry;
+import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -72,6 +70,8 @@ public class MonkEntity extends Monster {
 
     public MonkEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.MONK.get(), level);
+        setItemInHand(InteractionHand.MAIN_HAND, ItemRegistry.FIRE.toStack());
+        setCustomName(MONK_NAME_COMPONENT);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -382,11 +382,11 @@ public class MonkEntity extends Monster {
             return false;
         }
 
-        if (random.nextFloat() < 0.3f) {
+        if (random.nextFloat() < 0.25f) {
             if (source.getEntity() instanceof Player) {
                 Minecraft.getInstance().cameraEntity.setYRot(Minecraft.getInstance().cameraEntity.yRotO + 180);
             }
-            if (random.nextFloat() < 0.33f) {
+            if (random.nextFloat() < 0.5f) {
                 tpRandomly(serverLevel);
             }
             return false;

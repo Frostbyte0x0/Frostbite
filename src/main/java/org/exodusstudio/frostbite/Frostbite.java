@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.resources.model.SpriteGetter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,6 +27,7 @@ import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Mod(Frostbite.MOD_ID)
@@ -42,6 +43,8 @@ public class Frostbite {
     public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
     public static WeatherInfo weatherInfo = new WeatherInfo();
+    public static final HashMap<BlockPos, EntityType> addedBosses = new HashMap<>();
+    public static final HashMap<BlockPos, EntityType> bossesToAdd = new HashMap<>();
 
     public Frostbite(IEventBus modEventBus, ModContainer ignored) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
