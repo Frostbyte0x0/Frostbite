@@ -19,7 +19,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
@@ -36,7 +35,10 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.registry.*;
+import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +61,8 @@ public class MonkEntity extends Monster {
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Vector3f> DATA_SWIRL_DIR =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Vector3f> DATA_ARENA =
+            SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.VECTOR3);
     private static final Component MONK_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(MONK_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
@@ -67,11 +71,10 @@ public class MonkEntity extends Monster {
     public static final int ILLUSION_AMOUNT = 10;
     public static final int ATTACK_COOLDOWN = 60;
     public static final int REPEL_RANGE = 6;
+    public static final int ARENA_SIZE = 20;
 
     public MonkEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.MONK.get(), level);
-        setItemInHand(InteractionHand.MAIN_HAND, ItemRegistry.FIRE.toStack());
-        setCustomName(MONK_NAME_COMPONENT);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -85,12 +88,19 @@ public class MonkEntity extends Monster {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("illusion", isIllusion());
+        output.putFloat("arenaX", getArenaCenter().x);
+        output.putFloat("arenaY", getArenaCenter().y);
+        output.putFloat("arenaZ", getArenaCenter().z);
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         setIllusion(input.getBooleanOr("illusion", false));
+        setArenaCenter(new Vector3f(
+                input.getFloatOr("arenaX", 0f),
+                input.getFloatOr("arenaY", 0f),
+                input.getFloatOr("arenaZ", 0f)));
     }
 
     @Override
@@ -101,6 +111,7 @@ public class MonkEntity extends Monster {
         builder.define(DATA_LAST_CONFUSION, "");
         builder.define(DATA_SWIRL_LENGTH, 0f);
         builder.define(DATA_SWIRL_DIR, new Vector3f(0, 0, 0));
+        builder.define(DATA_ARENA, new Vector3f(0, 0, 0));
     }
 
     @Override
@@ -392,6 +403,8 @@ public class MonkEntity extends Monster {
             return false;
         }
 
+        tpRandomly(serverLevel);
+
         return super.hurtServer(serverLevel, source, p_376610_);
     }
 
@@ -401,10 +414,15 @@ public class MonkEntity extends Monster {
         if (!level().isClientSide) undoLastConfusionAttack();
     }
 
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
     public void reflectProjectile(Projectile projectile, LivingEntity owner) {
         double t = owner.distanceTo(this) / 5;
         double vx = (projectile.getX() - owner.getX()) / t;
-        double vy = (projectile.getY() - owner.getY()  - 3 * t * t) / t;
+        double vy = (projectile.getY() - owner.getY() - 3 * t * t) / t;
         double vz = (projectile.getZ() - owner.getZ()) / t;
         projectile.setDeltaMovement(vx, vy, vz);
     }
@@ -425,6 +443,10 @@ public class MonkEntity extends Monster {
             double d2 = this.getZ() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
             if (this.isPassenger()) {
                 this.stopRiding();
+            }
+
+            if (!(Util.squareAABB(new Vec3(getArenaCenter()), ARENA_SIZE)).contains(new Vec3(d0, d1, d2))) {
+                continue;
             }
 
             Vec3 vec3 = this.position();
@@ -478,6 +500,14 @@ public class MonkEntity extends Monster {
 
     public Vector3f getSwirlDir() {
         return this.entityData.get(DATA_SWIRL_DIR);
+    }
+
+    public void setArenaCenter(Vector3f pos) {
+        this.entityData.set(DATA_ARENA, pos);
+    }
+
+    public Vector3f getArenaCenter() {
+        return this.entityData.get(DATA_ARENA);
     }
 
     @Override

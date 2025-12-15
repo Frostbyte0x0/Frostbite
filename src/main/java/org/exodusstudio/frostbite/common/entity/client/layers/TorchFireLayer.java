@@ -36,7 +36,7 @@ public class TorchFireLayer extends RenderLayer<TorchRenderState, TorchModel> {
             stack.translate(n.x, 0, n.z);
             stack.mulPose(Axis.YP.rotationDegrees(90));
             stack.mulPose(Axis.YP.rotationDegrees((float) (Math.atan2(vec3.z, vec3.x) * (-180 / Math.PI))));
-            stack.scale(3, 7, 3);
+            stack.scale(7, 7, 7);
 
             itemstackrenderstate.render(stack, source, i, OverlayTexture.NO_OVERLAY);
             stack.popPose();

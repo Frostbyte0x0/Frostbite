@@ -48,7 +48,7 @@ public class ThermometerOverlay {
 
         float outer_temp = (float) Math.round(Frostbite.temperatureStorage.getTemperature(player, false) * 10f) / 10f;
 
-        if (!isFrostbite(player.level()) && outer_temp == MAX_TEMP) {
+        if (!isFrostbite(player.level()) && outer_temp == MAX_TEMP || Minecraft.getInstance().options.hideGui) {
             return;
         }
 

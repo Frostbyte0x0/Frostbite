@@ -41,6 +41,7 @@ import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
@@ -296,17 +297,18 @@ public class ModEvents {
             }
             if (isFrostbite(level)) {
                 Frostbite.bossesToAdd.forEach((pos, boss) -> {
-                    boolean isPlayerAround =
-                            !level.getEntitiesOfClass(Player.class, Util.squareAABB(pos.getCenter(), 100)).isEmpty();
-                    if (Frostbite.addedBosses.containsKey(pos) || !isPlayerAround) return;
+                    if (Frostbite.addedBosses.containsKey(pos)) return;
 
                     Entity e = boss.create(level, EntitySpawnReason.STRUCTURE);
-                    e.setPos(pos.getX(), pos.getY(), pos.getZ());
-                    level.addFreshEntityWithPassengers(e);
-                    level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(e));
-                    Frostbite.addedBosses.put(pos, boss);
-                    Frostbite.bossesToAdd.remove(pos);
+                    //e.setPos(pos.getX(), pos.getY(), pos.getZ());
+                    //level.addFreshEntityWithPassengers(e);
+                    //level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(e));
+                    if (e instanceof MonkEntity monkEntity) {
+                        monkEntity.setArenaCenter(pos.getCenter().toVector3f());
+                    }
                 });
+                Frostbite.addedBosses.putAll(Frostbite.bossesToAdd);
+                Frostbite.bossesToAdd.clear();
             }
         });
         Frostbite.temperatureStorage.updateEntityTemperatures(entities);

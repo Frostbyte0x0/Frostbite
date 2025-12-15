@@ -49,7 +49,7 @@ public class FireOverlay {
 
         float innerTemp = (float) Math.round(Frostbite.temperatureStorage.getTemperature(player, true) * 10f) / 10f;
 
-        if (!isFrostbite(player.level()) && innerTemp == MAX_TEMP) {
+        if (!isFrostbite(player.level()) && innerTemp == MAX_TEMP || Minecraft.getInstance().options.hideGui) {
             return;
         }
 
