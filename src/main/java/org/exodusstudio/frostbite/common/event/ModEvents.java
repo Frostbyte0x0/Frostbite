@@ -300,9 +300,9 @@ public class ModEvents {
                     if (Frostbite.addedBosses.containsKey(pos)) return;
 
                     Entity e = boss.create(level, EntitySpawnReason.STRUCTURE);
-                    //e.setPos(pos.getX(), pos.getY(), pos.getZ());
-                    //level.addFreshEntityWithPassengers(e);
-                    //level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(e));
+                    e.setPos(pos.getX(), pos.getY(), pos.getZ());
+                    level.addFreshEntityWithPassengers(e);
+                    level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(e));
                     if (e instanceof MonkEntity monkEntity) {
                         monkEntity.setArenaCenter(pos.getCenter().toVector3f());
                     }

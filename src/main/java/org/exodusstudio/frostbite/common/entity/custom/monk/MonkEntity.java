@@ -97,10 +97,12 @@ public class MonkEntity extends Monster {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         setIllusion(input.getBooleanOr("illusion", false));
-        setArenaCenter(new Vector3f(
-                input.getFloatOr("arenaX", 0f),
-                input.getFloatOr("arenaY", 0f),
-                input.getFloatOr("arenaZ", 0f)));
+        if (input.getFloatOr("arenaX", 0.0F) != 0.0F) {
+            setArenaCenter(new Vector3f(
+                    input.getFloatOr("arenaX", 0f),
+                    input.getFloatOr("arenaY", 0f),
+                    input.getFloatOr("arenaZ", 0f)));
+        }
     }
 
     @Override
