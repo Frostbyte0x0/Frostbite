@@ -24,8 +24,14 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHammerEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHandsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealSwordEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealWeaponEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -91,6 +97,18 @@ public class BardEntity extends Monster {
         return this.level().getWorldBorder().isWithinBounds(player.getBoundingBox());
     }
 
+    public String chooseAttack(LivingEntity target) {
+        if (getRandom().nextFloat() < 0.2) {
+            return "lyre";
+        } else if (getRandom().nextFloat() < 0.2) {
+            return "shield";
+        } else if (getRandom().nextFloat() < 0.2) {
+            return "summon";
+        } else {
+            return "smite";
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -123,30 +141,73 @@ public class BardEntity extends Monster {
         if (getAttackableFromBrain() != null && isPlaying() && playAnimationState.getTimeInMillis(tickCount) / 50 == 9) {
             level().playSound(null, this.getOnPos(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.HOSTILE,
                     1f, level().getRandom().nextFloat() * 0.1F + 0.9F);
-            undoLastConfusionAttack();
 
             String attack = chooseAttack(getAttackableFromBrain());
             switch (attack) {
-                case "confuse" -> confuseAttack(getAttackableFromBrain());
-                case "clone" -> cloneAttack();
-                case "repel" -> repelAttack();
-                case "tp" -> tpRandomly(level());
-                case "swirl" -> swirlAttack(getAttackableFromBrain());
+                case "lyre" -> lyreAttack(getAttackableFromBrain());
+                case "shield" -> shieldAttack();
+                case "summon" -> summonAttack();
+                case "smite" -> smiteAttack(getAttackableFromBrain());
             }
             setPlaying(false);
         }
+    }
 
-        if (getSwirlLength() >= 0.1 && getSwirlLength() < 10f) {
-            setSwirlLength(getSwirlLength() + 0.3f);
-            doSwirl();
-        } else {
-            setSwirlLength(0f);
+    public void lyreAttack(LivingEntity target) {
+        if (level() instanceof ServerLevel serverLevel) {
+            Vec3 v = target.position().subtract(position()).normalize();
+            EtherealWeaponEntity weapon;
+
+            if (getRandom().nextFloat() < 0.333) {
+                weapon = new EtherealHammerEntity(null, serverLevel);
+            } else if (getRandom().nextFloat() < 0.333) {
+                weapon = new EtherealHandsEntity(null, serverLevel);
+            } else {
+                weapon = new EtherealSwordEntity(null, serverLevel);
+            }
+
+            weapon.setPos(position().add(v.scale(3)).add(0, 1.5, 0));
+            float[] angles = Util.getXYRot(v);
+            weapon.setXRot(angles[0]);
+            weapon.setYRot(angles[1]);
+            serverLevel.addFreshEntity(weapon);
+        }
+    }
+
+    public void shieldAttack() {
+
+    }
+
+    public void summonAttack() {
+
+    }
+
+    public void smiteAttack(LivingEntity target) {
+        if (level() instanceof ServerLevel serverLevel) {
+            for (int i = 0; i < 3; i++) {
+                LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, serverLevel);
+                lightningBolt.setPos(target.position());
+                serverLevel.addFreshEntity(lightningBolt);
+            }
         }
     }
 
     @Nullable
     protected LivingEntity getAttackableFromBrain() {
         return this.getBrain().getMemory(MemoryModuleType.NEAREST_ATTACKABLE).orElse(null);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        if (DATA_PLAYING.equals(accessor)) {
+            this.playAnimationState.stop();
+            if (isPlaying()) {
+                this.playAnimationState.startIfStopped(tickCount);
+            }
+            this.refreshDimensions();
+        }
+
+        super.onSyncedDataUpdated(accessor);
     }
 
     public boolean isPlaying() {
