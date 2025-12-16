@@ -179,6 +179,7 @@
   "effect.frostbite.fatigue": "Fatigue",
 
   "entity.monk.boss_bar": "Monk",
+  "entity.bard.boss_bar": "Bard",
 
 
   "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",

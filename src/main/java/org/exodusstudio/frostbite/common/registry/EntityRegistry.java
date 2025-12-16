@@ -12,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntitySensor;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntitySensor;
@@ -282,12 +283,6 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "big_levitating_jellyfish"))));
 
-    // Entity Sensor
-    public static final DeferredRegister<SensorType<?>> SENSOR =
-            DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
-    public static final DeferredHolder<SensorType<?>, SensorType<MonkEntitySensor>> MONK_SENSOR =
-            SENSOR.register("monk_sensor", () -> new SensorType<>(MonkEntitySensor::new));
-
     public static final Supplier<EntityType<EtherealSwordEntity>> ETHEREAL_SWORD =
             ENTITY_TYPES.register("ethereal_sword", () -> EntityType.Builder
                     .of(EtherealSwordEntity::new, MobCategory.AMBIENT)
@@ -308,4 +303,12 @@ public class EntityRegistry {
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hammer"))));
+
+    // Entity Sensors
+    public static final DeferredRegister<SensorType<?>> SENSOR =
+            DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
+    public static final DeferredHolder<SensorType<?>, SensorType<MonkEntitySensor>> MONK_SENSOR =
+            SENSOR.register("monk_sensor", () -> new SensorType<>(MonkEntitySensor::new));
+    public static final DeferredHolder<SensorType<?>, SensorType<BardEntitySensor>> BARD_SENSOR =
+            SENSOR.register("bard_sensor", () -> new SensorType<>(BardEntitySensor::new));
 }
