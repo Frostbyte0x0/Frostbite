@@ -91,7 +91,7 @@ public class WoollySheepEntity extends Animal {
     }
 
     public void aiStep() {
-        if (this.level().isClientSide) {
+        if (this.level().isClientSide()) {
             this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
         }
 
@@ -156,7 +156,7 @@ public class WoollySheepEntity extends Animal {
             if (this.level() instanceof ServerLevel serverlevel && this.readyForShearing()) {
                 this.shear(serverlevel, SoundSource.PLAYERS, itemstack);
                 this.gameEvent(GameEvent.SHEAR, player);
-                itemstack.hurtAndBreak(1, player, getSlotForHand(hand));
+                itemstack.hurtAndBreak(1, player, hand.asEquipmentSlot());
                 return InteractionResult.SUCCESS_SERVER;
             }
 
@@ -265,6 +265,6 @@ public class WoollySheepEntity extends Animal {
 
     static {
         DATA_WOOL_ID = SynchedEntityData.defineId(WoollySheepEntity.class, EntityDataSerializers.BYTE);
-        COLOR_BY_DYE = Maps.newEnumMap((Map) Arrays.stream(DyeColor.values()).collect(Collectors.toMap(Function.identity(), WoollySheepEntity::createSheepColor)));
+        COLOR_BY_DYE = Maps.newEnumMap(Arrays.stream(DyeColor.values()).collect(Collectors.toMap(Function.identity(), WoollySheepEntity::createSheepColor)));
     }
 }

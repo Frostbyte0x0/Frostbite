@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
@@ -41,7 +41,7 @@ public class TanukiRenderer extends MobRenderer<TanukiEntity, TanukiRenderState,
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TanukiRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/tanuki/tanuki.png");
+    public Identifier getTextureLocation(TanukiRenderState renderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/tanuki/tanuki.png");
     }
 }

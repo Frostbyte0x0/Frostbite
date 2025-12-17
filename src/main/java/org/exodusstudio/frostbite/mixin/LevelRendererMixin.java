@@ -36,7 +36,7 @@ public class LevelRendererMixin {
         assert frostbite$mc.level != null;
 
         setFrostbite$levelRenderer();
-        Vec3 vec3 = camera.getPosition();
+        Vec3 vec3 = camera.position();
         double d0 = vec3.x();
         double d1 = vec3.y();
         double d2 = vec3.z();

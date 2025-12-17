@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
@@ -15,7 +15,8 @@ public class BanditHeldItemLayer extends RenderLayer<BanditRenderState, BanditMo
         super(parent);
     }
 
-    public void render(PoseStack stack, MultiBufferSource source, int p_117009_, BanditRenderState state, float p_117011_, float p_117012_) {
+    @Override
+    public void submit(PoseStack stack, SubmitNodeCollector submitNodeCollector, int i, BanditRenderState state, float v, float v1) {
         ItemStackRenderState itemstackrenderstate = state.heldItem;
         if (!itemstackrenderstate.isEmpty()) {
             boolean flag1 = state.isBaby;
@@ -28,8 +29,8 @@ public class BanditHeldItemLayer extends RenderLayer<BanditRenderState, BanditMo
             }
 
             //stack.mulPose(Axis.ZP.rotation(state.headRollAngle));
-            stack.mulPose(Axis.YP.rotationDegrees(p_117011_));
-            stack.mulPose(Axis.XP.rotationDegrees(p_117012_));
+            stack.mulPose(Axis.YP.rotationDegrees(v));
+            stack.mulPose(Axis.XP.rotationDegrees(v1));
             if (state.isBaby) {
                 stack.translate(0.06, 0.26, -0.5);
             } else {
@@ -39,9 +40,8 @@ public class BanditHeldItemLayer extends RenderLayer<BanditRenderState, BanditMo
             stack.mulPose(Axis.XP.rotationDegrees(90));
             stack.translate(0, 0.1, 0);
 
-            itemstackrenderstate.render(stack, source, p_117009_, OverlayTexture.NO_OVERLAY);
+            itemstackrenderstate.submit(stack, submitNodeCollector, i, OverlayTexture.NO_OVERLAY, -1);
             stack.popPose();
         }
-
     }
 }

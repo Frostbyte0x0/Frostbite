@@ -77,7 +77,7 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
     }
 
     public void setOwner(LivingEntity owner) {
-        this.owner = new EntityReference<>(owner);
+        this.owner = EntityReference.of(owner);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
 
     @Override
     public void aiStep() {
-        if (level().isClientSide) {
+        if (level().isClientSide()) {
             for (int i = 0; i < 20; ++i) {
                 level().addParticle(
                         ColorParticleOption.create(ParticleRegistry.ROAMING_BLIZZARD_PARTICLE.get(),

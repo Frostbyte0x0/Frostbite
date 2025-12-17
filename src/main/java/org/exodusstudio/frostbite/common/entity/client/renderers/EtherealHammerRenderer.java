@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.EtherealHammerModel;
@@ -26,7 +26,7 @@ public class EtherealHammerRenderer extends EtherealRenderer<EtherealHammerEntit
     }
 
     @Override
-    public ResourceLocation getTextureLocation() {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/ethereal_hammer/ethereal_hammer.png");
+    public Identifier getTextureLocation() {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/ethereal_hammer/ethereal_hammer.png");
     }
 }

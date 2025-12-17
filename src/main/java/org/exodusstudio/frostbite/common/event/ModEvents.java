@@ -15,10 +15,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.material.FogType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -53,7 +53,6 @@ import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
-import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.weather.FrostbiteWeatherEffectRenderer;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
@@ -97,7 +96,7 @@ public class ModEvents {
 
         if (level instanceof ServerLevel serverLevel && serverLevel.dimensionType().hasSkyLight()) {
             long time = level.getGameTime();
-            if (serverLevel.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)) {
+            if (serverLevel.getGameRules().get(GameRules.ADVANCE_WEATHER)) {
                 int i = Frostbite.weatherInfo.snowTime;
                 int j = Frostbite.weatherInfo.whiteoutTime;
                 int k = Frostbite.weatherInfo.blizzardTime;
@@ -164,11 +163,11 @@ public class ModEvents {
     @SubscribeEvent
     public static void weatherRender(RenderLevelStageEvent.AfterWeather event) {
         LevelRenderer renderer = event.getLevelRenderer();
-        assert Minecraft.getInstance().level != null;
-        if (isFrostbite(Minecraft.getInstance().level)) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level != null && minecraft.getCameraEntity() != null && isFrostbite(Minecraft.getInstance().level)) {
             weatherEffectRenderer.render(Minecraft.getInstance().level, renderer.renderBuffers.bufferSource(),
-                    renderer.getTicks(), event.getPartialTick().getGameTimeDeltaPartialTick(false),
-                    event.getCamera().getPosition());
+                    renderer.getTicks(), event.getLevelRenderState().gameTime,
+                    minecraft.getCameraEntity().getPosition(renderer.getTicks()));
         }
     }
 
@@ -290,7 +289,7 @@ public class ModEvents {
             });
             if (event.getServer().getTickCount() % 20 == 0) {
                 Frostbite.heaterStorages.forEach(heater -> {
-                    if (heater.getDimensionName().equals(level.dimension().location().toString())) heater.tickBlock(level);
+                    if (heater.getDimensionName().equals(level.dimension().identifier().toString())) heater.tickBlock(level);
                 });
                 Frostbite.heaterStorages.removeAll(Frostbite.heatersToRemove);
                 Frostbite.heatersToRemove.clear();
@@ -328,8 +327,8 @@ public class ModEvents {
                 state.getBlock() instanceof HeaterBlock block &&
                 Frostbite.heaterStorages.stream().noneMatch(heater ->
                         heater.getPos().equals(event.getPos()) &&
-                                heater.getDimensionName().equals(serverLevel.dimension().location().toString()))) {
-            Frostbite.heaterStorages.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().location().toString()));
+                                heater.getDimensionName().equals(serverLevel.dimension().identifier().toString()))) {
+            Frostbite.heaterStorages.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().identifier().toString()));
             event.cancelWithResult(InteractionResult.FAIL);
 
         }

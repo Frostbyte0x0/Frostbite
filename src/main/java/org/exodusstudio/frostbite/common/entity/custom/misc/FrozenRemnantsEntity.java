@@ -20,8 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
@@ -122,7 +122,7 @@ public class FrozenRemnantsEntity extends Mob{
     }
 
     public void setOwner(Entity owner) {
-        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(new EntityReference<>(owner.getUUID())));
+        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(EntityReference.of(owner.getUUID())));
     }
 
     public Entity getOwner() {
@@ -138,7 +138,7 @@ public class FrozenRemnantsEntity extends Mob{
     }
 
     public void setOwnerUUID(UUID uuid) {
-        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(new EntityReference<>(uuid)));
+        this.getEntityData().set(DATA_OWNER_UUID, Optional.of(EntityReference.of(uuid)));
     }
 
     public UUID getOwnerUUID() {
@@ -157,8 +157,8 @@ public class FrozenRemnantsEntity extends Mob{
     }
 
     public static boolean shouldSpawnFrozenRemnants(ServerLevel serverLevel) {
-        return !serverLevel.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)
-                && serverLevel.getGameRules().getBoolean(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS)
+        return !serverLevel.getGameRules().get(GameRules.KEEP_INVENTORY)
+                && serverLevel.getGameRules().get(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS)
                 && isFrostbite(serverLevel);
     }
 

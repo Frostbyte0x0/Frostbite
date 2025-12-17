@@ -4,11 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import org.exodusstudio.frostbite.common.entity.client.states.EtherealAnimationState;
 
@@ -26,14 +26,14 @@ public class EtherealRenderer<T extends Entity, M extends EntityModel<EtherealAn
 
     public void render(EtherealAnimationState renderState, PoseStack poseStack, MultiBufferSource multiBufferSource, int p_113824_) {
         poseStack.pushPose();
-        VertexConsumer vertexconsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getTextureLocation()));
+        VertexConsumer vertexconsumer = multiBufferSource.getBuffer(RenderTypes.entityTranslucent(this.getTextureLocation()));
         this.model.setupAnim(renderState);
         this.model.renderToBuffer(poseStack, vertexconsumer, p_113824_, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
-        super.render(renderState, poseStack, multiBufferSource, p_113824_);
+        super.submit(renderState, poseStack, multiBufferSource, p_113824_);
     }
 
-    public ResourceLocation getTextureLocation() {
+    public Identifier getTextureLocation() {
         return null;
     }
 

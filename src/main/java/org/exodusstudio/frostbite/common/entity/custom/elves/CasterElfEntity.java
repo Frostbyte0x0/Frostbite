@@ -15,7 +15,7 @@ public class CasterElfEntity extends ElfEntity {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
+        if (!level().isClientSide() && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
             setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.CASTING_STAFF.asItem()));
         }
 

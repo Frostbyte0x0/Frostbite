@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.EtherealSwordModel;
@@ -26,7 +26,7 @@ public class EtherealSwordRenderer extends EtherealRenderer<EtherealSwordEntity,
     }
 
     @Override
-    public ResourceLocation getTextureLocation() {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/ethereal_sword/ethereal_sword.png");
+    public Identifier getTextureLocation() {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/ethereal_sword/ethereal_sword.png");
     }
 }

@@ -4,7 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -41,8 +41,8 @@ public record LiningMaterial(int durability, Map<ArmorType, Integer> coldProtect
         int i = this.coldProtection.getOrDefault(armorType, 0);
         ItemAttributeModifiers.Builder itemattributemodifiers$builder = ItemAttributeModifiers.builder();
         EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(armorType.getSlot());
-        ResourceLocation resourcelocation = ResourceLocation.withDefaultNamespace("armor." + armorType.getName());
-        itemattributemodifiers$builder.add(Attributes.ARMOR, new AttributeModifier(resourcelocation, i, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup);
+        Identifier Identifier = Identifier.withDefaultNamespace("armor." + armorType.getName());
+        itemattributemodifiers$builder.add(Attributes.ARMOR, new AttributeModifier(Identifier, i, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup);
 
         return itemattributemodifiers$builder.build();
     }

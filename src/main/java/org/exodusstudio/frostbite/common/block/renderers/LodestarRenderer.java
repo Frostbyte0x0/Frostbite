@@ -1,22 +1,25 @@
 package org.exodusstudio.frostbite.common.block.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
@@ -25,8 +28,8 @@ import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity> {
-    public static final ResourceLocation BEAM_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/beacon_beam.png");
+public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity, BlockEntityRenderState> {
+    public static final Identifier BEAM_LOCATION = Identifier.withDefaultNamespace("textures/entity/beacon_beam.png");
     public static final Material SHELL_TEXTURE;
     public static final Material CAGE_TEXTURE;
     public static final Material EYE_TEXTURE;
@@ -36,7 +39,7 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
     private final BlockEntityRenderDispatcher renderer;
 
     public LodestarRenderer(BlockEntityRendererProvider.Context context) {
-        this.renderer = context.getBlockEntityRenderDispatcher();
+        this.renderer = context.blockEntityRenderDispatcher();
         this.eye = context.bakeLayer(ModModelLayers.LODESTAR_EYE);
         this.cage = context.bakeLayer(ModModelLayers.LODESTAR_CAGE);
         this.shell = context.bakeLayer(ModModelLayers.LODESTAR_SHELL);
@@ -67,30 +70,35 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
     }
 
     @Override
-    public void render(LodestarBlockEntity lodestar, float partialTick, PoseStack pose, MultiBufferSource bufferSource, int i1, int i2, Vec3 vec3) {
+    public BlockEntityRenderState createRenderState() {
+        return new BlockEntityRenderState();
+    }
+
+    @Override
+    public void submit(BlockEntityRenderState blockEntityRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         float f = (float) lodestar.tickCount + partialTick;
         float f1 = lodestar.getActiveRotation(partialTick) * (180F / (float) Math.PI);
         float f2 = Mth.sin(f * 0.1F) / 2.0F + 0.5F;
         f2 = f2 * f2 + f2;
 
         // Cage
-        pose.pushPose();
-        pose.translate(0.5F, 0.3F + f2 * 0.15F, 0.5F);
+        poseStack.pushPose();
+        poseStack.translate(0.5F, 0.3F + f2 * 0.15F, 0.5F);
         Vector3f vector3f = (new Vector3f(0.5F, 1.0F, 0.5F)).normalize();
-        pose.mulPose((new Quaternionf()).rotationAxis(f1 * ((float) Math.PI / 180F), vector3f));
-        this.cage.render(pose, CAGE_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
-        pose.popPose();
+        poseStack.mulPose((new Quaternionf()).rotationAxis(f1 * ((float) Math.PI / 180F), vector3f));
+        this.cage.render(poseStack, CAGE_TEXTURE.buffer(bufferSource, RenderTypes::entityCutoutNoCull), i1, i2);
+        poseStack.popPose();
 
         // Eye
-        Camera camera = this.renderer.camera;
-        pose.pushPose();
-        pose.translate(0.5F, 0.3F + f2 * 0.15F, 0.5F);
-        pose.scale(0.5F, 0.5F, 0.5F);
+        Entity camera = Minecraft.getInstance().getCameraEntity();
+        poseStack.pushPose();
+        poseStack.translate(0.5F, 0.3F + f2 * 0.15F, 0.5F);
+        poseStack.scale(0.5F, 0.5F, 0.5F);
         float f3 = -camera.getYRot();
-        pose.mulPose((new Quaternionf()).rotationYXZ(f3 * ((float) Math.PI / 180F), camera.getXRot() * ((float) Math.PI / 180F), (float) Math.PI));
-        pose.scale(1.3333334F, 1.3333334F, 1.3333334F);
-        this.eye.render(pose, EYE_TEXTURE.buffer(bufferSource, RenderType::entityCutoutNoCull), i1, i2);
-        pose.popPose();
+        poseStack.mulPose((new Quaternionf()).rotationYXZ(f3 * ((float) Math.PI / 180F), camera.getXRot() * ((float) Math.PI / 180F), (float) Math.PI));
+        poseStack.scale(1.3333334F, 1.3333334F, 1.3333334F);
+        this.eye.render(poseStack, EYE_TEXTURE.buffer(bufferSource, RenderTypes::entityCutoutNoCull), i1, i2);
+        poseStack.popPose();
 
         // Beam
         int colour = ARGB.color(0, 100, (int) Mth.lerp(f2 / 2, 150, 200));
@@ -109,8 +117,8 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
     }
 
     static {
-        SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/shell"));
-        CAGE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/cage"));
-        EYE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/eye"));
+        SHELL_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/shell"));
+        CAGE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/cage"));
+        EYE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/eye"));
     }
 }

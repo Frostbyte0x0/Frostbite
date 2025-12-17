@@ -36,7 +36,7 @@ public class LodestarBlock extends BaseEntityBlock {
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntityRegistry.LODESTAR.get(),
-                level.isClientSide ? LodestarBlockEntity::clientTick : LodestarBlockEntity::serverTick);
+                level.isClientSide() ? LodestarBlockEntity::clientTick : LodestarBlockEntity::serverTick);
     }
 
     protected VoxelShape getOcclusionShape(BlockState state) {

@@ -90,7 +90,7 @@ public class LevitatingJellyfishEntity extends AgeableWaterCreature {
     public void tick() {
         super.tick();
         //this.move(MoverType.SELF, this.getDeltaMovement());
-        if (this.getMoveCooldown() == 50 && this.level().isClientSide) {
+        if (this.getMoveCooldown() == 50 && this.level().isClientSide()) {
             //this.swimmingAnimationState.start(this.tickCount);
         }
         this.setMoveCooldown(this.getMoveCooldown() + 1);

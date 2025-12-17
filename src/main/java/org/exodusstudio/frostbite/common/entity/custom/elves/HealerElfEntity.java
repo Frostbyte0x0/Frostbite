@@ -21,7 +21,7 @@ public class HealerElfEntity extends ElfEntity {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
+        if (!level().isClientSide() && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
             setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.HEALING_STAFF.asItem()));
         }
         super.tick();

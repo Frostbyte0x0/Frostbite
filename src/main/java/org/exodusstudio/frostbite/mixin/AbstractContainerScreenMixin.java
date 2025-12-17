@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
@@ -23,10 +23,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
     @Unique
-    private AbstractContainerScreen frostbite$screen = (AbstractContainerScreen) ((Object) this);
+    private AbstractContainerScreen<?> frostbite$screen = (AbstractContainerScreen<?>) ((Object) this);
 
     @Inject(at = @At("HEAD"), method = "renderSlot", cancellable = true)
-    protected void renderSlot(GuiGraphics guiGraphics, Slot slot, CallbackInfo ci) {
+    protected void renderSlot(GuiGraphics guiGraphics, Slot slot, int p_470717_, int p_470566_, CallbackInfo ci) {
         if (frostbite$screen.getMenu() instanceof InventoryMenu && Frostbite.shouldShowLining && slot instanceof LiningSlot) {
             int i = slot.x;
             int j = slot.y;
@@ -61,9 +61,9 @@ public class AbstractContainerScreenMixin {
 
             guiGraphics.pose().translate(0.0F, 100.0F, guiGraphics.pose().pushMatrix());
             if (itemstack.isEmpty() && slot.isActive()) {
-                ResourceLocation resourcelocation = slot.getNoItemIcon();
-                if (resourcelocation != null) {
-                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, resourcelocation, i, j - 100, 0, 0, 16, 16, 16, 16);
+                Identifier Identifier = slot.getNoItemIcon();
+                if (Identifier != null) {
+                    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Identifier, i, j - 100, 0, 0, 16, 16, 16, 16);
                     flag1 = true;
                 }
             }

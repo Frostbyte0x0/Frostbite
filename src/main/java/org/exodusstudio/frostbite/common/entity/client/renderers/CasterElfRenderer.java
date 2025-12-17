@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.CasterElfModel;
@@ -27,7 +27,7 @@ public class CasterElfRenderer extends MobRenderer<CasterElfEntity, ElfRenderSta
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ElfRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/caster_elf/caster_elf.png");
+    public Identifier getTextureLocation(ElfRenderState renderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/caster_elf/caster_elf.png");
     }
 }

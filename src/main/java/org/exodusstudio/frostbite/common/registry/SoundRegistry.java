@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.registry;
 
 import org.exodusstudio.frostbite.Frostbite;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -28,7 +28,7 @@ public class SoundRegistry {
     public static final Supplier<SoundEvent> SNIPER_FAIL = registerSoundEvent("sniper_fail");
 
     private static Supplier<SoundEvent> registerSoundEvent(String name) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, name);
+        Identifier id = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, name);
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
 }

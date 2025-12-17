@@ -102,7 +102,7 @@ public class TorchEntity extends Monster implements RangedAttackMob, CustomTempe
             lastAnimationState.stop();
         }
 
-        if (isSlicing() && currentAnimationState.getTimeInMillis(tickCount) / 50 == 60 && !this.level().isClientSide) {
+        if (isSlicing() && currentAnimationState.getTimeInMillis(tickCount) / 50 == 60 && !this.level().isClientSide()) {
             setCurrentState("idle");
         }
     }

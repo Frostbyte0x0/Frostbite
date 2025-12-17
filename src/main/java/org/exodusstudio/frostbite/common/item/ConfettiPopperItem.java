@@ -28,7 +28,7 @@ public class ConfettiPopperItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         level.playSound(null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 1f, random.nextFloat() * 0.35f + 0.75f);
         level.playSound(null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.PLAYERS, 1f, random.nextFloat() * 0.35f + 0.75f);
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             float x = player.getXRot();
             float y = player.getYRot();
             float z = 0f;

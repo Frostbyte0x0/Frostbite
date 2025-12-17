@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.client;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
@@ -17,17 +17,17 @@ import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 public class ClientEvent {
     @SubscribeEvent
     public static void registerOverlayEvent(RegisterGuiLayersEvent event) {
-        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "thermometer_overlay"),
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "thermometer_overlay"),
                 ThermometerOverlay::render);
-        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_overlay"),
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_overlay"),
                 FireOverlay::render);
-        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
                 GunOverlay::render);
-        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
                 RageOverlay::render);
-        event.registerAboveAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "lining_bar"),
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "lining_bar"),
                 LiningBarOverlay::render);
-        event.registerBelowAll(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "thermal_lens_overlay"),
+        event.registerBelowAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "thermal_lens_overlay"),
                 ThermalLensOverlay::render);
     }
 

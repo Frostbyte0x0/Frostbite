@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.IceSpikeModel;
@@ -15,7 +15,7 @@ import org.exodusstudio.frostbite.common.entity.client.states.IceSpikeRenderStat
 import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 
 public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRenderState> {
-    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(
+    private static final Identifier TEXTURE_LOCATION = Identifier.fromNamespaceAndPath(
             Frostbite.MOD_ID, "textures/entity/ice_spike/ice_spike.png");
     private final IceSpikeModel model;
 
@@ -48,7 +48,7 @@ public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRen
             stack.popPose();
         }
 
-        super.render(state, stack, source, p_114533_);
+        super.submit(state, stack, source, p_114533_);
     }
 
     public IceSpikeRenderState createRenderState() {
