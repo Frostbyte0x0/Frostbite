@@ -2,10 +2,11 @@ package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
@@ -36,12 +37,12 @@ public class LevitatingJellyfishRenderer extends LivingEntityRenderer<Levitating
 
     @Override
     protected @Nullable RenderType getRenderType(LevitatingJellyfishRenderState renderState, boolean isVisible, boolean renderTranslucent, boolean appearsGlowing) {
-        return RenderType.entityTranslucent(getTextureLocation(renderState));
+        return RenderTypes.entityTranslucent(getTextureLocation(renderState));
     }
 
     @Override
-    public ResourceLocation getTextureLocation(LevitatingJellyfishRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/levitating_jellyfish/levitating_jellyfish.png");
+    public Identifier getTextureLocation(LevitatingJellyfishRenderState renderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/levitating_jellyfish/levitating_jellyfish.png");
     }
 
     @Override

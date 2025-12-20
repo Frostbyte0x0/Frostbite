@@ -98,7 +98,7 @@ public class ServerPlayerGameModeMixin {
     public void handleBlockBreakAction(BlockPos pos, ServerboundPlayerActionPacket.Action action, Direction face, int maxBuildHeight, int sequence, CallbackInfo ci) {
         PlayerInteractEvent.LeftClickBlock event = CommonHooks.onLeftClickBlock(frostbite$this.player, pos, face, action);
         if (!event.isCanceled()) {
-            if (!frostbite$this.player.canInteractWithBlock(pos, 1.0F)) {
+            if (!frostbite$this.player.isWithinBlockInteractionRange(pos, 1)) {
                 frostbite$this.debugLogging(pos, false, sequence, "too far");
             } else if (pos.getY() > maxBuildHeight) {
                 frostbite$this.player.connection.send(new ClientboundBlockUpdatePacket(pos, frostbite$this.level.getBlockState(pos)));

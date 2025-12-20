@@ -104,7 +104,7 @@ public class LastStandEntity extends Entity {
                     hailcoil.move(MoverType.SELF, this.blockPosition().getCenter());
                     hailcoil.setInvulnerable(true);
                     hailcoils.add(hailcoil);
-                    hailcoil.finalizeSpawn(serverLevel, this.level().getCurrentDifficultyAt(this.blockPosition()),
+                    hailcoil.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
                             EntitySpawnReason.TRIGGERED, null);
 
                     hailcoil.setDeltaMovement(new Vec3(random.nextDouble(), random.nextDouble(), random.nextDouble()));

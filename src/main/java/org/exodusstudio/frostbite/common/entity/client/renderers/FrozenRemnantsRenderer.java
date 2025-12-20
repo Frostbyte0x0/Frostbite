@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.FrozenRemnantsModel;
@@ -22,17 +22,19 @@ public class FrozenRemnantsRenderer extends LivingEntityRenderer<FrozenRemnantsE
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FrozenRemnantsRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/frozen_remnants/frozen_remnants.png");
+    public Identifier getTextureLocation(FrozenRemnantsRenderState renderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/frozen_remnants/frozen_remnants.png");
     }
 
     @Override
     public void extractRenderState(FrozenRemnantsEntity frozenRemnants, FrozenRemnantsRenderState renderState, float p_361157_) {
         super.extractRenderState(frozenRemnants, renderState, p_361157_);
-        Frustum frustum = Minecraft.getInstance().levelRenderer.getFrustum();
-        renderState.isOnScreen = shouldRender(frozenRemnants, frustum, frustum.getCamX(), frustum.getCamY(), frustum.getCamZ());
-        frozenRemnants.setOnScreen(renderState.isOnScreen);
-        renderState.headPitch = frozenRemnants.getHeadPitch();
-        renderState.bodyRot = frozenRemnants.getYRot();
+        Frustum frustum = Minecraft.getInstance().levelRenderer.getCapturedFrustum();
+        if  (frustum != null) {
+            renderState.isOnScreen = shouldRender(frozenRemnants, frustum, frustum.getCamX(), frustum.getCamY(), frustum.getCamZ());
+            frozenRemnants.setOnScreen(renderState.isOnScreen);
+            renderState.headPitch = frozenRemnants.getHeadPitch();
+            renderState.bodyRot = frozenRemnants.getYRot();
+        }
     }
 }

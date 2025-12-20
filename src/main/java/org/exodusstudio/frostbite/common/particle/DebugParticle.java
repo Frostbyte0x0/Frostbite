@@ -1,14 +1,18 @@
 package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
-public class DebugParticle extends TextureSheetParticle {
+public class DebugParticle extends SingleQuadParticle {
     public DebugParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
     ) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite.first());
         this.friction = 0.96F;
         this.hasPhysics = false;
         this.setSpriteFromAge(sprite);
@@ -20,28 +24,15 @@ public class DebugParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
-        public Particle createParticle(
-                SimpleParticleType simpleParticleOption,
-                ClientLevel clientLevel,
-                double p_233920_,
-                double p_233921_,
-                double p_233922_,
-                double p_233923_,
-                double p_233924_,
-                double p_233925_
-        ) {
+        @Override
+        public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientLevel, double v, double v1, double v2, double v3, double v4, double v5, RandomSource randomSource) {
             DebugParticle debugParticle = new DebugParticle(
-                    clientLevel, p_233920_, p_233921_, p_233922_, 0, 0, 0, this.sprite
+                    clientLevel, v, v1, v2, 0, 0, 0, this.sprite
             );
 
             debugParticle.setParticleSpeed(0, 0, 0);

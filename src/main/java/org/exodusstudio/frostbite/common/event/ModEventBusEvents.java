@@ -1,10 +1,10 @@
 package org.exodusstudio.frostbite.common.event;
 
-import net.minecraft.client.model.CreeperModel;
-import net.minecraft.client.model.SkeletonModel;
-import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.monster.creeper.CreeperModel;
+import net.minecraft.client.model.monster.skeleton.SkeletonModel;
+import net.minecraft.client.model.monster.zombie.ZombieModel;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;

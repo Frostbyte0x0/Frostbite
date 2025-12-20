@@ -14,7 +14,7 @@ public class BlockEntityRegistry {
             DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Frostbite.MOD_ID);
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LodestarBlockEntity>> LODESTAR =
-            BLOCK_ENTITY_TYPES.register("lodestar", () -> new BlockEntityType
+            BLOCK_ENTITY_TYPES.register("lodestar", () -> new BlockEntityType<>
                             (LodestarBlockEntity::new, Set.of(BlockRegistry.LODESTAR.get())));
 
 

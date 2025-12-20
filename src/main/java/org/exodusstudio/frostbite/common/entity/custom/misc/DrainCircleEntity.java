@@ -25,7 +25,7 @@ public class DrainCircleEntity extends AreaEffectCloud {
         }
 
         if (this.tickCount % 20 == 0) {
-            if (this.level().isClientSide) {
+            if (this.level().isClientSide()) {
                 this.level().addParticle(new DrainParticleOption(0), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
             }
 

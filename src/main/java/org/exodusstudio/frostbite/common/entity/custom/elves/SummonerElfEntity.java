@@ -16,7 +16,7 @@ public class SummonerElfEntity extends ElfEntity {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
+        if (!level().isClientSide() && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
             setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.SUMMONING_STAFF.asItem()));
         }
         super.tick();

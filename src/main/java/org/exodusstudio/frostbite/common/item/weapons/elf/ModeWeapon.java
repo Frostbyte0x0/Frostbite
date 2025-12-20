@@ -22,7 +22,7 @@ public abstract class ModeWeapon extends Item {
     }
 
     public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             mode = modes[(Arrays.asList(modes).indexOf(mode) + 1) % modes.length];
         }
         return InteractionResult.SUCCESS;

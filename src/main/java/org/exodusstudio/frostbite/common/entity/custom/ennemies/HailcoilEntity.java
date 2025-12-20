@@ -89,7 +89,7 @@ public class HailcoilEntity extends Monster implements Ownable {
     }
 
     public void setOwner(LivingEntity owner) {
-        this.owner = new EntityReference<>(owner);
+        this.owner = EntityReference.of(owner);
     }
 
     @Override

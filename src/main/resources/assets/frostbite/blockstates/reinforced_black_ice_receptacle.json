@@ -1,48 +1,48 @@
 {
   "variants": {
-    "facing=down,active=false": {
+    "facing=down,lit=false": {
       "model": "frostbite:block/reinforced_black_ice_receptacle",
       "x": 90
     },
-    "facing=down,active=true": {
+    "facing=down,lit=true": {
       "model": "frostbite:block/reinforced_black_ice_receptacle_on",
       "x": 90
     },
-    "facing=east,active=false": {
+    "facing=east,lit=false": {
       "model": "frostbite:block/reinforced_black_ice_receptacle",
       "y": 90
     },
-    "facing=east,active=true": {
+    "facing=east,lit=true": {
       "model": "frostbite:block/reinforced_black_ice_receptacle_on",
       "y": 90
     },
-    "facing=north,active=false": {
+    "facing=north,lit=false": {
       "model": "frostbite:block/reinforced_black_ice_receptacle"
     },
-    "facing=north,active=true": {
+    "facing=north,lit=true": {
       "model": "frostbite:block/reinforced_black_ice_receptacle_on"
     },
-    "facing=south,active=false": {
+    "facing=south,lit=false": {
       "model": "frostbite:block/reinforced_black_ice_receptacle",
       "y": 180
     },
-    "facing=south,active=true": {
+    "facing=south,lit=true": {
       "model": "frostbite:block/reinforced_black_ice_receptacle_on",
       "y": 180
     },
-    "facing=up,active=false": {
+    "facing=up,lit=false": {
       "model": "frostbite:block/reinforced_black_ice_receptacle",
       "x": 270
     },
-    "facing=up,active=true": {
+    "facing=up,lit=true": {
       "model": "frostbite:block/reinforced_black_ice_receptacle_on",
       "x": 270
     },
-    "facing=west,active=false": {
+    "facing=west,lit=false": {
       "model": "frostbite:block/reinforced_black_ice_receptacle",
       "y": 270
     },
-    "facing=west,active=true": {
+    "facing=west,lit=true": {
       "model": "frostbite:block/reinforced_black_ice_receptacle_on",
       "y": 270
     }

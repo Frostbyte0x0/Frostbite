@@ -81,8 +81,8 @@ public class TanukiEntity extends Animal implements CustomTemperatureEntity {
         if (this.isFood(itemstack)) {
             if (this.isBaby()) {
                 this.usePlayerItem(player, hand, itemstack);
-                this.ageUp((int)(-this.getAge() / 20 * 0.1F), true);
-            } else if (!this.level().isClientSide && this.getAge() == 0 && this.canFallInLove()) {
+                this.ageUp((int)((float) -this.getAge() / 20 * 0.1F), true);
+            } else if (!this.level().isClientSide() && this.getAge() == 0 && this.canFallInLove()) {
                 this.usePlayerItem(player, hand, itemstack);
                 this.setInLove(player);
             } else {
@@ -126,9 +126,9 @@ public class TanukiEntity extends Animal implements CustomTemperatureEntity {
 
         if (this.isEating()) {
             this.addEatingParticles();
-            if (!this.level().isClientSide && this.getEatCounter() > 80 && this.random.nextInt(20) == 1) {
+            if (!this.level().isClientSide() && this.getEatCounter() > 80 && this.random.nextInt(20) == 1) {
                 if (this.getEatCounter() > 100 && this.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTags.PANDA_EATS_FROM_GROUND)) {
-                    if (!this.level().isClientSide) {
+                    if (!this.level().isClientSide()) {
                         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                         this.gameEvent(GameEvent.EAT);
                     }

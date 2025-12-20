@@ -16,11 +16,12 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
 
 public class FireSliceEntity extends Projectile {
-    private static final EntityDataAccessor<Vector3f> DATA_SHOOT_DIRECTION =
+    private static final EntityDataAccessor<Vector3fc> DATA_SHOOT_DIRECTION =
             SynchedEntityData.defineId(FireSliceEntity.class, EntityDataSerializers.VECTOR3);
 
     public FireSliceEntity(EntityType<? extends Entity> ignored, Level level) {

@@ -6,6 +6,8 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.SwingAnimationType;
 import org.exodusstudio.frostbite.common.entity.client.animations.RevenantAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.RevenantRenderState;
 
@@ -33,7 +35,24 @@ public class RevenantModel extends HumanoidModel<RevenantRenderState> {
     @Override
     public void setupAnim(RevenantRenderState state) {
         super.setupAnim(state);
-        AnimationUtils.animateZombieArms(this.leftArm, this.rightArm, state.isAggressive, state.attackTime, state.ageInTicks);
+        
+        boolean flag = state.swingAnimationType != SwingAnimationType.STAB;
+        if (flag) {
+            float f = state.attackTime;
+            float f1 = -(float)Math.PI / (state.isAggressive ? 1.5F : 2.25F);
+            float f2 = Mth.sin(f * (float)Math.PI);
+            float f3 = Mth.sin((1.0F - (1.0F - f) * (1.0F - f)) * (float)Math.PI);
+            this.rightArm.zRot = 0.0F;
+            this.rightArm.yRot = -(0.1F - f2 * 0.6F);
+            this.rightArm.xRot = f1;
+            this.rightArm.xRot += f2 * 1.2F - f3 * 0.4F;
+            this.leftArm.zRot = 0.0F;
+            this.leftArm.yRot = 0.1F - f2 * 0.6F;
+            this.leftArm.xRot = f1;
+            this.leftArm.xRot += f2 * 1.2F - f3 * 0.4F;
+        }
+
+        AnimationUtils.bobArms(this.rightArm, this.leftArm, state.ageInTicks);
         if (state.isRising) {
             risingAnimation.apply(state.risingAnimationState, state.ageInTicks);
         }

@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.renderers.bullet;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.ArrowRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
@@ -19,7 +19,7 @@ public class RevolverBulletRenderer extends BulletRenderer<RevolverBulletEntity,
     }
 
     @Override
-    protected ResourceLocation getTextureLocation(ArrowRenderState arrowRenderState) {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/projectiles/revolver_bullet.png");
+    protected Identifier getTextureLocation(ArrowRenderState arrowRenderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/projectiles/revolver_bullet.png");
     }
 }

@@ -2,13 +2,13 @@ package org.exodusstudio.frostbite.common.weather;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FrostbiteWeatherEffectRenderer {
-    private static final ResourceLocation SNOW_LOCATION =
-            ResourceLocation.withDefaultNamespace("textures/environment/snow.png");
+    private static final Identifier SNOW_LOCATION =
+            Identifier.withDefaultNamespace("textures/environment/snow.png");
     private float uPos;
     private float lastTime;
     private final float[] columnSizeX = new float[1024];
@@ -41,16 +41,12 @@ public class FrostbiteWeatherEffectRenderer {
     }
 
     public void render(Level level, MultiBufferSource bufferSource, int ticks, float partialTick, Vec3 cameraPosition) {
-        if (((ClientLevel) level).effects().renderSnowAndRain((ClientLevel) level, ticks, partialTick,
-                cameraPosition.x, cameraPosition.y, cameraPosition.z))
-            return;
-      
         assert Minecraft.getInstance().level != null;
 
         uPos += (Minecraft.getInstance().level.getGameTime() + partialTick - lastTime) *
                 Mth.lerp(Frostbite.weatherInfo.getBlizzardLevel(partialTick), 0.02f, 0.2f);
         lastTime = (float) Minecraft.getInstance().level.getGameTime() + partialTick;
-        int r = Minecraft.useFancyGraphics() ? 10 : 5;
+        int r = 10;
         List<ColumnInstance> list1 = new ArrayList<>();
         this.collectColumnInstances(level, ticks, partialTick, cameraPosition, r, list1);
         if (!list1.isEmpty()) {
@@ -96,7 +92,7 @@ public class FrostbiteWeatherEffectRenderer {
             List<ColumnInstance> snowColumnInstances
     ) {
         if (!snowColumnInstances.isEmpty()) {
-            RenderType rendertype1 = RenderType.weather(SNOW_LOCATION, Minecraft.useShaderTransparency());
+            RenderType rendertype1 = RenderTypes.weather(SNOW_LOCATION, Minecraft.useShaderTransparency());
             this.renderInstances(bufferSource.getBuffer(rendertype1), snowColumnInstances, cameraPosition,
                     radius);
         }

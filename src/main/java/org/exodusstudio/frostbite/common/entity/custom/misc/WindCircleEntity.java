@@ -24,7 +24,7 @@ public class WindCircleEntity extends AreaEffectCloud {
         }
 
         if (this.tickCount == 1) {
-            if (this.level().isClientSide) {
+            if (this.level().isClientSide()) {
                 this.level().addParticle(
                         ColorParticleOption.create(ParticleRegistry.EXPANDING_CIRCLE_PARTICLE.get(),
                                 ARGB.color(

@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.EtherealAnimations;
-import org.exodusstudio.frostbite.common.entity.client.states.EtherealAnimationState;
+import org.exodusstudio.frostbite.common.entity.client.states.EtherealRenderState;
 
-public class EtherealSwordModel extends EntityModel<EtherealAnimationState> {
+public class EtherealSwordModel extends EntityModel<EtherealRenderState> {
     private final ModelPart sword;
     private final KeyframeAnimation hitAnimation;
     private float yRot = 0f;
@@ -33,7 +33,7 @@ public class EtherealSwordModel extends EntityModel<EtherealAnimationState> {
     }
 
     @Override
-    public void setupAnim(EtherealAnimationState renderState) {
+    public void setupAnim(EtherealRenderState renderState) {
         super.setupAnim(renderState);
         yRot = 180 - renderState.yRot;
         sword.zRot += (float) Math.PI;

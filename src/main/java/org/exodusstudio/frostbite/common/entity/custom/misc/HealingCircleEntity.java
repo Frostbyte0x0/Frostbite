@@ -41,7 +41,7 @@ public class HealingCircleEntity extends AreaEffectCloud {
         }
 
         if (tickCount == 1) {
-            if (level().isClientSide) {
+            if (level().isClientSide()) {
                 level().addParticle(
                         ColorParticleOption.create(ParticleRegistry.EXPANDING_CIRCLE_PARTICLE.get(),
                         ARGB.color(

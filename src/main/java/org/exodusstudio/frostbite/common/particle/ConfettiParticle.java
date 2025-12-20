@@ -1,16 +1,19 @@
 package org.exodusstudio.frostbite.common.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class ConfettiParticle extends TextureSheetParticle {
+public class ConfettiParticle extends SingleQuadParticle {
     private final float rotationSpeed;
     private final Vector3f rotationDir;
     private final RandomSource random = RandomSource.create();
@@ -20,7 +23,7 @@ public class ConfettiParticle extends TextureSheetParticle {
     public ConfettiParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
     ) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite.first());
         this.friction = 0.96F;
         this.hasPhysics = true;
         this.rotationSpeed = random.nextFloat() * 0.5f + 0.5f;
@@ -43,7 +46,7 @@ public class ConfettiParticle extends TextureSheetParticle {
     }
 
     @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
+    public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
         if (age > 60) {
             this.alpha = 1f - (float) (age - 60) / 40;
         }
@@ -56,12 +59,12 @@ public class ConfettiParticle extends TextureSheetParticle {
             }
             quaternionf.rotateAxis(rotationSpeed * age, rotationDir);
 
-            this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
+            this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
         } else {
             quaternionf.rotationX((float) -Math.PI / 2);
-            this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
+            this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
             quaternionf.rotationX((float) Math.PI / 2);
-            this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
+            this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
             this.setPos(this.x, this.y + ownOffset, this.z);
         }
     }
@@ -72,8 +75,8 @@ public class ConfettiParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
@@ -85,7 +88,8 @@ public class ConfettiParticle extends TextureSheetParticle {
                 double p_233922_,
                 double p_233923_,
                 double p_233924_,
-                double p_233925_
+                double p_233925_,
+                RandomSource randomSource
         ) {
             ConfettiParticle confettiParticle = new ConfettiParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite

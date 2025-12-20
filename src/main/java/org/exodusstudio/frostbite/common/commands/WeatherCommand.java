@@ -7,13 +7,14 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.TimeArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.permissions.Permissions;
 import org.exodusstudio.frostbite.Frostbite;
 
 public class WeatherCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 Commands.literal("fweather")
-                        .requires(p_139171_ -> p_139171_.hasPermission(2))
+                        .requires(p_139171_ -> p_139171_.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
                         .then(
                                 Commands.literal("snow")
                                         .executes(context -> setSnow(context.getSource(), -1))

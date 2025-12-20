@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.MonkModel;
@@ -26,7 +26,7 @@ public class MonkRenderer extends MobRenderer<MonkEntity, MonkRenderState, MonkM
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MonkRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/monk/monk.png");
+    public Identifier getTextureLocation(MonkRenderState renderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/monk/monk.png");
     }
 }

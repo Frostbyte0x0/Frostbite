@@ -109,7 +109,7 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
 
     @Override
     public void die(DamageSource damageSource) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             ItemStack heldItem = this.getItemInHand(InteractionHand.MAIN_HAND);
             if (!heldItem.isEmpty()) {
                 drop(heldItem, false, true);

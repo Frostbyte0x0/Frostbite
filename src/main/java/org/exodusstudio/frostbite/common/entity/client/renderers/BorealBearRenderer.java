@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.BorealBearModel;
@@ -27,7 +27,7 @@ public class BorealBearRenderer extends MobRenderer<BorealBearEntity, BorealBear
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BorealBearRenderState renderState) {
-        return ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/boreal_bear/boreal_bear.png");
+    public Identifier getTextureLocation(BorealBearRenderState renderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/boreal_bear/boreal_bear.png");
     }
 }

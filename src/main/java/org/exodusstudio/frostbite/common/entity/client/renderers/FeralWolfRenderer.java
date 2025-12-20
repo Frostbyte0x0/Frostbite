@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.common.entity.client.renderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.FeralWolfModel;
@@ -36,8 +36,8 @@ public class FeralWolfRenderer extends MobRenderer<FeralWolfEntity, FeralWolfRen
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FeralWolfRenderState renderState) {
-        return renderState.isFrozen ? ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/feral_wolf/frozen_feral_wolf.png") :
-               ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/feral_wolf/feral_wolf.png");
+    public Identifier getTextureLocation(FeralWolfRenderState renderState) {
+        return renderState.isFrozen ? Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/feral_wolf/frozen_feral_wolf.png") :
+               Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/feral_wolf/feral_wolf.png");
     }
 }

@@ -1,16 +1,20 @@
 package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
-public class SnowflakeParticle extends TextureSheetParticle {
+public class SnowflakeParticle extends SingleQuadParticle {
     private final double xStart;
     private final double yStart;
     private final double zStart;
 
-    public SnowflakeParticle(ClientLevel p_107551_, double p_107552_, double p_107553_, double p_107554_, double p_107555_, double p_107556_, double p_107557_) {
-        super(p_107551_, p_107552_, p_107553_, p_107554_);
+    public SnowflakeParticle(ClientLevel p_107551_, double p_107552_, double p_107553_, double p_107554_, double p_107555_, double p_107556_, double p_107557_, SpriteSet sprite) {
+        super(p_107551_, p_107552_, p_107553_, p_107554_, p_107555_, p_107556_, p_107557_, sprite.first());
         this.xd = p_107555_;
         this.yd = p_107556_;
         this.zd = p_107557_;
@@ -21,15 +25,12 @@ public class SnowflakeParticle extends TextureSheetParticle {
         this.yStart = this.y;
         this.zStart = this.z;
         this.quadSize = 0.1F * (this.random.nextFloat() * 0.2F + 0.5F);
-//        float f = this.random.nextFloat() * 0.6F + 0.4F;
-//        this.rCol = f * 0.9F;
-//        this.gCol = f * 0.3F;
-//        this.bCol = f;
         this.lifetime = (int)(Math.random() * (double)10.0F) + 40;
     }
 
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    @Override
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public void move(double x, double y, double z) {
@@ -79,10 +80,9 @@ public class SnowflakeParticle extends TextureSheetParticle {
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
-
-        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SnowflakeParticle particle = new SnowflakeParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
-            particle.pickSprite(this.sprite);
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            SnowflakeParticle particle = new SnowflakeParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
+            particle.setSprite(this.sprite.first());
             return particle;
         }
     }

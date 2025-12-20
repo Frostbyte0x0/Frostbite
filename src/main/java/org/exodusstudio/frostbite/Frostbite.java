@@ -43,8 +43,8 @@ public class Frostbite {
     public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
     public static WeatherInfo weatherInfo = new WeatherInfo();
-    public static final HashMap<BlockPos, EntityType> addedBosses = new HashMap<>();
-    public static final HashMap<BlockPos, EntityType> bossesToAdd = new HashMap<>();
+    public static final HashMap<BlockPos, EntityType<?>> addedBosses = new HashMap<>();
+    public static final HashMap<BlockPos, EntityType<?>> bossesToAdd = new HashMap<>();
 
     public Frostbite(IEventBus modEventBus, ModContainer ignored) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
@@ -62,7 +62,7 @@ public class Frostbite {
         StructureRegistry.STRUCTURES.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
         MemoryModuleTypeRegistry.MEMORY_MODULE_TYPES.register(modEventBus);
-        GameRuleRegistry.register();
+        GameRuleRegistry.GAME_RULES.register(modEventBus);
     }
 
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)

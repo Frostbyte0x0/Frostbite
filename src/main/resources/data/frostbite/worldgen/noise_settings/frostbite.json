@@ -17,6 +17,7 @@
     "size_vertical": 1
   },
   "noise_router": {
+    "preliminary_surface_level": 0,
     "barrier": {
       "type": "minecraft:noise",
       "noise": "minecraft:aquifer_barrier",

@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +18,7 @@ import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class ThermalLensOverlay {
     private static float scopeScale;
-    private static final ResourceLocation THERMAL_LENS_LOCATION = ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/thermal_lens_overlay.png");
+    private static final Identifier THERMAL_LENS_LOCATION = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/thermal_lens_overlay.png");
 
     public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Minecraft mc = Minecraft.getInstance();
@@ -60,7 +60,7 @@ public class ThermalLensOverlay {
         guiGraphics.fill(RenderPipelines.GUI, i1, l, guiGraphics.guiWidth(), j1, -16777216);
     }
 
-    private static void renderTextureOverlay(GuiGraphics guiGraphics, ResourceLocation shaderLocation, float alpha) {
+    private static void renderTextureOverlay(GuiGraphics guiGraphics, Identifier shaderLocation, float alpha) {
         int i = ARGB.white(alpha);
         guiGraphics.blit(
                 RenderPipelines.GUI_TEXTURED,

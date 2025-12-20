@@ -1,14 +1,18 @@
 package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.RoamingBlizzardEntity;
 
-public class RoamingBlizzardParticle extends TextureSheetParticle {
-    public RoamingBlizzardParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
-        super(level, x, y, z);
+public class RoamingBlizzardParticle extends SingleQuadParticle {
+    public RoamingBlizzardParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, SpriteSet sprite) {
+        super(level, x, y, z, xd, yd, zd, sprite.first());
         this.xd = xd;
         this.yd = yd;
         this.zd = zd;
@@ -19,8 +23,9 @@ public class RoamingBlizzardParticle extends TextureSheetParticle {
         this.lifetime = 20;
     }
 
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    @Override
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public void move(double x, double y, double z) {
@@ -68,10 +73,9 @@ public class RoamingBlizzardParticle extends TextureSheetParticle {
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<ColorParticleOption> {
-
-        public Particle createParticle(ColorParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            RoamingBlizzardParticle particle = new RoamingBlizzardParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
-            particle.pickSprite(this.sprite);
+        public Particle createParticle(ColorParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+            RoamingBlizzardParticle particle = new RoamingBlizzardParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite);
+            particle.setSprite(this.sprite.first());
 
             particle.setColor(
                     type.getRed(),

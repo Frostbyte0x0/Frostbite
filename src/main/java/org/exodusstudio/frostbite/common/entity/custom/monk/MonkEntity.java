@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.List;
 
@@ -59,15 +60,15 @@ public class MonkEntity extends Monster {
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Float> DATA_SWIRL_LENGTH =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Vector3f> DATA_SWIRL_DIR =
+    private static final EntityDataAccessor<Vector3fc> DATA_SWIRL_DIR =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.VECTOR3);
-    private static final EntityDataAccessor<Vector3f> DATA_ARENA =
+    private static final EntityDataAccessor<Vector3fc> DATA_ARENA =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.VECTOR3);
     private static final Component MONK_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(MONK_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
     public final AnimationState clapAnimationState = new AnimationState();
-    public static final int TP_DIAMETER = 15;
+    public static final int TP_DIAMETER = 30;
     public static final int ILLUSION_AMOUNT = 10;
     public static final int ATTACK_COOLDOWN = 60;
     public static final int REPEL_RANGE = 6;
@@ -88,9 +89,9 @@ public class MonkEntity extends Monster {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("illusion", isIllusion());
-        output.putFloat("arenaX", getArenaCenter().x);
-        output.putFloat("arenaY", getArenaCenter().y);
-        output.putFloat("arenaZ", getArenaCenter().z);
+        output.putFloat("arenaX", getArenaCenter().x());
+        output.putFloat("arenaY", getArenaCenter().y());
+        output.putFloat("arenaZ", getArenaCenter().z());
     }
 
     @Override
@@ -260,7 +261,7 @@ public class MonkEntity extends Monster {
 
     public void invertCamera() {
         Options options = Minecraft.getInstance().options;
-        options.invertYMouse().set(!options.invertYMouse().get());
+        options.invertMouseY().set(!options.invertMouseY().get());
     }
 
     public void swapPlaces(LivingEntity target) {
@@ -397,7 +398,10 @@ public class MonkEntity extends Monster {
 
         if (random.nextFloat() < 0.25f) {
             if (source.getEntity() instanceof Player) {
-                Minecraft.getInstance().cameraEntity.setYRot(Minecraft.getInstance().cameraEntity.yRotO + 180);
+                Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+                if (cameraEntity != null) {
+                    cameraEntity.turn(180 / 0.15f, 0);
+                }
             }
             if (random.nextFloat() < 0.5f) {
                 tpRandomly(serverLevel);
@@ -405,15 +409,13 @@ public class MonkEntity extends Monster {
             return false;
         }
 
-        tpRandomly(serverLevel);
-
         return super.hurtServer(serverLevel, source, p_376610_);
     }
 
     @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
-        if (!level().isClientSide) undoLastConfusionAttack();
+        if (!level().isClientSide()) undoLastConfusionAttack();
     }
 
     @Override
@@ -500,7 +502,7 @@ public class MonkEntity extends Monster {
         this.entityData.set(DATA_SWIRL_DIR, dir);
     }
 
-    public Vector3f getSwirlDir() {
+    public Vector3fc getSwirlDir() {
         return this.entityData.get(DATA_SWIRL_DIR);
     }
 
@@ -508,7 +510,7 @@ public class MonkEntity extends Monster {
         this.entityData.set(DATA_ARENA, pos);
     }
 
-    public Vector3f getArenaCenter() {
+    public Vector3fc getArenaCenter() {
         return this.entityData.get(DATA_ARENA);
     }
 

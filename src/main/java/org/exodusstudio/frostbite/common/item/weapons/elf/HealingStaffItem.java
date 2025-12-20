@@ -13,7 +13,7 @@ public class HealingStaffItem extends ModeWeapon {
     public void attack(Level level, LivingEntity owner) {
         switch (this.mode) {
             case "circle":
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     HealingCircleEntity healingCircle = new HealingCircleEntity(null, level);
                     healingCircle.setPos(owner.getX(), owner.getY() + 0.1f, owner.getZ());
                     healingCircle.setOwner(owner);
@@ -23,7 +23,7 @@ public class HealingStaffItem extends ModeWeapon {
                 }
                 break;
             case "blessing":
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     HealingCircleEntity healingCircle = new HealingCircleEntity(null, level);
                     healingCircle.setPos(owner.getX(), owner.getY() + 0.1f, owner.getZ());
                     healingCircle.setOwner(owner);

@@ -17,10 +17,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -91,7 +88,7 @@ public class WoollySheepEntity extends Animal {
     }
 
     public void aiStep() {
-        if (this.level().isClientSide) {
+        if (this.level().isClientSide()) {
             this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
         }
 
@@ -152,11 +149,11 @@ public class WoollySheepEntity extends Animal {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.is(Items.SHEARS)) { // Neo: Shear logic is handled by IShearable
+        if (itemstack.is(Items.SHEARS)) {
             if (this.level() instanceof ServerLevel serverlevel && this.readyForShearing()) {
                 this.shear(serverlevel, SoundSource.PLAYERS, itemstack);
                 this.gameEvent(GameEvent.SHEAR, player);
-                itemstack.hurtAndBreak(1, player, getSlotForHand(hand));
+                itemstack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
                 return InteractionResult.SUCCESS_SERVER;
             }
 
@@ -265,6 +262,6 @@ public class WoollySheepEntity extends Animal {
 
     static {
         DATA_WOOL_ID = SynchedEntityData.defineId(WoollySheepEntity.class, EntityDataSerializers.BYTE);
-        COLOR_BY_DYE = Maps.newEnumMap((Map) Arrays.stream(DyeColor.values()).collect(Collectors.toMap(Function.identity(), WoollySheepEntity::createSheepColor)));
+        COLOR_BY_DYE = Maps.newEnumMap(Arrays.stream(DyeColor.values()).collect(Collectors.toMap(Function.identity(), WoollySheepEntity::createSheepColor)));
     }
 }

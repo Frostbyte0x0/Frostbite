@@ -1,8 +1,8 @@
 package org.exodusstudio.frostbite.common.item.lining;
 
-import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 

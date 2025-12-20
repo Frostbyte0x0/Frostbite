@@ -31,7 +31,7 @@ public class CastingStaffItem extends ModeWeapon {
 
         switch (this.mode) {
             case "icy breath":
-                if (level.isClientSide) {
+                if (level.isClientSide()) {
                     int particleCount = 30;
                     for (int i = 1; i < 4; i++) {
                         Vec3 vec33 = vec3.add(vec32.scale(i / 10f + 0.3f));
@@ -72,7 +72,7 @@ public class CastingStaffItem extends ModeWeapon {
                 }
                 break;
             case "spikes":
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     Vec3 look = owner.getLookAngle().normalize();
                     Vec3 spawnPos = owner.position().add(0, owner.getEyeHeight(), 0).add(look.scale(1.5));
 

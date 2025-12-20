@@ -4,14 +4,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.DebugEntityNameGenerator;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 
 import java.util.UUID;
 
 public record StaffPayload(StaffInfo staffInfo) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<StaffPayload> TYPE =
-            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "staff_data"));
+            new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "staff_data"));
 
     public static final StreamCodec<FriendlyByteBuf, StaffPayload> STREAM_CODEC = CustomPacketPayload.codec(
             StaffPayload::write, StaffPayload::new

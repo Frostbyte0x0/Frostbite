@@ -1,16 +1,16 @@
 package org.exodusstudio.frostbite.common.block;
 
-import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.BlockUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -19,7 +19,6 @@ import net.minecraft.world.entity.Relative;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Portal;
@@ -29,6 +28,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -61,7 +61,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean intersects) {
         if (entity.canUsePortal(false)) {
             entity.setAsInsidePortal(this, pos);
         }
@@ -73,10 +73,10 @@ public class FrostbitePortalBlock extends Block implements Portal {
                 ? Math.max(
                 0,
                 serverLevel.getGameRules()
-                        .getInt(
+                        .get(
                                 player.getAbilities().invulnerable
-                                        ? GameRules.RULE_PLAYERS_NETHER_PORTAL_CREATIVE_DELAY
-                                        : GameRules.RULE_PLAYERS_NETHER_PORTAL_DEFAULT_DELAY
+                                        ? GameRules.PLAYERS_NETHER_PORTAL_CREATIVE_DELAY
+                                        : GameRules.PLAYERS_NETHER_PORTAL_DEFAULT_DELAY
                         )
         )
                 : 0;
@@ -84,7 +84,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
     @Override
     public TeleportTransition getPortalDestination(ServerLevel originLevel, Entity entity, BlockPos pos) {
-        ResourceKey<Level> frostbiteKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
+        ResourceKey<Level> frostbiteKey = ResourceKey.create(Registries.DIMENSION, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
         ResourceKey<Level> resourcekey = originLevel.dimension() == frostbiteKey ? Level.OVERWORLD : frostbiteKey;
         ServerLevel destinationLevel = originLevel.getServer().getLevel(resourcekey);
 
@@ -233,7 +233,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
     }
 
     public static Holder.Reference<Structure> getStructure(ServerLevel level) {
-        ResourceKey<?> resourcekey = ResourceKey.create(Registries.STRUCTURE, ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "fto_portal"));
+        ResourceKey<?> resourcekey = ResourceKey.create(Registries.STRUCTURE, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "fto_portal"));
         Optional<ResourceKey<Structure>> optional = resourcekey.cast(Registries.STRUCTURE);
         ResourceKey<Structure> structureKey = optional.orElseThrow();
         return level.getServer().registryAccess().lookupOrThrow(Registries.STRUCTURE).get(structureKey).orElse(null);

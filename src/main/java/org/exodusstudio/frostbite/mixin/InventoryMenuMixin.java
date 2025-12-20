@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.mixin;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,19 +23,19 @@ public class InventoryMenuMixin {
     private static final EquipmentSlot[] SLOT_IDS =
             new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     @Unique
-    private static final ResourceLocation EMPTY_ARMOR_SLOT_HELMET =
-            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_helmet_slot.png");
+    private static final Identifier EMPTY_ARMOR_SLOT_HELMET =
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_helmet_slot.png");
     @Unique
-    private static final ResourceLocation EMPTY_ARMOR_SLOT_CHESTPLATE =
-            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_chestplate_slot.png");
+    private static final Identifier EMPTY_ARMOR_SLOT_CHESTPLATE =
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_chestplate_slot.png");
     @Unique
-    private static final ResourceLocation EMPTY_ARMOR_SLOT_LEGGINGS =
-            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_leggings_slot.png");
+    private static final Identifier EMPTY_ARMOR_SLOT_LEGGINGS =
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_leggings_slot.png");
     @Unique
-    private static final ResourceLocation EMPTY_ARMOR_SLOT_BOOTS =
-            ResourceLocation.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_boots_slot.png");
+    private static final Identifier EMPTY_ARMOR_SLOT_BOOTS =
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_boots_slot.png");
     @Unique
-    private static final Map<EquipmentSlot, ResourceLocation> TEXTURE_EMPTY_SLOTS = Map.of(
+    private static final Map<EquipmentSlot, Identifier> TEXTURE_EMPTY_SLOTS = Map.of(
             EquipmentSlot.FEET,
             EMPTY_ARMOR_SLOT_BOOTS,
             EquipmentSlot.LEGS,
@@ -50,9 +50,9 @@ public class InventoryMenuMixin {
     private void constructor(Inventory playerInventory, boolean active, final Player owner, CallbackInfo ci) {
         for (int i = 0; i < 4; i++) {
             EquipmentSlot equipmentslot = SLOT_IDS[i];
-            ResourceLocation resourcelocation = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
+            Identifier Identifier = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
             frostbite$inventoryMenu.addSlot(new LiningSlot(playerInventory, owner,
-                    equipmentslot, 43 + i, 8, 8 + i * 18, resourcelocation));
+                    equipmentslot, 43 + i, 8, 8 + i * 18, Identifier));
         }
     }
 }

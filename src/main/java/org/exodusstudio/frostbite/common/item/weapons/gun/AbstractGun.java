@@ -127,7 +127,7 @@ public abstract class AbstractGun extends Item {
                     bullet,
                     projectile -> this.shootProjectile(shooter, projectile, velocity, inaccuracy)
             );
-            weapon.hurtAndBreak(1, shooter, LivingEntity.getSlotForHand(hand));
+            weapon.hurtAndBreak(1, shooter, hand.asEquipmentSlot());
         }
     }
 

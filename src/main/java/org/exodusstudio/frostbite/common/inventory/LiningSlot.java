@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.common.inventory;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,9 +16,9 @@ public class LiningSlot extends Slot {
     private final LivingEntity owner;
     private final EquipmentSlot slot;
     @Nullable
-    private final ResourceLocation emptyIcon;
+    private final Identifier emptyIcon;
 
-    public LiningSlot(Container container, LivingEntity owner, EquipmentSlot slot, int slotIndex, int x, int y, @Nullable ResourceLocation emptyIcon) {
+    public LiningSlot(Container container, LivingEntity owner, EquipmentSlot slot, int slotIndex, int x, int y, @Nullable Identifier emptyIcon) {
         super(container, slotIndex, x, y);
         this.owner = owner;
         this.slot = slot;
@@ -44,7 +44,7 @@ public class LiningSlot extends Slot {
     }
 
     @Nullable
-    public ResourceLocation getNoItemIcon() {
+    public Identifier getNoItemIcon() {
         return this.emptyIcon;
     }
 

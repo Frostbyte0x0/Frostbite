@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import org.exodusstudio.frostbite.common.util.InventoryWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,7 +17,7 @@ public class ServerPlayerMixin {
 
     @Inject(at = @At("RETURN"), method = "restoreFrom")
     private void restoreFrom(ServerPlayer that, boolean keepEverything, CallbackInfo ci) {
-        if (!keepEverything && (frostbite$serverPlayer.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || that.isSpectator())) {
+        if (!keepEverything && (frostbite$serverPlayer.level().getGameRules().get(GameRules.KEEP_INVENTORY) || that.isSpectator())) {
             frostbite$serverPlayer.getInventory().replaceWith(that.getInventory());
             frostbite$serverPlayer.getInventory().setItem(43, ((InventoryWrapper) that.getInventory()).frostbite$getEquipment().get(EquipmentSlot.FEET));
             frostbite$serverPlayer.getInventory().setItem(44, ((InventoryWrapper) that.getInventory()).frostbite$getEquipment().get(EquipmentSlot.LEGS));

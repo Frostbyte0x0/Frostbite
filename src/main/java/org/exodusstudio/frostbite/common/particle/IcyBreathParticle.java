@@ -1,15 +1,19 @@
 package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.util.RandomSource;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.joml.Vector3f;
 
-public class IcyBreathParticle extends TextureSheetParticle {
+public class IcyBreathParticle extends SingleQuadParticle {
     Vector3f dir;
 
-    public IcyBreathParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, Vector3f dir) {
-        super(level, x, y, z);
+    public IcyBreathParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, Vector3f dir, SpriteSet sprite) {
+        super(level, x, y, z, sprite.first());
         this.hasPhysics = true;
         this.xd = xd;
         this.yd = yd;
@@ -21,8 +25,9 @@ public class IcyBreathParticle extends TextureSheetParticle {
         this.dir = dir;
     }
 
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    @Override
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public void move(double x, double y, double z) {
@@ -63,10 +68,10 @@ public class IcyBreathParticle extends TextureSheetParticle {
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<Vec3ParticleOption> {
-        public Particle createParticle(Vec3ParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(Vec3ParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
             IcyBreathParticle particle = new IcyBreathParticle(level, x, y, z, xSpeed, ySpeed, zSpeed,
-                    type.vec3f());
-            particle.pickSprite(sprite);
+                    (Vector3f) type.vec3f(), sprite);
+            particle.setSprite(sprite.first());
 
             particle.setLifetime(50);
             particle.setColor(
