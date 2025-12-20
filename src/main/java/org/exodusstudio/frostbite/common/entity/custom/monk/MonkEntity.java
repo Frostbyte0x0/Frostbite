@@ -68,7 +68,7 @@ public class MonkEntity extends Monster {
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(MONK_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
     public final AnimationState clapAnimationState = new AnimationState();
-    public static final int TP_DIAMETER = 15;
+    public static final int TP_DIAMETER = 30;
     public static final int ILLUSION_AMOUNT = 10;
     public static final int ATTACK_COOLDOWN = 60;
     public static final int REPEL_RANGE = 6;
@@ -400,7 +400,7 @@ public class MonkEntity extends Monster {
             if (source.getEntity() instanceof Player) {
                 Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
                 if (cameraEntity != null) {
-                    cameraEntity.yRotO += 180;
+                    cameraEntity.turn(180 / 0.15f, 0);
                 }
             }
             if (random.nextFloat() < 0.5f) {
@@ -408,8 +408,6 @@ public class MonkEntity extends Monster {
             }
             return false;
         }
-
-        tpRandomly(serverLevel);
 
         return super.hurtServer(serverLevel, source, p_376610_);
     }

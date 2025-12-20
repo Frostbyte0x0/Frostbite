@@ -266,6 +266,7 @@ public class EntityRegistry {
             ENTITY_TYPES.register("monk", () -> EntityType.Builder
                     .of(MonkEntity::new, MobCategory.MONSTER)
                     .sized(0.75f, 2f)
+                    .clientTrackingRange(3)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"))));
 
@@ -273,6 +274,7 @@ public class EntityRegistry {
             ENTITY_TYPES.register("bard", () -> EntityType.Builder
                     .of(BardEntity::new, MobCategory.AMBIENT)
                     .sized(0.75f, 0.75f)
+                    .clientTrackingRange(3)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "bard"))));
 

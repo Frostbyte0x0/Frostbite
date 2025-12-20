@@ -1,14 +1,12 @@
 package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
@@ -43,14 +41,13 @@ public class FireSliceRenderer extends EntityRenderer<FireSliceEntity, FireSlice
         poseStack.mulPose(Axis.YP.rotationDegrees(-state.yRot + 180));
         poseStack.mulPose(Axis.XP.rotationDegrees(-state.xRot));
         poseStack.translate(0, -1.4, 0);
-        VertexConsumer vertexconsumer = source.getBuffer(RenderTypes.entityCutout(this.getTextureLocation(state)));
-        this.model.setupAnim(state);
-        this.model.renderToBuffer(poseStack, vertexconsumer, state.lightCoords, OverlayTexture.NO_OVERLAY);
+        nodeCollector.submitModel(model, state, poseStack, RenderTypes.entityCutout(getTextureLocation(state)),
+                state.lightCoords, 0, 0, null, state.outlineColor, null);
         poseStack.popPose();
         super.submit(state, poseStack, nodeCollector, cameraRenderState);
     }
 
-    public Identifier getTextureLocation(FireSliceRenderState renderState) {
+    public Identifier getTextureLocation(FireSliceRenderState ignored) {
         return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/fire_slice/fire_slice.png");
     }
 }

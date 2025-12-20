@@ -17,10 +17,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -152,11 +149,11 @@ public class WoollySheepEntity extends Animal {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.is(Items.SHEARS)) { // Neo: Shear logic is handled by IShearable
+        if (itemstack.is(Items.SHEARS)) {
             if (this.level() instanceof ServerLevel serverlevel && this.readyForShearing()) {
                 this.shear(serverlevel, SoundSource.PLAYERS, itemstack);
                 this.gameEvent(GameEvent.SHEAR, player);
-                itemstack.hurtAndBreak(1, player, hand.asEquipmentSlot());
+                itemstack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
                 return InteractionResult.SUCCESS_SERVER;
             }
 

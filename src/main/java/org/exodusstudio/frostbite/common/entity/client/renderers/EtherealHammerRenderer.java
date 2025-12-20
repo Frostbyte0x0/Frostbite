@@ -5,7 +5,7 @@ import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.EtherealHammerModel;
-import org.exodusstudio.frostbite.common.entity.client.states.EtherealAnimationState;
+import org.exodusstudio.frostbite.common.entity.client.states.EtherealRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHammerEntity;
 
 public class EtherealHammerRenderer extends EtherealRenderer<EtherealHammerEntity, EtherealHammerModel> {
@@ -19,7 +19,7 @@ public class EtherealHammerRenderer extends EtherealRenderer<EtherealHammerEntit
     }
 
     @Override
-    public void extractRenderState(EtherealHammerEntity entity, EtherealAnimationState reusedState, float partialTick) {
+    public void extractRenderState(EtherealHammerEntity entity, EtherealRenderState reusedState, float partialTick) {
         super.extractRenderState(entity, reusedState, partialTick);
         reusedState.animationState.copyFrom(entity.animationState);
         reusedState.yRot = entity.getYRot(partialTick);

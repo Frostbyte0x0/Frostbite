@@ -2,13 +2,14 @@ package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.util.RandomSource;
 import org.exodusstudio.frostbite.common.particle.options.BooleanParticleOption;
 
-public class HealParticle extends TextureSheetParticle {
+public class HealParticle extends SingleQuadParticle {
     public HealParticle(
-            ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet ignored
+            ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet set
     ) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, set.first());
         this.friction = 0.96F;
         this.hasPhysics = false;
         this.setLifetime(15);
@@ -25,9 +26,8 @@ public class HealParticle extends TextureSheetParticle {
         return 240;
     }
 
-    @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<BooleanParticleOption> {
@@ -39,7 +39,8 @@ public class HealParticle extends TextureSheetParticle {
                 double p_233922_,
                 double p_233923_,
                 double p_233924_,
-                double p_233925_
+                double p_233925_,
+                RandomSource randomSource
         ) {
             HealParticle healParticleParticle = new HealParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite

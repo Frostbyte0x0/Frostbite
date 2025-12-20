@@ -40,9 +40,8 @@ public class InventoryScreenMixin {
     @Unique
     private void frostbite$refreshButton() {
         frostbite$cycleButton = CycleButton
-                .booleanBuilder(Component.literal("A"), Component.literal("L"))
+                .booleanBuilder(Component.literal("A"), Component.literal("L"), !Frostbite.shouldShowLining)
                 .displayOnlyValue()
-                .withInitialValue(!Frostbite.shouldShowLining)
                 .create(frostbite$screen.getGuiLeft() + 468, frostbite$screen.getGuiTop() + 208, 16, 16,
                         Component.literal("A"), (button, bool) -> Frostbite.shouldShowLining = !bool);
     }

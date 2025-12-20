@@ -121,7 +121,7 @@ public class TemperatureStorage {
     public float updateInnerTemperature(float innerTemperature, float outerTemperature) {
         if (innerTemperature != outerTemperature) {
             float delta = outerTemperature - innerTemperature + 20;
-            innerTemperature += delta;
+            innerTemperature += delta * 0.2f;
         }
         return innerTemperature;
     }

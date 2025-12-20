@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.weather;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -42,10 +41,6 @@ public class FrostbiteWeatherEffectRenderer {
     }
 
     public void render(Level level, MultiBufferSource bufferSource, int ticks, float partialTick, Vec3 cameraPosition) {
-        if (((ClientLevel) level).effects().renderSnowAndRain((ClientLevel) level, ticks, partialTick,
-                cameraPosition.x, cameraPosition.y, cameraPosition.z))
-            return;
-      
         assert Minecraft.getInstance().level != null;
 
         uPos += (Minecraft.getInstance().level.getGameTime() + partialTick - lastTime) *

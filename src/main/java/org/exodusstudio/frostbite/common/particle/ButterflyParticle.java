@@ -1,15 +1,14 @@
 package org.exodusstudio.frostbite.common.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import org.joml.Math;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.jspecify.annotations.Nullable;
 
 public class ButterflyParticle extends SingleQuadParticle {
     int atlasSize;
@@ -21,23 +20,24 @@ public class ButterflyParticle extends SingleQuadParticle {
     public ButterflyParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
     ) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite.first());
         this.friction = 0.9F;
         this.hasPhysics = false;
         this.spriteSet = sprite;
         setFirstSprite();
-        this.atlasSize = (int) (4 / this.sprite.uvShrinkRatio());
+        this.atlasSize = (int) (4 / this.uvShrinkRatio());
         this.angleTilting = Math.abs(random.nextFloat()) * (float) Math.PI / 4;
         this.angleFacing = random.nextFloat() * (float) Math.PI * 2;
         this.flapSpeed = random.nextFloat() * 0.5f + 0.5f;
     }
 
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    @Override
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
+    public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
         if (age >= 60 && alpha > 0.01f) {
             this.alpha = 1f - ((age + partialTicks) - 60) / 40;
         }
@@ -52,14 +52,14 @@ public class ButterflyParticle extends SingleQuadParticle {
         quaternionf.rotateAxis(angleTilting, new Vector3f(1, 0, 0));
         quaternionf.rotateLocalY(angleFacing);
         quaternionf.rotateY(flapAngle);
-        this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
+        this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
 
         setSecondSprite();
         quaternionf.rotationXYZ((float) Math.PI / 2, 0, (float) Math.PI);
         quaternionf.rotateAxis(-angleTilting, new Vector3f(1, 0, 0));
         quaternionf.rotateLocalY(angleFacing);
         quaternionf.rotateY(flapAngle);
-        this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
+        this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
 
         // Second wing
         flapAngle = -Math.sin((age + partialTicks) * flapSpeed);
@@ -70,7 +70,7 @@ public class ButterflyParticle extends SingleQuadParticle {
         quaternionf.rotateLocalY(angleFacing);
         quaternionf.rotateAxis((float) Math.PI, new Vector3f(0, 1, 0));
         quaternionf.rotateY(flapAngle);
-        this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
+        this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
 
         setSecondSprite();
         quaternionf.rotationXYZ((float) Math.PI / 2, 0, (float) Math.PI);
@@ -78,7 +78,17 @@ public class ButterflyParticle extends SingleQuadParticle {
         quaternionf.rotateLocalY(angleFacing);
         quaternionf.rotateAxis((float) Math.PI, new Vector3f(0, 1, 0));
         quaternionf.rotateY(flapAngle);
-        this.renderRotatedQuad(vertexConsumer, camera, quaternionf, partialTicks);
+        this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
+    }
+
+    private float atlasSize() {
+        float f = (float)this.sprite.contents().width() / (sprite.getU1() - sprite.getU0());
+        float f1 = (float)this.sprite.contents().height() / (sprite.getV1() - sprite.getV0());
+        return Math.max(f1, f);
+    }
+
+    public float uvShrinkRatio() {
+        return 4.0F / this.atlasSize();
     }
 
     @Override
@@ -110,13 +120,22 @@ public class ButterflyParticle extends SingleQuadParticle {
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
-        @Override
-        public @Nullable Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientLevel, double v, double v1, double v2, double v3, double v4, double v5, RandomSource randomSource) {
+        public Particle createParticle(
+                SimpleParticleType simpleParticleOption,
+                ClientLevel clientLevel,
+                double p_233920_,
+                double p_233921_,
+                double p_233922_,
+                double p_233923_,
+                double p_233924_,
+                double p_233925_,
+                RandomSource source
+        ) {
             ButterflyParticle butterflyParticle = new ButterflyParticle(
-                    clientLevel, v, v1, v2, v3, v4, v5, this.sprite
+                    clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
 
-            butterflyParticle.setParticleSpeed(v3, v4, v5);
+            butterflyParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
             butterflyParticle.setLifetime(100);
             return butterflyParticle;
         }

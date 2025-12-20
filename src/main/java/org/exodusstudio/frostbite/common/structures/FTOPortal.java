@@ -7,8 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
@@ -44,7 +44,7 @@ public class FTOPortal extends Structure {
                     Codec.intRange(0, 30).fieldOf("size").forGetter(structure -> structure.size),
                     HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
                     Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
-                    Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter),
+                    JigsawStructure.MaxDistance.CODEC.fieldOf("max_distance_from_center").forGetter(p_432727_ -> p_432727_.maxDistanceFromCenter),
                     DimensionPadding.CODEC.optionalFieldOf("dimension_padding", JigsawStructure.DEFAULT_DIMENSION_PADDING).forGetter(structure -> structure.dimensionPadding),
                     LiquidSettings.CODEC.optionalFieldOf("liquid_settings", JigsawStructure.DEFAULT_LIQUID_SETTINGS).forGetter(structure -> structure.liquidSettings)
             ).apply(instance, FTOPortal::new));
@@ -54,7 +54,7 @@ public class FTOPortal extends Structure {
     private final int size;
     private final HeightProvider startHeight;
     private final Optional<Heightmap.Types> projectStartToHeightmap;
-    private final int maxDistanceFromCenter;
+    private final JigsawStructure.MaxDistance maxDistanceFromCenter;
     private final DimensionPadding dimensionPadding;
     private final LiquidSettings liquidSettings;
     public static int count = 0;
@@ -66,7 +66,7 @@ public class FTOPortal extends Structure {
                      int size,
                      HeightProvider startHeight,
                      Optional<Heightmap.Types> projectStartToHeightmap,
-                     int maxDistanceFromCenter,
+                     JigsawStructure.MaxDistance maxDistanceFromCenter,
                      DimensionPadding dimensionPadding,
                      LiquidSettings liquidSettings)
     {

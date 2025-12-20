@@ -27,8 +27,8 @@ public class AdvancedClockItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ItemUtils.startUsingInstantly(level, player, usedHand);
         if (used) {
-            float t = (level.getDayTime() * 24) - 12f;
-            if (t < 0) t += 24;
+            float t = (level.getDayTime() / (20f * 60)) + 7;
+            //if (t < 0) t += 24;
             String mShown = Integer.toString(floor((t - floor(t)) * 60));
             String hShown = Integer.toString(floor(t));
             if (mShown.length() == 1) mShown = "0" + mShown;

@@ -32,6 +32,5 @@ public class WoollySheepRenderer extends AgeableMobRenderer<WoollySheepEntity, S
         p_362333_.headEatPositionScale = p_362573_.getHeadEatPositionScale(p_360543_);
         p_362333_.isSheared = p_362573_.isSheared();
         p_362333_.woolColor = p_362573_.getColor();
-        p_362333_.id = p_362573_.getId();
     }
 }

@@ -1,16 +1,20 @@
 package org.exodusstudio.frostbite.common.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
-public class ShockwaveParticle extends TextureSheetParticle {
-    private final SpriteSet sprites;
+public class ShockwaveParticle extends SingleQuadParticle {
+    SpriteSet sprites;
 
     public ShockwaveParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
     ) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite.first());
         this.friction = 0.96F;
         this.sprites = sprite;
         this.hasPhysics = false;
@@ -29,8 +33,8 @@ public class ShockwaveParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
@@ -42,7 +46,8 @@ public class ShockwaveParticle extends TextureSheetParticle {
                 double p_233922_,
                 double p_233923_,
                 double p_233924_,
-                double p_233925_
+                double p_233925_,
+                RandomSource random
         ) {
             ShockwaveParticle shockwaveParticle = new ShockwaveParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite

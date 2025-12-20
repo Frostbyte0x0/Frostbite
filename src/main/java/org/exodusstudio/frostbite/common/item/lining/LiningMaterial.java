@@ -41,8 +41,8 @@ public record LiningMaterial(int durability, Map<ArmorType, Integer> coldProtect
         int i = this.coldProtection.getOrDefault(armorType, 0);
         ItemAttributeModifiers.Builder itemattributemodifiers$builder = ItemAttributeModifiers.builder();
         EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(armorType.getSlot());
-        Identifier Identifier = Identifier.withDefaultNamespace("armor." + armorType.getName());
-        itemattributemodifiers$builder.add(Attributes.ARMOR, new AttributeModifier(Identifier, i, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup);
+        Identifier identifier = Identifier.withDefaultNamespace("armor." + armorType.getName());
+        itemattributemodifiers$builder.add(Attributes.ARMOR, new AttributeModifier(identifier, i, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup);
 
         return itemattributemodifiers$builder.build();
     }

@@ -9,8 +9,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-public record Vec3ParticleOption(ParticleType<Vec3ParticleOption> type, Vector3f vec3f) implements ParticleOptions {
+public record Vec3ParticleOption(ParticleType<Vec3ParticleOption> type, Vector3fc vec3f) implements ParticleOptions {
     public static MapCodec<Vec3ParticleOption> codec(ParticleType<Vec3ParticleOption> particleType) {
         return ExtraCodecs.VECTOR3F.xmap((p_333828_) -> new Vec3ParticleOption(particleType, p_333828_),
                 Vec3ParticleOption::vec3f).fieldOf("vec3f");

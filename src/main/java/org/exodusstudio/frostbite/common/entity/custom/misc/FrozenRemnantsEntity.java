@@ -40,7 +40,7 @@ public class FrozenRemnantsEntity extends Mob{
     private static final EntityDataAccessor<Float> DATA_HEAD_PITCH;
     private static final EntityDataAccessor<Boolean> DATA_SHOULD_PLAY_SOUND;
 
-    public FrozenRemnantsEntity(EntityType<? extends Mob> entityType, Level level) {
+    public FrozenRemnantsEntity(EntityType<? extends Mob> ignored, Level level) {
         super(EntityRegistry.FROZEN_REMNANTS.get(), level);
         this.items = NonNullList.createWithCapacity(54);
     }
@@ -158,7 +158,7 @@ public class FrozenRemnantsEntity extends Mob{
 
     public static boolean shouldSpawnFrozenRemnants(ServerLevel serverLevel) {
         return !serverLevel.getGameRules().get(GameRules.KEEP_INVENTORY)
-                && serverLevel.getGameRules().get(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS)
+                && serverLevel.getGameRules().get(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS.get())
                 && isFrostbite(serverLevel);
     }
 

@@ -1,16 +1,19 @@
 package org.exodusstudio.frostbite.common.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
-public class SwirlingLeafParticle extends TextureSheetParticle {
+public class SwirlingLeafParticle extends SingleQuadParticle {
     private float rollSpeed;
     private float flipYSpeed;
     private float flipYAngle;
@@ -20,7 +23,7 @@ public class SwirlingLeafParticle extends TextureSheetParticle {
     public SwirlingLeafParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
     ) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite.first());
         this.friction = 0.93F;
         this.rollSpeed = random.nextFloat() * 0.2f - 0.1f;
         this.roll = (float) (random.nextFloat() * Math.PI * 2);
@@ -38,7 +41,7 @@ public class SwirlingLeafParticle extends TextureSheetParticle {
     }
 
     @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+    public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
         if (age >= 40 && alpha > 0.01f) {
             this.alpha = 1f - ((age + partialTicks) - 40) / 20;
         }
@@ -53,9 +56,9 @@ public class SwirlingLeafParticle extends TextureSheetParticle {
         flipXAngle += partialTicks * flipXSpeed;
         quaternionf.rotateLocalY(flipYAngle);
         quaternionf.rotateLocalX(flipXAngle);
-        this.renderRotatedQuad(buffer, renderInfo, quaternionf, partialTicks);
+        this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
         quaternionf.rotateX((float) Math.PI);
-        this.renderRotatedQuad(buffer, renderInfo, quaternionf, partialTicks);
+        this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
     }
 
     @Override
@@ -73,8 +76,8 @@ public class SwirlingLeafParticle extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    public SingleQuadParticle.Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
@@ -86,10 +89,9 @@ public class SwirlingLeafParticle extends TextureSheetParticle {
                 double p_233922_,
                 double p_233923_,
                 double p_233924_,
-                double p_233925_
+                double p_233925_,
+                RandomSource random
         ) {
-            RandomSource random = RandomSource.create();
-
             SwirlingLeafParticle swirlingLeafParticle = new SwirlingLeafParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );

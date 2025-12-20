@@ -9,9 +9,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.EtherealAnimations;
-import org.exodusstudio.frostbite.common.entity.client.states.EtherealAnimationState;
+import org.exodusstudio.frostbite.common.entity.client.states.EtherealRenderState;
 
-public class EtherealHammerModel extends EntityModel<EtherealAnimationState> {
+public class EtherealHammerModel extends EntityModel<EtherealRenderState> {
     private final ModelPart hammer;
     private final KeyframeAnimation hitAnimation;
     private float yRot;
@@ -33,7 +33,7 @@ public class EtherealHammerModel extends EntityModel<EtherealAnimationState> {
     }
 
     @Override
-    public void setupAnim(EtherealAnimationState renderState) {
+    public void setupAnim(EtherealRenderState renderState) {
         super.setupAnim(renderState);
         yRot = 180 - renderState.yRot;
         hammer.zRot += (float) Math.PI;

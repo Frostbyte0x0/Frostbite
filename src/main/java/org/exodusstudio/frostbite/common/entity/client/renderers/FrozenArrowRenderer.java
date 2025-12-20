@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
@@ -9,7 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.TippableArrowRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.projectiles.FrozenArrow;
@@ -31,9 +29,8 @@ public class FrozenArrowRenderer extends ArrowRenderer<FrozenArrow, TippableArro
         stack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90));
         stack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
         stack.mulPose(Axis.XP.rotationDegrees(180));
-        VertexConsumer vertexconsumer = source.getBuffer(RenderTypes.entityCutout(this.getTextureLocation(state)));
-        this.model.setupAnim(state);
-        this.model.renderToBuffer(stack, vertexconsumer, p_113824_, OverlayTexture.NO_OVERLAY);
+        nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(getTextureLocation(state)),
+                state.lightCoords, 0, 0, null, state.outlineColor, null);
         stack.popPose();
     }
 

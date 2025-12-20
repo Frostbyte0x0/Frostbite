@@ -37,7 +37,7 @@ public class BlockRegistry {
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "reinforced_black_ice_receptacle")))));
     public static final DeferredBlock<Block> FROSTBITE_PORTAL = registerBlock("frostbite_portal",
             () -> new FrostbitePortalBlock(BlockBehaviour.Properties.of()
-                    .noCollission()
+                    .noCollision()
                     .randomTicks()
                     .strength(-1.0F)
                     .sound(SoundType.GLASS)
@@ -130,7 +130,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_leaves")))));
     public static final DeferredBlock<Block> MISTY_SAPLING = registerBlock("misty_sapling",
-            () -> new MistySaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).noCollission()
+            () -> new MistySaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_sapling")))));
     public static final DeferredBlock<Block> MISTY_SIGN = registerBlock("misty_sign",
             () -> new StandingSignBlock(WoodType.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)
@@ -168,7 +168,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_leaves")))));
     public static final DeferredBlock<Block> DIM_SAPLING = registerBlock("dim_sapling",
-            () -> new SaplingBlock(TreeGrowers.DIM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.DIM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "dim_sapling")))));
 
     // SILVER WOOD
@@ -191,7 +191,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_leaves")))));
     public static final DeferredBlock<Block> SILVER_SAPLING = registerBlock("silver_sapling",
-            () -> new SaplingBlock(TreeGrowers.SILVER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.SILVER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "silver_sapling")))));
 
     // CHARM WOOD
@@ -217,7 +217,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "flowering_charm_leaves")))));
     public static final DeferredBlock<Block> CHARM_SAPLING = registerBlock("charm_sapling",
-            () -> new SaplingBlock(TreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "charm_sapling")))));
 
     // MOSSY CHARM WOOD
@@ -258,7 +258,7 @@ public class BlockRegistry {
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_leaves")))) {
             });
     public static final DeferredBlock<Block> LAVENDER_SAPLING = registerBlock("lavender_sapling",
-            () -> new SaplingBlock(TreeGrowers.LAVENDER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.LAVENDER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "lavender_sapling")))));
 
     // SHINNING CEDAR WOOD
@@ -281,7 +281,7 @@ public class BlockRegistry {
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).lightLevel(p -> 10)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_leaves")))));
     public static final DeferredBlock<Block> SHINNING_CEDAR_SAPLING = registerBlock("shinning_cedar_sapling",
-            () -> new SaplingBlock(TreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollission()
+            () -> new SaplingBlock(TreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_sapling")))));
 
     public static final DeferredBlock<HorizontalDirectionalBlock> WEAVING_TABLE = registerBlock("weaving_table",
@@ -321,7 +321,7 @@ public class BlockRegistry {
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_stone_lantern")))));
 
     public static final DeferredBlock<Block> GIANT_REED = registerBlock("giant_reed",
-            () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH).noCollission()
+            () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "giant_reed")))));
 
     public static final DeferredBlock<Block> MISTY_TALL_GRASS = registerBlock("misty_tall_grass",

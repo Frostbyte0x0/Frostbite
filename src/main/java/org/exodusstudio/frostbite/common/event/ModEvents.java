@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.event;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -19,13 +18,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gamerules.GameRules;
-import net.minecraft.world.level.material.FogType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -161,36 +157,6 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void weatherRender(RenderLevelStageEvent.AfterWeather event) {
-        LevelRenderer renderer = event.getLevelRenderer();
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level != null && minecraft.getCameraEntity() != null && isFrostbite(Minecraft.getInstance().level)) {
-            weatherEffectRenderer.render(Minecraft.getInstance().level, renderer.renderBuffers.bufferSource(),
-                    renderer.getTicks(), event.getLevelRenderState().gameTime,
-                    minecraft.getCameraEntity().getPosition(renderer.getTicks()));
-        }
-    }
-
-    @SubscribeEvent
-    public static void fogDist(ViewportEvent.RenderFog event) {
-        Player player = Minecraft.getInstance().player;
-        ClientLevel level = Minecraft.getInstance().level;
-
-        if (player == null || !player.isAlive() || level == null ||
-                !isFrostbite(level)) return;
-
-        if (event.getType() == FogType.ATMOSPHERIC) {
-            float t = Frostbite.weatherInfo.getLerp();
-
-            float nearPlane = Mth.lerp(t, Frostbite.weatherInfo.oNearFog, Frostbite.weatherInfo.nearFog);
-            float farPlane = Mth.lerp(t, Frostbite.weatherInfo.oFarFog, Frostbite.weatherInfo.farFog);
-
-            event.setNearPlaneDistance(nearPlane);
-            event.setFarPlaneDistance(farPlane);
-        }
-    }
-
-    @SubscribeEvent
     public static void spicyStew(LivingEntityUseItemEvent.Tick event) {
         if (
                 (event.getItem().is(ItemRegistry.SPICY_VEGETABLE_STEW) ||
@@ -200,27 +166,6 @@ public class ModEvents {
             event.getEntity().addEffect(new MobEffectInstance(EffectRegistry.SATIATED, 4800,
                     event.getItem().get(DataComponentTypeRegistry.CHARGE.get()).charge()));
         }
-    }
-
-    @SubscribeEvent
-    public static void fogColour(ViewportEvent.ComputeFogColor event) {
-        Player player = Minecraft.getInstance().player;
-        ClientLevel level = Minecraft.getInstance().level;
-
-        if (player == null || !player.isAlive() || level == null ||
-                !isFrostbite(level)) return;
-
-        computeWeatherInfo(level, player);
-
-        float t = Frostbite.weatherInfo.getLerp();
-
-        float red = Mth.lerp(t, Frostbite.weatherInfo.oRed, Frostbite.weatherInfo.red);
-        float green = Mth.lerp(t, Frostbite.weatherInfo.oGreen, Frostbite.weatherInfo.green);
-        float blue = Mth.lerp(t, Frostbite.weatherInfo.oBlue, Frostbite.weatherInfo.blue);
-
-        event.setRed(red);
-        event.setGreen(green);
-        event.setBlue(blue);
     }
 
     @SubscribeEvent

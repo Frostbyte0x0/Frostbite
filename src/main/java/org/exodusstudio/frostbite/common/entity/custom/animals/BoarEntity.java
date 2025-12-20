@@ -27,13 +27,14 @@ import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.UUID;
 
 public class BoarEntity extends Animal implements NeutralMob, CustomTemperatureEntity {
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME;
     private static final UniformInt PERSISTENT_ANGER_TIME;
+    private static final EntityDataAccessor<Long> DATA_ANGER_END_TIME =
+            SynchedEntityData.defineId(BoarEntity.class, EntityDataSerializers.LONG);
     @Nullable
-    private UUID persistentAngerTarget;
+    private EntityReference<LivingEntity> persistentAngerTarget;
 
     public BoarEntity(EntityType<? extends Animal> ignored, Level level) {
         super(EntityRegistry.BOAR.get(), level);
@@ -92,10 +93,6 @@ public class BoarEntity extends Animal implements NeutralMob, CustomTemperatureE
         return 8;
     }
 
-    public int getRemainingPersistentAngerTime() {
-        return this.entityData.get(DATA_REMAINING_ANGER_TIME);
-    }
-
     public void setRemainingPersistentAngerTime(int time) {
         this.entityData.set(DATA_REMAINING_ANGER_TIME, time);
     }
@@ -104,13 +101,23 @@ public class BoarEntity extends Animal implements NeutralMob, CustomTemperatureE
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
 
-    @Nullable
-    public UUID getPersistentAngerTarget() {
+    @Override
+    public long getPersistentAngerEndTime() {
+        return this.entityData.get(DATA_ANGER_END_TIME);
+    }
+
+    @Override
+    public void setPersistentAngerEndTime(long l) {
+        this.entityData.set(DATA_ANGER_END_TIME, l);
+    }
+
+    public @Nullable EntityReference<LivingEntity> getPersistentAngerTarget() {
         return this.persistentAngerTarget;
     }
 
-    public void setPersistentAngerTarget(@Nullable UUID target) {
-        this.persistentAngerTarget = target;
+    @Override
+    public void setPersistentAngerTarget(@Nullable EntityReference<LivingEntity> entityReference) {
+        this.persistentAngerTarget = entityReference;
     }
 
     @Override

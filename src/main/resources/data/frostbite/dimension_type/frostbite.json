@@ -19,5 +19,12 @@
   "natural": true,
   "piglin_safe": false,
   "respawn_anchor_works": false,
-  "ultrawarm": false
+  "ultrawarm": false,
+  "attributes": {
+    "minecraft:visual/fog_color": "#496ab8",
+    "minecraft:visual/fog_start_distance": -50,
+    "minecraft:visual/fog_end_distance": 100,
+    "minecraft:visual/sky_fog_end_distance": 0
+  },
+  "timelines": "#frostbite:in_frostbite"
 }
