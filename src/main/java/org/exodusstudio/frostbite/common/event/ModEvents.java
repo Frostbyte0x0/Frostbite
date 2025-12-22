@@ -1,10 +1,11 @@
 package org.exodusstudio.frostbite.common.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -40,16 +41,12 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
-import org.exodusstudio.frostbite.common.registry.EffectRegistry;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
-import org.exodusstudio.frostbite.common.weather.FrostbiteWeatherEffectRenderer;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.ArrayList;
@@ -59,16 +56,11 @@ import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEvents {
-    public static String currentBiome = "";
-    public static float time = 0;
-    public static FrostbiteWeatherEffectRenderer weatherEffectRenderer = new FrostbiteWeatherEffectRenderer();
-
     @SubscribeEvent
     public static void reset(ServerStoppedEvent event) {
         OTFPortal.canSpawn = true;
         FTOPortal.canSpawn = true;
         Frostbite.temperatureStorage.clear();
-        time = 0;
     }
 
     @SubscribeEvent
@@ -88,10 +80,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void weatherControl(LevelTickEvent.Post event) {
         Level level = event.getLevel();
-        Frostbite.weatherInfo.normalFarFog = Minecraft.getInstance().options.getEffectiveRenderDistance() * 16;
 
         if (level instanceof ServerLevel serverLevel && serverLevel.dimensionType().hasSkyLight()) {
-            long time = level.getGameTime();
             if (serverLevel.getGameRules().get(GameRules.ADVANCE_WEATHER)) {
                 int i = Frostbite.weatherInfo.snowTime;
                 int j = Frostbite.weatherInfo.whiteoutTime;
@@ -111,10 +101,10 @@ public class ModEvents {
                         }
                     } else if (flag1) {
                         j = WeatherInfo.WHITEOUT_DURATION.sample(serverLevel.random);
-                        Frostbite.weatherInfo.setWhiteouting(time);
+                        Frostbite.weatherInfo.setWhiteouting();
                     } else {
                         j = WeatherInfo.WHITEOUT_DELAY.sample(serverLevel.random);
-                        Frostbite.weatherInfo.setSnowing(time);
+                        Frostbite.weatherInfo.setSnowing();
                     }
 
                     if (k > 0) {
@@ -123,10 +113,10 @@ public class ModEvents {
                         }
                     } else if (flag2) {
                         k = WeatherInfo.BLIZZARD_DURATION.sample(serverLevel.random);
-                        Frostbite.weatherInfo.setBlizzarding(time);
+                        Frostbite.weatherInfo.setBlizzarding();
                     } else {
                         k = WeatherInfo.BLIZZARD_DELAY.sample(serverLevel.random);
-                        Frostbite.weatherInfo.setSnowing(time);
+                        Frostbite.weatherInfo.setSnowing();
                     }
                 }
 
@@ -224,6 +214,37 @@ public class ModEvents {
     }
 
     @SubscribeEvent
+    public static void snow(PlayerTickEvent.Post event) {
+        Player player = event.getEntity();
+        Level level = event.getEntity().level();
+        RandomSource random = player.getRandom();
+        if (level.isClientSide() && isFrostbite(level)) {
+            float r = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
+                      Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 30, 20), 15);
+            float offset = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
+                           Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 10, 5), 2);
+            float s = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
+                      Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 0.025f, 0.1f), 0.1f);
+            float d = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
+                      Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 0.05f, 0.1f), 0.1f);
+            int count = (int) Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
+                              Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 125, 100), 75);
+            for (int i = 0; i < count; i++) {
+                double d0 = player.getX() + player.getLookAngle().normalize().x * offset + (0.5D - random.nextDouble()) * r;
+                double d1 = player.getY() + player.getLookAngle().normalize().y * offset + (0.5D - random.nextDouble()) * r / 2f + r / 4f;
+                double d2 = player.getZ() + player.getLookAngle().normalize().z * offset + (0.5D - random.nextDouble()) * r;
+
+                level.addAlwaysVisibleParticle(
+                        random.nextFloat() < 0.01 ? ParticleTypes.END_ROD : ParticleRegistry.AMBIENT_SNOW_PARTICLE.get(),
+                        d0, d1, d2,
+                        (random.nextDouble()) * d + s,
+                        (-random.nextDouble()) * d - s,
+                        (random.nextDouble()) * d + s);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void serverTick(ServerTickEvent.Pre event) {
         List<LivingEntity> entities = new ArrayList<>();
         event.getServer().getAllLevels().forEach((level) -> {
@@ -276,57 +297,6 @@ public class ModEvents {
             Frostbite.heaterStorages.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().identifier().toString()));
             event.cancelWithResult(InteractionResult.FAIL);
 
-        }
-    }
-
-    public static void computeWeatherInfo(ClientLevel level, Player player) {
-        String name = level.getBiome(player.blockPosition()).toString();
-
-        if (!currentBiome.equals(name) || level.getGameTime() < 100) {
-            assert Minecraft.getInstance().level != null;
-            if (Minecraft.getInstance().level.getGameTime() - time > 100 || level.getGameTime() < 100) {
-                if (name.contains("shrouded_forest") && !Frostbite.weatherInfo.isBlizzarding && !Frostbite.weatherInfo.isWhiteouting) {
-                    Frostbite.weatherInfo.oNearFog = Frostbite.weatherInfo.nearFog;
-                    Frostbite.weatherInfo.oFarFog = Frostbite.weatherInfo.farFog;
-                    Frostbite.weatherInfo.nearFog = -50f;
-                    Frostbite.weatherInfo.farFog = 100f;
-                    Frostbite.weatherInfo.oRed = Frostbite.weatherInfo.red;
-                    Frostbite.weatherInfo.oGreen = Frostbite.weatherInfo.green;
-                    Frostbite.weatherInfo.oBlue = Frostbite.weatherInfo.blue;
-                    Frostbite.weatherInfo.red = 73 / 255f;
-                    Frostbite.weatherInfo.green = 106 / 255f;
-                    Frostbite.weatherInfo.blue = 184 / 255f;
-                } else {
-                    Frostbite.weatherInfo.oNearFog = Frostbite.weatherInfo.nearFog;
-                    Frostbite.weatherInfo.oFarFog = Frostbite.weatherInfo.farFog;
-                    Frostbite.weatherInfo.oRed = Frostbite.weatherInfo.red;
-                    Frostbite.weatherInfo.oGreen = Frostbite.weatherInfo.green;
-                    Frostbite.weatherInfo.oBlue = Frostbite.weatherInfo.blue;
-
-                    if (Frostbite.weatherInfo.isWhiteouting) {
-                        Frostbite.weatherInfo.red = WeatherInfo.WHITEOUT_COLOUR;
-                        Frostbite.weatherInfo.green = WeatherInfo.WHITEOUT_COLOUR;
-                        Frostbite.weatherInfo.blue = WeatherInfo.WHITEOUT_COLOUR;
-                        Frostbite.weatherInfo.nearFog = WeatherInfo.WHITEOUT_NEAR_FOG;
-                        Frostbite.weatherInfo.farFog = WeatherInfo.WHITEOUT_FAR_FOG;
-                    } else if (Frostbite.weatherInfo.isBlizzarding) {
-                        Frostbite.weatherInfo.red = WeatherInfo.BLIZZARD_COLOUR;
-                        Frostbite.weatherInfo.green = WeatherInfo.BLIZZARD_COLOUR;
-                        Frostbite.weatherInfo.blue = WeatherInfo.BLIZZARD_COLOUR;
-                        Frostbite.weatherInfo.nearFog = WeatherInfo.BLIZZARD_NEAR_FOG;
-                        Frostbite.weatherInfo.farFog = WeatherInfo.BLIZZARD_FAR_FOG;
-                    } else {
-                        Frostbite.weatherInfo.red = WeatherInfo.normalRed;
-                        Frostbite.weatherInfo.green = WeatherInfo.normalGreen;
-                        Frostbite.weatherInfo.blue = WeatherInfo.normalBlue;
-                        Frostbite.weatherInfo.nearFog = WeatherInfo.normalNearFog;
-                        Frostbite.weatherInfo.farFog = Frostbite.weatherInfo.normalFarFog;
-                    }
-                }
-                currentBiome = name;
-                Frostbite.weatherInfo.timeSinceLastUpdate = Minecraft.getInstance().level.getGameTime();
-                time = Minecraft.getInstance().level.getGameTime();
-            }
         }
     }
 }

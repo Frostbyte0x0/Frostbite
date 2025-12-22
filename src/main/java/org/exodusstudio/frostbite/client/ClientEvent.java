@@ -44,6 +44,7 @@ public class ClientEvent {
         event.registerSpriteSet(ParticleRegistry.ROAMING_BLIZZARD_PARTICLE.get(), RoamingBlizzardParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.DEBUG_PARTICLE.get(), DebugParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.HEAL_PARTICLE.get(), HealParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.AMBIENT_SNOW_PARTICLE.get(), AmbientSnowParticle.Provider::new);
     }
 
     @SubscribeEvent

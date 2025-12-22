@@ -6,6 +6,7 @@
   "mixins": [
     "ArmorSlotMixin",
     "EntityMixin",
+    "EnvironmentAttributeSystemMixin",
     "InventoryMenuMixin",
     "InventoryMixin",
     "PlayerMixin",

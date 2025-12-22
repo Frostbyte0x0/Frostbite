@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.TimeArgument;
@@ -43,19 +42,19 @@ public class WeatherCommand {
     }
 
     private static int setSnow(CommandSourceStack source, int time) {
-        Frostbite.weatherInfo.setSnowing(Minecraft.getInstance().level.getGameTime());
+        Frostbite.weatherInfo.setSnowing();
         source.sendSuccess(() -> Component.literal("Set frostbite weather to snow"), true);
         return time;
     }
 
     private static int setBlizzard(CommandSourceStack source, int time) {
-        Frostbite.weatherInfo.setBlizzarding(Minecraft.getInstance().level.getGameTime());
+        Frostbite.weatherInfo.setBlizzarding();
         source.sendSuccess(() -> Component.literal("Set frostbite weather to blizzard"), true);
         return time;
     }
 
     private static int setWhiteout(CommandSourceStack source, int time) {
-        Frostbite.weatherInfo.setWhiteouting(Minecraft.getInstance().level.getGameTime());
+        Frostbite.weatherInfo.setWhiteouting();
         source.sendSuccess(() -> Component.literal("Set frostbite weather to whiteout"), true);
         return time;
     }

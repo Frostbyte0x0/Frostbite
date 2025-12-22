@@ -96,11 +96,11 @@ public class PrimaryLevelDataMixin {
                 tag.get("whiteoutLevel").asFloat(0));
 
         if (isWhiteouting) {
-            Frostbite.weatherInfo.setWhiteouting(0);
+            Frostbite.weatherInfo.setWhiteouting();
         } else if (isBlizzarding) {
-            Frostbite.weatherInfo.setBlizzarding(0);
+            Frostbite.weatherInfo.setBlizzarding();
         } else {
-            Frostbite.weatherInfo.setSnowing(0);
+            Frostbite.weatherInfo.setSnowing();
         }
     }
 }
