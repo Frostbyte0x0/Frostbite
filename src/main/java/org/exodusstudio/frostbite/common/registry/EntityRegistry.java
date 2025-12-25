@@ -2,8 +2,8 @@ package org.exodusstudio.frostbite.common.registry;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.sensing.SensorType;
@@ -12,16 +12,17 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntity;
-import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntitySensor;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
-import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntitySensor;
 import org.exodusstudio.frostbite.common.entity.custom.elves.CasterElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.HealerElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.SummonerElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
+import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.*;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
+import org.exodusstudio.frostbite.common.entity.goals.TargetEntitySensor;
 import org.exodusstudio.frostbite.common.entity.custom.projectiles.*;
 
 import java.util.function.Supplier;
@@ -291,14 +292,12 @@ public class EntityRegistry {
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_sword"))));
-
     public static final Supplier<EntityType<EtherealHandsEntity>> ETHEREAL_HANDS =
             ENTITY_TYPES.register("ethereal_hands", () -> EntityType.Builder
                     .of(EtherealHandsEntity::new, MobCategory.AMBIENT)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hands"))));
-
     public static final Supplier<EntityType<EtherealHammerEntity>> ETHEREAL_HAMMER =
             ENTITY_TYPES.register("ethereal_hammer", () -> EntityType.Builder
                     .of(EtherealHammerEntity::new, MobCategory.AMBIENT)
@@ -306,11 +305,23 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hammer"))));
 
+
+    public static final Supplier<EntityType<ChiefGuardEntity>> CHIEF_GUARD =
+            ENTITY_TYPES.register("chief_guard", () -> EntityType.Builder
+                    .of(ChiefGuardEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chief_guard"))));
+    public static final Supplier<EntityType<GuardEntity>> GUARD =
+            ENTITY_TYPES.register("guard", () -> EntityType.Builder
+                    .of(GuardEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "guard"))));
+
     // Entity Sensors
     public static final DeferredRegister<SensorType<?>> SENSOR =
             DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
-    public static final DeferredHolder<SensorType<?>, SensorType<MonkEntitySensor>> MONK_SENSOR =
-            SENSOR.register("monk_sensor", () -> new SensorType<>(MonkEntitySensor::new));
-    public static final DeferredHolder<SensorType<?>, SensorType<BardEntitySensor>> BARD_SENSOR =
-            SENSOR.register("bard_sensor", () -> new SensorType<>(BardEntitySensor::new));
+    public static final DeferredHolder<SensorType<?>, SensorType<TargetEntitySensor>> TARGET_ENTITY_SENSOR =
+            SENSOR.register("monk_sensor", () -> new SensorType<>(TargetEntitySensor::new));
 }

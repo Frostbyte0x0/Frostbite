@@ -100,4 +100,10 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation ETHEREAL_HAMMER = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hammer"), "main");
+
+    public static final ModelLayerLocation GUARD = new ModelLayerLocation(
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "guard"), "main");
+
+    public static final ModelLayerLocation CHIEF_GUARD = new ModelLayerLocation(
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chief_guard"), "main");
 }

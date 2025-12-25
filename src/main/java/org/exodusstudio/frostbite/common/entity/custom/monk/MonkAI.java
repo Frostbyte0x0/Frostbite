@@ -24,7 +24,7 @@ import static org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity.AT
 
 public class MonkAI {
     private static final List<SensorType<? extends Sensor<? super MonkEntity>>> SENSOR_TYPES =
-            List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.MONK_SENSOR.get());
+            List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.TARGET_ENTITY_SENSOR.get());
     private static final List<MemoryModuleType<?>> MEMORY_TYPES = List.of(
             MemoryModuleType.NEAREST_LIVING_ENTITIES,
             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,

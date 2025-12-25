@@ -25,7 +25,7 @@ import static org.exodusstudio.frostbite.common.entity.custom.bard.BardEntity.AT
 
 public class BardAI {
     private static final List<SensorType<? extends Sensor<? super BardEntity>>> SENSOR_TYPES =
-            List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.BARD_SENSOR.get());
+            List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.TARGET_ENTITY_SENSOR.get());
     private static final List<MemoryModuleType<?>> MEMORY_TYPES = List.of(
             MemoryModuleType.NEAREST_LIVING_ENTITIES,
             MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,

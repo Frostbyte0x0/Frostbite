@@ -31,6 +31,7 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealSwordEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealWeaponEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
+import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static net.minecraft.world.level.block.EnchantingTableBlock.BOOKSHELF_OFFSETS;
 
-public class BardEntity extends Monster {
+public class BardEntity extends Monster implements TargetingEntity {
     private static final EntityDataAccessor<Boolean> DATA_PLAYING =
             SynchedEntityData.defineId(BardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final Component BARD_NAME_COMPONENT = Component.translatable("entity.bard.boss_bar");

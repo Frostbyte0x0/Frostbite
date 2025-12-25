@@ -26,6 +26,8 @@ import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
+import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
@@ -44,6 +46,8 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_FUR, WoollySheepFurModel::createFurLayer);
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY, () -> WoollySheepModel.createBodyLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY_FUR, () -> WoollySheepFurModel.createFurLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
+        event.registerLayerDefinition(ModModelLayers.GUARD, GuardModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.CHIEF_GUARD, ChiefGuardModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.ETHEREAL_HAMMER, EtherealHammerModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.ETHEREAL_HANDS, EtherealHandsModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.ETHEREAL_SWORD, EtherealSwordModel::createBodyLayer);
@@ -98,6 +102,8 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.BOREAL_BEAR.get(), BorealBearEntity.createAttributes().build());
         event.put(EntityRegistry.MONK.get(), MonkEntity.createAttributes().build());
         event.put(EntityRegistry.BARD.get(), BardEntity.createAttributes().build());
+        event.put(EntityRegistry.CHIEF_GUARD.get(), ChiefGuardEntity.createAttributes().build());
+        event.put(EntityRegistry.GUARD.get(), GuardEntity.createAttributes().build());
     }
 
     @SubscribeEvent

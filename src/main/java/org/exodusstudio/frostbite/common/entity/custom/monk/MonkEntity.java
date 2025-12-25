@@ -39,6 +39,7 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
+import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +52,7 @@ import java.util.List;
 import static net.minecraft.world.level.block.EnchantingTableBlock.BOOKSHELF_OFFSETS;
 import static org.exodusstudio.frostbite.common.util.Util.calculateDir;
 
-public class MonkEntity extends Monster {
+public class MonkEntity extends Monster implements TargetingEntity {
     private static final EntityDataAccessor<Boolean> DATA_CLAPPING =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_ILLUSION =
