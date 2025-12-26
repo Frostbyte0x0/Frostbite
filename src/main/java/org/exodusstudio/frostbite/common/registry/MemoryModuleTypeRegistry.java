@@ -20,4 +20,8 @@ public class MemoryModuleTypeRegistry {
     public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<Integer>> SUMMON_COOLDOWN =
             MEMORY_MODULE_TYPES.register("summon_cooldown",
                     () -> new MemoryModuleType<>(Optional.of(Codec.INT)));
+
+    public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<Integer>> DASH_COOLDOWN =
+            MEMORY_MODULE_TYPES.register("dash_cooldown",
+                    () -> new MemoryModuleType<>(Optional.of(Codec.INT)));
 }

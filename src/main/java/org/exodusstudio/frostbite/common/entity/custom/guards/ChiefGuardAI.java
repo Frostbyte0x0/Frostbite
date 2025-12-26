@@ -1,18 +1,24 @@
 package org.exodusstudio.frostbite.common.entity.custom.guards;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
+import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 
@@ -20,8 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity.ATTACK_COOLDOWN;
-import static org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity.SUMMON_COOLDOWN;
+import static org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity.*;
 
 public class ChiefGuardAI {
     private static final List<SensorType<? extends Sensor<? super ChiefGuardEntity>>> SENSOR_TYPES =
@@ -40,6 +45,7 @@ public class ChiefGuardAI {
             MemoryModuleType.ATTACK_COOLING_DOWN,
             MemoryModuleType.NEAREST_ATTACKABLE,
             MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(),
+            MemoryModuleTypeRegistry.DASH_COOLDOWN.get(),
             MemoryModuleTypeRegistry.SUMMON_COOLDOWN.get());
 
     protected static Brain<?> makeBrain(ChiefGuardEntity ignored, Dynamic<?> ops) {
@@ -56,42 +62,30 @@ public class ChiefGuardAI {
     }
 
     private static void initCoreActivity(Brain<ChiefGuardEntity> brain) {
-        brain.addActivity(Activity.CORE, 0, ImmutableList.of(new Swim<Mob>(0.8F),
+        brain.addActivity(Activity.CORE, 0, ImmutableList.of(
+                new Swim<Mob>(0.8F),
+                SetEntityLookTargetSometimes.create(EntityType.PLAYER, 10, UniformInt.of(10, 30)),
                 new MoveToTargetSink(500, 700)));
     }
 
     private static void initFightActivity(Brain<ChiefGuardEntity> brain) {
         brain.addActivityWithConditions(Activity.FIGHT, ImmutableList.of(
-                Pair.of(0, new Guard()),
-                Pair.of(0, new Dash()),
-                Pair.of(0, new Attack()),
-                Pair.of(0, new Summon())),
+                Pair.of(1, new Dash()),
+                Pair.of(1, new Attack()),
+                Pair.of(1, new Guard()),
+                Pair.of(1, new Summon())),
                 Set.of(Pair.of(MemoryModuleType.NEAREST_ATTACKABLE, MemoryStatus.VALUE_PRESENT)));
     }
 
     private static void initIdleActivity(Brain<ChiefGuardEntity> brain) {
-        brain.addActivityWithConditions(Activity.IDLE, ImmutableList.of(
-                Pair.of(2, new LookAtTargetSink(45, 90)),
-                Pair.of(4, new RunOne<>(ImmutableList.of(
-                        Pair.of(new DoNothing(5, 20), 2))))),
-                Set.of());
-
-//        brain.addActivityWithConditions(Activity.IDLE,
-//                ImmutableList.of(
-//                    Pair.of(0, SetEntityLookTargetSometimes.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))),
-//                    Pair.of(0, new AnimalMakeLove(EntityType.FROG)),
-//                    Pair.of(1, new FollowTemptation((p_218585_) -> 1.25F)),
-//                    Pair.of(2, StartAttacking.create((p_375840_, p_375841_) -> canAttack(p_375841_), (p_376533_, p_218605_) -> p_218605_.getBrain().getMemory(MemoryModuleType.NEAREST_ATTACKABLE))),
-//                    Pair.of(3, TryFindLand.create(6, 1.0F)),
-//                    Pair.of(4, new RunOne(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
-//                            Pair.of(RandomStroll.stroll(1.0F), 1),
-//                            Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 1),
-//                            Pair.of(new Croak(), 3),
-//                            Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 2))))),
-//                ImmutableSet.of(
-//                        Pair.of(MemoryModuleType.LONG_JUMP_MID_JUMP, MemoryStatus.VALUE_ABSENT),
-//                        Pair.of(MemoryModuleType.IS_IN_WATER, MemoryStatus.VALUE_ABSENT))
-//        );
+        brain.addActivityWithConditions(Activity.IDLE,
+                ImmutableList.of(
+                    Pair.of(4, new RunOne<>(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
+                            Pair.of(RandomStroll.stroll(1.0F), 1),
+                            Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 5), 1),
+                            Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 2))))),
+                ImmutableSet.of()
+        );
     }
 
     public static void updateActivity(ChiefGuardEntity chief_guard) {
@@ -101,34 +95,7 @@ public class ChiefGuardAI {
     public static void setupCooldowns(Brain<ChiefGuardEntity> brain) {
         brain.setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ATTACK_COOLDOWN);
         brain.setMemory(MemoryModuleTypeRegistry.SUMMON_COOLDOWN.get(), SUMMON_COOLDOWN);
-    }
-
-    static class WalkTowardsTarget extends Behavior<ChiefGuardEntity> {
-        WalkTowardsTarget() {
-            super(Map.of(), 100);
-        }
-
-        @Override
-        protected boolean checkExtraStartConditions(ServerLevel level, ChiefGuardEntity owner) {
-            return owner.isIdle() && owner.getAttackableFromBrain() != null
-                    && owner.distanceToSqr(owner.getAttackableFromBrain()) <= 9
-                    && owner.getRandom().nextFloat() < 0.3f;
-        }
-
-        @Override
-        protected boolean canStillUse(ServerLevel level, ChiefGuardEntity entity, long gameTime) {
-            return true;
-        }
-
-        @Override
-        protected void start(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
-            chief_guard.setGuarding();
-        }
-
-        @Override
-        protected void stop(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
-            chief_guard.setIdle();
-        }
+        brain.setMemory(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), DASH_COOLDOWN);
     }
 
     static class Guard extends Behavior<ChiefGuardEntity> {
@@ -154,36 +121,56 @@ public class ChiefGuardAI {
         }
 
         @Override
+        protected void tick(ServerLevel level, ChiefGuardEntity chief_guard, long gameTime) {
+            super.tick(level, chief_guard, gameTime);
+            if (chief_guard.getAttackableFromBrain() != null) {
+                chief_guard.getLookControl().setLookAt(chief_guard.getAttackableFromBrain(), 30, 30);
+            }
+        }
+
+        @Override
         protected void stop(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
             chief_guard.setIdle();
         }
     }
 
     static class Dash extends Behavior<ChiefGuardEntity> {
+        private Vec3 dir;
+
         Dash() {
-            super(Map.of(), 100);
+            super(Map.of(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), MemoryStatus.VALUE_PRESENT), 100);
         }
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, ChiefGuardEntity owner) {
-            return owner.getAttackableFromBrain() != null && owner.isIdle()
+            return owner.getAttackableFromBrain() != null
+                    && owner.isIdle()
+                    && owner.getBrain().getMemory(MemoryModuleTypeRegistry.DASH_COOLDOWN.get()).get() <= 0
                     && owner.distanceToSqr(owner.getAttackableFromBrain()) > 25;
         }
 
         @Override
+        protected void tick(ServerLevel level, ChiefGuardEntity owner, long gameTime) {
+            super.tick(level, owner, gameTime);
+            float angle = (float) (Math.atan2(dir.z, dir.x) * (180 / Math.PI));
+            owner.setYRot(angle);
+        }
+
+        @Override
         protected boolean canStillUse(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
-            return !chief_guard.onGround() && chief_guard.getTicksSinceLastChange() > 10;
+            return !chief_guard.onGround() || chief_guard.getTicksSinceLastChange() < 10;
         }
 
         @Override
         protected void start(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
             chief_guard.setDashing();
-            chief_guard.dash();
+            dir = chief_guard.dash();
         }
 
         @Override
         protected void stop(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
             chief_guard.setIdle();
+            chief_guard.getBrain().setMemory(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), DASH_COOLDOWN);
         }
     }
 
@@ -214,6 +201,7 @@ public class ChiefGuardAI {
         @Override
         protected void stop(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
             chief_guard.setIdle();
+            chief_guard.getBrain().setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ATTACK_COOLDOWN);
         }
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import org.exodusstudio.frostbite.common.entity.client.animations.ChiefGuardAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.GuardRenderState;
 
 public class GuardModel extends HumanoidModel<GuardRenderState> {
@@ -28,7 +29,7 @@ public class GuardModel extends HumanoidModel<GuardRenderState> {
         this.right_arm = root.getChild("right_arm");
         this.left_leg = root.getChild("left_leg");
         this.right_leg = root.getChild("right_leg");
-        this.wakingUpAnimation = null;
+        this.wakingUpAnimation = ChiefGuardAnimations.AWAKE.bake(root);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -49,7 +50,7 @@ public class GuardModel extends HumanoidModel<GuardRenderState> {
     @Override
     public void setupAnim(GuardRenderState renderState) {
         super.setupAnim(renderState);
-        wakingUpAnimation.apply(renderState.wakingUpAnimationState, renderState.ageInTicks);
+        //wakingUpAnimation.apply(renderState.wakingUpAnimationState, renderState.ageInTicks);
     }
 
     @Override

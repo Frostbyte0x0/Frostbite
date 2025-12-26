@@ -21,6 +21,10 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 public class GuardEntity extends Monster {
     private static final EntityDataAccessor<Float> DATA_AWAKE_TIME =
             SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<String> DATA_CURRENT_STATE =
+            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> DATA_LAST_STATE =
+            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.STRING);
     public AnimationState wakingUpAnimationState = new AnimationState();
     public static final int WAKE_UP_ANIMATION_TICKS = 15;
 
@@ -31,9 +35,9 @@ public class GuardEntity extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8) {public boolean canUse() {return isAwake();}});
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8) {public boolean canUse() {return isAwake();}});
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this) {public boolean canUse() {return isAwake();}});
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -59,10 +63,12 @@ public class GuardEntity extends Monster {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_AWAKE_TIME, 0f);
+        builder.define(DATA_CURRENT_STATE, "asleep");
+        builder.define(DATA_LAST_STATE, "asleep");
     }
 
     public boolean isAwake() {
-        return this.entityData.get(DATA_AWAKE_TIME) == 0;
+        return this.entityData.get(DATA_AWAKE_TIME) >= WAKE_UP_ANIMATION_TICKS;
     }
 
     public float getAwakeTime() {
@@ -71,9 +77,34 @@ public class GuardEntity extends Monster {
 
     public void setAwakeTime(float f) {
         this.entityData.set(DATA_AWAKE_TIME, f);
-        if (f > 0) {
+        if (f >= 0) {
             wakingUpAnimationState.startIfStopped(tickCount);
         }
+    }
+
+    public boolean isAttacking() {
+        return this.entityData.get(DATA_LAST_STATE).equals("attacking");
+    }
+
+    public void setAttacking() {
+        this.entityData.set(DATA_CURRENT_STATE, "attacking");
+    }
+
+    public boolean isGuarding() {
+        return this.entityData.get(DATA_LAST_STATE).equals("guarding");
+    }
+
+    public void setGuarding() {
+        this.entityData.set(DATA_LAST_STATE, getCurrentState());
+        this.entityData.set(DATA_CURRENT_STATE, "guarding");
+    }
+
+    public String getCurrentState() {
+        return this.entityData.get(DATA_CURRENT_STATE);
+    }
+
+    public String getLastState() {
+        return this.entityData.get(DATA_LAST_STATE);
     }
 
     @Override

@@ -20,12 +20,13 @@ public class GuardRenderer extends MobRenderer<GuardEntity, GuardRenderState, Gu
     }
 
     @Override
-    public void extractRenderState(GuardEntity entity, GuardRenderState state, float partialTick) {
-        if (entity.getAwakeTime() > GuardEntity.WAKE_UP_ANIMATION_TICKS) {
-            super.extractRenderState(entity, state, partialTick);
-        }
-
-        state.wakingUpAnimationState.copyFrom(entity.wakingUpAnimationState);
+    public void extractRenderState(GuardEntity guard, GuardRenderState state, float partialTick) {
+        super.extractRenderState(guard, state, partialTick);
+        //state.currentAnimationState.copyFrom(guard.currentAnimationState);
+        //state.lastAnimationState.copyFrom(guard.lastAnimationState);
+        //state.ticksSinceLastChange = guard.getTicksSinceLastChange();
+        state.currentState = guard.getCurrentState();
+        state.lastState = guard.getLastState();
     }
 
     @Override
