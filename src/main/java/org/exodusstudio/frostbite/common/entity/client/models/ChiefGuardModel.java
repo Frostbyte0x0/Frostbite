@@ -7,9 +7,9 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import org.exodusstudio.frostbite.common.entity.client.animations.ChiefGuardAnimations;
+import org.exodusstudio.frostbite.common.entity.client.animations.GuardAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.GuardRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
 public class ChiefGuardModel extends HumanoidModel<GuardRenderState> {
@@ -34,12 +34,12 @@ public class ChiefGuardModel extends HumanoidModel<GuardRenderState> {
         this.right_arm = root.getChild("right_arm");
         this.left_leg = root.getChild("left_leg");
         this.right_leg = root.getChild("right_leg");
-        idleAnimation = ChiefGuardAnimations.IDLE.bake(root);
-        guardingAnimation = ChiefGuardAnimations.GUARD.bake(root);
-        dashingAnimation = ChiefGuardAnimations.DASH.bake(root);
-        attackingAnimation = ChiefGuardAnimations.ATTACK.bake(root);
-        summoningAnimation = ChiefGuardAnimations.DASH.bake(root);
-        parryingAnimation = ChiefGuardAnimations.PARRYING.bake(root);
+        idleAnimation = GuardAnimations.IDLE.bake(root);
+        guardingAnimation = GuardAnimations.GUARD.bake(root);
+        dashingAnimation = GuardAnimations.DASH.bake(root);
+        attackingAnimation = GuardAnimations.ATTACK.bake(root);
+        summoningAnimation = GuardAnimations.DASH.bake(root);
+        parryingAnimation = GuardAnimations.PARRYING.bake(root);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -72,7 +72,7 @@ public class ChiefGuardModel extends HumanoidModel<GuardRenderState> {
         this.head.xRot = state.xRot * ((float)Math.PI / 180F);
         this.head.yRot = state.yRot * ((float)Math.PI / 180F);
 
-        if (state.ticksSinceLastChange < ChiefGuardEntity.BLEND_TICKS) {
+        if (state.ticksSinceLastChange < GuardEntity.BLEND_TICKS) {
             KeyframeAnimation currentAnimation = switch (state.currentState) {
                 case "guarding" -> guardingAnimation;
                 case "dashing" -> dashingAnimation;
@@ -91,7 +91,7 @@ public class ChiefGuardModel extends HumanoidModel<GuardRenderState> {
             };
             Util.blendAnimations(
                     state.ticksSinceLastChange,
-                    ChiefGuardEntity.BLEND_TICKS,
+                    GuardEntity.BLEND_TICKS,
                     state.partialTick,
                     state.ageInTicks,
                     lastAnimation, state.lastAnimationState,
@@ -106,7 +106,6 @@ public class ChiefGuardModel extends HumanoidModel<GuardRenderState> {
                 case "parrying" -> parryingAnimation.apply(state.currentAnimationState, state.ageInTicks);
             }
         }
-
     }
 
     @Override

@@ -130,7 +130,9 @@ public class ChiefGuardAI {
 
         @Override
         protected void stop(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
-            chief_guard.setIdle();
+            if (!chief_guard.isParrying()) {
+                chief_guard.setAttacking();
+            }
         }
     }
 
@@ -138,7 +140,7 @@ public class ChiefGuardAI {
         private Vec3 dir;
 
         Dash() {
-            super(Map.of(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), MemoryStatus.VALUE_PRESENT), 100);
+            super(Map.of(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), MemoryStatus.VALUE_PRESENT), 50);
         }
 
         @Override

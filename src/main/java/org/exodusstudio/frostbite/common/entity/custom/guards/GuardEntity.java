@@ -3,41 +3,63 @@ package org.exodusstudio.frostbite.common.entity.custom.guards;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.goals.GuardAndApproachGoal;
+import org.exodusstudio.frostbite.common.entity.goals.GuardMeleeAttackGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.Util;
 
 public class GuardEntity extends Monster {
-    private static final EntityDataAccessor<Float> DATA_AWAKE_TIME =
-            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<String> DATA_CURRENT_STATE =
+    private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
+            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<String> DATA_STATE =
             SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_LAST_STATE =
             SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.STRING);
-    public AnimationState wakingUpAnimationState = new AnimationState();
+    private static final EntityDataAccessor<Integer> DATA_ATTACK_COOLDOWN =
+            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_GUARD_COOLDOWN =
+            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.INT);
+    public AnimationState currentAnimationState = new AnimationState();
+    public AnimationState lastAnimationState = new AnimationState();
     public static final int WAKE_UP_ANIMATION_TICKS = 15;
+    public static final int BLEND_TICKS = 10;
+    public static final int ATTACK_COOLDOWN = 30;
+    public static final int GUARD_COOLDOWN = 30;
 
     public GuardEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.GUARD.get(), level);
+        currentAnimationState.startIfStopped(tickCount - 2 * BLEND_TICKS);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8) {public boolean canUse() {return isAwake();}});
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8) {public boolean canUse() {return isAwake();}});
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this) {public boolean canUse() {return isAwake();}});
+        this.goalSelector.addGoal(2, new GuardAndApproachGoal(this, 0.75, false));
+        this.goalSelector.addGoal(2, new GuardMeleeAttackGoal(this, 1.2, false));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -50,57 +72,174 @@ public class GuardEntity extends Monster {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
-        output.putFloat("awakeTime", getAwakeTime());
+        output.putBoolean("isAwake", isAwake());
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
-        setAwakeTime(input.getFloatOr("awakeTime", 0f));
+        boolean isAwake = input.getBooleanOr("isAwake", false);
+        if (isAwake) {
+            this.entityData.set(DATA_STATE, "idle");
+        }
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_AWAKE_TIME, 0f);
-        builder.define(DATA_CURRENT_STATE, "asleep");
+        builder.define(DATA_TICKS_SINCE_LAST_CHANGE, 0);
+        builder.define(DATA_STATE, "asleep");
         builder.define(DATA_LAST_STATE, "asleep");
+        builder.define(DATA_ATTACK_COOLDOWN, ATTACK_COOLDOWN);
+        builder.define(DATA_GUARD_COOLDOWN, GUARD_COOLDOWN);
     }
 
-    public boolean isAwake() {
-        return this.entityData.get(DATA_AWAKE_TIME) >= WAKE_UP_ANIMATION_TICKS;
-    }
-
-    public float getAwakeTime() {
-        return this.entityData.get(DATA_AWAKE_TIME);
-    }
-
-    public void setAwakeTime(float f) {
-        this.entityData.set(DATA_AWAKE_TIME, f);
-        if (f >= 0) {
-            wakingUpAnimationState.startIfStopped(tickCount);
+    public void serverAiStep() {
+        if (isAwake()) {
+            super.serverAiStep();
         }
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+
+        setTicksSinceLastChange(getTicksSinceLastChange() + 1);
+        setGuardCooldown(getGuardCooldown() - 1);
+        setAttackCooldown(getAttackCooldown() - 1);
+
+        if (level() instanceof ServerLevel serverLevel) {
+            float t = currentAnimationState.getTimeInMillis(tickCount) / 50f;
+
+            if (isAttacking() && t == 6) {
+                serverLevel.getEntitiesOfClass(LivingEntity.class, Util.squareAABB(position(), 2)
+                                .move(getViewVector(0).normalize().scale(2)))
+                        .forEach(entity -> {
+                            if (entity != this) entity.hurtServer(serverLevel, damageSources().generic(), 6);
+                        });
+                setIdle();
+            }
+        }
+
+        if (isGuarding()) {
+            this.yBodyRot = yHeadRot;
+        }
+
+        getNavigation().setSpeedModifier(isGuarding() ? 0.75 : 1);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        if (DATA_STATE.equals(accessor)) {
+            this.lastAnimationState.copyFrom(currentAnimationState);
+            this.currentAnimationState.stop();
+            this.currentAnimationState.startIfStopped(tickCount);
+            setTicksSinceLastChange(0);
+            this.refreshDimensions();
+        }
+
+        super.onSyncedDataUpdated(accessor);
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        if (isGuarding() && source.getDirectEntity() instanceof LivingEntity) {
+            Vec3 dir = source.getDirectEntity().position().subtract(position());
+            double angle = Math.atan2(dir.z, dir.x) * (180 / Math.PI);
+            double diff = (((angle + 360) % 360) - ((yBodyRot + 360) % 360) + 360) % 360;
+            if (diff <= 180) {
+                return false;
+            } else {
+                amount *= 2;
+            }
+        }
+
+        if (!isAwake() && source.getDirectEntity() instanceof LivingEntity e) {
+            setWakingUp();
+            setTarget(e);
+        }
+
+        return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    public boolean isWithinMeleeAttackRange(LivingEntity entity) {
+        return entity.distanceToSqr(this) < 5;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return isAwake();
+    }
+
+    public boolean isAwake() {
+        if (getCurrentState().equals("wakingUp")) {
+            return this.entityData.get(DATA_TICKS_SINCE_LAST_CHANGE) >= WAKE_UP_ANIMATION_TICKS;
+        }
+        return !getCurrentState().equals("asleep");
+    }
+
+    public void setWakingUp() {
+        if (isAwake()) {
+            return;
+        }
+        this.entityData.set(DATA_LAST_STATE, getCurrentState());
+        this.entityData.set(DATA_STATE, "wakingUp");
+    }
+
+    public boolean isIdle() {
+        return this.entityData.get(DATA_STATE).equals("attacking");
+    }
+
+    public void setIdle() {
+        this.entityData.set(DATA_LAST_STATE, getCurrentState());
+        this.entityData.set(DATA_STATE, "idle");
+    }
+
     public boolean isAttacking() {
-        return this.entityData.get(DATA_LAST_STATE).equals("attacking");
+        return this.entityData.get(DATA_STATE).equals("attacking");
     }
 
     public void setAttacking() {
-        this.entityData.set(DATA_CURRENT_STATE, "attacking");
+        this.entityData.set(DATA_LAST_STATE, getCurrentState());
+        this.entityData.set(DATA_STATE, "attacking");
     }
 
     public boolean isGuarding() {
-        return this.entityData.get(DATA_LAST_STATE).equals("guarding");
+        return this.entityData.get(DATA_STATE).equals("guarding");
     }
 
     public void setGuarding() {
         this.entityData.set(DATA_LAST_STATE, getCurrentState());
-        this.entityData.set(DATA_CURRENT_STATE, "guarding");
+        this.entityData.set(DATA_STATE, "guarding");
+    }
+
+    public int getTicksSinceLastChange() {
+        return this.entityData.get(DATA_TICKS_SINCE_LAST_CHANGE);
+    }
+
+    public void setTicksSinceLastChange(int ticks) {
+        this.entityData.set(DATA_TICKS_SINCE_LAST_CHANGE, ticks);
+    }
+
+    public int getAttackCooldown() {
+        return this.entityData.get(DATA_ATTACK_COOLDOWN);
+    }
+
+    public void setAttackCooldown(int cooldown) {
+        this.entityData.set(DATA_ATTACK_COOLDOWN, cooldown);
+    }
+
+    public int getGuardCooldown() {
+        return this.entityData.get(DATA_GUARD_COOLDOWN);
+    }
+
+    public void setGuardCooldown(int cooldown) {
+        this.entityData.set(DATA_GUARD_COOLDOWN, cooldown);
     }
 
     public String getCurrentState() {
-        return this.entityData.get(DATA_CURRENT_STATE);
+        return this.entityData.get(DATA_STATE);
     }
 
     public String getLastState() {
