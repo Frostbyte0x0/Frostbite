@@ -100,14 +100,14 @@ public class ChiefGuardAI {
 
     static class Guard extends Behavior<ChiefGuardEntity> {
         Guard() {
-            super(Map.of(), 100);
+            super(Map.of(), 50);
         }
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel level, ChiefGuardEntity owner) {
             return owner.isIdle() && owner.getAttackableFromBrain() != null
-                    && owner.distanceToSqr(owner.getAttackableFromBrain()) <= 9
-                    && owner.getRandom().nextFloat() < 0.1f;
+                    && owner.distanceToSqr(owner.getAttackableFromBrain()) <= 6
+                    && owner.getRandom().nextFloat() < 0.025f;
         }
 
         @Override
@@ -154,8 +154,11 @@ public class ChiefGuardAI {
         @Override
         protected void tick(ServerLevel level, ChiefGuardEntity owner, long gameTime) {
             super.tick(level, owner, gameTime);
-            float angle = (float) (Math.atan2(dir.z, dir.x) * (180 / Math.PI));
-            owner.setYRot(angle);
+//            float angle = (float) (Math.atan2(dir.z, dir.x) * (180 / Math.PI));
+//            owner.setYRot(angle);
+            if (owner.getAttackableFromBrain() != null) {
+                owner.getLookControl().setLookAt(owner.getAttackableFromBrain(), 30, 30);
+            }
         }
 
         @Override
@@ -171,7 +174,7 @@ public class ChiefGuardAI {
 
         @Override
         protected void stop(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
-            chief_guard.setIdle();
+            chief_guard.setAttacking();
             chief_guard.getBrain().setMemory(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), DASH_COOLDOWN);
         }
     }

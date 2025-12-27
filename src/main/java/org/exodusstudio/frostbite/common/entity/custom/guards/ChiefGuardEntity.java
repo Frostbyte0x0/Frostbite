@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
@@ -39,7 +40,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.INT);
     private static final Component NAME_COMPONENT = Component.translatable("entity.chief_guard.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
-            new ServerBossEvent(NAME_COMPONENT, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
+            new ServerBossEvent(NAME_COMPONENT, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false);
     public final AnimationState lastAnimationState = new AnimationState();
     public final AnimationState currentAnimationState = new AnimationState();
     public static final int ATTACK_COOLDOWN = 60;
@@ -64,6 +65,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 400)
                 .add(Attributes.FOLLOW_RANGE, 10)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1)
                 .add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
@@ -131,11 +133,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             float t = currentAnimationState.getTimeInMillis(tickCount) / 50f;
 
             if (isAttacking() && (t == 18 || t == 30 || t == 42)) {
-                serverLevel.getEntitiesOfClass(LivingEntity.class, Util.squareAABB(position(), 3)
-                                .move(getViewVector(0).normalize().scale(2)))
-                        .forEach(entity -> {
-                            if (entity != this) entity.hurtServer(serverLevel, damageSources().generic(), 10);
-                        });
+                doAttack(serverLevel);
             }
 
             if (isSummoning() && t == 12) {
@@ -143,11 +141,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             }
 
             if (isParrying() && t == 14) {
-                serverLevel.getEntitiesOfClass(LivingEntity.class, Util.squareAABB(position(), 3)
-                                .move(getViewVector(0).normalize().scale(2)))
-                        .forEach(entity -> {
-                            if (entity != this) entity.hurtServer(serverLevel, damageSources().generic(), 10);
-                        });
+                doAttack(serverLevel);
             }
         }
 
@@ -159,8 +153,17 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             lastAnimationState.stop();
         }
 
-        if (isGuarding()) {
-            this.yBodyRot = yHeadRot;
+        this.yBodyRot = yHeadRot;
+
+
+        if (isAttacking()) {
+            if (getTicksSinceLastChange() > ATTACK_ANIM_TIME) {
+                setIdle();
+            }
+        }
+
+        if (getAttackableFromBrain() != null) {
+            getLookControl().setLookAt(getAttackableFromBrain(), 30, 30);
         }
 
         if (tickCount % 20 == 0) {
@@ -172,11 +175,23 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
 
     }
 
+    public void doAttack(ServerLevel serverLevel) {
+        serverLevel.getEntitiesOfClass(LivingEntity.class, getAttackAABB())
+                .forEach(entity -> {
+                    if (entity != this) entity.hurtServer(serverLevel, damageSources().mobAttack(this), 15);
+                });
+    }
+
+    public AABB getAttackAABB() {
+        return Util.squareAABB(position(), 2.5)
+                .move(getViewVector(0).normalize().scale(2).add(0, 1.5, 0));
+    }
+
     public Vec3 dash() {
         LivingEntity target = getAttackableFromBrain();
         if (target != null) {
             Vec3 dir = target.position().subtract(position());
-            this.addDeltaMovement(dir.normalize().add(0, 0.25, 0).multiply(1.75, 1.5, 1.75));
+            this.addDeltaMovement(dir.normalize().add(0, 0.25, 0).multiply(1.75, 1.25, 1.75));
             return dir;
         }
         return Vec3.ZERO;
@@ -193,8 +208,13 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
     }
 
     @Override
+    public float getSecondsToDisableBlocking() {
+        return 5.0F;
+    }
+
+    @Override
     public boolean isWithinMeleeAttackRange(LivingEntity entity) {
-        return entity.distanceToSqr(this) < 6;
+        return entity.distanceToSqr(this) < 9;
     }
 
     @Nullable

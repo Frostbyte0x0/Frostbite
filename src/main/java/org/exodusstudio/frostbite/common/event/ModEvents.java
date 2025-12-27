@@ -37,6 +37,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
+import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
@@ -47,6 +48,7 @@ import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.ArrayList;
@@ -251,6 +253,9 @@ public class ModEvents {
             level.getEntities().getAll().forEach((entity) -> {
                 if (entity instanceof LivingEntity livingEntity) {
                     entities.add(livingEntity);
+//                    if (livingEntity instanceof ChiefGuardEntity guard && Minecraft.getInstance().level != null) {
+//                        Util.spawnParticlesFromAABB(Minecraft.getInstance().level, guard.getAttackAABB(), 10);
+//                    }
                 }
             });
             if (event.getServer().getTickCount() % 20 == 0) {
