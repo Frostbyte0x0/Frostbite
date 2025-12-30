@@ -18,7 +18,6 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 
@@ -82,7 +81,7 @@ public class ChiefGuardAI {
                 ImmutableList.of(
                     Pair.of(4, new RunOne<>(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
                             Pair.of(RandomStroll.stroll(1.0F), 1),
-                            Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 5), 1),
+                            //Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 5), 1),
                             Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 2))))),
                 ImmutableSet.of()
         );
@@ -137,8 +136,6 @@ public class ChiefGuardAI {
     }
 
     static class Dash extends Behavior<ChiefGuardEntity> {
-        private Vec3 dir;
-
         Dash() {
             super(Map.of(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), MemoryStatus.VALUE_PRESENT), 50);
         }
@@ -169,7 +166,7 @@ public class ChiefGuardAI {
         @Override
         protected void start(ServerLevel serverLevel, ChiefGuardEntity chief_guard, long l) {
             chief_guard.setDashing();
-            dir = chief_guard.dash();
+            chief_guard.dash();
         }
 
         @Override

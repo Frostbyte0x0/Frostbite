@@ -20,6 +20,7 @@ import org.exodusstudio.frostbite.common.entity.custom.elves.SummonerElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
 import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.HeavyGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.*;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.entity.goals.TargetEntitySensor;
@@ -318,6 +319,12 @@ public class EntityRegistry {
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "guard"))));
+    public static final Supplier<EntityType<HeavyGuardEntity>> HEAVY_GUARD =
+            ENTITY_TYPES.register("heavy_guard", () -> EntityType.Builder
+                    .of(HeavyGuardEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75F, 2.34F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "heavy_guard"))));
 
     // Entity Sensors
     public static final DeferredRegister<SensorType<?>> SENSOR =

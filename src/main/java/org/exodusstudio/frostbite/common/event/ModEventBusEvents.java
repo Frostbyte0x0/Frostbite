@@ -28,6 +28,7 @@ import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
 import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.HeavyGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
@@ -44,6 +45,7 @@ public class ModEventBusEvents {
         event.registerLayerDefinition(ModModelLayers.ICE_SPIKE, IceSpikeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP, WoollySheepModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_FUR, WoollySheepFurModel::createFurLayer);
+        event.registerLayerDefinition(ModModelLayers.HEAVY_GUARD, HeavyGuardModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY, () -> WoollySheepModel.createBodyLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY_FUR, () -> WoollySheepFurModel.createFurLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
         event.registerLayerDefinition(ModModelLayers.GUARD, GuardModel::createBodyLayer);
@@ -104,6 +106,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.BARD.get(), BardEntity.createAttributes().build());
         event.put(EntityRegistry.CHIEF_GUARD.get(), ChiefGuardEntity.createAttributes().build());
         event.put(EntityRegistry.GUARD.get(), GuardEntity.createAttributes().build());
+        event.put(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardEntity.createAttributes().build());
     }
 
     @SubscribeEvent

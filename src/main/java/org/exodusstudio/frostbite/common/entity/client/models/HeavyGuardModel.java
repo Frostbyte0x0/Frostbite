@@ -9,10 +9,10 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.GuardAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.GuardRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
-public class GuardModel extends HumanoidModel<GuardRenderState> {
+public class HeavyGuardModel extends HumanoidModel<GuardRenderState> {
     private final ModelPart head;
     private final ModelPart headwear;
     private final ModelPart body;
@@ -26,7 +26,7 @@ public class GuardModel extends HumanoidModel<GuardRenderState> {
     private final KeyframeAnimation guardingAnimation;
     private final KeyframeAnimation asleepPose;
 
-    public GuardModel(ModelPart root) {
+    public HeavyGuardModel(ModelPart root) {
         super(root);
         this.head = root.getChild("head");
         this.headwear = head.getChild("hat");
@@ -73,7 +73,7 @@ public class GuardModel extends HumanoidModel<GuardRenderState> {
         this.head.xRot = state.xRot * ((float)Math.PI / 180F);
         this.head.yRot = state.yRot * ((float)Math.PI / 180F);
 
-        if (state.ticksSinceLastChange < GuardEntity.BLEND_TICKS) {
+        if (state.ticksSinceLastChange < ChiefGuardEntity.BLEND_TICKS) {
             KeyframeAnimation currentAnimation = switch (state.currentState) {
                 case "guarding" -> guardingAnimation;
                 case "wakingUp" -> wakingUpAnimation;
@@ -90,7 +90,7 @@ public class GuardModel extends HumanoidModel<GuardRenderState> {
             };
             Util.blendAnimations(
                     state.ticksSinceLastChange,
-                    GuardEntity.BLEND_TICKS,
+                    ChiefGuardEntity.BLEND_TICKS,
                     state.partialTick,
                     state.ageInTicks,
                     lastAnimation, state.lastAnimationState,

@@ -113,6 +113,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.ETHEREAL_HAMMER.get(), EtherealHammerRenderer::new);
             EntityRenderers.register(EntityRegistry.GUARD.get(), GuardRenderer::new);
             EntityRenderers.register(EntityRegistry.CHIEF_GUARD.get(), ChiefGuardRenderer::new);
+            EntityRenderers.register(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

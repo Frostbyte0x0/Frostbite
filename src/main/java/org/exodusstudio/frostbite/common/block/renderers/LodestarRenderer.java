@@ -109,7 +109,10 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
         f2 = f2 * f2 + f2;
 
         // Beam
-        int colour = ARGB.color(0, 100, (int) Mth.lerp(f2 / 2, 150, 200));
+        int colour = ARGB.color(
+                (int) Mth.lerp(f2 / 2, 220, 170),
+                (int) Mth.lerp(f2 / 2, 220, 170),
+                (int) Mth.lerp(f2 / 2, 220, 250));
         for (int i = 1; i < 318; i++) {
             BeaconRenderer.submitBeaconBeam(stack, submitNodeCollector, BEAM_LOCATION, 1, state.animTime,
                     i, 1, colour, 0.2f, 0.25f);

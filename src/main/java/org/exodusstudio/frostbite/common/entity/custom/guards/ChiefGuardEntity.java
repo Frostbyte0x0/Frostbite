@@ -167,10 +167,13 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
         }
 
         if (tickCount % 20 == 0) {
+//            if (brain.getActiveNonCoreActivity().ifPresent((activity) -> activity != ChiefGuardAI.)) {
+//                setTicksSinceLastChange(0);
+//            }
             boolean match = brain.getRunningBehaviors().stream().anyMatch(b ->
                         (b instanceof ChiefGuardAI.Dash) || (b instanceof ChiefGuardAI.Guard) ||
                                 (b instanceof ChiefGuardAI.Attack) || (b instanceof ChiefGuardAI.Summon));
-            getNavigation().setSpeedModifier(!match ? 1.75 : 0.75);
+            getNavigation().setSpeedModifier((!match) ? 1.75 : 0.75);
         }
 
     }
@@ -178,7 +181,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
     public void doAttack(ServerLevel serverLevel) {
         serverLevel.getEntitiesOfClass(LivingEntity.class, getAttackAABB())
                 .forEach(entity -> {
-                    if (entity != this) entity.hurtServer(serverLevel, damageSources().mobAttack(this), 15);
+                    if (entity != this) entity.hurtServer(serverLevel, damageSources().mobAttack(this), 16);
                 });
     }
 
@@ -187,20 +190,18 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
                 .move(getViewVector(0).normalize().scale(2).add(0, 1.5, 0));
     }
 
-    public Vec3 dash() {
+    public void dash() {
         LivingEntity target = getAttackableFromBrain();
         if (target != null) {
             Vec3 dir = target.position().subtract(position());
             this.addDeltaMovement(dir.normalize().add(0, 0.25, 0).multiply(1.75, 1.25, 1.75));
-            return dir;
         }
-        return Vec3.ZERO;
     }
 
     public void wakeUpNearbyGuards(ServerLevel serverLevel) {
-        serverLevel.getEntitiesOfClass(GuardEntity.class, Util.squareAABB(position(), 10))
+        serverLevel.getEntitiesOfClass(GuardEntity.class, Util.squareAABB(position(), 25))
                 .forEach(g -> {
-                    if (!g.isAwake()) {
+                    if (!g.isAwake() && random.nextFloat() < 0.4) {
                         g.setWakingUp();
                         g.setTarget(getAttackableFromBrain());
                     }
@@ -209,7 +210,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
 
     @Override
     public float getSecondsToDisableBlocking() {
-        return 5.0F;
+        return 5;
     }
 
     @Override

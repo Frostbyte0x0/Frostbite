@@ -5,9 +5,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -21,11 +19,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.goals.GuardAndApproachGoal;
 import org.exodusstudio.frostbite.common.entity.goals.GuardMeleeAttackGoal;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.util.Util;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 public class GuardEntity extends Monster {
     private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
@@ -41,12 +41,13 @@ public class GuardEntity extends Monster {
     public AnimationState currentAnimationState = new AnimationState();
     public AnimationState lastAnimationState = new AnimationState();
     public static final int WAKE_UP_ANIMATION_TICKS = 15;
+    public static final int ATTACK_ANIMATION_TICKS = 15;
     public static final int BLEND_TICKS = 10;
     public static final int ATTACK_COOLDOWN = 30;
     public static final int GUARD_COOLDOWN = 30;
 
-    public GuardEntity(EntityType<? extends Monster> ignored, Level level) {
-        super(EntityRegistry.GUARD.get(), level);
+    public GuardEntity(EntityType<? extends Monster> type, Level level) {
+        super(type, level);
         currentAnimationState.startIfStopped(tickCount - 2 * BLEND_TICKS);
     }
 
@@ -66,7 +67,7 @@ public class GuardEntity extends Monster {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 50)
                 .add(Attributes.FOLLOW_RANGE, 10)
-                .add(Attributes.MOVEMENT_SPEED, 0.22);
+                .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -111,21 +112,32 @@ public class GuardEntity extends Monster {
         if (level() instanceof ServerLevel serverLevel) {
             float t = currentAnimationState.getTimeInMillis(tickCount) / 50f;
 
-            if (isAttacking() && t == 6) {
-                serverLevel.getEntitiesOfClass(LivingEntity.class, Util.squareAABB(position(), 2)
-                                .move(getViewVector(0).normalize().scale(2)))
-                        .forEach(entity -> {
-                            if (entity != this) entity.hurtServer(serverLevel, damageSources().generic(), 6);
-                        });
-                setIdle();
+            if (isAttacking()) {
+                if (t == 6) {
+                    doAttack(serverLevel);
+                } else if (t == ATTACK_ANIMATION_TICKS) {
+                    setIdle();
+                }
             }
         }
 
-        if (isGuarding()) {
+        if (isGuarding() || isAttacking()) {
             this.yBodyRot = yHeadRot;
         }
 
         getNavigation().setSpeedModifier(isGuarding() ? 0.75 : 1);
+    }
+
+    public AABB getAttackAABB() {
+        return Util.squareAABB(position(), 2)
+                .move(getViewVector(0).normalize().scale(2).add(0, 1.5, 0));
+    }
+
+    public void doAttack(ServerLevel serverLevel) {
+        serverLevel.getEntitiesOfClass(LivingEntity.class, getAttackAABB())
+                .forEach(entity -> {
+                    if (entity != this) entity.hurtServer(serverLevel, damageSources().mobAttack(this), 7.5f);
+                });
     }
 
     @Override
@@ -154,17 +166,32 @@ public class GuardEntity extends Monster {
             }
         }
 
-        if (!isAwake() && source.getDirectEntity() instanceof LivingEntity e) {
+        if (!isAwake()) {
+            if (source.getDirectEntity() instanceof LivingEntity e && canTargetEntity(e)) {
+                setTarget(e);
+            }
             setWakingUp();
-            setTarget(e);
+            amount = 0;
         }
 
         return super.hurtServer(level, source, amount);
     }
 
+    @Contract(value = "null->false")
+    public boolean canTargetEntity(@Nullable Entity entity) {
+        if (!(entity instanceof Player player) ||
+                this.level() != entity.level() ||
+                !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
+                this.isAlliedTo(entity) ||
+                player.isInvulnerable() || player.isDeadOrDying()) {
+            return false;
+        }
+        return this.level().getWorldBorder().isWithinBounds(player.getBoundingBox());
+    }
+
     @Override
     public boolean isWithinMeleeAttackRange(LivingEntity entity) {
-        return entity.distanceToSqr(this) < 5;
+        return entity.distanceToSqr(this) < 9;
     }
 
     @Override

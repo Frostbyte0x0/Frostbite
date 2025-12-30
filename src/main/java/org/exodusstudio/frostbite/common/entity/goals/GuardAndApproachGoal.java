@@ -20,7 +20,7 @@ public class GuardAndApproachGoal extends MeleeAttackGoal {
 
     @Override
     public boolean canUse() {
-        return guard.getTarget() != null && guard.getRandom().nextFloat() < 0.05f && !guard.isAttacking() && !guard.isGuarding() && guard.getGuardCooldown() <= 0;
+        return guard.getTarget() != null && guard.getRandom().nextFloat() < 0.1f && !guard.isAttacking() && !guard.isGuarding() && guard.getGuardCooldown() <= 0;
     }
 
     @Override
@@ -31,7 +31,6 @@ public class GuardAndApproachGoal extends MeleeAttackGoal {
     @Override
     protected void checkAndPerformAttack(LivingEntity target) {
         if (this.canPerformAttack(target)) {
-            guard.setAttacking();
             stop();
         }
     }
@@ -39,7 +38,7 @@ public class GuardAndApproachGoal extends MeleeAttackGoal {
     @Override
     public void stop() {
         super.stop();
-        if (guard.getTarget() != null && guard.getTarget().distanceToSqr(guard) < 5) {
+        if (guard.getTarget() != null && guard.getTarget().distanceToSqr(guard) < 9) {
             guard.setAttacking();
         } else {
             guard.setIdle();

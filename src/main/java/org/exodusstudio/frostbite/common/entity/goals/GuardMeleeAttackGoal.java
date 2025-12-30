@@ -22,6 +22,6 @@ public class GuardMeleeAttackGoal extends MeleeAttackGoal {
 
     @Override
     public boolean canUse() {
-        return super.canUse() && guard.getRandom().nextFloat() < 0.05f && !guard.isAttacking() && !guard.isGuarding() && guard.getAttackCooldown() <= 0;
+        return super.canUse() && guard.getRandom().nextFloat() < 0.1f && !guard.isAttacking() && !guard.isGuarding() && guard.getAttackCooldown() <= 0;
     }
 }
