@@ -14,13 +14,16 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.goals.GuardBodyRotationControl;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
@@ -36,6 +39,8 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_STATE =
             SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Boolean> DATA_FREEZE_BODY_ROT =
+            SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
             SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.INT);
     private static final Component NAME_COMPONENT = Component.translatable("entity.chief_guard.boss_bar");
@@ -75,6 +80,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
         builder.define(DATA_LAST_STATE, "idle");
         builder.define(DATA_STATE, "idle");
         builder.define(DATA_TICKS_SINCE_LAST_CHANGE, 10);
+        builder.define(DATA_FREEZE_BODY_ROT, false);
     }
 
     @Override
@@ -153,8 +159,10 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             lastAnimationState.stop();
         }
 
-        this.yBodyRot = yHeadRot;
-
+        if (level() instanceof ServerLevel) {
+            boolean f = brain.getActiveNonCoreActivity().orElse(Activity.IDLE).equals(Activity.FIGHT);
+            setFreezeRotation(f);
+        }
 
         if (isAttacking()) {
             if (getTicksSinceLastChange() > ATTACK_ANIM_TIME) {
@@ -167,13 +175,14 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
         }
 
         if (tickCount % 20 == 0) {
-//            if (brain.getActiveNonCoreActivity().ifPresent((activity) -> activity != ChiefGuardAI.)) {
-//                setTicksSinceLastChange(0);
-//            }
-            boolean match = brain.getRunningBehaviors().stream().anyMatch(b ->
+            if (!brain.getActiveNonCoreActivity().orElse(Activity.IDLE).equals(Activity.IDLE)) {
+                boolean match = brain.getRunningBehaviors().stream().anyMatch(b ->
                         (b instanceof ChiefGuardAI.Dash) || (b instanceof ChiefGuardAI.Guard) ||
                                 (b instanceof ChiefGuardAI.Attack) || (b instanceof ChiefGuardAI.Summon));
-            getNavigation().setSpeedModifier((!match) ? 1.75 : 0.75);
+                getNavigation().setSpeedModifier((!match) ? 1.75 : 0.75);
+            } else {
+                getNavigation().setSpeedModifier(0.75);
+            }
         }
 
     }
@@ -233,13 +242,6 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             this.refreshDimensions();
 
             if (isIdle()) {
-//                float s;
-//                if (brain.getRunningBehaviors().stream().anyMatch(b ->
-//                        (b instanceof ChiefGuardAI.Dash) || (b instanceof ChiefGuardAI.Guard) || (b instanceof ChiefGuardAI.Attack) || (b instanceof ChiefGuardAI.Summon))) {
-//                    s = 0.75f;
-//                } else {
-//                    s = 1.75f;
-//                }
                 if (getBrain().getMemory(MemoryModuleType.LOOK_TARGET).isPresent()) {
                     getBrain().setMemory(MemoryModuleType.WALK_TARGET,
                             new WalkTarget(getBrain().getMemory(MemoryModuleType.LOOK_TARGET).get(), 1, 2));
@@ -272,11 +274,15 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
                 return false;
             } else {
                 amount *= 2;
-                //setIdle();
             }
         }
 
         return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    protected BodyRotationControl createBodyControl() {
+        return new GuardBodyRotationControl(this);
     }
 
     @Override
@@ -340,6 +346,14 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
 
     public String getLastState() {
         return this.getEntityData().get(DATA_LAST_STATE);
+    }
+
+    public boolean shouldFreezeRotation() {
+        return this.getEntityData().get(DATA_FREEZE_BODY_ROT);
+    }
+
+    public void setFreezeRotation(boolean f) {
+        this.entityData.set(DATA_FREEZE_BODY_ROT, f);
     }
 
     public int getTicksSinceLastChange() {

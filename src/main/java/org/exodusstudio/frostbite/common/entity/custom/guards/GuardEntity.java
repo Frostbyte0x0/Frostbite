@@ -88,7 +88,7 @@ public class GuardEntity extends Monster {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_TICKS_SINCE_LAST_CHANGE, 0);
+        builder.define(DATA_TICKS_SINCE_LAST_CHANGE, BLEND_TICKS);
         builder.define(DATA_STATE, "asleep");
         builder.define(DATA_LAST_STATE, "asleep");
         builder.define(DATA_ATTACK_COOLDOWN, ATTACK_COOLDOWN);
@@ -175,6 +175,11 @@ public class GuardEntity extends Monster {
         }
 
         return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
     }
 
     @Contract(value = "null->false")

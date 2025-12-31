@@ -248,14 +248,14 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> BOTTLE_OF_WARMTH =
-            ITEMS.register("bottle_of_warmth", (id) -> new Item(new Item.Properties()
+            ITEMS.register("bottle_of_warmth", (id) -> new BottleItem(new Item.Properties()
                     .craftRemainder(Items.GLASS_BOTTLE)
                     .food(FoodRegistry.WARMING_BOTTLE, ConsumableRegistry.WARMTH_BOTTLE)
                     .usingConvertsTo(Items.GLASS_BOTTLE)
                     .stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BOTTLE_OF_HEAT =
-            ITEMS.register("bottle_of_heat", (id) -> new Item(new Item.Properties()
+            ITEMS.register("bottle_of_heat", (id) -> new BottleItem(new Item.Properties()
                     .craftRemainder(Items.GLASS_BOTTLE)
                     .food(FoodRegistry.WARMING_BOTTLE, ConsumableRegistry.HEAT_BOTTLE)
                     .usingConvertsTo(Items.GLASS_BOTTLE)

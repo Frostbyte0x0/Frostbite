@@ -49,8 +49,8 @@ public class LiningBarOverlay {
     }
 
     public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, Identifier texture, int level) {
-        int red = (int) Mth.lerp(Math.max(0, level - 20) / 4f, 100, 255);
-        int colour = ARGB.color(red, 255, 255);
+        int green = (int) Mth.lerp(Math.max(0, level - 20) / 4f, 255, 40);
+        int colour = ARGB.color(220, green, 220);
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height, colour);
     }
 }

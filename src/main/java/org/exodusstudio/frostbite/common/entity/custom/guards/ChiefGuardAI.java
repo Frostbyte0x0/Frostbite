@@ -80,8 +80,8 @@ public class ChiefGuardAI {
         brain.addActivityWithConditions(Activity.IDLE,
                 ImmutableList.of(
                     Pair.of(4, new RunOne<>(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
-                            Pair.of(RandomStroll.stroll(1.0F), 1),
-                            //Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 5), 1),
+                            Pair.of(RandomStroll.stroll(1), 1),
+                            Pair.of(new DoNothing(50, 100), 1),
                             Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 2))))),
                 ImmutableSet.of()
         );

@@ -113,7 +113,10 @@ public class OTFPortal extends Structure {
                 randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
 
         if (structureStart != StructureStart.INVALID_START) {
-            structureStart.getPieces().forEach(p -> p.setOrientation(Direction.NORTH));
+            structureStart.getPieces().forEach(p -> {
+                p.setOrientation(Direction.EAST);
+                p.move(0, -4, 0);
+            });
             Frostbite.overworldSpawnPoint = structureStart.getPieces().getFirst().getLocatorPosition();
             canSpawn = false;
             return structureStart;

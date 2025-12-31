@@ -311,6 +311,7 @@ public class EntityRegistry {
             ENTITY_TYPES.register("chief_guard", () -> EntityType.Builder
                     .of(ChiefGuardEntity::new, MobCategory.AMBIENT)
                     .sized(0.6F, 1.95F)
+                    .clientTrackingRange(3)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chief_guard"))));
     public static final Supplier<EntityType<GuardEntity>> GUARD =
