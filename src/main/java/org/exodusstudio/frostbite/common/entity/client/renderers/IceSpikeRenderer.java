@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
@@ -33,7 +34,7 @@ public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRen
             stack.scale(-1.0F, -1.0F, 1.0F);
             stack.translate(0.0F, -1.501F, 0.0F);
             nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(TEXTURE_LOCATION),
-                    state.lightCoords, 0, 0, null, state.outlineColor, null);
+                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
             stack.popPose();
         }
 
@@ -44,7 +45,7 @@ public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRen
             stack.mulPose(Axis.XN.rotationDegrees(90 - state.xRot));
             stack.translate(0, -1.2, 0);
             nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(TEXTURE_LOCATION),
-                    state.lightCoords, 0, 0, null, state.outlineColor, null);
+                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
             stack.popPose();
         }
 

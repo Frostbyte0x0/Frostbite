@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponents;
@@ -49,6 +50,6 @@ public class StarseekingCompass extends CompassItem {
     }
 
     public Component getName(ItemStack stack) {
-        return stack.getComponents().getOrDefault(DataComponents.ITEM_NAME, CommonComponents.EMPTY);
+        return stack.getComponents().getOrDefault(DataComponents.ITEM_NAME, CommonComponents.EMPTY).copy().withStyle(ChatFormatting.DARK_PURPLE);
     }
 }

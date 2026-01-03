@@ -110,7 +110,7 @@
   "item.frostbite.ice_hammer": "Ice Hammer",
   "item.frostbite.thermometer": "Thermometer",
   "item.frostbite.confetti_popper": "Confetti Popper",
-  "item.frostbite.lyre": "Lyre",
+  "item.frostbite.shaman_staff": "Shaman Staff",
 
   "item.frostbite.sniper": "Sniper",
   "item.frostbite.sniper_bullet": "Sniper Bullet",
@@ -174,13 +174,15 @@
   "item.frostbite.frozen_plating_lining_leggings": "Frozen plating lining leggings",
   "item.frostbite.frozen_plating_lining_boots": "Frozen plating lining boots",
 
+  "item.frostbite.mode_weapon.mode" : "Current mode: ",
+
 
   "effect.frostbite.twitching": "Twitching",
   "effect.frostbite.fatigue": "Fatigue",
 
   "entity.chief_guard.boss_bar": "Chief Guard",
   "entity.monk.boss_bar": "Monk",
-  "entity.bard.boss_bar": "Bard",
+  "entity.shaman.boss_bar": "Shaman",
 
   "attribute.name.cold_protection": "Cold Protection",
 

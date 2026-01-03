@@ -94,8 +94,6 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.ICED_ZOMBIE.get(), IcedZombieRenderer::new);
             EntityRenderers.register(EntityRegistry.ICED_CREEPER.get(), IcedCreeperRenderer::new);
             EntityRenderers.register(EntityRegistry.FROZEN_ARROW.get(), FrozenArrowRenderer::new);
-
-            BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
             EntityRenderers.register(EntityRegistry.SPECTER.get(), SpecterRenderer::new);
             EntityRenderers.register(EntityRegistry.REVENANT.get(), RevenantRenderer::new);
             EntityRenderers.register(EntityRegistry.BANDIT.get(), BanditRenderer::new);
@@ -108,13 +106,15 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.BOREAL_BEAR.get(), BorealBearRenderer::new);
             EntityRenderers.register(EntityRegistry.MONK.get(), MonkRenderer::new);
             EntityRenderers.register(EntityRegistry.BIG_LEVITATING_JELLYFISH.get(), BigLevitatingJellyfishRenderer::new);
-            EntityRenderers.register(EntityRegistry.BARD.get(), BardRenderer::new);
+            EntityRenderers.register(EntityRegistry.SHAMAN.get(), ShamanRenderer::new);
             EntityRenderers.register(EntityRegistry.ETHEREAL_SWORD.get(), EtherealSwordRenderer::new);
             EntityRenderers.register(EntityRegistry.ETHEREAL_HANDS.get(), EtherealHandsRenderer::new);
             EntityRenderers.register(EntityRegistry.ETHEREAL_HAMMER.get(), EtherealHammerRenderer::new);
             EntityRenderers.register(EntityRegistry.GUARD.get(), GuardRenderer::new);
             EntityRenderers.register(EntityRegistry.CHIEF_GUARD.get(), ChiefGuardRenderer::new);
             EntityRenderers.register(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardRenderer::new);
+
+            BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

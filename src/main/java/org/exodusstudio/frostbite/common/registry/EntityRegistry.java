@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
-import org.exodusstudio.frostbite.common.entity.custom.bard.BardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.CasterElfEntity;
@@ -272,13 +272,13 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"))));
 
-    public static final Supplier<EntityType<BardEntity>> BARD =
-            ENTITY_TYPES.register("bard", () -> EntityType.Builder
-                    .of(BardEntity::new, MobCategory.AMBIENT)
-                    .sized(0.75f, 0.75f)
+    public static final Supplier<EntityType<ShamanEntity>> SHAMAN =
+            ENTITY_TYPES.register("shaman", () -> EntityType.Builder
+                    .of(ShamanEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 2f)
                     .clientTrackingRange(3)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "bard"))));
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "shaman"))));
 
     public static final Supplier<EntityType<BigLevitatingJellyfishEntity>> BIG_LEVITATING_JELLYFISH =
             ENTITY_TYPES.register("big_levitating_jellyfish", () -> EntityType.Builder

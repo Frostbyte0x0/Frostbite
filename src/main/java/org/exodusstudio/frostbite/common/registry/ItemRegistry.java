@@ -350,8 +350,8 @@ public class ItemRegistry {
                     .stacksTo(1)
                     .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> LYRE =
-            ITEMS.register("lyre", (id) -> new LyreItem(new Item.Properties()
+    public static final DeferredItem<Item> SHAMAN_STAFF =
+            ITEMS.register("shaman_staff", (id) -> new ShamanStaffItem(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> FIRE =

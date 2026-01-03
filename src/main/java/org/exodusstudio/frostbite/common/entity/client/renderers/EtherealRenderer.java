@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import org.exodusstudio.frostbite.common.entity.client.states.EtherealRenderState;
@@ -25,12 +26,9 @@ public class EtherealRenderer<T extends Entity, M extends EntityModel<EtherealRe
 
     @Override
     public void submit(EtherealRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
-        poseStack.pushPose();
-
-        nodeCollector.submitModel(model, renderState, poseStack, RenderTypes.entityCutout(getTextureLocation()),
-                renderState.lightCoords, 0, 0, null, renderState.outlineColor, null);
-        poseStack.popPose();
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
+        nodeCollector.submitModel(model, renderState, poseStack, RenderTypes.entityTranslucent(getTextureLocation()),
+                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, renderState.outlineColor, null);
     }
 
     public Identifier getTextureLocation() {

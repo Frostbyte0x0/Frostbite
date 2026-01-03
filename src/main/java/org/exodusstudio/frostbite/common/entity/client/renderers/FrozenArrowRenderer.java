@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.TippableArrowRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.projectiles.FrozenArrow;
@@ -30,7 +31,7 @@ public class FrozenArrowRenderer extends ArrowRenderer<FrozenArrow, TippableArro
         stack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
         stack.mulPose(Axis.XP.rotationDegrees(180));
         nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(getTextureLocation(state)),
-                state.lightCoords, 0, 0, null, state.outlineColor, null);
+                state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
         stack.popPose();
     }
 

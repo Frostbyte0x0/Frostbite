@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.item.weapons.elf;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -9,14 +10,14 @@ import org.exodusstudio.frostbite.common.entity.custom.ennemies.RoamingBlizzardE
 
 public class SummoningStaffItem extends ModeWeapon {
     public SummoningStaffItem(Properties properties) {
-        super(properties, new String[]{"roaming blizzard", "hailcoil"});
+        super(properties, new String[]{"Roaming Blizzard", "Hailcoil"}, ChatFormatting.AQUA, ChatFormatting.DARK_AQUA);
     }
 
     @Override
     public void attack(Level level, LivingEntity owner) {
         if (level instanceof ServerLevel serverLevel) {
             switch (this.mode) {
-                case "roaming blizzard":
+                case "Roaming Blizzard":
                     RoamingBlizzardEntity blizzard = new RoamingBlizzardEntity(null, level);
 
                     blizzard.setPos(owner.blockPosition().getX(), owner.blockPosition().getY(), owner.blockPosition().getZ());
@@ -26,7 +27,7 @@ public class SummoningStaffItem extends ModeWeapon {
                     serverLevel.gameEvent(GameEvent.ENTITY_PLACE, owner.blockPosition(), GameEvent.Context.of(owner));
 
                     break;
-                case "hailcoil":
+                case "Hailcoil":
                     for (int i = 0; i < 4; i++) {
                         HailcoilEntity hailcoil = new HailcoilEntity(null, level);
 

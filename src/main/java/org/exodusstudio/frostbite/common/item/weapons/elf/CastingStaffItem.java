@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.item.weapons.elf;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 public class CastingStaffItem extends ModeWeapon {
     public CastingStaffItem(Properties properties) {
-        super(properties, new String[]{"icy breath", "spikes"});
+        super(properties, new String[]{"Icy Breath", "Spikes"}, ChatFormatting.RED, ChatFormatting.DARK_RED);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class CastingStaffItem extends ModeWeapon {
         Vec3 vec32 = vec31.normalize();
 
         switch (this.mode) {
-            case "icy breath":
+            case "Icy Breath":
                 if (level.isClientSide()) {
                     int particleCount = 30;
                     for (int i = 1; i < 4; i++) {
@@ -71,7 +72,7 @@ public class CastingStaffItem extends ModeWeapon {
                                     new AABB(vec3.add(0.75), vec3.subtract(0.75)), (ServerLevel) level, owner));
                 }
                 break;
-            case "spikes":
+            case "Spikes":
                 if (!level.isClientSide()) {
                     Vec3 look = owner.getLookAngle().normalize();
                     Vec3 spawnPos = owner.position().add(0, owner.getEyeHeight(), 0).add(look.scale(1.5));

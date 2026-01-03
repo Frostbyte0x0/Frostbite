@@ -5,13 +5,13 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
-import org.exodusstudio.frostbite.common.entity.client.models.ChiefGuardModel;
+import org.exodusstudio.frostbite.common.entity.client.models.ShamanModel;
 import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 
-public class ChiefGuardRenderer extends MobRenderer<ChiefGuardEntity, StateRenderState, ChiefGuardModel> {
-    public ChiefGuardRenderer(EntityRendererProvider.Context context) {
-        super(context, new ChiefGuardModel(context.bakeLayer(ModModelLayers.CHIEF_GUARD)), 0.45f);
+public class ShamanRenderer extends MobRenderer<ShamanEntity, StateRenderState, ShamanModel> {
+    public ShamanRenderer(EntityRendererProvider.Context context) {
+        super(context, new ShamanModel(context.bakeLayer(ModModelLayers.SHAMAN)), 0.45f);
     }
 
     @Override
@@ -20,17 +20,17 @@ public class ChiefGuardRenderer extends MobRenderer<ChiefGuardEntity, StateRende
     }
 
     @Override
-    public void extractRenderState(ChiefGuardEntity guard, StateRenderState state, float p_361157_) {
+    public void extractRenderState(ShamanEntity guard, StateRenderState state, float p_361157_) {
         super.extractRenderState(guard, state, p_361157_);
         state.currentAnimationState.copyFrom(guard.currentAnimationState);
         state.lastAnimationState.copyFrom(guard.lastAnimationState);
         state.ticksSinceLastChange = guard.getTicksSinceLastChange();
-        state.currentState = guard.getCurrentState();
+        state.currentState = guard.getState();
         state.lastState = guard.getLastState();
     }
 
     @Override
     public Identifier getTextureLocation(StateRenderState renderState) {
-        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/chief_guard/chief_guard.png");
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/shaman/shaman.png");
     }
 }

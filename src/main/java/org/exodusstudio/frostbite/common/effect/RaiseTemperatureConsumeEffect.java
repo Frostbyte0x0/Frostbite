@@ -31,22 +31,11 @@ public record RaiseTemperatureConsumeEffect(List<Float> temps) implements Consum
     }
 
     static {
-//        CODEC = RecordCodecBuilder.create(instance -> instance.group(
-//                ByteBufCodecs.collection(ArrayList::new)
-//        ).apply(instance, RaiseTemperatureConsumeEffect::new));
         CODEC = RecordCodecBuilder.mapCodec((instance) ->
                 instance.group(Codec.list(Codec.FLOAT)
                         .fieldOf("temps").forGetter(RaiseTemperatureConsumeEffect::temps))
                         .apply(instance, RaiseTemperatureConsumeEffect::new));
 
         STREAM_CODEC = ByteBufCodecs.fromCodecWithRegistriesTrusted(CODEC.codec());
-
-//        STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.list().apply(ByteBufCodecs.BYTE_ARRAY),
-//                RaiseTemperatureConsumeEffect::effects, RaiseTemperatureConsumeEffect::new);
-
-//        CODEC = RecordCodecBuilder.mapCodec((instance) ->
-//                instance.group(RegistryCodecs.homogeneousList(Registries.MOB_EFFECT).fieldOf("temps")
-//                        .forGetter(RaiseTemperatureConsumeEffect::temps)).apply(instance, RaiseTemperatureConsumeEffect::new));
-
     }
 }

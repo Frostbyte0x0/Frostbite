@@ -8,11 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.GuardAnimations;
-import org.exodusstudio.frostbite.common.entity.client.states.GuardRenderState;
+import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
-public class ChiefGuardModel extends HumanoidModel<GuardRenderState> {
+public class ChiefGuardModel extends HumanoidModel<StateRenderState> {
     private final ModelPart head;
     private final ModelPart body;
     private final ModelPart left_arm;
@@ -57,7 +57,7 @@ public class ChiefGuardModel extends HumanoidModel<GuardRenderState> {
     }
 
     @Override
-    public void setupAnim(GuardRenderState state) {
+    public void setupAnim(StateRenderState state) {
         super.setupAnim(state);
 
         if (state.currentState.contains("attacking") || state.currentState.contains("guarding")) {

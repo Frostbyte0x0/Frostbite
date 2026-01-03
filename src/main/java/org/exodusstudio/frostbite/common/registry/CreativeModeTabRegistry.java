@@ -202,7 +202,7 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.HEALING_STAFF);
                         output.accept(ItemRegistry.SUMMONING_STAFF);
                         output.accept(ItemRegistry.GALE_FAN);
-                        output.accept(ItemRegistry.LYRE);
+                        output.accept(ItemRegistry.SHAMAN_STAFF);
 
                         output.accept(BlockRegistry.WEAVING_TABLE);
                         output.accept(BlockRegistry.SMALL_HEATER_BLOCK);

@@ -181,20 +181,25 @@ public class Util {
         return level.dimension().toString().equals("ResourceKey[minecraft:dimension / frostbite:frostbite]");
     }
 
-    public static <T extends Monster> void spawnMonsterRandomlyAroundPlayer(Supplier<T> monsterSupplier, ServerLevel serverLevel, Player player, int minDist, int maxDist) {
-        BlockPos blockpos = player.blockPosition().offset(
+    public static <T extends Monster> void spawnMonsterRandomlyAroundEntity(Supplier<T> monsterSupplier, ServerLevel serverLevel, Entity e, int minDist, int maxDist) {
+        BlockPos blockpos = e.blockPosition().offset(
                 random.nextIntBetweenInclusive(minDist, maxDist) * plusOrMinus(),
                 random.nextIntBetweenInclusive(0, 4) * plusOrMinus(),
                 random.nextIntBetweenInclusive(minDist, maxDist) * plusOrMinus());
 
+        if (serverLevel.getBlockState(blockpos.below()).isAir()) return;
+
         T monster = monsterSupplier.get();
 
-        if (getBlockPositionsInAABB(monster.getBoundingBox()).stream().allMatch(pos -> serverLevel.getBlockState(pos).isAir())) {
+        if (getBlockPositionsInAABB(monster.getBoundingBox()).stream().allMatch(
+                pos -> serverLevel.getBlockState(pos).isAir())) {
             monster.setPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
-            ((Ownable) monster).setOwner(player);
+            if (monster instanceof Ownable && e instanceof Player player) {
+                ((Ownable) monster).setOwner(player);
+            }
 
             serverLevel.addFreshEntityWithPassengers(monster);
-            serverLevel.gameEvent(GameEvent.ENTITY_PLACE, blockpos, GameEvent.Context.of(player));
+            serverLevel.gameEvent(GameEvent.ENTITY_PLACE, blockpos, GameEvent.Context.of(e));
         }
     }
 
