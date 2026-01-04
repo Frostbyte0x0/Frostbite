@@ -115,6 +115,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardRenderer::new);
 
             BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
+            EntityRenderers.register(EntityRegistry.CURSE_BALL.get(), CurseBallRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }

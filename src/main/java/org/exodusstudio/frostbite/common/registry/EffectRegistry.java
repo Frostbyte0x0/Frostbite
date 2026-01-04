@@ -39,4 +39,13 @@ public class EffectRegistry {
 
     public static final Holder<MobEffect> TWITCHING = MOB_EFFECTS.register("twitching",
             () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x2f6363));
+
+    public static final Holder<MobEffect> LEECH_CURSE = MOB_EFFECTS.register("leech_curse",
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x7e28bf));
+
+    public static final Holder<MobEffect> STATIC_CURSE = MOB_EFFECTS.register("static_curse",
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x483f4f));
+
+    public static final Holder<MobEffect> PERPETUAL_CURSE = MOB_EFFECTS.register("perpetual_curse",
+            () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x000000));
 }

@@ -53,7 +53,7 @@ public class ShamanEntity extends Monster implements TargetingEntity {
     public static final int SUMMON_COOLDOWN = 90;
     public static final int CURSE_COOLDOWN = 90;
     public static final int ETHEREAL_DURATION = 30;
-    public static final int WHIRLPOOL_DURATION = 30;
+    public static final int WHIRLPOOL_DURATION = 200;
     public static final int SUMMON_DURATION = 30;
     public static final int CURSE_DURATION = 30;
     public static final int BLEND_TICKS = 10;
@@ -228,6 +228,10 @@ public class ShamanEntity extends Monster implements TargetingEntity {
         }
 
         super.onSyncedDataUpdated(accessor);
+    }
+
+    public boolean isShowingShield() {
+        return getAttackableFromBrain() != null && getAttackableFromBrain().distanceTo(this) < 5 && !isIdle();
     }
 
     public String getLastState() {

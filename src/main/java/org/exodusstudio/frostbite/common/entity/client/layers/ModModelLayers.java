@@ -109,4 +109,7 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation HEAVY_GUARD = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "heavy_guard"), "main");
+
+    public static final ModelLayerLocation CURSE_BALL = new ModelLayerLocation(
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "curse_ball"), "main");
 }

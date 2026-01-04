@@ -103,7 +103,7 @@ public class ShamanAI {
     // Summon
     // Ethereal
     // Whirlpool: drain staff, pulls enemies in, aoe damage, slow
-    // Curse: long term curse that nibbles health, life drain or massive slowness
+    // Curse: long term curse that nibbles health and temp, life+temp drain or massive slowness
     // Cursed shield passive, once near, appears and follows player, have to fight it ranged
 
     static class Summon extends Behavior<ShamanEntity> {

@@ -332,4 +332,11 @@ public class EntityRegistry {
             DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
     public static final DeferredHolder<SensorType<?>, SensorType<TargetEntitySensor>> TARGET_ENTITY_SENSOR =
             SENSOR.register("monk_sensor", () -> new SensorType<>(TargetEntitySensor::new));
+
+    public static final Supplier<EntityType<CurseBallEntity>> CURSE_BALL =
+            ENTITY_TYPES.register("curse_ball", () -> EntityType.Builder
+                    .of(CurseBallEntity::new, MobCategory.AMBIENT)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "curse_ball"))));
 }

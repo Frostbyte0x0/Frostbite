@@ -5,16 +5,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHammerEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHandsEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealSwordEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealWeaponEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.*;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.util.Util;
 
 public class ShamanStaffItem extends ModeWeapon {
     public ShamanStaffItem(Properties properties) {
-        super(properties, new String[]{"Ethereal", "Whirlpool", "3"}, ChatFormatting.LIGHT_PURPLE, ChatFormatting.DARK_PURPLE);
+        super(properties, new String[]{"Ethereal", "Whirlpool", "Curse"}, ChatFormatting.LIGHT_PURPLE, ChatFormatting.DARK_PURPLE);
     }
 
     @Override
@@ -41,6 +38,14 @@ public class ShamanStaffItem extends ModeWeapon {
                 }
                 case "Whirlpool" -> {
 
+                }
+                case "Curse" -> {
+                    CurseBallEntity curse = new CurseBallEntity(null, serverLevel);
+                    Vec3 v = owner.calculateViewVector(owner.getXRot(), owner.getYRot()).normalize();
+                    curse.setPos(owner.position().add(v));
+                    curse.setOwnerUUID(owner.getUUID());
+                    curse.setLaunchDirection(v);
+                    serverLevel.addFreshEntity(curse);
                 }
             }
         }

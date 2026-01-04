@@ -8,17 +8,18 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.ShamanAnimations;
-import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
+import org.exodusstudio.frostbite.common.entity.client.states.ShamanRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
-public class ShamanModel extends HumanoidModel<StateRenderState> {
+public class ShamanModel extends HumanoidModel<ShamanRenderState> {
     private final ModelPart right_leg;
     private final ModelPart head;
     private final ModelPart body;
     private final ModelPart left_arm;
     private final ModelPart right_arm;
     private final ModelPart left_leg;
+    private final ModelPart shield;
     private final KeyframeAnimation idleAnimation;
     private final KeyframeAnimation summoningAnimation;
     private final KeyframeAnimation whirlpoolingAnimation;
@@ -33,11 +34,12 @@ public class ShamanModel extends HumanoidModel<StateRenderState> {
         this.left_arm = root.getChild("left_arm");
         this.right_arm = root.getChild("right_arm");
         this.left_leg = root.getChild("left_leg");
-        this.idleAnimation = ShamanAnimations.PLAY.bake(root);
-        this.summoningAnimation = ShamanAnimations.PLAY.bake(root);
-        this.whirlpoolingAnimation = ShamanAnimations.PLAY.bake(root);
-        this.cursingAnimation = ShamanAnimations.PLAY.bake(root);
-        this.etherealingAnimation = ShamanAnimations.PLAY.bake(root);
+        this.shield = root.getChild("shield");
+        this.idleAnimation = ShamanAnimations.IDLE.bake(root);
+        this.summoningAnimation = ShamanAnimations.SUMMON.bake(root);
+        this.whirlpoolingAnimation = ShamanAnimations.WHIRLPOOL.bake(root);
+        this.cursingAnimation = ShamanAnimations.CURSE.bake(root);
+        this.etherealingAnimation = ShamanAnimations.ETHEREAL.bake(root);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -51,15 +53,18 @@ public class ShamanModel extends HumanoidModel<StateRenderState> {
         partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(32, 16).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 2.0F, 0.0F));
         partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(24, 32).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, 2.0F, 0.0F));
         partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(40, 32).addBox(-1.9F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 12.0F, 0.0F));
+        partdefinition.addOrReplaceChild("shield", CubeListBuilder.create().texOffs(4, 23).addBox(-6.0F, -9.0F, -12.0F, 12.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 7.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
     @Override
-    public void setupAnim(StateRenderState state) {
+    public void setupAnim(ShamanRenderState state) {
         super.setupAnim(state);
 
-        if (state.currentState.contains("attacking") || state.currentState.contains("guarding")) {
+        this.shield.visible = state.showShield;
+
+        if (!state.currentState.contains("idle")) {
             leftArm.xRot = 0;
             leftArm.yRot = 0;
             leftArm.zRot = 0;
@@ -112,5 +117,6 @@ public class ShamanModel extends HumanoidModel<StateRenderState> {
         left_arm.render(poseStack, buffer, packedLight, packedOverlay, color);
         right_arm.render(poseStack, buffer, packedLight, packedOverlay, color);
         left_leg.render(poseStack, buffer, packedLight, packedOverlay, color);
+        shield.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }
