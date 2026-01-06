@@ -9,10 +9,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.util.Util;
@@ -39,14 +41,14 @@ public class CurseBallEntity extends Entity {
     private static final Map<String, Holder<MobEffect>> EFFECTS =
             Map.of(
                 "leech", EffectRegistry.LEECH_CURSE,
-                "static", EffectRegistry.STATIC_CURSE,
-                "perpetual", EffectRegistry.PERPETUAL_CURSE
+                "paralysis", EffectRegistry.PARALYSIS_CURSE,
+                "condemned", EffectRegistry.CONDEMNED_CURSE
             );
     private static final Map<String, Integer> DURATIONS =
             Map.of(
                 "leech", 1200,
-                "static", 100,
-                "perpetual", -1
+                "paralysis", 100,
+                "condemned", -1
             );
 
     public CurseBallEntity(EntityType<? extends Entity> ignored, Level level) {
@@ -108,11 +110,15 @@ public class CurseBallEntity extends Entity {
             setYRot(angles[1]);
             if (level().getRandom().nextFloat() < 0.333f) {
                 setCurse("leech");
-            } else if (level().getRandom().nextFloat() < 0.333f) {
-                setCurse("static");
+            } else if (level().getRandom().nextFloat() < 0.5f) {
+                setCurse("paralysis");
             } else {
-                setCurse("perpetual");
+                setCurse("condemned");
             }
+        }
+
+        if (getCursedEntity() != null) {
+            applyCurseEffect();
         }
 
         if ((horizontalCollision || verticalCollision || tickCount > LAUNCH_TIME) && getCursedEntity() == null) {
@@ -120,7 +126,9 @@ public class CurseBallEntity extends Entity {
             return;
         }
 
-        if (getCursedEntity() instanceof LivingEntity livingEntity && (!livingEntity.hasEffect(EFFECTS.get(getCurse())) || livingEntity.isDeadOrDying())) {
+        if (getCursedEntity() instanceof LivingEntity livingEntity &&
+                (!livingEntity.hasEffect(EFFECTS.get(getCurse())) || livingEntity.isDeadOrDying()) ||
+                (getOwner() != null && getOwner().isDeadOrDying())) {
             this.discard();
             return;
         }
@@ -137,7 +145,34 @@ public class CurseBallEntity extends Entity {
         }
 
         move(MoverType.SELF, this.getDeltaMovement());
-        reapplyPosition();
+    }
+
+    private void applyCurseEffect() {
+        if (getCursedEntity() instanceof Player player && player.isCreative()) return;
+        switch (getCurse()) {
+            case "leech" -> {
+                if (tickCount % 30 == 0 &&
+                        level() instanceof ServerLevel serverLevel &&
+                        this.getCursedEntity() instanceof LivingEntity cursedLiving) {
+                    cursedLiving.hurtServer(serverLevel, level().damageSources().fellOutOfWorld(), 1f);
+                    if (getOwner() instanceof LivingEntity livingOwner) livingOwner.heal(1);
+                    Frostbite.temperatureStorage.decreaseTemperature(cursedLiving, 2, false);
+                }
+            }
+            case "paralysis" -> {
+                if (this.getCursedEntity() instanceof LivingEntity cursedLiving) {
+                    cursedLiving.setDeltaMovement(0, -0.0784, 0);
+                }
+            }
+            case "condemned" -> {
+                if (tickCount % 70 == 0 &&
+                        level() instanceof ServerLevel serverLevel &&
+                        this.getCursedEntity() instanceof LivingEntity cursedLiving) {
+                    cursedLiving.hurtServer(serverLevel, level().damageSources().fellOutOfWorld(), 1);
+                    Frostbite.temperatureStorage.decreaseTemperature(cursedLiving, 2, false);
+                }
+            }
+        }
     }
 
     @Override
@@ -157,12 +192,9 @@ public class CurseBallEntity extends Entity {
         return (new Vec3(x, 0, z)).add(getCursedEntity().getPosition(partialTick)).add(0, 0.7, 0);
     }
 
-    public @Nullable Entity getOwner() {
-        if (this.getOwnerUUID() == null) {
-            return null;
-        }
-        if (this.level() instanceof ServerLevel serverLevel) {
-            return serverLevel.getEntity(this.getOwnerUUID());
+    public @Nullable LivingEntity getOwner() {
+        if (this.level() instanceof ServerLevel serverLevel && this.getOwnerUUID() != null) {
+            return (LivingEntity) serverLevel.getEntity(this.getOwnerUUID());
         }
         return null;
     }

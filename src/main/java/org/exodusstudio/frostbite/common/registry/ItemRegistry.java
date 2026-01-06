@@ -19,9 +19,11 @@ import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.weapons.*;
+import org.exodusstudio.frostbite.common.item.weapons.GaleFanItem;
+import org.exodusstudio.frostbite.common.item.weapons.IceHammerItem;
+import org.exodusstudio.frostbite.common.item.weapons.ShamanStaffItem;
+import org.exodusstudio.frostbite.common.item.weapons.StunningBellItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.CastingStaffItem;
-import org.exodusstudio.frostbite.common.item.weapons.elf.DrainingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.SummoningStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
@@ -161,17 +163,6 @@ public class ItemRegistry {
                     new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
 
-    public static final DeferredItem<Item> DRAINING_STAFF =
-            ITEMS.register("draining_staff", (id) -> new DrainingStaffItem(new Item.Properties()
-                    .stacksTo(1)
-                    .component(DataComponentTypeRegistry.MODE, new ModeData("drain"))
-                    .component(DataComponentTypeRegistry.CHARGE, ChargeData.EMPTY)
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> CHAINCICLE =
-            ITEMS.register("chaincicle", (id) -> new ChaincicleItem(new Item.Properties()
-                    .stacksTo(1)
-                    .component(DataComponentTypeRegistry.MODE, new ModeData("swipe"))
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> STUNNING_BELL =
             ITEMS.register("stunning_bell", (id) -> new StunningBellItem(new Item.Properties()
                     .stacksTo(1)

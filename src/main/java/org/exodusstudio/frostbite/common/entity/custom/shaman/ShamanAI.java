@@ -188,7 +188,7 @@ public class ShamanAI {
 
         @Override
         protected void start(ServerLevel serverLevel, ShamanEntity shaman, long l) {
-            shaman.setWhirlpooling();
+            shaman.setCursing();
         }
 
         @Override
@@ -223,7 +223,7 @@ public class ShamanAI {
 
         @Override
         protected void start(ServerLevel serverLevel, ShamanEntity shaman, long l) {
-            shaman.setWhirlpooling();
+            shaman.setEtherealing();
         }
 
         @Override

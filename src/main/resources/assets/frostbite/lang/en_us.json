@@ -104,7 +104,6 @@
   "item.frostbite.packed_hardened_snowball": "Packed Hardened Snowball",
   "item.frostbite.blue_hardened_snowball": "Blue Hardened Snowball",
 
-  "item.frostbite.draining_staff": "Draining Staff",
   "item.frostbite.chaincicle": "Chaincicle",
   "item.frostbite.stunning_bell": "Stunning Bell",
   "item.frostbite.ice_hammer": "Ice Hammer",
@@ -179,9 +178,9 @@
 
   "effect.frostbite.twitching": "Twitching",
   "effect.frostbite.fatigue": "Fatigue",
-  "effect.frostbite.perpetual_curse": "Perpetual Curse",
+  "effect.frostbite.condemned_curse": "Condemned Curse",
   "effect.frostbite.leech_curse": "Leech Curse",
-  "effect.frostbite.static_curse": "Static Curse",
+  "effect.frostbite.paralysis_curse": "Paralysis Curse",
 
   "entity.chief_guard.boss_bar": "Chief Guard",
   "entity.monk.boss_bar": "Monk",

@@ -74,7 +74,7 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), RevolverBulletRenderer::new);
             EntityRenderers.register(EntityRegistry.RAIN_FROG.get(), RainFrogRenderer::new);
             EntityRenderers.register(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepRenderer::new);
-            EntityRenderers.register(EntityRegistry.DRAIN_CIRCLE.get(), GenericEntityRenderer::new);
+            EntityRenderers.register(EntityRegistry.WHIRLPOOL.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.HAILCOIL.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.LAST_STAND.get(), GenericEntityRenderer::new);
             EntityRenderers.register(EntityRegistry.ICE_BLOCK.get(), FallingBlockRenderer::new);

@@ -43,9 +43,13 @@ public class EffectRegistry {
     public static final Holder<MobEffect> LEECH_CURSE = MOB_EFFECTS.register("leech_curse",
             () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x7e28bf));
 
-    public static final Holder<MobEffect> STATIC_CURSE = MOB_EFFECTS.register("static_curse",
+    public static final Holder<MobEffect> PARALYSIS_CURSE = MOB_EFFECTS.register("paralysis_curse",
             () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x483f4f));
 
-    public static final Holder<MobEffect> PERPETUAL_CURSE = MOB_EFFECTS.register("perpetual_curse",
+    public static final Holder<MobEffect> CONDEMNED_CURSE = MOB_EFFECTS.register("condemned_curse",
             () -> new GenericEffect(MobEffectCategory.HARMFUL, 0x000000));
+
+    public static boolean isCurse(Holder<MobEffect> effect) {
+        return effect == LEECH_CURSE || effect == PARALYSIS_CURSE || effect == CONDEMNED_CURSE;
+    }
 }

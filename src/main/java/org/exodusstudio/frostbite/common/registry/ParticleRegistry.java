@@ -12,7 +12,6 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.particle.options.BooleanParticleOption;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.particle.types.ColorParticleType;
-import org.exodusstudio.frostbite.common.particle.types.DrainParticleType;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -21,8 +20,8 @@ public class ParticleRegistry {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
             DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Frostbite.MOD_ID);
 
-    public static final Supplier<DrainParticleType> DRAIN_PARTICLE =
-            PARTICLE_TYPES.register("drain", () -> new DrainParticleType(false));
+    public static final Supplier<SimpleParticleType> WHIRLPOOL_PARTICLE =
+            PARTICLE_TYPES.register("whirlpool", () -> new SimpleParticleType(false));
 
     public static final Supplier<SimpleParticleType> SHOCKWAVE_PARTICLE =
             PARTICLE_TYPES.register("shockwave", () -> new SimpleParticleType(false));

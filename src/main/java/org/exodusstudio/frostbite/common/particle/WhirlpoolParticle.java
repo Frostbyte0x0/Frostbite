@@ -7,14 +7,14 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
-import org.exodusstudio.frostbite.common.particle.options.DrainParticleOption;
 import org.joml.Quaternionf;
 
-public class DrainParticle extends SingleQuadParticle {
+public class WhirlpoolParticle extends SingleQuadParticle {
     private final SpriteSet sprites;
 
-    public DrainParticle(
+    public WhirlpoolParticle(
             ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite
     ) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite.first());
@@ -36,7 +36,6 @@ public class DrainParticle extends SingleQuadParticle {
 
     @Override
     public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
-        this.alpha = (float) (Math.cos((double) this.age / 20));
         Quaternionf quaternionf = new Quaternionf();
         quaternionf.rotationX((float) -Math.PI / 2);
         this.extractRotatedQuad(reusedState, camera, quaternionf, partialTicks);
@@ -50,9 +49,9 @@ public class DrainParticle extends SingleQuadParticle {
         this.setSpriteFromAge(this.sprites);
     }
 
-    public record Provider(SpriteSet sprite) implements ParticleProvider<DrainParticleOption> {
+    public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
         public Particle createParticle(
-                DrainParticleOption drainParticleOptions,
+                SimpleParticleType options,
                 ClientLevel clientLevel,
                 double p_233920_,
                 double p_233921_,
@@ -62,12 +61,12 @@ public class DrainParticle extends SingleQuadParticle {
                 double p_233925_,
                 RandomSource random
         ) {
-            DrainParticle drainParticle = new DrainParticle(
+            WhirlpoolParticle drainParticle = new WhirlpoolParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
             drainParticle.quadSize = 2.5f;
             drainParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
-            drainParticle.setLifetime(20);
+            drainParticle.setLifetime(100);
             return drainParticle;
         }
     }

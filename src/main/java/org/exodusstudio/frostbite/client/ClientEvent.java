@@ -33,7 +33,7 @@ public class ClientEvent {
 
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(ParticleRegistry.DRAIN_PARTICLE.get(), DrainParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.WHIRLPOOL_PARTICLE.get(), WhirlpoolParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.SHOCKWAVE_PARTICLE.get(), ShockwaveParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.CONFETTI_PARTICLE.get(), ConfettiParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.EXPANDING_CIRCLE_PARTICLE.get(), ExpandingCircleParticle.Provider::new);

@@ -22,10 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedCreeperEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedSkeletonEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedZombieEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHammerEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHandsEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealSwordEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealWeaponEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.*;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
@@ -43,6 +40,8 @@ public class ShamanEntity extends Monster implements TargetingEntity {
             SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
             SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_SHOWING_SHIELD =
+            SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.BOOLEAN);
     private static final Component SHAMAN_NAME_COMPONENT = Component.translatable("entity.shaman.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(SHAMAN_NAME_COMPONENT, BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
@@ -57,6 +56,7 @@ public class ShamanEntity extends Monster implements TargetingEntity {
     public static final int SUMMON_DURATION = 30;
     public static final int CURSE_DURATION = 30;
     public static final int BLEND_TICKS = 10;
+    private static final int SHIELD_DISTANCE = 8;
     private static final Map<MemoryModuleType<Integer>, Integer> cooldowns = Map.of(
             MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ETHEREAL_COOLDOWN,
             MemoryModuleTypeRegistry.WHIRLPOOL_COOLDOWN.get(), WHIRLPOOL_COOLDOWN,
@@ -81,6 +81,7 @@ public class ShamanEntity extends Monster implements TargetingEntity {
         builder.define(DATA_LAST_STATE, "idle");
         builder.define(DATA_STATE, "idle");
         builder.define(DATA_TICKS_SINCE_LAST_CHANGE, 0);
+        builder.define(DATA_SHOWING_SHIELD, false);
     }
 
     @Override
@@ -120,21 +121,10 @@ public class ShamanEntity extends Monster implements TargetingEntity {
         return this.level().getWorldBorder().isWithinBounds(player.getBoundingBox());
     }
 
-    public String chooseAttack(LivingEntity target) {
-        if (getRandom().nextFloat() < 0.2) {
-            return "lyre";
-        } else if (getRandom().nextFloat() < 0.2) {
-            return "shield";
-        } else if (getRandom().nextFloat() < 0.2) {
-            return "summon";
-        } else {
-            return "smite";
-        }
-    }
-
     @Override
     public void tick() {
         super.tick();
+
         cooldowns.forEach((memoryModuleType, cooldown) -> {
             if (!isDeadOrDying() && getBrain().getMemory(memoryModuleType).isPresent()) {
                 this.getBrain().setMemory(memoryModuleType, getBrain().getMemory(memoryModuleType).get() - 1);
@@ -146,41 +136,43 @@ public class ShamanEntity extends Monster implements TargetingEntity {
 
         setTicksSinceLastChange(getTicksSinceLastChange() + 1);
 
+        if (tickCount % 20 == 0) {
+            setShowingShield(!level().getEntities(this, Util.squareAABB(position().add(0, 1.5, 0), SHIELD_DISTANCE),
+                    entity -> entity instanceof LivingEntity && canTargetEntity(entity)).isEmpty());
+        }
 
-//        if (getAttackableFromBrain() != null && isPlaying() && playAnimationState.getTimeInMillis(tickCount) / 50 == 9) {
-//            String attack = chooseAttack(getAttackableFromBrain());
-//            switch (attack) {
-//                case "lyre" -> lyreAttack(getAttackableFromBrain());
-//                case "shield" -> shieldAttack();
-//                case "summon" -> summonAttack();
-//                case "smite" -> smiteAttack(getAttackableFromBrain());
-//            }
-//        }
-    }
+        if (getAttackableFromBrain() != null && level() instanceof ServerLevel serverLevel) {
+            float t = currentAnimationState.getTimeInMillis(tickCount) / 50f;
 
-    public void lyreAttack(LivingEntity target) {
-        if (level() instanceof ServerLevel serverLevel) {
-            Vec3 v = target.position().subtract(position()).normalize();
-            EtherealWeaponEntity weapon;
-
-            if (getRandom().nextFloat() < 0.333) {
-                weapon = new EtherealHammerEntity(null, serverLevel);
-            } else if (getRandom().nextFloat() < 0.333) {
-                weapon = new EtherealHandsEntity(null, serverLevel);
-            } else {
-                weapon = new EtherealSwordEntity(null, serverLevel);
+            if (isEtherealing() && t == 10) {
+                etherealAttack(getAttackableFromBrain(), serverLevel);
+            } else if (isSummoning() && t == 10) {
+                summonAttack();
+            } else if (isWhirlpooling() && t == 10) {
+                whirlpoolAttack(getAttackableFromBrain(), serverLevel);
+            } else if (isCursing() && t == 10) {
+                curseAttack(getAttackableFromBrain(), serverLevel);
             }
-
-            weapon.setPos(position().add(v.scale(3)).add(0, 1.5, 0));
-            float[] angles = Util.getXYRot(v);
-            weapon.setXRot(angles[0]);
-            weapon.setYRot(angles[1]);
-            serverLevel.addFreshEntity(weapon);
         }
     }
 
-    public void shieldAttack() {
+    public void etherealAttack(LivingEntity target, ServerLevel serverLevel) {
+        Vec3 v = target.position().subtract(position()).normalize();
+        EtherealWeaponEntity weapon;
 
+        if (getRandom().nextFloat() < 0.333) {
+            weapon = new EtherealHammerEntity(null, serverLevel);
+        } else if (getRandom().nextFloat() < 0.333) {
+            weapon = new EtherealHandsEntity(null, serverLevel);
+        } else {
+            weapon = new EtherealSwordEntity(null, serverLevel);
+        }
+
+        weapon.setPos(position().add(v.scale(3)).add(0, 1.5, 0));
+        float[] angles = Util.getXYRot(v);
+        weapon.setXRot(angles[0]);
+        weapon.setYRot(angles[1]);
+        serverLevel.addFreshEntity(weapon);
     }
 
     public void summonAttack() {
@@ -195,14 +187,20 @@ public class ShamanEntity extends Monster implements TargetingEntity {
         }
     }
 
-    public void smiteAttack(LivingEntity target) {
-        if (level() instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 3; i++) {
-                LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, serverLevel);
-                lightningBolt.setPos(target.position());
-                serverLevel.addFreshEntity(lightningBolt);
-            }
-        }
+    public void whirlpoolAttack(LivingEntity target, ServerLevel serverLevel) {
+        WhirlpoolEntity whirlpool = new WhirlpoolEntity(null, serverLevel);
+        whirlpool.setPos(position());
+        whirlpool.setOwnerUUID(getUUID());
+        serverLevel.addFreshEntity(whirlpool);
+    }
+
+    public void curseAttack(LivingEntity target, ServerLevel serverLevel) {
+        CurseBallEntity curse = new CurseBallEntity(null, serverLevel);
+        Vec3 v = target.position().subtract(position()).normalize();
+        curse.setPos(position().add(v));
+        curse.setOwnerUUID(getUUID());
+        curse.setLaunchDirection(v);
+        serverLevel.addFreshEntity(curse);
     }
 
     @Nullable
@@ -231,7 +229,11 @@ public class ShamanEntity extends Monster implements TargetingEntity {
     }
 
     public boolean isShowingShield() {
-        return getAttackableFromBrain() != null && getAttackableFromBrain().distanceTo(this) < 5 && !isIdle();
+        return this.entityData.get(DATA_SHOWING_SHIELD);
+    }
+
+    public void setShowingShield(boolean showingShield) {
+        this.entityData.set(DATA_SHOWING_SHIELD, showingShield);
     }
 
     public String getLastState() {
@@ -275,6 +277,24 @@ public class ShamanEntity extends Monster implements TargetingEntity {
     public void setWhirlpooling() {
         this.setLastState(getState());
         this.setState("whirlpooling");
+    }
+
+    public boolean isCursing() {
+        return getState().equals("cursing");
+    }
+
+    public void setCursing() {
+        this.setLastState(getState());
+        this.setState("cursing");
+    }
+
+    public boolean isEtherealing() {
+        return getState().equals("etherealing");
+    }
+
+    public void setEtherealing() {
+        this.setLastState(getState());
+        this.setState("etherealing");
     }
 
     public int getTicksSinceLastChange() {

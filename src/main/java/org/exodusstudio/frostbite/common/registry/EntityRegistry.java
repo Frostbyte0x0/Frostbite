@@ -77,12 +77,12 @@ public class EntityRegistry {
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "hailcoil"))));
 
 
-    public static final Supplier<EntityType<DrainCircleEntity>> DRAIN_CIRCLE =
-            ENTITY_TYPES.register("drain_circle", () -> EntityType.Builder
-                    .of(DrainCircleEntity::new, MobCategory.MISC)
-                    .sized(5f, 5f)
+    public static final Supplier<EntityType<WhirlpoolEntity>> WHIRLPOOL =
+            ENTITY_TYPES.register("whirlpool", () -> EntityType.Builder
+                    .of(WhirlpoolEntity::new, MobCategory.MISC)
+                    .sized(5f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "drain_circle"))));
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "whirlpool"))));
 
     public static final Supplier<EntityType<LastStandEntity>> LAST_STAND =
             ENTITY_TYPES.register("last_stand", () -> EntityType.Builder

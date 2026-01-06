@@ -24,7 +24,7 @@ public class ShamanStaffItem extends ModeWeapon {
 
                     if (level.getRandom().nextFloat() < 0.333f) {
                         weapon = new EtherealHandsEntity(null, serverLevel);
-                    } else if (level.getRandom().nextFloat() < 0.333f) {
+                    } else if (level.getRandom().nextFloat() < 0.5f) {
                         weapon = new EtherealHammerEntity(null, serverLevel);
                     } else {
                         weapon = new EtherealSwordEntity(null, serverLevel);
@@ -37,7 +37,10 @@ public class ShamanStaffItem extends ModeWeapon {
                     serverLevel.addFreshEntity(weapon);
                 }
                 case "Whirlpool" -> {
-
+                    WhirlpoolEntity whirlpool = new WhirlpoolEntity(null, serverLevel);
+                    whirlpool.setPos(owner.position());
+                    whirlpool.setOwnerUUID(owner.getUUID());
+                    serverLevel.addFreshEntity(whirlpool);
                 }
                 case "Curse" -> {
                     CurseBallEntity curse = new CurseBallEntity(null, serverLevel);

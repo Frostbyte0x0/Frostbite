@@ -28,6 +28,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
@@ -155,6 +156,13 @@ public class ModEvents {
                 event.getDuration() == 1) {
             event.getEntity().addEffect(new MobEffectInstance(EffectRegistry.SATIATED, 4800,
                     event.getItem().get(DataComponentTypeRegistry.CHARGE.get()).charge()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void cancelClearingEffects(MobEffectEvent.Remove event) {
+        if (event.getEffectInstance() != null && EffectRegistry.isCurse(event.getEffectInstance().getEffect()) && event.getEntity() instanceof Player) {
+            //event.setCanceled(true);
         }
     }
 
