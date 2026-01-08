@@ -22,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedCreeperEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedSkeletonEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedZombieEntity;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.*;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
@@ -33,13 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class ShamanEntity extends Monster implements TargetingEntity {
-    private static final EntityDataAccessor<String> DATA_LAST_STATE =
-            SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<String> DATA_STATE =
-            SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
-            SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.INT);
+public class ShamanEntity extends StateMonsterEntity implements TargetingEntity {
     private static final EntityDataAccessor<Boolean> DATA_SHOWING_SHIELD =
             SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.BOOLEAN);
     private static final Component SHAMAN_NAME_COMPONENT = Component.translatable("entity.shaman.boss_bar");
@@ -65,7 +60,7 @@ public class ShamanEntity extends Monster implements TargetingEntity {
     );
 
     public ShamanEntity(EntityType<? extends ShamanEntity> ignored, Level level) {
-        super(EntityRegistry.SHAMAN.get(), level);
+        super(EntityRegistry.SHAMAN.get(), level, BLEND_TICKS);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -78,9 +73,6 @@ public class ShamanEntity extends Monster implements TargetingEntity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_LAST_STATE, "idle");
-        builder.define(DATA_STATE, "idle");
-        builder.define(DATA_TICKS_SINCE_LAST_CHANGE, 0);
         builder.define(DATA_SHOWING_SHIELD, false);
     }
 
@@ -133,9 +125,7 @@ public class ShamanEntity extends Monster implements TargetingEntity {
                 }
             }
         });
-
-        setTicksSinceLastChange(getTicksSinceLastChange() + 1);
-
+        
         if (tickCount % 20 == 0) {
             setShowingShield(!level().getEntities(this, Util.squareAABB(position().add(0, 1.5, 0), SHIELD_DISTANCE),
                     entity -> entity instanceof LivingEntity && canTargetEntity(entity)).isEmpty());
@@ -211,12 +201,6 @@ public class ShamanEntity extends Monster implements TargetingEntity {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (DATA_STATE.equals(accessor)) {
-            this.lastAnimationState.copyFrom(currentAnimationState);
-            this.currentAnimationState.stop();
-            this.currentAnimationState.startIfStopped(tickCount);
-            setTicksSinceLastChange(0);
-            this.refreshDimensions();
-
             if (isIdle()) {
                 if (getBrain().getMemory(MemoryModuleType.LOOK_TARGET).isPresent()) {
                     getBrain().setMemory(MemoryModuleType.WALK_TARGET,
@@ -236,65 +220,40 @@ public class ShamanEntity extends Monster implements TargetingEntity {
         this.entityData.set(DATA_SHOWING_SHIELD, showingShield);
     }
 
-    public String getLastState() {
-        return this.entityData.get(DATA_LAST_STATE);
-    }
-
-    public void setLastState(String state) {
-        this.entityData.set(DATA_LAST_STATE, state);
-    }
-
-    public String getState() {
-        return this.entityData.get(DATA_STATE);
-    }
-
-    public void setState(String state) {
-        this.entityData.set(DATA_STATE, state);
-    }
-
-    public boolean isIdle() {
-        return getState().equals("idle");
-    }
-
-    public void setIdle() {
-        this.setLastState(getState());
-        this.setState("idle");
-    }
-
     public boolean isSummoning() {
-        return getState().equals("summoning");
+        return getCurrentState().equals("summoning");
     }
 
     public void setSummoning() {
-        this.setLastState(getState());
-        this.setState("summoning");
+        this.setLastState(getCurrentState());
+        this.setCurrentState("summoning");
     }
 
     public boolean isWhirlpooling() {
-        return getState().equals("whirlpooling");
+        return getCurrentState().equals("whirlpooling");
     }
 
     public void setWhirlpooling() {
-        this.setLastState(getState());
-        this.setState("whirlpooling");
+        this.setLastState(getCurrentState());
+        this.setCurrentState("whirlpooling");
     }
 
     public boolean isCursing() {
-        return getState().equals("cursing");
+        return getCurrentState().equals("cursing");
     }
 
     public void setCursing() {
-        this.setLastState(getState());
-        this.setState("cursing");
+        this.setLastState(getCurrentState());
+        this.setCurrentState("cursing");
     }
 
     public boolean isEtherealing() {
-        return getState().equals("etherealing");
+        return getCurrentState().equals("etherealing");
     }
 
     public void setEtherealing() {
-        this.setLastState(getState());
-        this.setState("etherealing");
+        this.setLastState(getCurrentState());
+        this.setCurrentState("etherealing");
     }
 
     public int getTicksSinceLastChange() {

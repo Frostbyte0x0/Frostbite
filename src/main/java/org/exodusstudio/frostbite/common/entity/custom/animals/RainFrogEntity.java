@@ -19,7 +19,7 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
 
 public class RainFrogEntity extends Animal {
-    public RainFrogEntity(EntityType<? extends Animal> entityType, Level level) {
+    public RainFrogEntity(EntityType<? extends Animal> ignored, Level level) {
         super(EntityRegistry.RAIN_FROG.get(), level);
     }
 

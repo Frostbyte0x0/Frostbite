@@ -7,10 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -22,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.goals.BanditFleeGoal;
 import org.exodusstudio.frostbite.common.entity.goals.BanditStealGoal;
-import org.exodusstudio.frostbite.common.entity.goals.BanditStrollGoal;
+import org.exodusstudio.frostbite.common.entity.goals.ActionStrollGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +45,7 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
         this.goalSelector.addGoal(3, new BanditStealGoal(this, 0.8));
         this.goalSelector.addGoal(4,
                 new BanditFleeGoal(this, 10, 1.1, 1.4));
-        this.goalSelector.addGoal(5, new BanditStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(5, new ActionStrollGoal(this, 0.8, BanditEntity::setWalking, BanditEntity::setIdle));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -137,17 +134,9 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
         this.getEntityData().set(DATA_STATE, "stealing");
     }
 
-    public boolean isFleeing() {
-        return this.getEntityData().get(DATA_STATE).equals("fleeing");
-    }
-
     public void setFleeing() {
         this.getEntityData().set(DATA_LAST_STATE, getCurrentState());
         this.getEntityData().set(DATA_STATE, "fleeing");
-    }
-
-    public boolean isIdle() {
-        return this.getEntityData().get(DATA_STATE).equals("idle");
     }
 
     public void setIdle() {
@@ -155,13 +144,17 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
         this.getEntityData().set(DATA_STATE, "idle");
     }
 
-    public boolean isWalking() {
-        return this.getEntityData().get(DATA_STATE).equals("walking");
-    }
-
     public void setWalking() {
         this.getEntityData().set(DATA_LAST_STATE, getCurrentState());
         this.getEntityData().set(DATA_STATE, "walking");
+    }
+
+    public static void setWalking(PathfinderMob mob) {
+        if (mob instanceof BanditEntity bandit) bandit.setWalking();
+    }
+
+    public static void setIdle(PathfinderMob mob) {
+        if (mob instanceof BanditEntity bandit) bandit.setIdle();
     }
 
     public String getCurrentState() {

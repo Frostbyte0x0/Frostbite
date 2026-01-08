@@ -15,7 +15,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
 public class IcedCreeperEntity extends Creeper {
-    protected int explosionRadius = 4;
+    protected final int explosionRadius = 4;
 
     public IcedCreeperEntity(EntityType<? extends Creeper> ignored, Level level) {
         super(EntityRegistry.ICED_CREEPER.get(), level);

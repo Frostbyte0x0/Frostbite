@@ -46,7 +46,7 @@ public class ConfettiPopperItem extends Item {
                         random.triangle(0.0F, 0.0172275 * inaccuracy),
                         random.triangle(0.0F, 0.0172275 * inaccuracy),
                         random.triangle(0.0F, 0.0172275 * inaccuracy)).scale(velocity);
-                Vec3 vec32 = vec31.add(vec3.x, vec3.y, vec3.z);
+                Vec3 vec32 = vec31.add(vec3);
 
 
                 int[] colour = new int[]{

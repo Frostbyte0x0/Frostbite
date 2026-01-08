@@ -64,7 +64,7 @@ public class TanukiEntity extends Animal implements CustomTemperatureEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_ID_FLAGS, (byte)0);
-        builder.define(EAT_COUNTER, 0);;
+        builder.define(EAT_COUNTER, 0);
     }
 
     @Override

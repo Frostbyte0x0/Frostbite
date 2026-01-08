@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.entity.custom.misc;
+package org.exodusstudio.frostbite.common.entity.custom.shaman;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -102,8 +102,8 @@ public class WhirlpoolEntity extends Entity {
     }
 
     public @Nullable LivingEntity getOwner() {
-        if (this.level() instanceof ServerLevel serverLevel && this.getOwnerUUID() != null) {
-            return (LivingEntity) serverLevel.getEntity(this.getOwnerUUID());
+        if (this.getOwnerUUID() != null) {
+            return (LivingEntity) level().getEntity(this.getOwnerUUID());
         }
         return null;
     }

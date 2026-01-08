@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HealerElfEntity extends ElfEntity {
-    public List<ElfEntity> alliesToHeal = new ArrayList<>();
+    public final List<ElfEntity> alliesToHeal = new ArrayList<>();
 
     public HealerElfEntity(EntityType<? extends ElfEntity> ignored, Level level) {
         super(EntityRegistry.HEALER_ELF.get(), level, 100);

@@ -17,12 +17,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 public class BlueHardenedSnowballProjectileEntity extends ThrowableItemProjectile {
-    public BlueHardenedSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+    public BlueHardenedSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> ignored, Level level) {
         super(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), level);
-    }
-
-    public BlueHardenedSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, double x, double y, double z, Level level, ItemStack item) {
-        super(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), x, y, z, level, item);
     }
 
     public BlueHardenedSnowballProjectileEntity(ServerLevel serverLevel, LivingEntity owner, ItemStack itemStack) {
@@ -37,8 +33,10 @@ public class BlueHardenedSnowballProjectileEntity extends ThrowableItemProjectil
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
 
-        Entity entity = result.getEntity();
-        entity.hurt(this.damageSources().thrown(this, this.getOwner()), 4f);
+        if (level() instanceof ServerLevel serverLevel) {
+            Entity entity = result.getEntity();
+            entity.hurtServer(serverLevel, this.damageSources().thrown(this, this.getOwner()), 4f);
+        }
     }
 
     protected void onHit(HitResult result) {

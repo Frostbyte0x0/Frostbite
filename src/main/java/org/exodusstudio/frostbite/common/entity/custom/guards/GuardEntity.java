@@ -21,25 +21,18 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
 import org.exodusstudio.frostbite.common.entity.goals.GuardAndApproachGoal;
 import org.exodusstudio.frostbite.common.entity.goals.GuardMeleeAttackGoal;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-public class GuardEntity extends Monster {
-    private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
-            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<String> DATA_STATE =
-            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<String> DATA_LAST_STATE =
-            SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.STRING);
+public class GuardEntity extends StateMonsterEntity {
     private static final EntityDataAccessor<Integer> DATA_ATTACK_COOLDOWN =
             SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_GUARD_COOLDOWN =
             SynchedEntityData.defineId(GuardEntity.class, EntityDataSerializers.INT);
-    public AnimationState currentAnimationState = new AnimationState();
-    public AnimationState lastAnimationState = new AnimationState();
     public static final int WAKE_UP_ANIMATION_TICKS = 15;
     public static final int ATTACK_ANIMATION_TICKS = 15;
     public static final int BLEND_TICKS = 10;
@@ -47,8 +40,10 @@ public class GuardEntity extends Monster {
     public static final int GUARD_COOLDOWN = 30;
 
     public GuardEntity(EntityType<? extends Monster> type, Level level) {
-        super(type, level);
+        super(type, level, BLEND_TICKS);
         currentAnimationState.startIfStopped(tickCount - 2 * BLEND_TICKS);
+        setCurrentState("asleep");
+        setLastState("asleep");
     }
 
     @Override
@@ -88,9 +83,6 @@ public class GuardEntity extends Monster {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_TICKS_SINCE_LAST_CHANGE, BLEND_TICKS);
-        builder.define(DATA_STATE, "asleep");
-        builder.define(DATA_LAST_STATE, "asleep");
         builder.define(DATA_ATTACK_COOLDOWN, ATTACK_COOLDOWN);
         builder.define(DATA_GUARD_COOLDOWN, GUARD_COOLDOWN);
     }
@@ -105,7 +97,6 @@ public class GuardEntity extends Monster {
     public void tick() {
         super.tick();
 
-        setTicksSinceLastChange(getTicksSinceLastChange() + 1);
         setGuardCooldown(getGuardCooldown() - 1);
         setAttackCooldown(getAttackCooldown() - 1);
 
@@ -138,19 +129,6 @@ public class GuardEntity extends Monster {
                 .forEach(entity -> {
                     if (entity != this) entity.hurtServer(serverLevel, damageSources().mobAttack(this), 7.5f);
                 });
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
-        if (DATA_STATE.equals(accessor)) {
-            this.lastAnimationState.copyFrom(currentAnimationState);
-            this.currentAnimationState.stop();
-            this.currentAnimationState.startIfStopped(tickCount);
-            setTicksSinceLastChange(0);
-            this.refreshDimensions();
-        }
-
-        super.onSyncedDataUpdated(accessor);
     }
 
     @Override
@@ -219,15 +197,6 @@ public class GuardEntity extends Monster {
         this.entityData.set(DATA_STATE, "wakingUp");
     }
 
-    public boolean isIdle() {
-        return this.entityData.get(DATA_STATE).equals("attacking");
-    }
-
-    public void setIdle() {
-        this.entityData.set(DATA_LAST_STATE, getCurrentState());
-        this.entityData.set(DATA_STATE, "idle");
-    }
-
     public boolean isAttacking() {
         return this.entityData.get(DATA_STATE).equals("attacking");
     }
@@ -246,14 +215,6 @@ public class GuardEntity extends Monster {
         this.entityData.set(DATA_STATE, "guarding");
     }
 
-    public int getTicksSinceLastChange() {
-        return this.entityData.get(DATA_TICKS_SINCE_LAST_CHANGE);
-    }
-
-    public void setTicksSinceLastChange(int ticks) {
-        this.entityData.set(DATA_TICKS_SINCE_LAST_CHANGE, ticks);
-    }
-
     public int getAttackCooldown() {
         return this.entityData.get(DATA_ATTACK_COOLDOWN);
     }
@@ -268,14 +229,6 @@ public class GuardEntity extends Monster {
 
     public void setGuardCooldown(int cooldown) {
         this.entityData.set(DATA_GUARD_COOLDOWN, cooldown);
-    }
-
-    public String getCurrentState() {
-        return this.entityData.get(DATA_STATE);
-    }
-
-    public String getLastState() {
-        return this.entityData.get(DATA_LAST_STATE);
     }
 
     @Override

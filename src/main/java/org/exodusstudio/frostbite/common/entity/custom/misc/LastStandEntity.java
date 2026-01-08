@@ -26,13 +26,13 @@ import static org.exodusstudio.frostbite.common.util.Util.plusOrMinus;
 
 public class LastStandEntity extends Entity {
     private final int maxReleaseTicks = 200;
-    private final int shockwaveFrequency = 20;
-    private final int explosionFrequency = 20;
-    private final int hailcoilReleaseFrequency = 10;
-    private final int strength = 2;
+    private static final int SHOCKWAVE_FREQUENCY = 20;
+    private static final int EXPLOSION_FREQUENCY = 20;
+    private static final int HAILCOIL_RELEASE_FREQUENCY = 10;
+    private static final int STRENGTH = 2;
     private static final EntityDataAccessor<Integer> DATA_RELEASE_TICKS = SynchedEntityData.defineId(LastStandEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_IS_RELEASING = SynchedEntityData.defineId(LastStandEntity.class, EntityDataSerializers.BOOLEAN);
-    private List<HailcoilEntity> hailcoils = new ArrayList<>();
+    private final List<HailcoilEntity> hailcoils = new ArrayList<>();
 
     public LastStandEntity(EntityType<?> ignored, Level level) {
         super(EntityRegistry.LAST_STAND.get(), level);
@@ -67,16 +67,16 @@ public class LastStandEntity extends Entity {
     @Override
     public void tick() {
         if (isReleasing()) {
-            if (this.tickCount % shockwaveFrequency == 0) {
+            if (this.tickCount % SHOCKWAVE_FREQUENCY == 0) {
                 for (int i = 0; i < 200; i++) {
                     Vec3 speeds = new Vec3(random.nextDouble(), random.nextDouble(), random.nextDouble()).normalize();
                     this.level().addAlwaysVisibleParticle(ParticleRegistry.SHOCKWAVE_PARTICLE.get(),
                             this.getX() + this.random.nextFloat() * plusOrMinus(),
                             this.getY() + this.random.nextFloat() * plusOrMinus(),
                             this.getZ() + this.random.nextFloat() * plusOrMinus(),
-                            plusOrMinus() * speeds.x * strength,
-                            plusOrMinus() * speeds.y * strength,
-                            plusOrMinus() * speeds.z * strength);
+                            plusOrMinus() * speeds.x * STRENGTH,
+                            plusOrMinus() * speeds.y * STRENGTH,
+                            plusOrMinus() * speeds.z * STRENGTH);
                 }
 
                 if (this.level() instanceof ServerLevel serverLevel) {
@@ -89,7 +89,7 @@ public class LastStandEntity extends Entity {
                 }
             }
             
-            if (this.tickCount % explosionFrequency == 0) {
+            if (this.tickCount % EXPLOSION_FREQUENCY == 0) {
                 this.level().explode(this,
                         this.getX() + this.getRandom().nextFloat() * plusOrMinus() * 10,
                         this.getY() + this.getRandom().nextFloat() * plusOrMinus() * 10,
@@ -98,14 +98,12 @@ public class LastStandEntity extends Entity {
                         Level.ExplosionInteraction.MOB);
             }
 
-            if (this.tickCount % hailcoilReleaseFrequency == 0) {
+            if (this.tickCount % HAILCOIL_RELEASE_FREQUENCY == 0) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     HailcoilEntity hailcoil = new HailcoilEntity(EntityRegistry.HAILCOIL.get(), serverLevel);
                     hailcoil.move(MoverType.SELF, this.blockPosition().getCenter());
                     hailcoil.setInvulnerable(true);
                     hailcoils.add(hailcoil);
-                    hailcoil.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                            EntitySpawnReason.TRIGGERED, null);
 
                     hailcoil.setDeltaMovement(new Vec3(random.nextDouble(), random.nextDouble(), random.nextDouble()));
                     serverLevel.addFreshEntityWithPassengers(hailcoil);

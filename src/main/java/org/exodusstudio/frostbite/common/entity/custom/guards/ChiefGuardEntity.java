@@ -23,6 +23,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
 import org.exodusstudio.frostbite.common.entity.goals.GuardBodyRotationControl;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
@@ -34,20 +35,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class ChiefGuardEntity extends Monster implements TargetingEntity {
-    private static final EntityDataAccessor<String> DATA_LAST_STATE =
-            SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<String> DATA_STATE =
-            SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.STRING);
+public class ChiefGuardEntity extends StateMonsterEntity implements TargetingEntity {
     private static final EntityDataAccessor<Boolean> DATA_FREEZE_BODY_ROT =
             SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_CHANGE =
-            SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.INT);
     private static final Component NAME_COMPONENT = Component.translatable("entity.chief_guard.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(NAME_COMPONENT, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false);
-    public final AnimationState lastAnimationState = new AnimationState();
-    public final AnimationState currentAnimationState = new AnimationState();
     public static final int ATTACK_COOLDOWN = 60;
     public static final int SUMMON_COOLDOWN = 300;
     public static final int DASH_COOLDOWN = 60;
@@ -62,7 +55,7 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
     );
 
     public ChiefGuardEntity(EntityType<? extends Monster> ignored, Level level) {
-        super(EntityRegistry.CHIEF_GUARD.get(), level);
+        super(EntityRegistry.CHIEF_GUARD.get(), level, BLEND_TICKS);
         setIdle();
     }
 
@@ -77,9 +70,6 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_LAST_STATE, "idle");
-        builder.define(DATA_STATE, "idle");
-        builder.define(DATA_TICKS_SINCE_LAST_CHANGE, 10);
         builder.define(DATA_FREEZE_BODY_ROT, false);
     }
 
@@ -133,8 +123,6 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
             }
         });
 
-        setTicksSinceLastChange(getTicksSinceLastChange() + 1);
-
         if (getAttackableFromBrain() != null && level() instanceof ServerLevel serverLevel) {
             float t = currentAnimationState.getTimeInMillis(tickCount) / 50f;
 
@@ -153,10 +141,6 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
 
         if (isParrying() && getTicksSinceLastChange() > PARRY_ANIM_TIME) {
             setIdle();
-        }
-
-        if (getTicksSinceLastChange() > BLEND_TICKS) {
-            lastAnimationState.stop();
         }
 
         if (level() instanceof ServerLevel) {
@@ -235,12 +219,6 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (DATA_STATE.equals(accessor)) {
-            this.lastAnimationState.copyFrom(currentAnimationState);
-            this.currentAnimationState.stop();
-            this.currentAnimationState.startIfStopped(tickCount);
-            setTicksSinceLastChange(0);
-            this.refreshDimensions();
-
             if (isIdle()) {
                 if (getBrain().getMemory(MemoryModuleType.LOOK_TARGET).isPresent()) {
                     getBrain().setMemory(MemoryModuleType.WALK_TARGET,
@@ -295,15 +273,6 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
         this.entityData.set(DATA_STATE, "attacking");
     }
 
-    public void setIdle() {
-        this.entityData.set(DATA_LAST_STATE, getCurrentState());
-        this.entityData.set(DATA_STATE, "idle");
-    }
-
-    public boolean isIdle() {
-        return getCurrentState().equals("idle");
-    }
-
     public boolean isAttacking() {
         return getCurrentState().equals("attacking");
     }
@@ -340,28 +309,12 @@ public class ChiefGuardEntity extends Monster implements TargetingEntity {
         return getCurrentState().equals("summoning");
     }
 
-    public String getCurrentState() {
-        return this.getEntityData().get(DATA_STATE);
-    }
-
-    public String getLastState() {
-        return this.getEntityData().get(DATA_LAST_STATE);
-    }
-
     public boolean shouldFreezeRotation() {
         return this.getEntityData().get(DATA_FREEZE_BODY_ROT);
     }
 
     public void setFreezeRotation(boolean f) {
         this.entityData.set(DATA_FREEZE_BODY_ROT, f);
-    }
-
-    public int getTicksSinceLastChange() {
-        return this.getEntityData().get(DATA_TICKS_SINCE_LAST_CHANGE);
-    }
-
-    public void setTicksSinceLastChange(int ticks) {
-        this.getEntityData().set(DATA_TICKS_SINCE_LAST_CHANGE, ticks);
     }
 
     @Override

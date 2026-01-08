@@ -6,6 +6,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.misc.*;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.WhirlpoolEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.util.Util;
 

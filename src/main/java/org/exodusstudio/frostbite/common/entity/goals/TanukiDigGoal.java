@@ -4,7 +4,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import org.exodusstudio.frostbite.common.entity.custom.animals.TanukiEntity;
 
 public class TanukiDigGoal extends Goal {
-    TanukiEntity tanuki;
+    final TanukiEntity tanuki;
 
     public TanukiDigGoal(TanukiEntity tanuki) {
         this.tanuki = tanuki;

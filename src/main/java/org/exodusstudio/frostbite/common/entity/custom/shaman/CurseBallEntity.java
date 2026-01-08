@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.entity.custom.misc;
+package org.exodusstudio.frostbite.common.entity.custom.shaman;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -36,7 +36,7 @@ public class CurseBallEntity extends Entity {
     private final static int LAUNCH_DELAY = 5;
     private final static int LAUNCH_TIME = 100;
     private final static float SPEED = 0.75f;
-    private final static float RADIUS = 1.25f;
+    private final static float RADIUS = 1.5f;
     private final static float SPIN_SPEED = 0.166f;
     private static final Map<String, Holder<MobEffect>> EFFECTS =
             Map.of(
@@ -133,13 +133,13 @@ public class CurseBallEntity extends Entity {
             return;
         }
 
-        if (getCursedEntity() == null && tickCount > LAUNCH_DELAY && level() instanceof ServerLevel serverLevel) {
+        if (getCursedEntity() == null && tickCount > LAUNCH_DELAY) {
             List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox());
-            if (!entities.isEmpty()) {
+            if (!entities.isEmpty() && entities.getFirst() != getOwner()) {
                 setCursedEntityUUID(entities.getFirst().getUUID());
                 this.noPhysics = true;
                 setDeltaMovement(0, 0, 0);
-                entities.getFirst().hurtServer(serverLevel, level().damageSources().generic(), 5);
+                if (level() instanceof ServerLevel serverLevel) entities.getFirst().hurtServer(serverLevel, level().damageSources().generic(), 5);
                 entities.getFirst().addEffect(new MobEffectInstance(EFFECTS.get(getCurse()), DURATIONS.get(getCurse()), 0));
             }
         }
@@ -193,8 +193,8 @@ public class CurseBallEntity extends Entity {
     }
 
     public @Nullable LivingEntity getOwner() {
-        if (this.level() instanceof ServerLevel serverLevel && this.getOwnerUUID() != null) {
-            return (LivingEntity) serverLevel.getEntity(this.getOwnerUUID());
+        if (this.getOwnerUUID() != null) {
+            return (LivingEntity) level().getEntity(this.getOwnerUUID());
         }
         return null;
     }

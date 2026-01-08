@@ -32,7 +32,7 @@ public abstract class BulletRenderer<T extends AbstractBullet, S extends ArrowRe
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
     }
 
-    protected abstract Identifier getTextureLocation(S var1);
+    protected abstract Identifier getTextureLocation(S ignored);
 
     public void extractRenderState(T p_361771_, S p_364204_, float p_360538_) {
         super.extractRenderState(p_361771_, p_364204_, p_360538_);

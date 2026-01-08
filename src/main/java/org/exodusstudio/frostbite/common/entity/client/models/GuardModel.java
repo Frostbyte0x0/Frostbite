@@ -2,17 +2,15 @@ package org.exodusstudio.frostbite.common.entity.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.animation.KeyframeAnimation;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.GuardAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
-import org.exodusstudio.frostbite.common.util.Util;
 
-public class GuardModel extends HumanoidModel<StateRenderState> {
+import java.util.Map;
+
+public class GuardModel extends StateHumanoidModel<StateRenderState> {
     private final ModelPart head;
     private final ModelPart headwear;
     private final ModelPart body;
@@ -20,11 +18,6 @@ public class GuardModel extends HumanoidModel<StateRenderState> {
     private final ModelPart right_arm;
     private final ModelPart left_leg;
     private final ModelPart right_leg;
-    private final KeyframeAnimation idleAnimation;
-    private final KeyframeAnimation wakingUpAnimation;
-    private final KeyframeAnimation attackingAnimation;
-    private final KeyframeAnimation guardingAnimation;
-    private final KeyframeAnimation asleepPose;
 
     public GuardModel(ModelPart root) {
         super(root);
@@ -35,11 +28,13 @@ public class GuardModel extends HumanoidModel<StateRenderState> {
         this.right_arm = root.getChild("right_arm");
         this.left_leg = root.getChild("left_leg");
         this.right_leg = root.getChild("right_leg");
-        this.idleAnimation = GuardAnimations.IDLE.bake(root);
-        this.wakingUpAnimation = GuardAnimations.WAKING_UP.bake(root);
-        this.attackingAnimation = GuardAnimations.GUARD_ATTACK.bake(root);
-        this.guardingAnimation = GuardAnimations.GUARD_GUARD.bake(root);
-        this.asleepPose = GuardAnimations.ASLEEP.bake(root);
+        this.animations = Map.of(
+                "idle", GuardAnimations.IDLE.bake(root),
+                "wakingUp", GuardAnimations.WAKING_UP.bake(root),
+                "attacking", GuardAnimations.GUARD_ATTACK.bake(root),
+                "guarding", GuardAnimations.GUARD_GUARD.bake(root),
+                "asleep", GuardAnimations.ASLEEP.bake(root)
+        );
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -73,37 +68,7 @@ public class GuardModel extends HumanoidModel<StateRenderState> {
         this.head.xRot = state.xRot * ((float)Math.PI / 180F);
         this.head.yRot = state.yRot * ((float)Math.PI / 180F);
 
-        if (state.ticksSinceLastChange < GuardEntity.BLEND_TICKS) {
-            KeyframeAnimation currentAnimation = switch (state.currentState) {
-                case "guarding" -> guardingAnimation;
-                case "wakingUp" -> wakingUpAnimation;
-                case "attacking" -> attackingAnimation;
-                case "asleep" -> asleepPose;
-                default -> idleAnimation;
-            };
-            KeyframeAnimation lastAnimation = switch (state.lastState) {
-                case "guarding" -> guardingAnimation;
-                case "wakingUp" -> wakingUpAnimation;
-                case "attacking" -> attackingAnimation;
-                case "asleep" -> asleepPose;
-                default -> idleAnimation;
-            };
-            Util.blendAnimations(
-                    state.ticksSinceLastChange,
-                    GuardEntity.BLEND_TICKS,
-                    state.partialTick,
-                    state.ageInTicks,
-                    lastAnimation, state.lastAnimationState,
-                    currentAnimation, state.currentAnimationState);
-        } else {
-            switch (state.currentState) {
-                case "idle" -> idleAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "guarding" -> guardingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "wakingUp" -> wakingUpAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "attacking" -> attackingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "asleep" -> asleepPose.apply(state.currentAnimationState, state.ageInTicks);
-            }
-        }
+        applyAnimation(state);
     }
 
     @Override

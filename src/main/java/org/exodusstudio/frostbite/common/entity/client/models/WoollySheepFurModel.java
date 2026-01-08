@@ -11,9 +11,7 @@ import net.minecraft.client.renderer.entity.state.SheepRenderState;
 public class WoollySheepFurModel extends QuadrupedModel<SheepRenderState> {
     private final ModelPart leftFrontLeg;
     private final ModelPart body;
-    private final ModelPart rotation2;
     private final ModelPart head;
-    private final ModelPart bone;
     private final ModelPart rightHindLeg;
     private final ModelPart leftHindLeg;
     private final ModelPart rightFrontLeg;
@@ -22,9 +20,7 @@ public class WoollySheepFurModel extends QuadrupedModel<SheepRenderState> {
         super(root);
         this.leftFrontLeg = root.getChild("left_front_leg");
         this.body = root.getChild("body");
-        this.rotation2 = this.body.getChild("rotation2");
         this.head = root.getChild("head");
-        this.bone = this.head.getChild("bone");
         this.rightHindLeg = root.getChild("right_hind_leg");
         this.leftHindLeg = root.getChild("left_hind_leg");
         this.rightFrontLeg = root.getChild("right_front_leg");

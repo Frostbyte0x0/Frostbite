@@ -162,7 +162,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void cancelClearingEffects(MobEffectEvent.Remove event) {
         if (event.getEffectInstance() != null && EffectRegistry.isCurse(event.getEffectInstance().getEffect()) && event.getEntity() instanceof Player) {
-            //event.setCanceled(true);
+            event.setCanceled(true);
         }
     }
 

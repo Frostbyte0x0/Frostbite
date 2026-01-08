@@ -8,7 +8,7 @@ import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import java.util.EnumSet;
 
 public class ElfHuddleAroundHealerGoal extends Goal {
-    ElfEntity elf;
+    final ElfEntity elf;
     private final double speedModifier;
     private Path path;
     private long lastCanUseCheck;

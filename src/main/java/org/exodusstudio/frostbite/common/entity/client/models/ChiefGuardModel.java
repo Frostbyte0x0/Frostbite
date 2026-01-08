@@ -2,29 +2,21 @@ package org.exodusstudio.frostbite.common.entity.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.animation.KeyframeAnimation;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.GuardAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
-import org.exodusstudio.frostbite.common.util.Util;
 
-public class ChiefGuardModel extends HumanoidModel<StateRenderState> {
+import java.util.Map;
+
+public class ChiefGuardModel extends StateHumanoidModel<StateRenderState> {
     private final ModelPart head;
     private final ModelPart body;
     private final ModelPart left_arm;
     private final ModelPart right_arm;
     private final ModelPart left_leg;
     private final ModelPart right_leg;
-    private final KeyframeAnimation idleAnimation;
-    private final KeyframeAnimation guardingAnimation;
-    private final KeyframeAnimation dashingAnimation;
-    private final KeyframeAnimation attackingAnimation;
-    private final KeyframeAnimation summoningAnimation;
-    private final KeyframeAnimation parryingAnimation;
 
     public ChiefGuardModel(ModelPart root) {
         super(root);
@@ -34,12 +26,14 @@ public class ChiefGuardModel extends HumanoidModel<StateRenderState> {
         this.right_arm = root.getChild("right_arm");
         this.left_leg = root.getChild("left_leg");
         this.right_leg = root.getChild("right_leg");
-        idleAnimation = GuardAnimations.IDLE.bake(root);
-        guardingAnimation = GuardAnimations.GUARD.bake(root);
-        dashingAnimation = GuardAnimations.DASH.bake(root);
-        attackingAnimation = GuardAnimations.ATTACK.bake(root);
-        summoningAnimation = GuardAnimations.DASH.bake(root);
-        parryingAnimation = GuardAnimations.PARRYING.bake(root);
+        this.animations = Map.of(
+                "idle", GuardAnimations.IDLE.bake(root),
+                "guarding", GuardAnimations.GUARD.bake(root),
+                "dashing", GuardAnimations.DASH.bake(root),
+                "attacking", GuardAnimations.ATTACK.bake(root),
+                "summoning", GuardAnimations.DASH.bake(root),
+                "parrying", GuardAnimations.PARRYING.bake(root)
+        );
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -72,40 +66,7 @@ public class ChiefGuardModel extends HumanoidModel<StateRenderState> {
         this.head.xRot = state.xRot * ((float)Math.PI / 180F);
         this.head.yRot = state.yRot * ((float)Math.PI / 180F);
 
-        if (state.ticksSinceLastChange < GuardEntity.BLEND_TICKS) {
-            KeyframeAnimation currentAnimation = switch (state.currentState) {
-                case "guarding" -> guardingAnimation;
-                case "dashing" -> dashingAnimation;
-                case "attacking" -> attackingAnimation;
-                case "summoning" -> summoningAnimation;
-                case "parrying" -> parryingAnimation;
-                default -> idleAnimation;
-            };
-            KeyframeAnimation lastAnimation = switch (state.lastState) {
-                case "guarding" -> guardingAnimation;
-                case "dashing" -> dashingAnimation;
-                case "attacking" -> attackingAnimation;
-                case "summoning" -> summoningAnimation;
-                case "parrying" -> parryingAnimation;
-                default -> idleAnimation;
-            };
-            Util.blendAnimations(
-                    state.ticksSinceLastChange,
-                    GuardEntity.BLEND_TICKS,
-                    state.partialTick,
-                    state.ageInTicks,
-                    lastAnimation, state.lastAnimationState,
-                    currentAnimation, state.currentAnimationState);
-        } else {
-            switch (state.currentState) {
-                case "idle" -> idleAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "guarding" -> guardingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "dashing" -> dashingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "attacking" -> attackingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "summoning" -> summoningAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "parrying" -> parryingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-            }
-        }
+        applyAnimation(state);
     }
 
     @Override

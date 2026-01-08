@@ -22,7 +22,7 @@ import java.util.List;
 public class HealingCircleEntity extends AreaEffectCloud {
     private static final EntityDataAccessor<Boolean> DATA_IS_BLESSING =
             SynchedEntityData.defineId(HealingCircleEntity.class, EntityDataSerializers.BOOLEAN);
-    private final int lifetime = 60;
+    private static final int LIFETIME = 60;
 
     public HealingCircleEntity(EntityType<? extends AreaEffectCloud> ignored, Level level) {
         super(EntityRegistry.HEALING_CIRCLE.get(), level);
@@ -45,7 +45,7 @@ public class HealingCircleEntity extends AreaEffectCloud {
                 level().addParticle(
                         ColorParticleOption.create(ParticleRegistry.EXPANDING_CIRCLE_PARTICLE.get(),
                         ARGB.color(
-                        lifetime,
+                                LIFETIME,
                         20,
                         255,
                         70
@@ -54,7 +54,7 @@ public class HealingCircleEntity extends AreaEffectCloud {
             }
         }
 
-        if (tickCount == lifetime) {
+        if (tickCount == LIFETIME) {
             List<LivingEntity> list1 = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0, 3, 0));
             if (!list1.isEmpty()) {
                 for (LivingEntity livingentity : list1) {
@@ -81,7 +81,7 @@ public class HealingCircleEntity extends AreaEffectCloud {
             }
         }
 
-        if (this.tickCount > lifetime) this.discard();
+        if (this.tickCount > LIFETIME) this.discard();
     }
 
     public void setBlessing(boolean isBlessing) {

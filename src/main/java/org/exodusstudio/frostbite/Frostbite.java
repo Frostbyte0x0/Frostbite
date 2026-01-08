@@ -1,11 +1,16 @@
 package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -15,9 +20,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
+import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
+import org.exodusstudio.frostbite.common.entity.client.models.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
+import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
@@ -26,6 +35,7 @@ import org.exodusstudio.frostbite.common.util.TemperatureStorage;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.slf4j.Logger;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,9 +110,9 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.TORCH.get(), TorchRenderer::new);
             EntityRenderers.register(EntityRegistry.FIRE_SLICE.get(), FireSliceRenderer::new);
             EntityRenderers.register(EntityRegistry.TANUKI.get(), TanukiRenderer::new);
-            EntityRenderers.register(EntityRegistry.HEALER_ELF.get(), HealerElfRenderer::new);
-            EntityRenderers.register(EntityRegistry.CASTER_ELF.get(), CasterElfRenderer::new);
-            EntityRenderers.register(EntityRegistry.SUMMONER_ELF.get(), SummonerElfRenderer::new);
+            EntityRenderers.register(EntityRegistry.HEALER_ELF.get(), c -> new ElfRenderer(c, new HealerElfModel(c.bakeLayer(ModModelLayers.HEALER_ELF)), 0.45f, "healer_elf"));
+            EntityRenderers.register(EntityRegistry.CASTER_ELF.get(), c -> new ElfRenderer(c, new CasterElfModel(c.bakeLayer(ModModelLayers.CASTER_ELF)), 0.45f, "caster_elf"));
+            EntityRenderers.register(EntityRegistry.SUMMONER_ELF.get(), c -> new ElfRenderer(c, new SummonerElfModel(c.bakeLayer(ModModelLayers.SUMMONER_ELF)), 0.45f, "summoner_elf"));
             EntityRenderers.register(EntityRegistry.BOREAL_BEAR.get(), BorealBearRenderer::new);
             EntityRenderers.register(EntityRegistry.MONK.get(), MonkRenderer::new);
             EntityRenderers.register(EntityRegistry.BIG_LEVITATING_JELLYFISH.get(), BigLevitatingJellyfishRenderer::new);
@@ -110,13 +120,61 @@ public class Frostbite {
             EntityRenderers.register(EntityRegistry.ETHEREAL_SWORD.get(), EtherealSwordRenderer::new);
             EntityRenderers.register(EntityRegistry.ETHEREAL_HANDS.get(), EtherealHandsRenderer::new);
             EntityRenderers.register(EntityRegistry.ETHEREAL_HAMMER.get(), EtherealHammerRenderer::new);
-            EntityRenderers.register(EntityRegistry.GUARD.get(), GuardRenderer::new);
-            EntityRenderers.register(EntityRegistry.CHIEF_GUARD.get(), ChiefGuardRenderer::new);
-            EntityRenderers.register(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardRenderer::new);
+            EntityRenderers.register(EntityRegistry.GUARD.get(), renderer(GuardModel.class, "guard", ModModelLayers.GUARD));
+            EntityRenderers.register(EntityRegistry.CHIEF_GUARD.get(), renderer(ChiefGuardModel.class, "chief_guard", ModModelLayers.CHIEF_GUARD));
+            EntityRenderers.register(EntityRegistry.HEAVY_GUARD.get(), renderer(HeavyGuardModel.class, "heavy_guard", ModModelLayers.HEAVY_GUARD));
 
             BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
             EntityRenderers.register(EntityRegistry.CURSE_BALL.get(), CurseBallRenderer::new);
             ModItemProperties.addCustomItemProperties();
         }
     }
+
+    // Function<EntityRendererProvider.Context, StateMonsterRenderer<?, ? extends HumanoidModel<StateRenderState>>>
+    private static EntityRendererProvider<StateMonsterEntity> renderer(
+            Class<? extends HumanoidModel<? extends StateRenderState>> clazz,
+            String name,
+            ModelLayerLocation modelLayer
+    ) {
+        return c -> {
+            try {
+                return new StateMonsterRenderer<>(c, clazz.getConstructor(ModelPart.class).newInstance(c.bakeLayer(modelLayer)), 0.45f,
+                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/" + name + "/" + name + ".png"));
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+//    private static EntityRendererProvider<StateMonsterEntity> renderer(
+//            Class<? extends HumanoidModel<? extends StateRenderState>> clazz,
+//            String name,
+//            ModelLayerLocation modelLayer,
+//            BiConsumer<StateMonsterEntity, StateRenderState> extractor
+//    ) {
+//        return c -> {
+//            try {
+//                return new StateMonsterRenderer<>(c, clazz.getConstructor(ModelPart.class).newInstance(c.bakeLayer(modelLayer)), 0.45f,
+//                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/" + name + "/" + name + ".png"), extractor);
+//            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+//                throw new RuntimeException(e);
+//            }
+//        };
+//    }
+//
+//    private static <E extends StateMonsterEntity, S extends StateRenderState, M extends HumanoidModel<? extends StateRenderState>> EntityRendererProvider<E> renderer(
+//            Class<M> clazz,
+//            String name,
+//            ModelLayerLocation modelLayer,
+//            BiConsumer<E, S> extractor
+//    ) {
+//        return c -> {
+//            try {
+//                return new StateMonsterRenderer<>(c, clazz.getConstructor(ModelPart.class).newInstance(c.bakeLayer(modelLayer)), 0.45f,
+//                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/" + name + "/" + name + ".png"), extractor);
+//            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+//                throw new RuntimeException(e);
+//            }
+//        };
+//    }
 }

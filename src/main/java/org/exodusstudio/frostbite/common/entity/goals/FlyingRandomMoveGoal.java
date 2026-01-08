@@ -9,8 +9,8 @@ import net.minecraft.world.phys.HitResult;
 import java.util.EnumSet;
 
 public class FlyingRandomMoveGoal extends Goal {
-    Monster monster;
-    float speedModifier;
+    final Monster monster;
+    final float speedModifier;
     
     public FlyingRandomMoveGoal(Monster monster, float speedModifier) {
         this.setFlags(EnumSet.of(Flag.MOVE));

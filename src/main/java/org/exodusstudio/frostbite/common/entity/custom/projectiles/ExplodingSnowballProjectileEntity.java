@@ -21,7 +21,7 @@ public class ExplodingSnowballProjectileEntity extends ThrowableItemProjectile i
         super(entityType, level);
     }
 
-    public ExplodingSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, LivingEntity livingEntity, Level level, ItemStack itemStack) {
+    public ExplodingSnowballProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, LivingEntity livingEntity, Level level, ItemStack ignored) {
         super(entityType, livingEntity, level, new ItemStack(ItemRegistry.EXPLODING_SNOWBALL.get()));
     }
 

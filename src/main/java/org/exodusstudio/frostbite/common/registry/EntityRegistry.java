@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
@@ -23,6 +24,7 @@ import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.guards.HeavyGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.*;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.WhirlpoolEntity;
 import org.exodusstudio.frostbite.common.entity.goals.TargetEntitySensor;
 import org.exodusstudio.frostbite.common.entity.custom.projectiles.*;
 

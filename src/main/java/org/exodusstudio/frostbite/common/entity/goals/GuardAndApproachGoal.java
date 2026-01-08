@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 
 public class GuardAndApproachGoal extends MeleeAttackGoal {
-    GuardEntity guard;
+    final GuardEntity guard;
 
     public GuardAndApproachGoal(GuardEntity mob, double speedModifier, boolean followingTargetEvenIfNotSeen) {
         super(mob, speedModifier, followingTargetEvenIfNotSeen);

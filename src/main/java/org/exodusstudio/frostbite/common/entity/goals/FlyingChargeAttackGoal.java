@@ -8,8 +8,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 
 public class FlyingChargeAttackGoal<T extends Monster> extends Goal {
-    T monster;
-    float speedModifier;
+    final T monster;
+    final float speedModifier;
     
     public FlyingChargeAttackGoal(T monster, float speedModifier) {
         this.setFlags(EnumSet.of(Flag.MOVE));

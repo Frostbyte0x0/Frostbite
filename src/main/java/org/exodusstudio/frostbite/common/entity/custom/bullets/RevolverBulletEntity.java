@@ -8,7 +8,7 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class RevolverBulletEntity extends AbstractBullet {
-    public RevolverBulletEntity(EntityType<? extends Projectile> entityType, Level level) {
+    public RevolverBulletEntity(EntityType<? extends Projectile> ignored, Level level) {
         super(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), level);
     }
 

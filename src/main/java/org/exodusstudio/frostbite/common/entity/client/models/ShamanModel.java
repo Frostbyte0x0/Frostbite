@@ -2,17 +2,15 @@ package org.exodusstudio.frostbite.common.entity.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.animation.KeyframeAnimation;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.exodusstudio.frostbite.common.entity.client.animations.ShamanAnimations;
 import org.exodusstudio.frostbite.common.entity.client.states.ShamanRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
-import org.exodusstudio.frostbite.common.util.Util;
 
-public class ShamanModel extends HumanoidModel<ShamanRenderState> {
+import java.util.Map;
+
+public class ShamanModel extends StateHumanoidModel<ShamanRenderState> {
     private final ModelPart right_leg;
     private final ModelPart head;
     private final ModelPart body;
@@ -20,11 +18,6 @@ public class ShamanModel extends HumanoidModel<ShamanRenderState> {
     private final ModelPart right_arm;
     private final ModelPart left_leg;
     private final ModelPart shield;
-    private final KeyframeAnimation idleAnimation;
-    private final KeyframeAnimation summoningAnimation;
-    private final KeyframeAnimation whirlpoolingAnimation;
-    private final KeyframeAnimation cursingAnimation;
-    private final KeyframeAnimation etherealingAnimation;
 
     public ShamanModel(ModelPart root) {
         super(root);
@@ -35,11 +28,13 @@ public class ShamanModel extends HumanoidModel<ShamanRenderState> {
         this.right_arm = root.getChild("right_arm");
         this.left_leg = root.getChild("left_leg");
         this.shield = root.getChild("shield");
-        this.idleAnimation = ShamanAnimations.IDLE.bake(root);
-        this.summoningAnimation = ShamanAnimations.SUMMON.bake(root);
-        this.whirlpoolingAnimation = ShamanAnimations.WHIRLPOOL.bake(root);
-        this.cursingAnimation = ShamanAnimations.CURSE.bake(root);
-        this.etherealingAnimation = ShamanAnimations.ETHEREAL.bake(root);
+        this.animations = Map.of(
+                "idle", ShamanAnimations.IDLE.bake(root),
+                "summoning", ShamanAnimations.SUMMON.bake(root),
+                "whirlpooling", ShamanAnimations.WHIRLPOOL.bake(root),
+                "cursing", ShamanAnimations.CURSE.bake(root),
+                "etherealing", ShamanAnimations.ETHEREAL.bake(root)
+        );
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -76,37 +71,7 @@ public class ShamanModel extends HumanoidModel<ShamanRenderState> {
         this.head.xRot = state.xRot * ((float)Math.PI / 180F);
         this.head.yRot = state.yRot * ((float)Math.PI / 180F);
 
-        if (state.ticksSinceLastChange < ShamanEntity.BLEND_TICKS) {
-            KeyframeAnimation currentAnimation = switch (state.currentState) {
-                case "whirlpooling" -> whirlpoolingAnimation;
-                case "cursing" -> cursingAnimation;
-                case "summoning" -> summoningAnimation;
-                case "etherealing" -> etherealingAnimation;
-                default -> idleAnimation;
-            };
-            KeyframeAnimation lastAnimation = switch (state.lastState) {
-                case "whirlpooling" -> whirlpoolingAnimation;
-                case "cursing" -> cursingAnimation;
-                case "summoning" -> summoningAnimation;
-                case "etherealing" -> etherealingAnimation;
-                default -> idleAnimation;
-            };
-            Util.blendAnimations(
-                    state.ticksSinceLastChange,
-                    ShamanEntity.BLEND_TICKS,
-                    state.partialTick,
-                    state.ageInTicks,
-                    lastAnimation, state.lastAnimationState,
-                    currentAnimation, state.currentAnimationState);
-        } else {
-            switch (state.currentState) {
-                case "idle" -> idleAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "whirlpooling" -> whirlpoolingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "cursing" -> cursingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "summoning" -> summoningAnimation.apply(state.currentAnimationState, state.ageInTicks);
-                case "etherealing" -> etherealingAnimation.apply(state.currentAnimationState, state.ageInTicks);
-            }
-        }
+        applyAnimation(state);
     }
 
     @Override

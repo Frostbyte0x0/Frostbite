@@ -6,7 +6,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.phys.Vec3;
 
 public class FlyingMoveControl extends MoveControl {
-    Monster monster;
+    final Monster monster;
     
     public FlyingMoveControl(Monster monster) {
         super(monster);

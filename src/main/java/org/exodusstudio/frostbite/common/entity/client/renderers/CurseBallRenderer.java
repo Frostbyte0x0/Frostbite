@@ -14,7 +14,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.CurseBallModel;
 import org.exodusstudio.frostbite.common.entity.client.states.CurseBallRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.misc.CurseBallEntity;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
 public class CurseBallRenderer extends EntityRenderer<CurseBallEntity, CurseBallRenderState> {
