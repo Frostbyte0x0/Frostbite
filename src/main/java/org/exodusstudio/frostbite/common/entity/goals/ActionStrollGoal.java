@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.entity.goals;
 
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Consumer;
 
@@ -16,33 +15,6 @@ public class ActionStrollGoal extends WaterAvoidingRandomStrollGoal {
         this.stopAction = stopAction;
     }
 
-    public boolean canUse() {
-        if (this.mob.hasControllingPassenger()) {
-            return false;
-        } else {
-            if (!this.forceTrigger) {
-                if (this.mob.getNoActionTime() >= 100) {
-                    return false;
-                }
-
-                if (this.mob.getRandom().nextInt(reducedTickDelay(this.interval)) != 0) {
-                    return false;
-                }
-            }
-
-            Vec3 vec3 = this.getPosition();
-            if (vec3 == null) {
-                return false;
-            } else {
-                this.wantedX = vec3.x;
-                this.wantedY = vec3.y;
-                this.wantedZ = vec3.z;
-                this.forceTrigger = false;
-                return true;
-            }
-        }
-    }
-
     @Override
     public void start() {
         super.start();
@@ -52,7 +24,7 @@ public class ActionStrollGoal extends WaterAvoidingRandomStrollGoal {
     @Override
     public void tick() {
         super.tick();
-        mob.getLookControl().setLookAt(wantedX, wantedY + 1.5, wantedZ, 30, 30);
+        mob.getLookControl().setLookAt(wantedX, mob.getEyeY(), wantedZ, 30, 30);
     }
 
     @Override

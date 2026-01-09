@@ -188,10 +188,10 @@ public class ElfAnimations {
                     new Keyframe(1.5F, KeyframeAnimations.posVec(0.0F, -0.75F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(1.75F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                     new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, -0.75F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
-            ))
-            .addAnimation("elf", new AnimationChannel(AnimationChannel.Targets.POSITION,
-                    new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
-                    new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, 0.0F, -53.0F), AnimationChannel.Interpolations.LINEAR)
-            ))
-            .build();
+//            ))
+//            .addAnimation("elf", new AnimationChannel(AnimationChannel.Targets.POSITION,
+//                    new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.LINEAR),
+//                    new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, 0.0F, -53.0F), AnimationChannel.Interpolations.LINEAR)
+//            ))
+            )).build();
 }

@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cross_emissive",
+  "parent": "frostbite:block/high_cross_emissive",
   "render_type": "cutout",
   "textures": {
     "cross": "frostbite:block/grassy_glimmering_bush",

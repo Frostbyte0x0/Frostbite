@@ -33,7 +33,7 @@ public class CurseBallEntity extends Entity {
             SynchedEntityData.defineId(CurseBallEntity.class, EntityDataSerializers.VECTOR3);
     private static final EntityDataAccessor<String> DATA_CURSE =
             SynchedEntityData.defineId(CurseBallEntity.class, EntityDataSerializers.STRING);
-    private final static int LAUNCH_DELAY = 5;
+    private final static int LAUNCH_DELAY = 1;
     private final static int LAUNCH_TIME = 100;
     private final static float SPEED = 0.75f;
     private final static float RADIUS = 1.5f;

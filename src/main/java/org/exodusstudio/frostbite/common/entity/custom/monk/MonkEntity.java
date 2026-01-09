@@ -20,7 +20,10 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -41,7 +44,6 @@ import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -147,16 +149,8 @@ public class MonkEntity extends Monster implements TargetingEntity {
         return MonkAI.makeBrain(this, dynamic);
     }
 
-    @Contract(value = "null->false")
-    public boolean canTargetEntity(@Nullable Entity entity) {
-        if (!(entity instanceof Player player) ||
-                this.level() != entity.level() ||
-                !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
-                this.isAlliedTo(entity) ||
-                player.isInvulnerable() || player.isDeadOrDying()) {
-            return false;
-        }
-        return this.level().getWorldBorder().isWithinBounds(player.getBoundingBox());
+    public Entity getInstance() {
+        return this;
     }
 
     @Override

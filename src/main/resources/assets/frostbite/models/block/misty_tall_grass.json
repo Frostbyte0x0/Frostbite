@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/tinted_cross",
+  "parent": "frostbite:block/high_tinted_cross",
   "render_type": "cutout",
   "textures": {
     "cross": "frostbite:block/misty_tall_grass"

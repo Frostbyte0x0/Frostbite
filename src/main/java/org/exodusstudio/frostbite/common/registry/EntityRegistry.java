@@ -82,7 +82,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<WhirlpoolEntity>> WHIRLPOOL =
             ENTITY_TYPES.register("whirlpool", () -> EntityType.Builder
                     .of(WhirlpoolEntity::new, MobCategory.MISC)
-                    .sized(5f, 0.75f)
+                    .sized(WhirlpoolEntity.SIZE, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "whirlpool"))));
 
@@ -329,16 +329,16 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "heavy_guard"))));
 
+    public static final Supplier<EntityType<CurseBallEntity>> CURSE_BALL =
+            ENTITY_TYPES.register("curse_ball", () -> EntityType.Builder
+                    .of(CurseBallEntity::new, MobCategory.AMBIENT)
+                    .sized(1.2f, 1.2f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "curse_ball"))));
+
     // Entity Sensors
     public static final DeferredRegister<SensorType<?>> SENSOR =
             DeferredRegister.create(Registries.SENSOR_TYPE, Frostbite.MOD_ID);
     public static final DeferredHolder<SensorType<?>, SensorType<TargetEntitySensor>> TARGET_ENTITY_SENSOR =
             SENSOR.register("monk_sensor", () -> new SensorType<>(TargetEntitySensor::new));
-
-    public static final Supplier<EntityType<CurseBallEntity>> CURSE_BALL =
-            ENTITY_TYPES.register("curse_ball", () -> EntityType.Builder
-                    .of(CurseBallEntity::new, MobCategory.AMBIENT)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "curse_ball"))));
 }

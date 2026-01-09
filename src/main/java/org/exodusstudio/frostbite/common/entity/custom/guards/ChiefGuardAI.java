@@ -1,73 +1,47 @@
 package org.exodusstudio.frostbite.common.entity.custom.guards;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.*;
-import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
+import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
+import net.minecraft.world.entity.ai.behavior.SetEntityLookTargetSometimes;
+import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.ai.sensing.Sensor;
-import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateBossAI;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity.*;
 
-public class ChiefGuardAI {
-    private static final List<SensorType<? extends Sensor<? super ChiefGuardEntity>>> SENSOR_TYPES =
-            List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.TARGET_ENTITY_SENSOR.get());
+public class ChiefGuardAI extends StateBossAI<ChiefGuardEntity>  {
     private static final List<MemoryModuleType<?>> MEMORY_TYPES = List.of(
-            MemoryModuleType.NEAREST_LIVING_ENTITIES,
-            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
-            MemoryModuleType.NEAREST_VISIBLE_PLAYER,
-            MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER,
-            MemoryModuleType.NEAREST_VISIBLE_NEMESIS,
-            MemoryModuleType.LOOK_TARGET,
-            MemoryModuleType.WALK_TARGET,
-            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            MemoryModuleType.PATH,
-            MemoryModuleType.ATTACK_TARGET,
-            MemoryModuleType.ATTACK_COOLING_DOWN,
-            MemoryModuleType.NEAREST_ATTACKABLE,
             MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(),
             MemoryModuleTypeRegistry.DASH_COOLDOWN.get(),
             MemoryModuleTypeRegistry.SUMMON_COOLDOWN.get());
 
-    protected static Brain<?> makeBrain(ChiefGuardEntity ignored, Dynamic<?> ops) {
-        Brain.Provider<ChiefGuardEntity> provider = Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
-        Brain<ChiefGuardEntity> brain = provider.makeBrain(ops);
-        initCoreActivity(brain);
-        initIdleActivity(brain);
-        initFightActivity(brain);
-        brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-        brain.setDefaultActivity(Activity.IDLE);
-        brain.useDefaultActivity();
-        setupCooldowns(brain);
-        return brain;
+    public List<MemoryModuleType<?>> getMemoryTypes() {
+        return Stream.concat(super.getMemoryTypes().stream(), MEMORY_TYPES.stream()).toList();
     }
 
-    private static void initCoreActivity(Brain<ChiefGuardEntity> brain) {
+    protected void initCoreActivity(Brain<ChiefGuardEntity> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new Swim<Mob>(0.8F),
                 SetEntityLookTargetSometimes.create(EntityType.PLAYER, 10, UniformInt.of(10, 30)),
                 new MoveToTargetSink(500, 700)));
     }
 
-    private static void initFightActivity(Brain<ChiefGuardEntity> brain) {
+    protected void initFightActivity(Brain<ChiefGuardEntity> brain) {
         brain.addActivityWithConditions(Activity.FIGHT, ImmutableList.of(
                 Pair.of(1, new Dash()),
                 Pair.of(1, new Attack()),
@@ -76,22 +50,11 @@ public class ChiefGuardAI {
                 Set.of(Pair.of(MemoryModuleType.NEAREST_ATTACKABLE, MemoryStatus.VALUE_PRESENT)));
     }
 
-    private static void initIdleActivity(Brain<ChiefGuardEntity> brain) {
-        brain.addActivityWithConditions(Activity.IDLE,
-                ImmutableList.of(
-                    Pair.of(4, new RunOne<>(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
-                            Pair.of(RandomStroll.stroll(1), 1),
-                            Pair.of(new DoNothing(50, 100), 1),
-                            Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 2))))),
-                ImmutableSet.of()
-        );
-    }
-
     public static void updateActivity(ChiefGuardEntity chief_guard) {
         chief_guard.getBrain().setActiveActivityToFirstValid(ImmutableList.of(Activity.FIGHT, Activity.IDLE));
     }
 
-    public static void setupCooldowns(Brain<ChiefGuardEntity> brain) {
+    protected void setupCooldowns(Brain<ChiefGuardEntity> brain) {
         brain.setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ATTACK_COOLDOWN);
         brain.setMemory(MemoryModuleTypeRegistry.SUMMON_COOLDOWN.get(), SUMMON_COOLDOWN);
         brain.setMemory(MemoryModuleTypeRegistry.DASH_COOLDOWN.get(), DASH_COOLDOWN);

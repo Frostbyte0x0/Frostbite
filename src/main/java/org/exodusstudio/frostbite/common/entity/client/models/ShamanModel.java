@@ -33,7 +33,8 @@ public class ShamanModel extends StateHumanoidModel<ShamanRenderState> {
                 "summoning", ShamanAnimations.SUMMON.bake(root),
                 "whirlpooling", ShamanAnimations.WHIRLPOOL.bake(root),
                 "cursing", ShamanAnimations.CURSE.bake(root),
-                "etherealing", ShamanAnimations.ETHEREAL.bake(root)
+                "etherealing", ShamanAnimations.ETHEREAL.bake(root),
+                "weakened", ShamanAnimations.WEAKENED.bake(root)
         );
     }
 

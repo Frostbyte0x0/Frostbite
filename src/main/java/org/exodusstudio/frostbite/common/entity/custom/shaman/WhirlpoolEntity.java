@@ -26,7 +26,8 @@ public class WhirlpoolEntity extends Entity {
     private static final EntityDataAccessor<Float> DATA_CHARGE =
             SynchedEntityData.defineId(WhirlpoolEntity.class, EntityDataSerializers.FLOAT);
     private static final int DPS = 4;
-    private static final int LIFETIME = 200;
+    public static final int LIFETIME = 200;
+    public static final float SIZE = 7;
 
     public WhirlpoolEntity(EntityType<? extends Entity> ignored, Level p_19705_) {
         super(EntityRegistry.WHIRLPOOL.get(), p_19705_);
@@ -49,7 +50,7 @@ public class WhirlpoolEntity extends Entity {
                 List<LivingEntity> list1 = serverLevel.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox());
                 if (!list1.isEmpty()) {
                     for (LivingEntity livingentity : list1) {
-                        if (livingentity == getOwner()) continue;
+                        if (livingentity == getOwner() || livingentity.distanceTo(this) > SIZE) continue;
                         livingentity.hurtServer(serverLevel, this.damageSources().fellOutOfWorld(), DPS / 4f);
                         livingentity.addDeltaMovement(position().subtract(livingentity.position()).normalize().scale(0.5f));
                         addCharge(DPS / 4f);
@@ -63,7 +64,7 @@ public class WhirlpoolEntity extends Entity {
             getOwner().setPos(this.getX(), this.getY(), this.getZ());
         }
 
-        if (getCharge() >= 40f || this.tickCount >= LIFETIME) {
+        if (this.tickCount >= LIFETIME) {
             release();
             this.discard();
         }
@@ -78,7 +79,7 @@ public class WhirlpoolEntity extends Entity {
                 for (LivingEntity livingentity : list1) {
                     if (livingentity == getOwner()) continue;
                     livingentity.hurtServer(serverLevel, this.damageSources().fellOutOfWorld(), getCharge() / 2f);
-                    livingentity.addDeltaMovement(livingentity.position().subtract(position()).normalize().scale(2f));
+                    livingentity.addDeltaMovement(livingentity.position().subtract(position()).normalize().scale(1.5f));
                 }
             }
         }
@@ -126,7 +127,7 @@ public class WhirlpoolEntity extends Entity {
     }
 
     public void addCharge(float charge) {
-        this.entityData.set(DATA_CHARGE, getCharge() + charge);
+        this.entityData.set(DATA_CHARGE, Math.min(getCharge() + charge, 60));
     }
 
     public void setCharge(float charge) {

@@ -9,6 +9,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.WhirlpoolEntity;
 import org.joml.Quaternionf;
 
 public class WhirlpoolParticle extends SingleQuadParticle {
@@ -64,9 +65,9 @@ public class WhirlpoolParticle extends SingleQuadParticle {
             WhirlpoolParticle drainParticle = new WhirlpoolParticle(
                     clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
             );
-            drainParticle.quadSize = 2.5f;
+            drainParticle.quadSize = WhirlpoolEntity.SIZE / 2f;
             drainParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
-            drainParticle.setLifetime(100);
+            drainParticle.setLifetime(WhirlpoolEntity.LIFETIME);
             return drainParticle;
         }
     }

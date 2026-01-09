@@ -7,49 +7,50 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedCreeperEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedSkeletonEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.IcedZombieEntity;
-import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.*;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateBossMonster;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHammerEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHandsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealSwordEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealWeaponEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class ShamanEntity extends StateMonsterEntity implements TargetingEntity {
+public class ShamanEntity extends StateBossMonster<ShamanEntity> implements TargetingEntity {
     private static final EntityDataAccessor<Boolean> DATA_SHOWING_SHIELD =
             SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_SHIELD_HEALTH =
+            SynchedEntityData.defineId(ShamanEntity.class, EntityDataSerializers.FLOAT);
     private static final Component SHAMAN_NAME_COMPONENT = Component.translatable("entity.shaman.boss_bar");
-    private final ServerBossEvent bossEvent = (ServerBossEvent)
-            new ServerBossEvent(SHAMAN_NAME_COMPONENT, BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
-    public final AnimationState lastAnimationState = new AnimationState();
-    public final AnimationState currentAnimationState = new AnimationState();
     public static final int ETHEREAL_COOLDOWN = 90;
     public static final int WHIRLPOOL_COOLDOWN = 90;
     public static final int SUMMON_COOLDOWN = 90;
     public static final int CURSE_COOLDOWN = 90;
     public static final int ETHEREAL_DURATION = 30;
-    public static final int WHIRLPOOL_DURATION = 200;
+    public static final int WHIRLPOOL_DURATION = 210;
     public static final int SUMMON_DURATION = 30;
     public static final int CURSE_DURATION = 30;
+    public static final int WEAKENED_DURATION = 100;
     public static final int BLEND_TICKS = 10;
     private static final int SHIELD_DISTANCE = 8;
     private static final Map<MemoryModuleType<Integer>, Integer> cooldowns = Map.of(
@@ -60,7 +61,10 @@ public class ShamanEntity extends StateMonsterEntity implements TargetingEntity 
     );
 
     public ShamanEntity(EntityType<? extends ShamanEntity> ignored, Level level) {
-        super(EntityRegistry.SHAMAN.get(), level, BLEND_TICKS);
+        super(EntityRegistry.SHAMAN.get(), level, BLEND_TICKS,
+                (ServerBossEvent) new ServerBossEvent(SHAMAN_NAME_COMPONENT, BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false),
+                ShamanAI::updateActivity,
+                cooldowns);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -74,57 +78,21 @@ public class ShamanEntity extends StateMonsterEntity implements TargetingEntity 
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_SHOWING_SHIELD, false);
-    }
-
-    @Override
-    protected void customServerAiStep(ServerLevel serverLevel) {
-        super.customServerAiStep(serverLevel);
-        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
-        ShamanAI.updateActivity(this);
-        ((Brain<ShamanEntity>) getBrain()).tick(serverLevel, this);
-    }
-
-    @Override
-    public void startSeenByPlayer(ServerPlayer serverPlayer) {
-        super.startSeenByPlayer(serverPlayer);
-        this.bossEvent.addPlayer(serverPlayer);
-    }
-
-    @Override
-    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
-        super.stopSeenByPlayer(serverPlayer);
-        this.bossEvent.removePlayer(serverPlayer);
+        builder.define(DATA_SHIELD_HEALTH, 100f);
     }
 
     @Override
     protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return ShamanAI.makeBrain(this, dynamic);
+        return (new ShamanAI()).makeBrain(this, dynamic);
     }
 
-    @Contract(value = "null->false")
-    public boolean canTargetEntity(@Nullable Entity entity) {
-        if (!(entity instanceof Player player) ||
-                this.level() != entity.level() ||
-                !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
-                this.isAlliedTo(entity) ||
-                player.isInvulnerable() || player.isDeadOrDying()) {
-            return false;
-        }
-        return this.level().getWorldBorder().isWithinBounds(player.getBoundingBox());
+    public Entity getInstance() {
+        return this;
     }
 
     @Override
     public void tick() {
         super.tick();
-
-        cooldowns.forEach((memoryModuleType, cooldown) -> {
-            if (!isDeadOrDying() && getBrain().getMemory(memoryModuleType).isPresent()) {
-                this.getBrain().setMemory(memoryModuleType, getBrain().getMemory(memoryModuleType).get() - 1);
-                if (getBrain().getMemory(memoryModuleType).get() < -10) {
-                    getBrain().setMemory(memoryModuleType, cooldown);
-                }
-            }
-        });
         
         if (tickCount % 20 == 0) {
             setShowingShield(!level().getEntities(this, Util.squareAABB(position().add(0, 1.5, 0), SHIELD_DISTANCE),
@@ -140,8 +108,11 @@ public class ShamanEntity extends StateMonsterEntity implements TargetingEntity 
                 summonAttack();
             } else if (isWhirlpooling() && t == 10) {
                 whirlpoolAttack(getAttackableFromBrain(), serverLevel);
-            } else if (isCursing() && t == 10) {
+            } else if (isCursing() && (t == 10 || t == 15 || t == 20)) {
                 curseAttack(getAttackableFromBrain(), serverLevel);
+            } else if (isWeakened() && getTicksSinceLastChange() >= WEAKENED_DURATION) {
+                setIdle();
+                setShieldHealth(80);
             }
         }
     }
@@ -152,13 +123,13 @@ public class ShamanEntity extends StateMonsterEntity implements TargetingEntity 
 
         if (getRandom().nextFloat() < 0.333) {
             weapon = new EtherealHammerEntity(null, serverLevel);
-        } else if (getRandom().nextFloat() < 0.333) {
+        } else if (getRandom().nextFloat() < 0.5) {
             weapon = new EtherealHandsEntity(null, serverLevel);
         } else {
             weapon = new EtherealSwordEntity(null, serverLevel);
         }
 
-        weapon.setPos(position().add(v.scale(3)).add(0, 1.5, 0));
+        weapon.setPos(target.position().add(0, 1, 0));
         float[] angles = Util.getXYRot(v);
         weapon.setXRot(angles[0]);
         weapon.setYRot(angles[1]);
@@ -167,7 +138,7 @@ public class ShamanEntity extends StateMonsterEntity implements TargetingEntity 
 
     public void summonAttack() {
         if (!(level() instanceof ServerLevel serverLevel)) return;
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 8; i++) {
             Util.spawnMonsterRandomlyAroundEntity(() -> new IcedCreeperEntity(null, serverLevel),
                     serverLevel, this, 5, 10);
             Util.spawnMonsterRandomlyAroundEntity(() -> new IcedSkeletonEntity(null, serverLevel),
@@ -193,31 +164,48 @@ public class ShamanEntity extends StateMonsterEntity implements TargetingEntity 
         serverLevel.addFreshEntity(curse);
     }
 
-    @Nullable
-    protected LivingEntity getAttackableFromBrain() {
-        return this.getBrain().getMemory(MemoryModuleType.NEAREST_ATTACKABLE).orElse(null);
-    }
-
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
-        if (DATA_STATE.equals(accessor)) {
-            if (isIdle()) {
-                if (getBrain().getMemory(MemoryModuleType.LOOK_TARGET).isPresent()) {
-                    getBrain().setMemory(MemoryModuleType.WALK_TARGET,
-                            new WalkTarget(getBrain().getMemory(MemoryModuleType.LOOK_TARGET).get(), 1, 2));
-                }
-            }
+    public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
+        if (source.getDirectEntity() instanceof Projectile) {
+            damage *= 0.2f;
         }
 
-        super.onSyncedDataUpdated(accessor);
+        if (isShowingShield() && isShieldWorking()) {
+            damageShield(damage);
+            return false;
+        }
+        if (isWeakened()) {
+            damage *= 1.5f;
+        }
+        return super.hurtServer(level, source, damage);
     }
 
     public boolean isShowingShield() {
-        return this.entityData.get(DATA_SHOWING_SHIELD);
+        return this.entityData.get(DATA_SHOWING_SHIELD) && isShieldWorking();
     }
 
     public void setShowingShield(boolean showingShield) {
         this.entityData.set(DATA_SHOWING_SHIELD, showingShield);
+    }
+
+    public float getShieldHealth() {
+        return this.entityData.get(DATA_SHIELD_HEALTH);
+    }
+
+    public boolean isShieldWorking() {
+        return this.entityData.get(DATA_SHIELD_HEALTH) > 0;
+    }
+
+    public void setShieldHealth(float shieldHealth) {
+        this.entityData.set(DATA_SHIELD_HEALTH, shieldHealth);
+    }
+
+    public void damageShield(float damage) {
+        this.entityData.set(DATA_SHIELD_HEALTH, getShieldHealth() - damage);
+        if (getShieldHealth() < 0) {
+            setShieldHealth(0);
+            setWeakened();
+        }
     }
 
     public boolean isSummoning() {
@@ -245,6 +233,15 @@ public class ShamanEntity extends StateMonsterEntity implements TargetingEntity 
     public void setCursing() {
         this.setLastState(getCurrentState());
         this.setCurrentState("cursing");
+    }
+
+    public boolean isWeakened() {
+        return getCurrentState().equals("weakened");
+    }
+
+    public void setWeakened() {
+        this.setLastState(getCurrentState());
+        this.setCurrentState("weakened");
     }
 
     public boolean isEtherealing() {

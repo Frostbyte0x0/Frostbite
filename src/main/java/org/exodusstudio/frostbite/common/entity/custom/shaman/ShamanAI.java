@@ -1,75 +1,48 @@
 package org.exodusstudio.frostbite.common.entity.custom.shaman;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.behavior.*;
-import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
+import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
+import net.minecraft.world.entity.ai.behavior.SetEntityLookTargetSometimes;
+import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.ai.sensing.Sensor;
-import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
-import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateBossAI;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity.*;
 
-
-public class ShamanAI {
-    private static final List<SensorType<? extends Sensor<? super ShamanEntity>>> SENSOR_TYPES =
-            List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.TARGET_ENTITY_SENSOR.get());
+public class ShamanAI extends StateBossAI<ShamanEntity> {
     private static final List<MemoryModuleType<?>> MEMORY_TYPES = List.of(
-            MemoryModuleType.NEAREST_LIVING_ENTITIES,
-            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
-            MemoryModuleType.NEAREST_VISIBLE_PLAYER,
-            MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER,
-            MemoryModuleType.NEAREST_VISIBLE_NEMESIS,
-            MemoryModuleType.LOOK_TARGET,
-            MemoryModuleType.WALK_TARGET,
-            MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-            MemoryModuleType.PATH,
-            MemoryModuleType.ATTACK_TARGET,
-            MemoryModuleType.ATTACK_COOLING_DOWN,
-            MemoryModuleType.NEAREST_ATTACKABLE,
             MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(),
             MemoryModuleTypeRegistry.SUMMON_COOLDOWN.get(),
             MemoryModuleTypeRegistry.CURSE_COOLDOWN.get(),
             MemoryModuleTypeRegistry.WHIRLPOOL_COOLDOWN.get());
 
-    protected static Brain<?> makeBrain(ShamanEntity ignored, Dynamic<?> ops) {
-        Brain.Provider<ShamanEntity> provider = Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
-        Brain<ShamanEntity> brain = provider.makeBrain(ops);
-        initCoreActivity(brain);
-        initIdleActivity(brain);
-        initFightActivity(brain);
-        brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-        brain.setDefaultActivity(Activity.IDLE);
-        brain.useDefaultActivity();
-        setupCooldowns(brain);
-        return brain;
+    public List<MemoryModuleType<?>> getMemoryTypes() {
+        return Stream.concat(super.getMemoryTypes().stream(), MEMORY_TYPES.stream()).toList();
     }
 
-    private static void initCoreActivity(Brain<ShamanEntity> brain) {
+    protected void initCoreActivity(Brain<ShamanEntity> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new Swim<Mob>(0.8F),
                 SetEntityLookTargetSometimes.create(EntityType.PLAYER, 10, UniformInt.of(10, 30)),
                 new MoveToTargetSink(500, 700)));
     }
 
-    private static void initFightActivity(Brain<ShamanEntity> brain) {
+    protected void initFightActivity(Brain<ShamanEntity> brain) {
         brain.addActivityWithConditions(Activity.FIGHT, ImmutableList.of(
                 Pair.of(0, new Ethereal()),
                 Pair.of(0, new Whirlpool()),
@@ -78,22 +51,11 @@ public class ShamanAI {
                 Set.of(Pair.of(MemoryModuleType.NEAREST_ATTACKABLE, MemoryStatus.VALUE_PRESENT)));
     }
 
-    private static void initIdleActivity(Brain<ShamanEntity> brain) {
-        brain.addActivityWithConditions(Activity.IDLE,
-                ImmutableList.of(
-                        Pair.of(4, new RunOne<>(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
-                                Pair.of(RandomStroll.stroll(1), 1),
-                                Pair.of(new DoNothing(50, 100), 1),
-                                Pair.of(BehaviorBuilder.triggerIf(Entity::onGround), 2))))),
-                ImmutableSet.of()
-        );
-    }
-
     public static void updateActivity(ShamanEntity shaman) {
         shaman.getBrain().setActiveActivityToFirstValid(ImmutableList.of(Activity.FIGHT, Activity.IDLE));
     }
 
-    public static void setupCooldowns(Brain<ShamanEntity> brain) {
+    protected void setupCooldowns(Brain<ShamanEntity> brain) {
         brain.setMemory(MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get(), ETHEREAL_COOLDOWN);
         brain.setMemory(MemoryModuleTypeRegistry.WHIRLPOOL_COOLDOWN.get(), WHIRLPOOL_COOLDOWN);
         brain.setMemory(MemoryModuleTypeRegistry.CURSE_COOLDOWN.get(), CURSE_COOLDOWN);
@@ -113,7 +75,7 @@ public class ShamanAI {
 
         @Override
         protected boolean checkExtraStartConditions(ServerLevel serverLevel, ShamanEntity shaman) {
-            return shaman.getBrain().getMemory(MemoryModuleTypeRegistry.SUMMON_COOLDOWN.get()).get() <= 0;
+            return shaman.getBrain().getMemory(MemoryModuleTypeRegistry.SUMMON_COOLDOWN.get()).get() <= 0 && shaman.isIdle() && shaman.getRandom().nextFloat() < 0.2f;
         }
 
         @Override
@@ -142,8 +104,7 @@ public class ShamanAI {
         protected boolean checkExtraStartConditions(ServerLevel level, ShamanEntity shaman) {
             return shaman.isIdle() && shaman.getAttackableFromBrain() != null
                     && shaman.getBrain().getMemory(MemoryModuleTypeRegistry.WHIRLPOOL_COOLDOWN.get()).get() <= 0
-                    && shaman.distanceToSqr(shaman.getAttackableFromBrain()) <= 9
-                    && shaman.getRandom().nextFloat() < 0.025f;
+                    && shaman.distanceToSqr(shaman.getAttackableFromBrain()) <= 49;
         }
 
         @Override

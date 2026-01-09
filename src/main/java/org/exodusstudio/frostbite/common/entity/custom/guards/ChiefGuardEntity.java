@@ -7,35 +7,32 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
+import org.exodusstudio.frostbite.common.entity.custom.helper.StateBossMonster;
 import org.exodusstudio.frostbite.common.entity.goals.GuardBodyRotationControl;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class ChiefGuardEntity extends StateMonsterEntity implements TargetingEntity {
+public class ChiefGuardEntity extends StateBossMonster<ChiefGuardEntity> implements TargetingEntity {
     private static final EntityDataAccessor<Boolean> DATA_FREEZE_BODY_ROT =
             SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final Component NAME_COMPONENT = Component.translatable("entity.chief_guard.boss_bar");
@@ -55,7 +52,10 @@ public class ChiefGuardEntity extends StateMonsterEntity implements TargetingEnt
     );
 
     public ChiefGuardEntity(EntityType<? extends Monster> ignored, Level level) {
-        super(EntityRegistry.CHIEF_GUARD.get(), level, BLEND_TICKS);
+        super(EntityRegistry.CHIEF_GUARD.get(), level, BLEND_TICKS,
+                (ServerBossEvent) new ServerBossEvent(NAME_COMPONENT, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false),
+                ChiefGuardAI::updateActivity,
+                cooldowns);
         setIdle();
     }
 
@@ -74,54 +74,17 @@ public class ChiefGuardEntity extends StateMonsterEntity implements TargetingEnt
     }
 
     @Override
-    protected void customServerAiStep(ServerLevel serverLevel) {
-        super.customServerAiStep(serverLevel);
-        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
-        ChiefGuardAI.updateActivity(this);
-        ((Brain<ChiefGuardEntity>) getBrain()).tick(serverLevel, this);
-    }
-
-    @Override
-    public void startSeenByPlayer(ServerPlayer serverPlayer) {
-        super.startSeenByPlayer(serverPlayer);
-        this.bossEvent.addPlayer(serverPlayer);
-    }
-
-    @Override
-    public void stopSeenByPlayer(ServerPlayer serverPlayer) {
-        super.stopSeenByPlayer(serverPlayer);
-        this.bossEvent.removePlayer(serverPlayer);
-    }
-
-    @Override
     protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return ChiefGuardAI.makeBrain(this, dynamic);
+        return (new ChiefGuardAI()).makeBrain(this, dynamic);
     }
 
-    @Contract(value = "null->false")
-    public boolean canTargetEntity(@Nullable Entity entity) {
-        if (!(entity instanceof Player player) ||
-                this.level() != entity.level() ||
-                !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) ||
-                this.isAlliedTo(entity) ||
-                player.isInvulnerable() || player.isDeadOrDying()) {
-            return false;
-        }
-        return this.level().getWorldBorder().isWithinBounds(player.getBoundingBox());
+    public Entity getInstance() {
+        return this;
     }
 
     @Override
     public void tick() {
         super.tick();
-
-        cooldowns.forEach((memoryModuleType, cooldown) -> {
-            if (!isDeadOrDying() && getBrain().getMemory(memoryModuleType).isPresent()) {
-                this.getBrain().setMemory(memoryModuleType, getBrain().getMemory(memoryModuleType).get() - 1);
-                if (getBrain().getMemory(memoryModuleType).get() < -10) {
-                    getBrain().setMemory(memoryModuleType, cooldown);
-                }
-            }
-        });
 
         if (getAttackableFromBrain() != null && level() instanceof ServerLevel serverLevel) {
             float t = currentAnimationState.getTimeInMillis(tickCount) / 50f;
@@ -211,25 +174,6 @@ public class ChiefGuardEntity extends StateMonsterEntity implements TargetingEnt
         return entity.distanceToSqr(this) < 9;
     }
 
-    @Nullable
-    protected LivingEntity getAttackableFromBrain() {
-        return getBrain().getMemory(MemoryModuleType.NEAREST_ATTACKABLE).orElse(null);
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
-        if (DATA_STATE.equals(accessor)) {
-            if (isIdle()) {
-                if (getBrain().getMemory(MemoryModuleType.LOOK_TARGET).isPresent()) {
-                    getBrain().setMemory(MemoryModuleType.WALK_TARGET,
-                            new WalkTarget(getBrain().getMemory(MemoryModuleType.LOOK_TARGET).get(), 1, 2));
-                }
-            }
-        }
-
-        super.onSyncedDataUpdated(accessor);
-    }
-
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
         if (source.getEntity() instanceof LivingEntity attacker) {
@@ -261,11 +205,6 @@ public class ChiefGuardEntity extends StateMonsterEntity implements TargetingEnt
     @Override
     protected BodyRotationControl createBodyControl() {
         return new GuardBodyRotationControl(this);
-    }
-
-    @Override
-    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return false;
     }
 
     public void setAttacking() {
