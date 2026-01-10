@@ -37,4 +37,9 @@ public class FrozenRemnantsRenderer extends LivingEntityRenderer<FrozenRemnantsE
             renderState.bodyRot = frozenRemnants.getYRot();
         }
     }
+
+    @Override
+    protected boolean affectedByCulling(FrozenRemnantsEntity display) {
+        return false;
+    }
 }

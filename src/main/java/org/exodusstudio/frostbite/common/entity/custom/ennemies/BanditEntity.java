@@ -21,10 +21,10 @@ import org.exodusstudio.frostbite.common.entity.goals.BanditFleeGoal;
 import org.exodusstudio.frostbite.common.entity.goals.BanditStealGoal;
 import org.exodusstudio.frostbite.common.entity.goals.ActionStrollGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class BanditEntity extends Animal implements CustomTemperatureEntity {
+public class BanditEntity extends Animal implements TemperatureEntity {
     private static final EntityDataAccessor<String> DATA_LAST_STATE =
             SynchedEntityData.defineId(BanditEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_STATE =
@@ -176,5 +176,10 @@ public class BanditEntity extends Animal implements CustomTemperatureEntity {
     @Override
     public int getBaseOuterTempIncrease() {
         return 2;
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }

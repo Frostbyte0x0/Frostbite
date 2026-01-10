@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -27,10 +28,10 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.goals.TanukiDigGoal;
 import org.exodusstudio.frostbite.common.entity.goals.TanukiSitGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class TanukiEntity extends Animal implements CustomTemperatureEntity {
+public class TanukiEntity extends Animal implements TemperatureEntity {
     private static final EntityDataAccessor<Byte> DATA_ID_FLAGS =
             SynchedEntityData.defineId(TanukiEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> EAT_COUNTER =
@@ -233,5 +234,10 @@ public class TanukiEntity extends Animal implements CustomTemperatureEntity {
     @Override
     public int getBaseOuterTempIncrease() {
         return 3;
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -19,9 +20,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.goals.BorealBearAttackGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
-public class BorealBearEntity extends Monster implements CustomTemperatureEntity {
+public class BorealBearEntity extends Monster implements TemperatureEntity {
     private static final EntityDataAccessor<Boolean> DATA_IS_ATTACKING =
             SynchedEntityData.defineId(BorealBearEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_TICKS_SINCE_LAST_ATTACK =
@@ -101,6 +102,11 @@ public class BorealBearEntity extends Monster implements CustomTemperatureEntity
     @Override
     public int getBaseOuterTempIncrease() {
         return 4;
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 
     public boolean isAttacking() {

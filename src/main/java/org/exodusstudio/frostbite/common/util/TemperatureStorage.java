@@ -17,12 +17,15 @@ import java.util.Map;
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 public class TemperatureStorage {
+    public static float MIN_INNER_TEMP;
     public static final float MAX_TEMP = 20f;
     public static final float MIN_TEMP = -60f;
+    public static final float INNER_TEMP_DIFFERENCE = 10;
     private final HashMap<String, List<Float>> entityTemperatures = new HashMap<>();
     private static final Map<String, Float> tempsPerBlock = new HashMap<>();
 
     public static TemperatureStorage init() {
+        MIN_INNER_TEMP = MIN_TEMP + INNER_TEMP_DIFFERENCE;
         tempsPerBlock.put("lava", 2f);
         tempsPerBlock.put("torch", 0.5f);
         tempsPerBlock.put("wall_torch", 1f);
@@ -86,7 +89,7 @@ public class TemperatureStorage {
                 }
 
                 outerTemperature = Math.clamp(outerTempChange + outerTemperature, MIN_TEMP, MAX_TEMP);
-                if (entity instanceof CustomTemperatureEntity customTempEntity) {
+                if (entity instanceof TemperatureEntity customTempEntity) {
                     outerTemperature += customTempEntity.getBaseOuterTempIncrease();
                 }
                 entityTemperatures.put(entityUUID, List.of(innerTemperature, outerTemperature));
@@ -120,7 +123,7 @@ public class TemperatureStorage {
 
     public float updateInnerTemperature(float innerTemperature, float outerTemperature) {
         if (innerTemperature != outerTemperature) {
-            float delta = outerTemperature - innerTemperature + 20;
+            float delta = outerTemperature - innerTemperature + INNER_TEMP_DIFFERENCE;
             innerTemperature += delta * 0.2f;
         }
         return innerTemperature;

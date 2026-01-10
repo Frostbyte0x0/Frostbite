@@ -17,11 +17,11 @@
   "client": [
     "AbstractContainerScreenMixin",
     "CreativeModeInventoryScreenMixin",
-    "EntityRenderDispatcherMixin",
     "GuiMixin",
     "InventoryScreenMixin",
     "LevelRendererMixin",
     "MouseHandlerMixin",
+    "PostChainMixin",
     "WeatherEffectRendererMixin"
   ],
   "injectors": {

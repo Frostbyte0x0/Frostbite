@@ -22,9 +22,9 @@ import org.exodusstudio.frostbite.common.entity.custom.projectiles.FireSliceEnti
 import org.exodusstudio.frostbite.common.entity.goals.TorchSliceGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.util.CustomTemperatureEntity;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
-public class TorchEntity extends Monster implements RangedAttackMob, CustomTemperatureEntity {
+public class TorchEntity extends Monster implements RangedAttackMob, TemperatureEntity {
     private static final EntityDataAccessor<String> DATA_STATE =
             SynchedEntityData.defineId(TorchEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_LAST_STATE =
@@ -145,5 +145,10 @@ public class TorchEntity extends Monster implements RangedAttackMob, CustomTempe
     @Override
     public int getBaseOuterTempIncrease() {
         return 5;
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }
