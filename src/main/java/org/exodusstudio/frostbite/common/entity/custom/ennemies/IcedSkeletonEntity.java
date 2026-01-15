@@ -2,6 +2,7 @@ package org.exodusstudio.frostbite.common.entity.custom.ennemies;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -13,10 +14,11 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
 import java.util.function.Predicate;
 
-public class IcedSkeletonEntity extends Skeleton {
+public class IcedSkeletonEntity extends Skeleton implements TemperatureEntity {
     public IcedSkeletonEntity(EntityType<? extends Skeleton> ignored, Level level) {
         super(EntityRegistry.ICED_SKELETON.get(), level);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
@@ -26,7 +28,7 @@ public class IcedSkeletonEntity extends Skeleton {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.FOLLOW_RANGE, 15)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
+                .add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
     @Override
@@ -43,5 +45,10 @@ public class IcedSkeletonEntity extends Skeleton {
     @Override
     public boolean canFreeze() {
         return false;
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }

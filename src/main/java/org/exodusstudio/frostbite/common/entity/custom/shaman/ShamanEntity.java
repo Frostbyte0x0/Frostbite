@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -84,10 +83,6 @@ public class ShamanEntity extends StateBossMonster<ShamanEntity> implements Targ
     @Override
     protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
         return (new ShamanAI()).makeBrain(this, dynamic);
-    }
-
-    public Entity getInstance() {
-        return this;
     }
 
     @Override

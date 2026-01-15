@@ -5,10 +5,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
-public class StateMonsterEntity extends Monster {
+public class StateMonsterEntity extends Monster implements TemperatureEntity {
     protected static final EntityDataAccessor<String> DATA_LAST_STATE =
             SynchedEntityData.defineId(StateMonsterEntity.class, EntityDataSerializers.STRING);
     protected static final EntityDataAccessor<String> DATA_STATE =
@@ -91,5 +93,10 @@ public class StateMonsterEntity extends Monster {
 
     public void incrementTicksSinceLastChange() {
         setTicksSinceLastChange(getTicksSinceLastChange() + 1);
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }

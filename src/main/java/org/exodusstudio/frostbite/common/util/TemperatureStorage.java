@@ -89,9 +89,13 @@ public class TemperatureStorage {
                 }
 
                 outerTemperature = Math.clamp(outerTempChange + outerTemperature, MIN_TEMP, MAX_TEMP);
-                if (entity instanceof TemperatureEntity customTempEntity) {
-                    outerTemperature += customTempEntity.getBaseOuterTempIncrease();
+                if (entity instanceof TemperatureEntity tempEntity) {
+                    outerTemperature += tempEntity.getBaseOuterTempIncrease();
+                    tempEntity.tickAttributes();
                 }
+
+                innerTemperature = Math.round(innerTemperature * 100f) / 100f;
+                outerTemperature = Math.round(outerTemperature * 100f) / 100f;
                 entityTemperatures.put(entityUUID, List.of(innerTemperature, outerTemperature));
             }
         }

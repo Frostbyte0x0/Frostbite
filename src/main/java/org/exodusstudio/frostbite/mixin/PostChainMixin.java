@@ -6,8 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelTargetBundle;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

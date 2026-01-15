@@ -17,9 +17,13 @@
   "client": [
     "AbstractContainerScreenMixin",
     "CreativeModeInventoryScreenMixin",
+    "EntityRendererMixin",
+    "EntityRenderStateMixin",
     "GuiMixin",
     "InventoryScreenMixin",
     "LevelRendererMixin",
+    "LivingEntityRendererMixin",
+    "MobRendererMixin",
     "MouseHandlerMixin",
     "PostChainMixin",
     "WeatherEffectRendererMixin"

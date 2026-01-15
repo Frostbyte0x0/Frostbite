@@ -13,8 +13,9 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
-public class IcedZombieEntity extends Zombie {
+public class IcedZombieEntity extends Zombie implements TemperatureEntity {
     public IcedZombieEntity(EntityType<? extends Zombie> ignored, Level level) {
         super(EntityRegistry.ICED_ZOMBIE.get(), level);
     }
@@ -23,7 +24,7 @@ public class IcedZombieEntity extends Zombie {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 35)
                 .add(Attributes.FOLLOW_RANGE, 35)
-                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ATTACK_DAMAGE, 4)
                 .add(Attributes.ARMOR, 3)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
@@ -45,5 +46,10 @@ public class IcedZombieEntity extends Zombie {
     @Override
     public boolean canFreeze() {
         return false;
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }

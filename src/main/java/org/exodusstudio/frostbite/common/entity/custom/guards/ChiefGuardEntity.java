@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -76,10 +75,6 @@ public class ChiefGuardEntity extends StateBossMonster<ChiefGuardEntity> impleme
     @Override
     protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
         return (new ChiefGuardAI()).makeBrain(this, dynamic);
-    }
-
-    public Entity getInstance() {
-        return this;
     }
 
     @Override

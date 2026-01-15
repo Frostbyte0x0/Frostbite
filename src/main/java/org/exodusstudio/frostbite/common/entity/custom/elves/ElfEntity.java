@@ -26,11 +26,10 @@ import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity
 import org.exodusstudio.frostbite.common.entity.goals.ActionStrollGoal;
 import org.exodusstudio.frostbite.common.entity.goals.ElfHuddleAroundHealerGoal;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
 import java.util.Optional;
 
-public abstract class ElfEntity extends StateMonsterEntity implements RangedAttackMob, TemperatureEntity {
+public abstract class ElfEntity extends StateMonsterEntity implements RangedAttackMob {
     private static final EntityDataAccessor<Integer> DATA_COOLDOWN_TICKS =
             SynchedEntityData.defineId(ElfEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Optional<BlockPos>> DATA_HEALER_POSITION =
@@ -101,12 +100,7 @@ public abstract class ElfEntity extends StateMonsterEntity implements RangedAtta
         } else {
             jumpingAnimationState.stop();
         }
-
     }
-
-//    private void tickAttributes() {
-//        this.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(lerpStrengthModifier(0.2, 0.3));
-//    }
 
     @Override
     protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource p_21385_, boolean p_21387_) {
@@ -186,10 +180,5 @@ public abstract class ElfEntity extends StateMonsterEntity implements RangedAtta
     @Override
     public boolean canFreeze() {
         return false;
-    }
-
-    @Override
-    public LivingEntity getInstance() {
-        return this;
     }
 }

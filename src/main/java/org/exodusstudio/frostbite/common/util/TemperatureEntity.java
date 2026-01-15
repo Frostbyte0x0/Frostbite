@@ -21,7 +21,7 @@ public interface TemperatureEntity {
     }
 
     default float getStrengthModifier() {
-        float d = (Frostbite.temperatureStorage.getTemperature(getInstance(), true) + TemperatureStorage.MIN_INNER_TEMP) /
+        float d = (Frostbite.temperatureStorage.getTemperature(getInstance(), true) - TemperatureStorage.MIN_INNER_TEMP) /
                 (TemperatureStorage.MAX_TEMP - TemperatureStorage.MIN_INNER_TEMP);
         if (scalesWithCold()) {
             return 1 - d;
@@ -39,7 +39,13 @@ public interface TemperatureEntity {
 
     default Map<Holder<Attribute>, AttributeModifier> getAttributeModifiers() {
         return Map.of(Attributes.MOVEMENT_SPEED, new AttributeModifier(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cold_speed_modifier"),
-                lerpStrengthModifier(-0.15f, 0.15f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                lerpStrengthModifier(-0.5f, 0.5f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+    }
+
+    default void tickAttributes() {
+        getAttributeModifiers().forEach((attribute, modifier) -> {
+            if (getInstance().getAttribute(attribute) != null) getInstance().getAttribute(attribute).addOrReplacePermanentModifier(modifier);
+        });
     }
 
     LivingEntity getInstance();

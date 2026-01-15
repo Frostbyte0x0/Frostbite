@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.item.ThermalLensItem;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class ThermalLensOverlay {
@@ -28,7 +29,7 @@ public class ThermalLensOverlay {
         float f = deltaTracker.getGameTimeDeltaTicks();
         scopeScale = Mth.lerp(0.5F * f, scopeScale, 1.125F);
         if (mc.options.getCameraType().isFirstPerson()) {
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.THERMAL_LENS) && player.isUsingItem()) {
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof ThermalLensItem && player.isUsingItem()) {
                 renderSpyglassOverlay(guiGraphics, scopeScale);
             } else {
                 scopeScale = 0.5F;

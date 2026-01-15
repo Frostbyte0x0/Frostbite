@@ -176,6 +176,7 @@ public class CreativeModeTabRegistry {
 
                     output.accept(ItemRegistry.CONFETTI_POPPER);
                     output.accept(ItemRegistry.THERMAL_LENS);
+                    output.accept(ItemRegistry.ADVANCED_THERMAL_LENS);
                     output.accept(ItemRegistry.HELMET_WEAVING_PATTERN);
                     output.accept(ItemRegistry.CHESTPLATE_WEAVING_PATTERN);
                     output.accept(ItemRegistry.LEGGINGS_WEAVING_PATTERN);

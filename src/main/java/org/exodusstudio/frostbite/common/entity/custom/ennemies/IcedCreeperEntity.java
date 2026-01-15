@@ -13,8 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
-public class IcedCreeperEntity extends Creeper {
+public class IcedCreeperEntity extends Creeper implements TemperatureEntity {
     protected final int explosionRadius = 4;
 
     public IcedCreeperEntity(EntityType<? extends Creeper> ignored, Level level) {
@@ -37,7 +38,7 @@ public class IcedCreeperEntity extends Creeper {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.FOLLOW_RANGE, 15)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
+                .add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
     @Override
@@ -53,5 +54,10 @@ public class IcedCreeperEntity extends Creeper {
     @Override
     public boolean canFreeze() {
         return false;
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }
