@@ -29,12 +29,12 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
 
     @Inject(at = @At("HEAD"), method = "submit")
     private void submit(S renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState, CallbackInfo ci) {
-        if (frostbite$shouldShowEntityOutlines()) {
+        UUID uuid = ((UUIDState) renderState).frostbite$getUUID();
+        if (uuid == null) return;
+        if (frostbite$shouldShowEntityOutlines() && Minecraft.getInstance().level.getEntity(uuid) instanceof LivingEntity l && l.distanceTo(Minecraft.getInstance().player) <= 30) {
             renderState.nameTag = null;
             poseStack.pushPose();
             poseStack.translate(0, 0.5, 0);
-            UUID uuid = ((UUIDState) renderState).frostbite$getUUID();
-            if (uuid == null) return;
             nodeCollector.submitNameTag(poseStack, renderState.nameTagAttachment, 0,
                     Component.literal(Frostbite.temperatureStorage.getTemperature(uuid.toString(), false) + "°C"),
                     true, renderState.lightCoords, renderState.distanceToCameraSq, cameraRenderState);

@@ -1,11 +1,14 @@
 package org.exodusstudio.frostbite.common.entity.custom.ennemies;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,8 +21,8 @@ import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
 import java.util.function.Predicate;
 
-public class IcedSkeletonEntity extends Skeleton implements TemperatureEntity {
-    public IcedSkeletonEntity(EntityType<? extends Skeleton> ignored, Level level) {
+public class IcedSkeletonEntity extends AbstractSkeleton implements TemperatureEntity {
+    public IcedSkeletonEntity(EntityType<? extends IcedSkeletonEntity> ignored, Level level) {
         super(EntityRegistry.ICED_SKELETON.get(), level);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
     }
@@ -28,7 +31,11 @@ public class IcedSkeletonEntity extends Skeleton implements TemperatureEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.FOLLOW_RANGE, 15)
-                .add(Attributes.MOVEMENT_SPEED, 0.2);
+                .add(Attributes.MOVEMENT_SPEED, 0.225);
+    }
+
+    protected SoundEvent getStepSound() {
+        return SoundEvents.SKELETON_STEP;
     }
 
     @Override

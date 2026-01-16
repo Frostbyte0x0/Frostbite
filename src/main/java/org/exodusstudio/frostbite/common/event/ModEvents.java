@@ -25,10 +25,7 @@ import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
-import net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent;
-import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
@@ -48,6 +45,7 @@ import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.PlayerWrapper;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.ArrayList;
@@ -144,6 +142,17 @@ public class ModEvents {
             }
 
             Frostbite.weatherInfo.blizzardLevel = Mth.clamp(Frostbite.weatherInfo.blizzardLevel, 0.0F, 1.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void spicyStew(FinalizeSpawnEvent event) {
+        if (event.getEntity() instanceof TemperatureEntity temperatureEntity) {
+            Frostbite.temperatureStorage.setTemperatures(
+                    temperatureEntity.getInstance().getStringUUID(),
+                    temperatureEntity.getSpawnTemperature(),
+                    temperatureEntity.getSpawnTemperature()
+            );
         }
     }
 

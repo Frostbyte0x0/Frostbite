@@ -24,7 +24,7 @@ public class IcedZombieEntity extends Zombie implements TemperatureEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 35)
                 .add(Attributes.FOLLOW_RANGE, 35)
-                .add(Attributes.MOVEMENT_SPEED, 0.2)
+                .add(Attributes.MOVEMENT_SPEED, 0.225)
                 .add(Attributes.ATTACK_DAMAGE, 4)
                 .add(Attributes.ARMOR, 3)
                 .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);

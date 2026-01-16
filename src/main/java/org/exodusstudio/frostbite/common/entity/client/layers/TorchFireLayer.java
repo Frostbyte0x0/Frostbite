@@ -30,7 +30,7 @@ public class TorchFireLayer extends RenderLayer<TorchRenderState, TorchModel> {
             ).subtract(Minecraft.getInstance().player.getPosition(state.partialTick));
             Vec3 n = vec3.normalize();
 
-            stack.translate(0, -0.75, 0.1);
+            stack.translate(0, 0.75, 0.1);
             stack.mulPose(Axis.XP.rotationDegrees(180));
             stack.mulPose(Axis.YP.rotationDegrees(state.bodyRot));
             stack.translate(n.x, 0, n.z);
@@ -38,7 +38,7 @@ public class TorchFireLayer extends RenderLayer<TorchRenderState, TorchModel> {
             stack.mulPose(Axis.YP.rotationDegrees((float) (Math.atan2(vec3.z, vec3.x) * (-180 / Math.PI))));
             stack.scale(7, 7, 7);
 
-            itemstackrenderstate.submit(stack, submitNodeCollector, i, OverlayTexture.NO_OVERLAY, -1);
+            itemstackrenderstate.submit(stack, submitNodeCollector, i, OverlayTexture.NO_OVERLAY, 0);
             stack.popPose();
         }
     }

@@ -148,6 +148,10 @@ public class TemperatureStorage {
         entityTemperatures.put(entityUUID, temps);
     }
 
+    public void setTemperatures(String entityUUID, float inner, float outer) {
+        entityTemperatures.put(entityUUID, List.of(inner, outer));
+    }
+
     public float getTemperature(LivingEntity entity, boolean inner) {
         String entityUUID = entity.getStringUUID();
         List<Float> list;

@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.entity.custom.ennemies.TorchEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Vector3fc;
@@ -22,6 +23,10 @@ import java.util.List;
 public class FireSliceEntity extends Projectile {
     private static final EntityDataAccessor<Vector3fc> DATA_SHOOT_DIRECTION =
             SynchedEntityData.defineId(FireSliceEntity.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Float> DATA_DAMAGE =
+            SynchedEntityData.defineId(FireSliceEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DATA_FIRE_TIME =
+            SynchedEntityData.defineId(FireSliceEntity.class, EntityDataSerializers.INT);
 
     public FireSliceEntity(EntityType<? extends Entity> ignored, Level level) {
         super(EntityRegistry.FIRE_SLICE.get(), level);
@@ -55,8 +60,9 @@ public class FireSliceEntity extends Projectile {
                     entity -> entity != this.getOwner()
             );
             for (LivingEntity entity : entities) {
-                entity.hurtServer(serverLevel, this.damageSources().magic(), 4);
-                entity.setRemainingFireTicks(getRemainingFireTicks() + 80);
+                if (entity instanceof TorchEntity) continue;
+                entity.hurtServer(serverLevel, this.damageSources().magic(), getDamage());
+                entity.setRemainingFireTicks(getRemainingFireTicks() + getFireTime());
             }
         }
     }
@@ -64,6 +70,8 @@ public class FireSliceEntity extends Projectile {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_SHOOT_DIRECTION, Vec3.ZERO.toVector3f());
+        builder.define(DATA_DAMAGE, 4f);
+        builder.define(DATA_FIRE_TIME, 80);
     }
 
     @Override
@@ -89,5 +97,21 @@ public class FireSliceEntity extends Projectile {
 
     public Vec3 getShootDirection() {
         return new Vec3(this.entityData.get(DATA_SHOOT_DIRECTION));
+    }
+
+    public void setDamage(float damage) {
+        this.entityData.set(DATA_DAMAGE, damage);
+    }
+
+    public float getDamage() {
+        return this.entityData.get(DATA_DAMAGE);
+    }
+
+    public void setFireTime(int ticks) {
+        this.entityData.set(DATA_FIRE_TIME, ticks);
+    }
+
+    public int getFireTime() {
+        return this.entityData.get(DATA_FIRE_TIME);
     }
 }

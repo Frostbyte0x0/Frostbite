@@ -90,6 +90,8 @@ public class TorchEntity extends Monster implements RangedAttackMob, Temperature
                 FireSliceEntity fireSlice = new FireSliceEntity(serverLevel, dir);
                 fireSlice.setOwner(this);
                 fireSlice.setPos(pos);
+                fireSlice.setFireTime((int) (40 * (1 + getStrengthModifier())));
+                fireSlice.setDamage(4 * (1 + getStrengthModifier()));
 
                 serverLevel.addFreshEntityWithPassengers(fireSlice);
                 serverLevel.gameEvent(GameEvent.ENTITY_PLACE, this.blockPosition(), GameEvent.Context.of(fireSlice));
@@ -145,6 +147,11 @@ public class TorchEntity extends Monster implements RangedAttackMob, Temperature
     @Override
     public int getBaseOuterTempIncrease() {
         return 5;
+    }
+
+    @Override
+    public boolean scalesWithCold() {
+        return false;
     }
 
     @Override

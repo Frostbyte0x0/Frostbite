@@ -76,8 +76,10 @@ public class TorchModel extends EntityModel<TorchRenderState> {
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        poseStack.pushPose();
         poseStack.translate(0, 1.5, 0);
         model.render(poseStack, buffer, packedLight, packedOverlay, color);
+        poseStack.popPose();
     }
 
     public ModelPart getModel() {

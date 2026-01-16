@@ -38,14 +38,26 @@ public interface TemperatureEntity {
     }
 
     default Map<Holder<Attribute>, AttributeModifier> getAttributeModifiers() {
-        return Map.of(Attributes.MOVEMENT_SPEED, new AttributeModifier(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cold_speed_modifier"),
-                lerpStrengthModifier(-0.5f, 0.5f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        return Map.of(
+                Attributes.MOVEMENT_SPEED,
+                new AttributeModifier(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cold_speed_modifier"),
+                lerpStrengthModifier(-0.3f, 0.3f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                Attributes.ATTACK_DAMAGE,
+                new AttributeModifier(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cold_attack_modifier"),
+                lerpStrengthModifier(-0.5f, 0.5f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                Attributes.ARMOR,
+                new AttributeModifier(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cold_armor_modifier"),
+                lerpStrengthModifier(-0.3f, 0.3f), AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 
     default void tickAttributes() {
         getAttributeModifiers().forEach((attribute, modifier) -> {
-            if (getInstance().getAttribute(attribute) != null) getInstance().getAttribute(attribute).addOrReplacePermanentModifier(modifier);
+            if (getInstance().getAttribute(attribute) != null) getInstance().getAttribute(attribute).addOrUpdateTransientModifier(modifier);
         });
+    }
+
+    default float getSpawnTemperature() {
+        return scalesWithCold() ? TemperatureStorage.MIN_TEMP : TemperatureStorage.MAX_TEMP;
     }
 
     LivingEntity getInstance();

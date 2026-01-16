@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.custom.ennemies;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -38,17 +39,29 @@ public class IcedCreeperEntity extends Creeper implements TemperatureEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.FOLLOW_RANGE, 15)
-                .add(Attributes.MOVEMENT_SPEED, 0.2);
+                .add(Attributes.MOVEMENT_SPEED, 0.225);
     }
 
     @Override
     protected void explodeCreeper() {
-        super.explodeCreeper();
-        for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(explosionRadius))) {
-            if (entity != this && distanceToSqr(entity) <= (explosionRadius * explosionRadius)) {
+        Level var2 = this.level();
+
+        if (var2 instanceof ServerLevel serverlevel) {
+            this.dead = true;
+            serverlevel.explode(this, this.getX(), this.getY(), this.getZ(), this.getExplosionRadius(), Level.ExplosionInteraction.MOB);
+            this.triggerOnDeathMobEffects(serverlevel, RemovalReason.KILLED);
+            this.discard();
+        }
+
+        for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(getExplosionRadius()))) {
+            if (entity != this && distanceToSqr(entity) <= (getExplosionRadius() * getExplosionRadius())) {
                 Frostbite.temperatureStorage.decreaseTemperature(entity, 20, false);
             }
         }
+    }
+
+    public float getExplosionRadius() {
+        return this.explosionRadius * (getStrengthModifier() + 0.5f);
     }
 
     @Override
