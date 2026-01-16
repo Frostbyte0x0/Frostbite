@@ -32,8 +32,8 @@ public class BreathEntityLike {
         if (level.getGameTime() % 5 == 0) {
             for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, aabb)) {
                 if (entity == owner) continue;
-                Frostbite.temperatureStorage.decreaseTemperature(entity, 6, false);
-                Frostbite.temperatureStorage.decreaseTemperature(entity, 4, true);
+                ((TE) entity).decreaseTemperature(6, false);
+                ((TE) entity).decreaseTemperature(4, true);
             }
         }
     }

@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
 public class IcedZombieEntity extends Zombie implements TemperatureEntity {
@@ -34,7 +35,7 @@ public class IcedZombieEntity extends Zombie implements TemperatureEntity {
     public boolean doHurtTarget(ServerLevel level, Entity entity) {
         boolean flag = super.doHurtTarget(level, entity);
         if (flag && entity instanceof LivingEntity livingEntity) {
-            Frostbite.temperatureStorage.decreaseTemperature(livingEntity, 5, false);
+            ((TE) livingEntity).decreaseTemperature((float) getAttribute(Attributes.ATTACK_DAMAGE).getValue(), false);
             if (random.nextFloat() < 0.3f) {
                 livingEntity.addEffect(new MobEffectInstance(EffectRegistry.COLD_WEAKNESS, 10 * 20, 0));
             }

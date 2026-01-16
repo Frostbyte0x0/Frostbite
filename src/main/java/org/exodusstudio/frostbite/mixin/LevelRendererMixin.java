@@ -16,9 +16,9 @@ import net.minecraft.world.TickRateManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.item.AdvancedThermalLensItem;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 import org.exodusstudio.frostbite.common.util.UUIDState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -61,7 +61,7 @@ public class LevelRendererMixin {
                     ((UUIDState) entityrenderstate).frostbite$setUUID(entity.getUUID());
 
                     if (frostbite$shouldShowEntityOutlines() && entity instanceof LivingEntity livingEntity && frostbite$mc.player.distanceTo(entity) < 30) {
-                        int r = (int) Mth.lerp((Frostbite.temperatureStorage.getTemperature(livingEntity, true) + 60) / 80, 0, 255);
+                        int r = (int) Mth.lerp((((TE) livingEntity).getInnerTemp() + 60) / 80, 0, 255);
                         int b = 255 - r;
                         entityrenderstate.outlineColor = ARGB.color(128, r, 0, b);
                     } else if (flag && frostbite$mc.shouldEntityAppearGlowing(entity)) {

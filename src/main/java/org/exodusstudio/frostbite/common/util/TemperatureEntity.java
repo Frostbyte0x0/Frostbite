@@ -21,8 +21,8 @@ public interface TemperatureEntity {
     }
 
     default float getStrengthModifier() {
-        float d = (Frostbite.temperatureStorage.getTemperature(getInstance(), true) - TemperatureStorage.MIN_INNER_TEMP) /
-                (TemperatureStorage.MAX_TEMP - TemperatureStorage.MIN_INNER_TEMP);
+        float d = (((TE) getInstance()).getInnerTemp() - TemperatureManager.MIN_INNER_TEMP) /
+                (TemperatureManager.MAX_TEMP - TemperatureManager.MIN_INNER_TEMP);
         if (scalesWithCold()) {
             return 1 - d;
         }
@@ -57,7 +57,7 @@ public interface TemperatureEntity {
     }
 
     default float getSpawnTemperature() {
-        return scalesWithCold() ? TemperatureStorage.MIN_TEMP : TemperatureStorage.MAX_TEMP;
+        return scalesWithCold() ? TemperatureManager.MIN_TEMP : TemperatureManager.MAX_TEMP;
     }
 
     LivingEntity getInstance();

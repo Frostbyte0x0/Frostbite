@@ -31,7 +31,6 @@ import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
-import org.exodusstudio.frostbite.common.util.TemperatureStorage;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.slf4j.Logger;
 
@@ -44,7 +43,6 @@ import java.util.List;
 public class Frostbite {
     public static final String MOD_ID = "frostbite";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static TemperatureStorage temperatureStorage = TemperatureStorage.init();
     public static List<HeaterStorage> heaterStorages = new ArrayList<>();
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static List<BreathEntityLike> breathEntityLikes = new ArrayList<>();
@@ -74,6 +72,7 @@ public class Frostbite {
         MemoryModuleTypeRegistry.MEMORY_MODULE_TYPES.register(modEventBus);
         GameRuleRegistry.GAME_RULES.register(modEventBus);
         AttributeRegistry.ATTRIBUTES.register(modEventBus);
+        AttachementRegistry.ATTACHMENT_TYPES.register(modEventBus);
     }
 
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)

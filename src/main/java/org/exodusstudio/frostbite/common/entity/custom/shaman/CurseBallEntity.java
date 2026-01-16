@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -156,7 +157,7 @@ public class CurseBallEntity extends Entity {
                         this.getCursedEntity() instanceof LivingEntity cursedLiving) {
                     cursedLiving.hurtServer(serverLevel, level().damageSources().fellOutOfWorld(), 1f);
                     if (getOwner() instanceof LivingEntity livingOwner) livingOwner.heal(1);
-                    Frostbite.temperatureStorage.decreaseTemperature(cursedLiving, 2, false);
+                    ((TE) cursedLiving).decreaseTemperature(2, false);
                 }
             }
             case "paralysis" -> {
@@ -169,7 +170,7 @@ public class CurseBallEntity extends Entity {
                         level() instanceof ServerLevel serverLevel &&
                         this.getCursedEntity() instanceof LivingEntity cursedLiving) {
                     cursedLiving.hurtServer(serverLevel, level().damageSources().fellOutOfWorld(), 1);
-                    Frostbite.temperatureStorage.decreaseTemperature(cursedLiving, 2, false);
+                    ((TE) cursedLiving).decreaseTemperature(2, false);
                 }
             }
         }

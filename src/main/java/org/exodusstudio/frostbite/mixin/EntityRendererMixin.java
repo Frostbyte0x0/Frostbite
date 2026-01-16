@@ -12,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 import org.exodusstudio.frostbite.common.util.UUIDState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,11 +37,11 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
             poseStack.pushPose();
             poseStack.translate(0, 0.5, 0);
             nodeCollector.submitNameTag(poseStack, renderState.nameTagAttachment, 0,
-                    Component.literal(Frostbite.temperatureStorage.getTemperature(uuid.toString(), false) + "°C"),
+                    Component.literal(((TE) l).getOuterTemp() + "°C"),
                     true, renderState.lightCoords, renderState.distanceToCameraSq, cameraRenderState);
             poseStack.translate(0, -0.3, 0);
             nodeCollector.submitNameTag(poseStack, renderState.nameTagAttachment, 0,
-                    Component.literal(Frostbite.temperatureStorage.getTemperature(uuid.toString(), true) + "°C"),
+                    Component.literal(((TE) l).getInnerTemp() + "°C"),
                     true, renderState.lightCoords, renderState.distanceToCameraSq, cameraRenderState);
             poseStack.popPose();
         }

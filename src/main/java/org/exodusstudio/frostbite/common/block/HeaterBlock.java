@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.util.TE;
 
 public class HeaterBlock extends Block {
     private final int range;
@@ -29,6 +29,6 @@ public class HeaterBlock extends Block {
                         pos.getZ() - h,
                         pos.getX() + h,
                         pos.getY() + h,
-                        pos.getZ() + h)).forEach(entity -> Frostbite.temperatureStorage.increaseTemperature(entity, temp, false));
+                        pos.getZ() + h)).forEach(entity -> ((TE) entity).increaseTemperature(temp, false));
     }
 }

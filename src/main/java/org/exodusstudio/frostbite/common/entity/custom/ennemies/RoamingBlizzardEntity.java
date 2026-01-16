@@ -24,6 +24,7 @@ import org.exodusstudio.frostbite.common.entity.goals.OwnerHurtTargetGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.util.Ownable;
+import org.exodusstudio.frostbite.common.util.TE;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -39,7 +40,6 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
 
     public RoamingBlizzardEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.ROAMING_BLIZZARD.get(), level);
-        Frostbite.temperatureStorage.setTemperatures(this, List.of(-40f, -60f));
     }
 
     @Override
@@ -136,11 +136,11 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
         if (level().getGameTime() % 20 == 0) {
             for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())
                     .stream().filter((e) -> !(e instanceof RoamingBlizzardEntity)).toList()) {
-                Frostbite.temperatureStorage.decreaseTemperature(entity, 8, false);
+                ((TE) entity).decreaseTemperature(8, false);
             }
         }
 
-        if (Frostbite.temperatureStorage.getTemperature(this, true) >= -10) {
+        if (((TE) this).getInnerTemp() >= -10) {
             die(level().damageSources().onFire());
         }
 

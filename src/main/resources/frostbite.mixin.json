@@ -9,6 +9,7 @@
     "EnvironmentAttributeSystemMixin",
     "InventoryMenuMixin",
     "InventoryMixin",
+    "LivingEntityMixin",
     "PlayerMixin",
     "PrimaryLevelDataMixin",
     "ServerPlayerGameModeMixin",

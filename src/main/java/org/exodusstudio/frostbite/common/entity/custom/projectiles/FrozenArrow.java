@@ -10,6 +10,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 
 import javax.annotation.Nullable;
 
@@ -28,7 +29,7 @@ public class FrozenArrow extends AbstractArrow {
 
     protected void doPostHurtEffects(LivingEntity living) {
         super.doPostHurtEffects(living);
-        Frostbite.temperatureStorage.decreaseTemperature(living, 5, false);
+        ((TE) living).decreaseTemperature(5, false);
         living.addEffect(new MobEffectInstance(EffectRegistry.COLD_WEAKNESS, 60*20, 0));
     }
 

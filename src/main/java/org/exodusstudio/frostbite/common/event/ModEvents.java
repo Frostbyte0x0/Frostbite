@@ -42,10 +42,7 @@ import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
-import org.exodusstudio.frostbite.common.util.BreathEntityLike;
-import org.exodusstudio.frostbite.common.util.HeaterStorage;
-import org.exodusstudio.frostbite.common.util.PlayerWrapper;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.util.*;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.ArrayList;
@@ -59,7 +56,6 @@ public class ModEvents {
     public static void reset(ServerStoppedEvent event) {
         OTFPortal.canSpawn = true;
         FTOPortal.canSpawn = true;
-        Frostbite.temperatureStorage.clear();
     }
 
     @SubscribeEvent
@@ -148,11 +144,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void spicyStew(FinalizeSpawnEvent event) {
         if (event.getEntity() instanceof TemperatureEntity temperatureEntity) {
-            Frostbite.temperatureStorage.setTemperatures(
-                    temperatureEntity.getInstance().getStringUUID(),
-                    temperatureEntity.getSpawnTemperature(),
-                    temperatureEntity.getSpawnTemperature()
-            );
+            ((TE) temperatureEntity).setInnerTemp(temperatureEntity.getSpawnTemperature());
+            ((TE) temperatureEntity).setOuterTemp(temperatureEntity.getSpawnTemperature());
         }
     }
 
@@ -296,7 +289,7 @@ public class ModEvents {
                 Frostbite.bossesToAdd.clear();
             }
         });
-        Frostbite.temperatureStorage.updateEntityTemperatures(entities);
+        TemperatureManager.getInstance().updateEntityTemperatures(entities);
         Frostbite.breathEntityLikes.forEach(BreathEntityLike::tick);
         Frostbite.breathEntityLikes.removeAll(Frostbite.breathEntityLikesToRemove);
         Frostbite.breathEntityLikesToRemove.clear();

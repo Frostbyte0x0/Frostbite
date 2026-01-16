@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
 public class IcedCreeperEntity extends Creeper implements TemperatureEntity {
@@ -55,7 +56,7 @@ public class IcedCreeperEntity extends Creeper implements TemperatureEntity {
 
         for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(getExplosionRadius()))) {
             if (entity != this && distanceToSqr(entity) <= (getExplosionRadius() * getExplosionRadius())) {
-                Frostbite.temperatureStorage.decreaseTemperature(entity, 20, false);
+                ((TE) entity).decreaseTemperature(20, false);
             }
         }
     }

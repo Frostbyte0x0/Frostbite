@@ -11,9 +11,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.util.TE;
 
-import static org.exodusstudio.frostbite.common.util.TemperatureStorage.MAX_TEMP;
-import static org.exodusstudio.frostbite.common.util.TemperatureStorage.MIN_TEMP;
+import static org.exodusstudio.frostbite.common.util.TemperatureManager.MAX_TEMP;
+import static org.exodusstudio.frostbite.common.util.TemperatureManager.MIN_TEMP;
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 public class FireOverlay {
@@ -47,7 +48,7 @@ public class FireOverlay {
         assert player != null;
 
 
-        float innerTemp = (float) Math.round(Frostbite.temperatureStorage.getTemperature(player, true) * 10f) / 10f;
+        float innerTemp = (float) Math.round(((TE) player).getInnerTemp() * 10f) / 10f;
 
         if (!isFrostbite(player.level()) && innerTemp == MAX_TEMP || Minecraft.getInstance().options.hideGui) {
             return;

@@ -10,8 +10,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import net.minecraft.world.level.Level;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ConsumeEffectRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 
 import java.util.List;
 
@@ -24,9 +24,8 @@ public record RaiseTemperatureConsumeEffect(List<Float> temps) implements Consum
     }
 
     public boolean apply(Level level, ItemStack stack, LivingEntity entity) {
-        Frostbite.temperatureStorage.increaseTemperature(entity, temps.get(0), false);
-        Frostbite.temperatureStorage.increaseTemperature(entity, temps.get(1), true);
-
+        ((TE) entity).increaseTemperature(temps.get(0), false);
+        ((TE) entity).increaseTemperature(temps.get(1), true);
         return true;
     }
 

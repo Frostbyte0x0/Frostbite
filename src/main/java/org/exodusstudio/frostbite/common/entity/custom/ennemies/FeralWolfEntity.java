@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.goals.FeralWolfBiteGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.TE;
 
 public class FeralWolfEntity extends Monster {
     private static final EntityDataAccessor<Boolean> DATA_IS_FROZEN =
@@ -87,7 +88,7 @@ public class FeralWolfEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (Frostbite.temperatureStorage.getTemperature(uuid.toString(), true) < -30) {
+        if (((TE) this).getInnerTemp() < -30) {
             freeze();
         }
 
