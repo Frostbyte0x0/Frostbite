@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -32,6 +33,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.gui.codex.CodexScreen;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
@@ -309,7 +311,14 @@ public class ModEvents {
                                 heater.getDimensionName().equals(serverLevel.dimension().identifier().toString()))) {
             Frostbite.heaterStorages.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().identifier().toString()));
             event.cancelWithResult(InteractionResult.FAIL);
+        }
+    }
 
+    @SubscribeEvent
+    public static void heater(InputEvent.Key event) {
+        if (KeyMappingRegistry.CODEX.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent())) && Minecraft.getInstance().screen == null) {
+            Frostbite.LOGGER.debug("Codex!");
+            Minecraft.getInstance().setScreen(new CodexScreen(Minecraft.getInstance().player.connection.getAdvancements(), null));
         }
     }
 }

@@ -200,6 +200,10 @@
   "container.frozen_remnants": "Frozen Remnants",
   "container.weaving_table": "Weaving Table",
 
+  "key.codex": "Open Codex",
+  "key.category.frostbite.frostbite": "Frostbite",
+  "gui.codex": "Codex",
+
   "general.frostbite.outer_temp": "Outer Temperature",
 
   "sounds.frostbite.sniper_ping": "Sniper pings",

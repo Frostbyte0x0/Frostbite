@@ -1,16 +1,19 @@
 package org.exodusstudio.frostbite.common.event;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.monster.creeper.CreeperModel;
 import net.minecraft.client.model.monster.skeleton.SkeletonModel;
 import net.minecraft.client.model.monster.zombie.ZombieModel;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
@@ -34,6 +37,7 @@ import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEventBusEvents {
@@ -126,6 +130,12 @@ public class ModEventBusEvents {
                 StaffPayload.TYPE,
                 ServerPayloadHandler::handleDataOnMain
         );
+    }
+
+    @SubscribeEvent
+    public static void register(RegisterKeyMappingsEvent event) {
+        event.register(KeyMappingRegistry.CODEX);
+        event.registerCategory(KeyMappingRegistry.FROSTBITE);
     }
 
     @SubscribeEvent
