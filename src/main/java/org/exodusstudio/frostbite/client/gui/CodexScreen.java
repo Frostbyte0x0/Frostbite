@@ -1,29 +1,25 @@
-package org.exodusstudio.frostbite.client.gui.codex;
+package org.exodusstudio.frostbite.client.gui;
 
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.AdvancementNode;
-import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundSeenAdvancementsPacket;
 import net.minecraft.resources.Identifier;
+import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
+import org.exodusstudio.frostbite.client.codex.tabs.CodexTabs;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Map;
-
-public class CodexScreen extends Screen implements ClientAdvancements.Listener {
+public class CodexScreen extends Screen {
     private static final Identifier WINDOW_LOCATION = Identifier.withDefaultNamespace("textures/gui/advancements/window.png");
     public static final int WINDOW_WIDTH = 252;
     public static final int WINDOW_HEIGHT = 140;
@@ -44,41 +40,19 @@ public class CodexScreen extends Screen implements ClientAdvancements.Listener {
     private static final Component NO_ADVANCEMENTS_LABEL = Component.translatable("advancements.empty");
     private static final Component TITLE = Component.translatable("gui.codex");
     private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
-    private final @Nullable Screen lastScreen;
-    private final ClientAdvancements advancements;
-    private final Map<AdvancementHolder, CodexTab> tabs = Maps.newLinkedHashMap();
     private @Nullable CodexTab selectedTab;
     private boolean isScrolling;
-    private static int tabPage, maxPages;
 
-    public CodexScreen(ClientAdvancements advancements, @Nullable Screen lastScreen) {
+    public CodexScreen() {
         super(TITLE);
-        this.advancements = advancements;
-        this.lastScreen = lastScreen;
     }
 
     @Override
     protected void init() {
         this.layout.addTitleHeader(TITLE, this.font);
-        this.tabs.clear();
-        this.selectedTab = null;
-        this.advancements.setListener(this);
-        if (this.selectedTab == null && !this.tabs.isEmpty()) {
-            CodexTab tab = this.tabs.values().iterator().next();
-            this.advancements.setSelectedTab(tab.getRootNode().holder(), true);
-        } else {
-            this.advancements.setSelectedTab(this.selectedTab == null ? null : this.selectedTab.getRootNode().holder(), true);
-        }
+        this.selectedTab = CodexTabs.GENERAL;
 
-        if (this.tabs.size() > CodexTabType.MAX_TABS) {
-            int guiLeft = (this.width - 252) / 2;
-            int guiTop = (this.height - 140) / 2;
-            addRenderableWidget(net.minecraft.client.gui.components.Button.builder(Component.literal("<"), b -> tabPage = Math.max(tabPage - 1, 0         ))
-                    .pos(guiLeft, guiTop - 50).size(20, 20).build());
-            addRenderableWidget(net.minecraft.client.gui.components.Button.builder(Component.literal(">"), b -> tabPage = Math.min(tabPage + 1, maxPages))
-                    .pos(guiLeft + WINDOW_WIDTH - 20, guiTop - 50).size(20, 20).build());
-            maxPages = this.tabs.size() / CodexTabType.MAX_TABS;
-        }
+        CodexTabs.TABS.forEach(t -> t.setScreen(this));
 
         this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, p_331557_ -> this.onClose()).width(200).build());
         this.layout.visitWidgets(this::addRenderableWidget);
@@ -91,13 +65,7 @@ public class CodexScreen extends Screen implements ClientAdvancements.Listener {
     }
 
     @Override
-    public void onClose() {
-        this.minecraft.setScreen(this.lastScreen);
-    }
-
-    @Override
     public void removed() {
-        this.advancements.setListener(null);
         ClientPacketListener clientpacketlistener = this.minecraft.getConnection();
         if (clientpacketlistener != null) {
             clientpacketlistener.send(ServerboundSeenAdvancementsPacket.closedScreen());
@@ -110,9 +78,9 @@ public class CodexScreen extends Screen implements ClientAdvancements.Listener {
             int i = (this.width - 252) / 2;
             int j = (this.height - 140) / 2;
 
-            for (CodexTab tab : this.tabs.values()) {
-                if (tab.getPage() == tabPage && tab.isMouseOver(i, j, event.x(), event.y())) {
-                    this.advancements.setSelectedTab(tab.getRootNode().holder(), true);
+            for (CodexTab tab : CodexTabs.TABS) {
+                if (tab.isMouseOver(i, j, event.x(), event.y())) {
+                    selectedTab = tab;
                     break;
                 }
             }
@@ -123,6 +91,10 @@ public class CodexScreen extends Screen implements ClientAdvancements.Listener {
 
     @Override
     public boolean keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.key() == 256) {
+            Minecraft.getInstance().player.closeContainer();
+        }
+
         if (KeyMappingRegistry.CODEX.matches(keyEvent)) {
             this.minecraft.setScreen(null);
             this.minecraft.mouseHandler.grabMouse();
@@ -137,11 +109,7 @@ public class CodexScreen extends Screen implements ClientAdvancements.Listener {
         super.render(graphics, p_282255_, p_283354_, p_283123_);
         int i = (this.width - 252) / 2;
         int j = (this.height - 140) / 2;
-        if (maxPages != 0) {
-            net.minecraft.network.chat.Component page = Component.literal(String.format("%d / %d", tabPage + 1, maxPages + 1));
-            int width = this.font.width(page);
-            graphics.drawString(this.font, page.getVisualOrderText(), i + (252 / 2) - (width / 2), j - 44, -1);
-        }
+
         graphics.nextStratum();
         this.renderInside(graphics, i, j);
         graphics.nextStratum();
@@ -192,29 +160,25 @@ public class CodexScreen extends Screen implements ClientAdvancements.Listener {
     }
 
     private void renderInside(GuiGraphics guiGraphics, int x, int y) {
-        CodexTab advancementtab = this.selectedTab;
-        if (advancementtab == null) {
+        CodexTab tab = this.selectedTab;
+        if (tab == null) {
             guiGraphics.fill(x + 9, y + 18, x + 9 + 234, y + 18 + 113, -16777216);
             int i = x + 9 + 117;
             guiGraphics.drawCenteredString(this.font, NO_ADVANCEMENTS_LABEL, i, y + 18 + 56 - 9 / 2, -1);
             guiGraphics.drawCenteredString(this.font, VERY_SAD_LABEL, i, y + 18 + 113 - 9, -1);
         } else {
-            advancementtab.drawContents(guiGraphics, x + 9, y + 18);
+            tab.drawContents(guiGraphics, x + 9, y + 18);
         }
     }
 
     public void renderWindow(GuiGraphics guiGraphics, int offsetX, int offsetY, int p_470848_, int p_470691_) {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WINDOW_LOCATION, offsetX, offsetY, 0.0F, 0.0F, 252, 140, 256, 256);
-        if (this.tabs.size() > 1) {
-            for (CodexTab tab : this.tabs.values()) {
-                if (tab.getPage() == tabPage)
-                    tab.drawTab(guiGraphics, offsetX, offsetY, p_470848_, p_470691_, tab == this.selectedTab);
-            }
+        for (CodexTab tab : CodexTabs.TABS) {
+            tab.drawTab(guiGraphics, offsetX, offsetY, p_470848_, p_470691_, tab == this.selectedTab);
+        }
 
-            for (CodexTab tab : this.tabs.values()) {
-                if (tab.getPage() == tabPage)
-                    tab.drawIcon(guiGraphics, offsetX, offsetY);
-            }
+        for (CodexTab tab : CodexTabs.TABS) {
+            tab.drawIcon(guiGraphics, offsetX, offsetY);
         }
 
         guiGraphics.drawString(this.font, this.selectedTab != null ? this.selectedTab.getTitle() : TITLE, offsetX + 8, offsetY + 6, -12566464, false);
@@ -229,65 +193,10 @@ public class CodexScreen extends Screen implements ClientAdvancements.Listener {
             guiGraphics.pose().popMatrix();
         }
 
-        if (this.tabs.size() > 1) {
-            for (CodexTab tab : this.tabs.values()) {
-                if (tab.getPage() == tabPage && tab.isMouseOver(offsetX, offsetY, mouseX, mouseY)) {
-                    guiGraphics.setTooltipForNextFrame(this.font, tab.getTitle(), mouseX, mouseY);
-                }
+        for (CodexTab tab : CodexTabs.TABS) {
+            if (tab.isMouseOver(offsetX, offsetY, mouseX, mouseY)) {
+                guiGraphics.setTooltipForNextFrame(this.font, tab.getTitle(), mouseX, mouseY);
             }
         }
-    }
-
-    @Override
-    public void onAddAdvancementRoot(AdvancementNode node) {
-        CodexTab tab = CodexTab.create(this.minecraft, this, this.tabs.size(), node);
-        if (tab != null) {
-            this.tabs.put(node.holder(), tab);
-        }
-    }
-
-    @Override
-    public void onRemoveAdvancementRoot(AdvancementNode p_301028_) {
-    }
-
-    @Override
-    public void onAddAdvancementTask(AdvancementNode node) {
-        CodexTab tab = this.getTab(node);
-        if (tab != null) {
-            tab.addAdvancement(node);
-        }
-    }
-
-    @Override
-    public void onRemoveAdvancementTask(AdvancementNode p_301004_) {
-    }
-
-    @Override
-    public void onUpdateAdvancementProgress(AdvancementNode node, AdvancementProgress progress) {
-        CodexWidget widget = this.getAdvancementWidget(node);
-        if (widget != null) {
-            widget.setProgress(progress);
-        }
-    }
-
-    @Override
-    public void onSelectedTabChanged(@Nullable AdvancementHolder holder) {
-        this.selectedTab = this.tabs.get(holder);
-    }
-
-    @Override
-    public void onAdvancementsCleared() {
-        this.tabs.clear();
-        this.selectedTab = null;
-    }
-
-    public @Nullable CodexWidget getAdvancementWidget(AdvancementNode advancement) {
-        CodexTab tab = this.getTab(advancement);
-        return tab == null ? null : tab.getWidget(advancement.holder());
-    }
-
-    private @Nullable CodexTab getTab(AdvancementNode advancement) {
-        AdvancementNode advancementnode = advancement.root();
-        return this.tabs.get(advancementnode.holder());
     }
 }

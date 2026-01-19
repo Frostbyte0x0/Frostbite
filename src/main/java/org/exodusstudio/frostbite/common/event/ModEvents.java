@@ -33,7 +33,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.client.gui.codex.CodexScreen;
+import org.exodusstudio.frostbite.client.gui.CodexScreen;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
@@ -316,9 +316,10 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void heater(InputEvent.Key event) {
-        if (KeyMappingRegistry.CODEX.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent())) && Minecraft.getInstance().screen == null) {
-            Frostbite.LOGGER.debug("Codex!");
-            Minecraft.getInstance().setScreen(new CodexScreen(Minecraft.getInstance().player.connection.getAdvancements(), null));
+        if (KeyMappingRegistry.CODEX.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent()))) {
+            while (KeyMappingRegistry.CODEX.consumeClick()) {
+                Minecraft.getInstance().setScreen(new CodexScreen());
+            }
         }
     }
 }

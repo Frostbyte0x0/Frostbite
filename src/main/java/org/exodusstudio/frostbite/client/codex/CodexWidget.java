@@ -1,22 +1,21 @@
-package org.exodusstudio.frostbite.client.gui.codex;
+package org.exodusstudio.frostbite.client.codex;
 
 import com.google.common.collect.Lists;
-import net.minecraft.advancements.AdvancementNode;
 import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
+import org.exodusstudio.frostbite.client.codex.entries.TreeCodexEntry;
+import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -41,43 +40,41 @@ public class CodexWidget {
     private static final int TITLE_MIN_WIDTH = 80;
     private static final int[] TEST_SPLIT_OFFSETS = new int[]{0, 10, -10, 25, -25};
     private final CodexTab tab;
-    private final AdvancementNode advancementNode;
-    private final DisplayInfo display;
+    private final TreeCodexEntry codexEntry;
+    //private final DisplayInfo display;
     private final List<FormattedCharSequence> titleLines;
     private final int width;
     private final List<FormattedCharSequence> description;
-    private final Minecraft minecraft;
+    private final Minecraft minecraft = Minecraft.getInstance();
     private @Nullable CodexWidget parent;
     private final List<CodexWidget> children = Lists.newArrayList();
     private @Nullable AdvancementProgress progress;
     private final int x;
     private final int y;
 
-    public CodexWidget(CodexTab tab, Minecraft minecraft, AdvancementNode advancementNode, DisplayInfo display) {
+    public CodexWidget(CodexTab tab, TreeCodexEntry codexEntry) {
         this.tab = tab;
-        this.advancementNode = advancementNode;
-        this.display = display;
-        this.minecraft = minecraft;
-        this.titleLines = minecraft.font.split(display.getTitle(), 163);
-        this.x = Mth.floor(display.getX() * 28.0F);
-        this.y = Mth.floor(display.getY() * 27.0F);
+        this.codexEntry = codexEntry;
+        this.titleLines = minecraft.font.split(codexEntry.title, 163);
+        this.x = Mth.floor(codexEntry.x * 28.0F);
+        this.y = Mth.floor(codexEntry.y * 27.0F);
         Stream<FormattedCharSequence> var10000 = this.titleLines.stream();
         Font var10001 = minecraft.font;
         Objects.requireNonNull(var10001);
         int i = Math.max(var10000.mapToInt(var10001::width).max().orElse(0), 80);
         int j = this.getMaxProgressWidth();
         int k = 29 + i + j;
-        this.description = Language.getInstance().getVisualOrder(this.findOptimalLines(ComponentUtils.mergeStyles(display.getDescription(), Style.EMPTY.withColor(display.getType().getChatColor())), k));
+        this.description = null;//Language.getInstance().getVisualOrder(findOptimalLines(ComponentUtils.mergeStyles(display.getDescription(), Style.EMPTY.withColor(ChatFormatting.AQUA)), k));
 
-        for(FormattedCharSequence formattedcharsequence : this.description) {
-            k = Math.max(k, minecraft.font.width(formattedcharsequence));
-        }
+//        for (FormattedCharSequence formattedcharsequence : this.description) {
+//            k = Math.max(k, minecraft.font.width(formattedcharsequence));
+//        }
 
         this.width = k + 3 + 5;
     }
 
     private int getMaxProgressWidth() {
-        int i = this.advancementNode.advancement().requirements().size();
+        int i = 0;//this.codexEntry.advancement().requirements().size();
         if (i <= 1) {
             return 0;
         } else {
@@ -97,7 +94,7 @@ public class CodexWidget {
         List<FormattedText> list = null;
         float f = Float.MAX_VALUE;
 
-        for(int i : TEST_SPLIT_OFFSETS) {
+        for (int i : TEST_SPLIT_OFFSETS) {
             List<FormattedText> list1 = stringsplitter.splitLines(component, maxWidth - i, Style.EMPTY);
             float f1 = Math.abs(getMaxWidth(stringsplitter, list1) - (float)maxWidth);
             if (f1 <= 10.0F) {
@@ -111,14 +108,6 @@ public class CodexWidget {
         }
 
         return list;
-    }
-
-    private @Nullable CodexWidget getFirstVisibleParent(AdvancementNode advancement) {
-        do {
-            advancement = advancement.parent();
-        } while(advancement != null && advancement.advancement().display().isEmpty());
-
-        return advancement != null && advancement.advancement().display().isPresent() ? this.tab.getWidget(advancement.holder()) : null;
     }
 
     public void drawConnectivity(GuiGraphics guiGraphics, int x, int y, boolean dropShadow) {
@@ -145,28 +134,29 @@ public class CodexWidget {
             }
         }
 
-        for(CodexWidget advancementwidget : this.children) {
-            advancementwidget.drawConnectivity(guiGraphics, x, y, dropShadow);
+        for (CodexWidget widget : this.children) {
+            widget.drawConnectivity(guiGraphics, x, y, dropShadow);
         }
 
     }
 
     public void draw(GuiGraphics guiGraphics, int x, int y) {
-        if (!this.display.isHidden() || this.progress != null && this.progress.isDone()) {
+        if (CodexEntry.playerHasEntry(Minecraft.getInstance().player, codexEntry) || this.progress != null && this.progress.isDone()) {
             float f = this.progress == null ? 0.0F : this.progress.getPercent();
-            CodexWidgetType advancementwidgettype;
+            CodexWidgetType type;
             if (f >= 1.0F) {
-                advancementwidgettype = CodexWidgetType.OBTAINED;
+                type = CodexWidgetType.OBTAINED;
             } else {
-                advancementwidgettype = CodexWidgetType.UNOBTAINED;
+                type = CodexWidgetType.UNOBTAINED;
             }
 
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementwidgettype.frameSprite(this.display.getType()), x + this.x + 3, y + this.y, 26, 26);
-            guiGraphics.renderFakeItem(this.display.getIcon(), x + this.x + 8, y + this.y + 5);
+            //guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, type.frameSprite(this.display.getType()), x + this.x + 3, y + this.y, 26, 26);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, codexEntry.image, x + this.x + 8, y + this.y + 5, 26, 26);
+            //guiGraphics.renderFakeItem(this.display.getIcon(), x + this.x + 8, y + this.y + 5);
         }
 
-        for(CodexWidget advancementwidget : this.children) {
-            advancementwidget.draw(guiGraphics, x, y);
+        for (CodexWidget widget : this.children) {
+            widget.draw(guiGraphics, x, y);
         }
 
     }
@@ -196,28 +186,28 @@ public class CodexWidget {
         boolean flag1 = k + i1 >= 113;
         float f = this.progress == null ? 0.0F : this.progress.getPercent();
         int k1 = Mth.floor(f * (float)this.width);
-        CodexWidgetType advancementwidgettype;
-        CodexWidgetType advancementwidgettype1;
-        CodexWidgetType advancementwidgettype2;
+        CodexWidgetType type;
+        CodexWidgetType type1;
+        CodexWidgetType type2;
         if (f >= 1.0F) {
             k1 = this.width / 2;
-            advancementwidgettype = CodexWidgetType.OBTAINED;
-            advancementwidgettype1 = CodexWidgetType.OBTAINED;
-            advancementwidgettype2 = CodexWidgetType.OBTAINED;
+            type = CodexWidgetType.OBTAINED;
+            type1 = CodexWidgetType.OBTAINED;
+            type2 = CodexWidgetType.OBTAINED;
         } else if (k1 < 2) {
             k1 = this.width / 2;
-            advancementwidgettype = CodexWidgetType.UNOBTAINED;
-            advancementwidgettype1 = CodexWidgetType.UNOBTAINED;
-            advancementwidgettype2 = CodexWidgetType.UNOBTAINED;
+            type = CodexWidgetType.UNOBTAINED;
+            type1 = CodexWidgetType.UNOBTAINED;
+            type2 = CodexWidgetType.UNOBTAINED;
         } else if (k1 > this.width - 2) {
             k1 = this.width / 2;
-            advancementwidgettype = CodexWidgetType.OBTAINED;
-            advancementwidgettype1 = CodexWidgetType.OBTAINED;
-            advancementwidgettype2 = CodexWidgetType.UNOBTAINED;
+            type = CodexWidgetType.OBTAINED;
+            type1 = CodexWidgetType.OBTAINED;
+            type2 = CodexWidgetType.UNOBTAINED;
         } else {
-            advancementwidgettype = CodexWidgetType.OBTAINED;
-            advancementwidgettype1 = CodexWidgetType.UNOBTAINED;
-            advancementwidgettype2 = CodexWidgetType.UNOBTAINED;
+            type = CodexWidgetType.OBTAINED;
+            type1 = CodexWidgetType.UNOBTAINED;
+            type2 = CodexWidgetType.UNOBTAINED;
         }
 
         int l1 = this.width - k1;
@@ -237,14 +227,14 @@ public class CodexWidget {
             }
         }
 
-        if (advancementwidgettype != advancementwidgettype1) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementwidgettype.boxSprite(), 200, i, 0, 0, i2, j, k1, i);
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementwidgettype1.boxSprite(), 200, i, 200 - l1, 0, i2 + k1, j, l1, i);
+        if (type != type1) {
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, type.boxSprite(), 200, i, 0, 0, i2, j, k1, i);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, type1.boxSprite(), 200, i, 200 - l1, 0, i2 + k1, j, l1, i);
         } else {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementwidgettype.boxSprite(), i2, j, this.width, i);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, type.boxSprite(), i2, j, this.width, i);
         }
 
-        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, advancementwidgettype2.frameSprite(this.display.getType()), x + this.x + 3, y + this.y, 26, 26);
+        //guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, type2.frameSprite(this.display.getType()), x + this.x + 3, y + this.y, 26, 26);
         int k2 = i2 + 5;
         if (flag) {
             this.drawMultilineText(guiGraphics, this.titleLines, k2, j + 9, -1);
@@ -264,20 +254,21 @@ public class CodexWidget {
             this.drawMultilineText(guiGraphics, this.description, k2, k, -16711936);
         }
 
-        guiGraphics.renderFakeItem(this.display.getIcon(), x + this.x + 8, y + this.y + 5);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, codexEntry.image, x + this.x + 8, y + this.y + 5, 26, 26);
+        //guiGraphics.renderFakeItem(this.display.getIcon(), x + this.x + 8, y + this.y + 5);
     }
 
     private void drawMultilineText(GuiGraphics guiGraphics, List<FormattedCharSequence> text, int x, int y, int color) {
         Font font = this.minecraft.font;
 
         for(int i = 0; i < text.size(); ++i) {
-            guiGraphics.drawString(font, (FormattedCharSequence)text.get(i), x, y + i * 9, color);
+            guiGraphics.drawString(font, text.get(i), x, y + i * 9, color);
         }
 
     }
 
     public boolean isMouseOver(int x, int y, int mouseX, int mouseY) {
-        if (!this.display.isHidden() || this.progress != null && this.progress.isDone()) {
+        if (CodexEntry.playerHasEntry(Minecraft.getInstance().player, codexEntry) || this.progress != null && this.progress.isDone()) {
             int i = x + this.x;
             int j = i + 26;
             int k = y + this.y;
@@ -289,8 +280,8 @@ public class CodexWidget {
     }
 
     public void attachToParent() {
-        if (this.parent == null && this.advancementNode.parent() != null) {
-            this.parent = this.getFirstVisibleParent(this.advancementNode);
+        if (this.parent == null && this.codexEntry.parent != null) {
+            //this.parent = codexEntry.parent;
             if (this.parent != null) {
                 this.parent.addChild(this);
             }

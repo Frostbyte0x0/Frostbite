@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.client.gui.codex;
+package org.exodusstudio.frostbite.client.codex;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;

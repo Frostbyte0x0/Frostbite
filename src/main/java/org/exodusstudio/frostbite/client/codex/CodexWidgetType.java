@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.client.gui.codex;
+package org.exodusstudio.frostbite.client.codex;
 
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.resources.Identifier;
