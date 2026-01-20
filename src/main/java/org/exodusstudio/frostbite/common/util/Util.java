@@ -1,8 +1,11 @@
 package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.client.animation.KeyframeAnimation;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -330,5 +333,9 @@ public class Util {
             lastAnimationState.ifStarted((state) -> lastAnimation.apply(state.getTimeInMillis(ageInTicks), 1 - blendProgress));
             newAnimationState.ifStarted((state) -> newAnimation.apply(state.getTimeInMillis(ageInTicks), blendProgress));
         }
+    }
+
+    public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, Identifier texture) {
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
     }
 }

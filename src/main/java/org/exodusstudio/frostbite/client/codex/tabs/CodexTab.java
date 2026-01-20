@@ -3,15 +3,16 @@ package org.exodusstudio.frostbite.client.codex.tabs;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
 
 public class CodexTab {
     protected CodexScreen screen;
     protected final CodexTabType type;
     protected final int index;
-    protected final ItemStack icon;
+    protected final Identifier icon;
     protected final Component title;
     protected double scrollX;
     protected double scrollY;
@@ -23,14 +24,14 @@ public class CodexTab {
     protected boolean centered;
     protected boolean increaseFade = false;
 
-    public CodexTab(String title, CodexTabType type, int index, ItemStack icon) {
+    public CodexTab(String title, CodexTabType type, int index, String icon) {
         this.minX = Integer.MAX_VALUE;
         this.minY = Integer.MAX_VALUE;
         this.maxX = Integer.MIN_VALUE;
         this.maxY = Integer.MIN_VALUE;
         this.type = type;
         this.index = index;
-        this.icon = icon;
+        this.icon = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/" + icon + ".png");
         this.title = Component.literal(title);
     }
 

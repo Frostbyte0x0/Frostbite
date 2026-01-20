@@ -17,6 +17,7 @@ import net.minecraft.util.FormattedCharSequence;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -40,8 +41,6 @@ public class CodexWidget {
     public CodexWidget(TreeCodexEntry codexEntry) {
         this.codexEntry = codexEntry;
         this.titleLines = minecraft.font.split(codexEntry.title, 163);
-//        this.x = Mth.floor(codexEntry.x * 28.0F);
-//        this.y = Mth.floor(codexEntry.y * 27.0F);
         Stream<FormattedCharSequence> var10000 = this.titleLines.stream();
         Font var10001 = minecraft.font;
         Objects.requireNonNull(var10001);
@@ -112,12 +111,8 @@ public class CodexWidget {
         }
     }
 
-    public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, Identifier texture) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
-    }
-
     public void draw(GuiGraphics guiGraphics, int x, int y) {
-        drawTexture(guiGraphics, x + getX() + 8, y + getY() + 5, 24, 24, getImage());
+        Util.drawTexture(guiGraphics, x + getX() + 8, y + getY() + 5, 24, 24, getImage());
 
         for (CodexWidget widget : this.children) {
             widget.draw(guiGraphics, x, y);
@@ -172,7 +167,7 @@ public class CodexWidget {
         } else {
             this.drawMultilineText(guiGraphics, this.description, k2 + 30, k - 20, -16711936);
         }
-        drawTexture(guiGraphics, x + getX() + 8, y + getY() + 5, 24, 24, getImage());
+        Util.drawTexture(guiGraphics, x + getX() + 8, y + getY() + 5, 24, 24, getImage());
     }
 
     private void drawMultilineText(GuiGraphics guiGraphics, List<FormattedCharSequence> text, int x, int y, int color) {

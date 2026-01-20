@@ -16,27 +16,11 @@ import net.minecraft.network.protocol.game.ServerboundSeenAdvancementsPacket;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.client.codex.Codex;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
-import org.exodusstudio.frostbite.client.codex.tabs.CodexTabs;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 import org.jspecify.annotations.Nullable;
 
 public class CodexScreen extends Screen {
     private static final Identifier WINDOW_LOCATION = Identifier.withDefaultNamespace("textures/gui/advancements/window.png");
-    public static final int WINDOW_WIDTH = 252;
-    public static final int WINDOW_HEIGHT = 140;
-    private static final int WINDOW_INSIDE_X = 9;
-    private static final int WINDOW_INSIDE_Y = 18;
-    public static final int WINDOW_INSIDE_WIDTH = 234;
-    public static final int WINDOW_INSIDE_HEIGHT = 113;
-    private static final int WINDOW_TITLE_X = 8;
-    private static final int WINDOW_TITLE_Y = 6;
-    private static final int BACKGROUND_TEXTURE_WIDTH = 256;
-    private static final int BACKGROUND_TEXTURE_HEIGHT = 256;
-    public static final int BACKGROUND_TILE_WIDTH = 16;
-    public static final int BACKGROUND_TILE_HEIGHT = 16;
-    public static final int BACKGROUND_TILE_COUNT_X = 14;
-    public static final int BACKGROUND_TILE_COUNT_Y = 7;
-    private static final double SCROLL_SPEED = 16.0;
     private static final Component VERY_SAD_LABEL = Component.translatable("advancements.sad_label");
     private static final Component NO_ADVANCEMENTS_LABEL = Component.translatable("advancements.empty");
     private static final Component TITLE = Component.translatable("gui.codex");

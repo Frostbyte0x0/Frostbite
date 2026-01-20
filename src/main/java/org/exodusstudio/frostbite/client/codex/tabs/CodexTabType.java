@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.client.codex.tabs;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
+import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Arrays;
 
@@ -86,7 +86,7 @@ public enum CodexTabType {
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, identifier, offsetX, offsetY, this.width, this.height);
     }
 
-    public void drawIcon(GuiGraphics guiGraphics, int offsetX, int offsetY, int index, ItemStack stack) {
+    public void drawIcon(GuiGraphics guiGraphics, int offsetX, int offsetY, int index, Identifier identifier) {
         int i = offsetX + this.getX(index);
         int j = offsetY + this.getY(index);
         switch (this.ordinal()) {
@@ -107,7 +107,7 @@ public enum CodexTabType {
                 j += 5;
         }
 
-        guiGraphics.renderFakeItem(stack, i, j);
+        Util.drawTexture(guiGraphics, i, j, 16, 16, identifier);
     }
 
     public int getX(int index) {
