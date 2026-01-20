@@ -14,6 +14,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundSeenAdvancementsPacket;
 import net.minecraft.resources.Identifier;
+import org.exodusstudio.frostbite.client.codex.Codex;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTabs;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
@@ -50,9 +51,9 @@ public class CodexScreen extends Screen {
     @Override
     protected void init() {
         this.layout.addTitleHeader(TITLE, this.font);
-        this.selectedTab = CodexTabs.GENERAL;
+        this.selectedTab = Codex.GENERAL_TAB;
 
-        CodexTabs.TABS.forEach(t -> t.setScreen(this));
+        Codex.TABS.forEach(t -> t.setScreen(this));
 
         this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, p_331557_ -> this.onClose()).width(200).build());
         this.layout.visitWidgets(this::addRenderableWidget);
@@ -78,7 +79,7 @@ public class CodexScreen extends Screen {
             int i = (this.width - 252) / 2;
             int j = (this.height - 140) / 2;
 
-            for (CodexTab tab : CodexTabs.TABS) {
+            for (CodexTab tab : Codex.TABS) {
                 if (tab.isMouseOver(i, j, event.x(), event.y())) {
                     selectedTab = tab;
                     break;
@@ -173,11 +174,11 @@ public class CodexScreen extends Screen {
 
     public void renderWindow(GuiGraphics guiGraphics, int offsetX, int offsetY, int p_470848_, int p_470691_) {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WINDOW_LOCATION, offsetX, offsetY, 0.0F, 0.0F, 252, 140, 256, 256);
-        for (CodexTab tab : CodexTabs.TABS) {
+        for (CodexTab tab : Codex.TABS) {
             tab.drawTab(guiGraphics, offsetX, offsetY, p_470848_, p_470691_, tab == this.selectedTab);
         }
 
-        for (CodexTab tab : CodexTabs.TABS) {
+        for (CodexTab tab : Codex.TABS) {
             tab.drawIcon(guiGraphics, offsetX, offsetY);
         }
 
@@ -193,7 +194,7 @@ public class CodexScreen extends Screen {
             guiGraphics.pose().popMatrix();
         }
 
-        for (CodexTab tab : CodexTabs.TABS) {
+        for (CodexTab tab : Codex.TABS) {
             if (tab.isMouseOver(offsetX, offsetY, mouseX, mouseY)) {
                 guiGraphics.setTooltipForNextFrame(this.font, tab.getTitle(), mouseX, mouseY);
             }

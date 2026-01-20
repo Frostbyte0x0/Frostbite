@@ -12,13 +12,13 @@ public abstract class CodexEntry {
     public final String id;
     public final Component title;
     public final Identifier image;
-    public int x;
-    public float y;
+//    public int x;
+//    public int y;
 
     public CodexEntry(String id) {
         this.id = id;
         this.title = Component.translatable("codex.entry." + id);
-        this.image = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/codex/entries/" + id + ".png");
+        this.image = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/codex/entries/" + id + ".png");
     }
 
     public static void addEntryToPlayer(Player player, CodexEntry entry) {
