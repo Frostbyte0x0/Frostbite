@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
-import org.exodusstudio.frostbite.client.codex.entries.TreeCodexEntry;
+import org.exodusstudio.frostbite.client.codex.entries.TargetCodexEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class TreeCodexTab extends CodexTab {
     private final List<CodexWidget> widgets;
 
-    public TreeCodexTab(String title, CodexTabType type, int index, String icon, TreeCodexEntry... entries) {
+    public TreeCodexTab(String title, CodexTabType type, int index, String icon, TargetCodexEntry... entries) {
         super(title, type, index, icon);
         this.widgets = new ArrayList<>();
         this.minX = -500;
@@ -22,7 +22,7 @@ public class TreeCodexTab extends CodexTab {
         this.maxX = 500;
         this.maxY = 200;
 
-        for (TreeCodexEntry entry : entries) {
+        for (TargetCodexEntry entry : entries) {
             CodexWidget widget = new CodexWidget(entry);
             widget.setTab(this);
             widget.codexFormation = entry.formation;

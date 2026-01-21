@@ -29,7 +29,7 @@ public class CodexWidget {
     private static final Identifier UNDISCOVERED_ENTRY = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/codex/entries/undiscovered_entry.png");
     private static final int[] TEST_SPLIT_OFFSETS = new int[]{0, 10, -10, 25, -25};
     private CodexTab tab;
-    private final TreeCodexEntry codexEntry;
+    private final TargetCodexEntry codexEntry;
     private final List<FormattedCharSequence> titleLines;
     private final int width;
     private final List<FormattedCharSequence> description;
@@ -38,7 +38,7 @@ public class CodexWidget {
     private final List<CodexWidget> children = Lists.newArrayList();
     public CodexFormation codexFormation;
 
-    public CodexWidget(TreeCodexEntry codexEntry) {
+    public CodexWidget(TargetCodexEntry codexEntry) {
         this.codexEntry = codexEntry;
         this.titleLines = minecraft.font.split(codexEntry.title, 163);
         Stream<FormattedCharSequence> var10000 = this.titleLines.stream();

@@ -43,9 +43,9 @@ public class CodexTab {
         return this.title;
     }
 
-    public void drawTab(GuiGraphics graphics, int p_282721_, int p_282964_, int p_470594_, int p_470666_, boolean p_283052_) {
-        int i = p_282721_ + this.type.getX(this.index);
-        int j = p_282964_ + this.type.getY(this.index);
+    public void drawTab(GuiGraphics graphics, int x, int y, int p_470594_, int p_470666_, boolean p_283052_) {
+        int i = x + this.type.getX(this.index);
+        int j = y + this.type.getY(this.index);
         this.type.draw(graphics, i, j, p_283052_, this.index);
         if (!p_283052_ && p_470594_ > i && p_470666_ > j && p_470594_ < i + this.type.getWidth() && p_470666_ < j + this.type.getHeight()) {
             graphics.requestCursor(CursorTypes.POINTING_HAND);
