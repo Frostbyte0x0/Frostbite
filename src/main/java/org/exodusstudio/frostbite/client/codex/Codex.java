@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Codex {
     // Formations
-    public static final TreeCodexFormation SPECIES_TREE = new TreeCodexFormation(0, 0);
-    public static final CircleCodexFormation BIOME_CIRCLE = new CircleCodexFormation(0, 0, 100);
+    public static final TreeCodexFormation SPECIES_TREE = new TreeCodexFormation(50, 0);
+    public static final CircleCodexFormation BIOME_CIRCLE = new CircleCodexFormation(150, 100, 75);
     public static final CircleCodexFormation HOT_CIRCLE = new CircleCodexFormation(0, 0, 100);
 
 
@@ -26,6 +26,14 @@ public class Codex {
     public static final TargetCodexEntry CASTER_ELF = new TargetCodexEntry("caster_elf", ELF_GENERAL, "The Caster Elf", SPECIES_TREE);
     public static final TargetCodexEntry HEALER_ELF = new TargetCodexEntry("healer_elf", ELF_GENERAL, "The Healer Elf", SPECIES_TREE);
     public static final TargetCodexEntry SUMMONER_ELF = new TargetCodexEntry("summoner_elf", ELF_GENERAL, "The Summoner Elf", SPECIES_TREE);
+
+    public static final TargetCodexEntry SHAMAN = new TargetCodexEntry("shaman", null, "The Shaman", BIOME_CIRCLE);
+    public static final TargetCodexEntry MONK = new TargetCodexEntry("monk", null, "The Monk", BIOME_CIRCLE);
+    public static final TargetCodexEntry MONK1 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
+    public static final TargetCodexEntry MONK2 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
+    public static final TargetCodexEntry MONK3 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
+    public static final TargetCodexEntry MONK4 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
+    public static final TargetCodexEntry MONK5 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
     // Entities
     public static final ListCodexEntry BIG_LEVITATING_JELLYFISH_ENTRY = new ListCodexEntry("big_levitating_jellyfish");
     public static final ListCodexEntry BOAR_ENTRY = new ListCodexEntry("boar");
@@ -46,7 +54,14 @@ public class Codex {
             Codex.ELF_GENERAL,
             Codex.SUMMONER_ELF,
             Codex.CASTER_ELF,
-            Codex.HEALER_ELF
+            Codex.HEALER_ELF,
+            Codex.SHAMAN,
+            Codex.MONK,
+            Codex.MONK1,
+            Codex.MONK2,
+            Codex.MONK3,
+            Codex.MONK4,
+            Codex.MONK5
     );
     public static final CodexTab ENTITIES_TAB = new ListCodexTab("Entities", CodexTabType.ABOVE, 2, "item/fire");
     public static final CodexTab BIOMES_TAB = new ListCodexTab("Biomes", CodexTabType.ABOVE, 3, "item/frostbitten_gem");

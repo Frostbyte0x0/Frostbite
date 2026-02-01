@@ -3,10 +3,11 @@ package org.exodusstudio.frostbite.client.codex.formations;
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
 
 public class CircleCodexFormation extends CodexFormation {
-    private int radius;
+    private final int radius;
 
     public CircleCodexFormation(int centerX, int centerY, int radius) {
         super(centerX, centerY);
+        this.radius = radius;
     }
 
     @Override

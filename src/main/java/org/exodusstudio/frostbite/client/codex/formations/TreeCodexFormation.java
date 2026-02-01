@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.client.codex.formations;
 
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
+import org.exodusstudio.frostbite.client.codex.entries.TargetCodexEntry;
 
 public class TreeCodexFormation extends CodexFormation {
     public TreeCodexFormation(int centerX, int centerY) {
@@ -9,29 +10,27 @@ public class TreeCodexFormation extends CodexFormation {
 
     @Override
     protected void computePlacements() {
-        int widgetCount = widgetPlacements.size();
-        if (widgetCount == 0) return;
+        if (widgetPlacements.isEmpty()) return;
 
-        int levelHeight = 25;
-        int maxPerLevel = 2;
-        int currentLevel = 0;
-        int currentIndexInLevel = 0;
+        int levelWidth = 30;
+        int levelHeight = 30;
 
+        int index = -widgetPlacements.size() / 2;
         for (CodexWidget widget : widgetPlacements.keySet()) {
-            int xOffset = (currentIndexInLevel - (maxPerLevel - 1) / 2) * 100;
-            int yOffset = currentLevel * levelHeight;
+            int xOffset = index * levelWidth;
+            int level = 0;
+            TargetCodexEntry parent = widget.codexEntry.parent;
+            while (parent != null) {
+                level++;
+                parent = parent.parent;
+            }
+            int yOffset = level * levelHeight;
 
             int x = centerX + xOffset;
             int y = centerY + yOffset;
 
             widgetPlacements.put(widget, new int[]{x, y});
-
-            currentIndexInLevel++;
-            if (currentIndexInLevel >= maxPerLevel) {
-                currentIndexInLevel = 0;
-                currentLevel++;
-                maxPerLevel *= 2;
-            }
+            index++;
         }
     }
 }

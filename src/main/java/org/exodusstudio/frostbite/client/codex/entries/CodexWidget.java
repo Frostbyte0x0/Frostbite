@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.client.codex.entries;
 
-import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
@@ -29,14 +28,15 @@ public class CodexWidget {
     private static final Identifier UNDISCOVERED_ENTRY = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/codex/entries/undiscovered_entry.png");
     private static final int[] TEST_SPLIT_OFFSETS = new int[]{0, 10, -10, 25, -25};
     private CodexTab tab;
-    private final TargetCodexEntry codexEntry;
+    public final TargetCodexEntry codexEntry;
     private final List<FormattedCharSequence> titleLines;
     private final int width;
     private final List<FormattedCharSequence> description;
     private final Minecraft minecraft = Minecraft.getInstance();
-    private @Nullable CodexWidget parent;
-    private final List<CodexWidget> children = Lists.newArrayList();
+    public @Nullable CodexWidget parent;
     public CodexFormation codexFormation;
+    private GuiGraphics gui;
+    private final boolean shouldShowHitBoxes = false;
 
     public CodexWidget(TargetCodexEntry codexEntry) {
         this.codexEntry = codexEntry;
@@ -82,41 +82,22 @@ public class CodexWidget {
         return list;
     }
 
-    public void drawConnectivity(GuiGraphics guiGraphics, int x, int y, boolean dropShadow) {
+    public void drawConnectivity(GuiGraphics guiGraphics, int x, int y, float zoom) {
         if (this.parent != null) {
-            int i = x + this.parent.getX() + 13;
-            int j = x + this.parent.getX() + 26 + 4;
-            int k = y + this.parent.getY() + 13;
-            int l = x + this.getX() + 13;
-            int i1 = y + getY() + 13;
-            int j1 = dropShadow ? -16777216 : -1;
-            if (dropShadow) {
-                guiGraphics.hLine(j, i, k - 1, j1);
-                guiGraphics.hLine(j + 1, i, k, j1);
-                guiGraphics.hLine(j, i, k + 1, j1);
-                guiGraphics.hLine(l, j - 1, i1 - 1, j1);
-                guiGraphics.hLine(l, j - 1, i1, j1);
-                guiGraphics.hLine(l, j - 1, i1 + 1, j1);
-                guiGraphics.vLine(j - 1, i1, k, j1);
-                guiGraphics.vLine(j + 1, i1, k, j1);
-            } else {
-                guiGraphics.hLine(j, i, k, j1);
-                guiGraphics.hLine(l, j, i1, j1);
-                guiGraphics.vLine(j, i1, k, j1);
-            }
-        }
-
-        for (CodexWidget widget : this.children) {
-            widget.drawConnectivity(guiGraphics, x, y, dropShadow);
+            int originX = (int) (x + (this.parent.getX() + 19) * zoom);
+            int originY = (int) (y + (this.parent.getY() + 16) * zoom);
+            int endX = (int) (x + (this.getX() + 19) * zoom);
+            int endY = (int) (y + (this.getY() + 16) * zoom);
+            int stepY = (originY + endY) / 2;
+            guiGraphics.vLine(originX, originY, stepY, -1);
+            guiGraphics.hLine(originX, endX, stepY, -1);
+            guiGraphics.vLine(endX, stepY, endY, -1);
         }
     }
 
-    public void draw(GuiGraphics guiGraphics, int x, int y) {
-        Util.drawTexture(guiGraphics, x + getX() + 8, y + getY() + 5, 24, 24, getImage());
-
-        for (CodexWidget widget : this.children) {
-            widget.draw(guiGraphics, x, y);
-        }
+    public void draw(GuiGraphics guiGraphics, int x, int y, float zoom) {
+        gui = guiGraphics;
+        Util.drawTexture(guiGraphics, (int) (x + (getX() + 8) * zoom), (int) (y + (getY() + 5) * zoom), (int) (24 * zoom), (int) (24 * zoom), getImage());
     }
 
     public Identifier getImage() {
@@ -129,10 +110,6 @@ public class CodexWidget {
 
     public void setTab(CodexTab tabs) {
         this.tab = tabs;
-    }
-
-    public void addChild(CodexWidget advancementWidget) {
-        this.children.add(advancementWidget);
     }
 
     public void drawHover(GuiGraphics guiGraphics, int x, int y, int width) {
@@ -178,21 +155,20 @@ public class CodexWidget {
         }
     }
 
-    public boolean isMouseOver(int x, int y, int mouseX, int mouseY) {
-        int i = x + getX();
-        int j = i + 26;
-        int k = y + getY();
-        int l = k + 26;
-        return mouseX >= i && mouseX <= j && mouseY >= k && mouseY <= l;
-    }
+    public boolean isMouseOver(int x, int y, int mouseX, int mouseY, float zoom) {
+        int x0 = (int) (x + (8 + getX()) * zoom);
+        int x1 = (int) (x0 + 24 * zoom);
+        int y0 = (int) (y + (4 + getY()) * zoom);
+        int y1 = (int) (y0 + 24 * zoom);
 
-    public void attachToParent() {
-        if (this.parent == null && this.codexEntry.parent != null) {
-            //this.parent = codexEntry.parent;
-            if (this.parent != null) {
-                this.parent.addChild(this);
-            }
+        if (shouldShowHitBoxes) {
+            gui.vLine(x0, y0, y1, -1);
+            gui.vLine(x1, y0, y1, -1);
+            gui.hLine(x0, x1, y0, -1);
+            gui.hLine(x0, x1, y1, -1);
         }
+
+        return mouseX >= x0 && mouseX <= x1 && mouseY >= y0 && mouseY <= y1;
     }
 
     public int getY() {

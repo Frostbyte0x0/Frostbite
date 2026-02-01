@@ -16,6 +16,7 @@ import net.minecraft.network.protocol.game.ServerboundSeenAdvancementsPacket;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.client.codex.Codex;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
+import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 import org.jspecify.annotations.Nullable;
 
@@ -136,8 +137,13 @@ public class CodexScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double p_295690_, double p_295286_, double p_295339_, double p_296270_) {
+        if (this.selectedTab instanceof TreeCodexTab tab) {
+            tab.zoom(p_296270_);
+            return true;
+        }
+
         if (this.selectedTab != null) {
-            this.selectedTab.scroll(p_295339_ * 16.0, p_296270_ * 16.0);
+            this.selectedTab.scroll(p_295339_ * 16, p_296270_ * 16);
             return true;
         } else {
             return false;
@@ -157,7 +163,7 @@ public class CodexScreen extends Screen {
     }
 
     public void renderWindow(GuiGraphics guiGraphics, int offsetX, int offsetY, int p_470848_, int p_470691_) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WINDOW_LOCATION, offsetX, offsetY, 0.0F, 0.0F, 252, 140, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WINDOW_LOCATION, offsetX, offsetY, 0, 0, 252, 140, 256, 256);
         for (CodexTab tab : Codex.TABS) {
             tab.drawTab(guiGraphics, offsetX, offsetY, p_470848_, p_470691_, tab == this.selectedTab);
         }
