@@ -47,7 +47,7 @@ public class TreeCodexTab extends CodexTab {
             for (CodexWidget widget : this.widgets.values()) {
                 if (widget.isMouseOver(i, j, mouseX, mouseY, zoom)) {
                     increaseFade = true;
-                    widget.drawHover(guiGraphics, i, j, width);
+                    widget.drawHover(guiGraphics, i, j, width, zoom);
                     return;
                 }
             }
@@ -66,24 +66,20 @@ public class TreeCodexTab extends CodexTab {
         this.maxY = Math.max(this.maxY, l);
     }
 
-    public void drawContents(GuiGraphics guiGraphics, int x, int y) {
-        super.drawContents(guiGraphics, x, y);
+    public void drawContents(GuiGraphics guiGraphics, int scrollX, int scrollY) {
+        super.drawContents(guiGraphics, scrollX, scrollY);
 
-        guiGraphics.enableScissor(x, y, x + 234, y + 113);
+        guiGraphics.enableScissor(scrollX, scrollY, scrollX + 234, scrollY + 113);
         guiGraphics.pose().pushMatrix();
-        guiGraphics.pose().translate(x, y);
+        guiGraphics.pose().translate(scrollX, scrollY);
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);
-        int k = i % 16;
-        int l = j % 16;
 
-        for (int i1 = -1; i1 <= 15 / zoom; ++i1) {
-            for (int j1 = -1; j1 <= 8 / zoom; ++j1) {
-                int s = (int) (16 * zoom);
-                Util.drawTexture(guiGraphics, k + s * i1, l + s * j1, s, s,
+        int s = (int) (16 * zoom);
+        for (int x = -s; x < 234 + s; x += s) {
+            for (int y = -s; y < 113 + s; y += s) {
+                Util.drawTexture(guiGraphics, x + (i % s), y + (j % s), s, s,
                         Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/block/misty_log.png"));
-                //guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/block/misty_log.png"),
-                //        k + 16 * i1, l + 16 * j1, 0, 0, 16, 16, 16, 16);
             }
         }
 

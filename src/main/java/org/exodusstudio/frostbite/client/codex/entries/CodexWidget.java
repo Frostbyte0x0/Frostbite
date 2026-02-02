@@ -112,39 +112,30 @@ public class CodexWidget {
         this.tab = tabs;
     }
 
-    public void drawHover(GuiGraphics guiGraphics, int x, int y, int width) {
+    public void drawHover(GuiGraphics guiGraphics, int scrollX, int scrollY, int width, float zoom) {
         int i = 9 * this.titleLines.size() + 9 + 8;
-        int j = y + getY() + (24 - i) / 2;
+        int j = (int) (scrollY + (2 + getY() + (24 - i) / 2) * zoom);
         int k = j + i;
         int l = this.description.size() * 9;
         int i1 = 6 + l;
-        boolean flag = width + x + getX() + this.width + 24 >= this.tab.getScreen().width;
-        boolean flag1 = k + i1 >= 113;
 
-        int i2;
-        if (flag) {
-            i2 = x + getX() - this.width + 24 + 6;
-        } else {
-            i2 = x + getX();
-        }
+        int i2 = (int) (scrollX + (4 + getX()) * zoom);
 
         int j2 = i + i1;
+
+        int boxX = (int) (scrollX + (getX() + 5) * zoom);
+        int boxY = (int) (scrollY + (getY() + 3) * zoom);
         if (!this.description.isEmpty()) {
-            if (flag1) {
-                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, i2 + 3, k - j2 - 3, this.width, j2);
-            } else {
-                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, i2 + 3, j - 3, this.width, j2);
-            }
+            //guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, i2 + 3, k - j2 - 3, this.width, j2);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, boxX, boxY, this.width, j2);
         }
 
         int k2 = i2 + 5;
 
-        if (flag1) {
-            this.drawMultilineText(guiGraphics, this.description, k2 + 30, j - l - 19, -16711936);
-        } else {
-            this.drawMultilineText(guiGraphics, this.description, k2 + 30, k - 20, -16711936);
-        }
-        Util.drawTexture(guiGraphics, x + getX() + 8, y + getY() + 5, 24, 24, getImage());
+        this.drawMultilineText(guiGraphics, this.description, k2 + 30, k - 20, -16711936);
+//        this.drawMultilineText(guiGraphics, this.description, k2 + 30, j - l - 19, -16711936);
+
+        Util.drawTexture(guiGraphics, (int) (scrollX + (8 + getX()) * zoom), (int) (scrollY + (5 + getY()) * zoom), 24, 24, getImage());
     }
 
     private void drawMultilineText(GuiGraphics guiGraphics, List<FormattedCharSequence> text, int x, int y, int color) {
