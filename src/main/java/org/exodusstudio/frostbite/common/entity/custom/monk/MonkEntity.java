@@ -6,6 +6,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,7 +18,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
@@ -33,6 +33,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -71,7 +72,7 @@ public class MonkEntity extends Monster implements TargetingEntity {
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(MONK_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
     public final AnimationState clapAnimationState = new AnimationState();
-    public static final int TP_DIAMETER = 30;
+    public static final int TP_DIAMETER = 15;
     public static final int ILLUSION_AMOUNT = 10;
     public static final int ATTACK_COOLDOWN = 60;
     public static final int REPEL_RANGE = 6;
@@ -431,29 +432,60 @@ public class MonkEntity extends Monster implements TargetingEntity {
         return ProjectileDeflection.NONE;
     }
 
-    public void tpRandomly(Level level) {
-        for (int i = 0; i < 16; i++) {
-            double d0 = this.getX() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
-            double d1 = Mth.clamp(
-                    this.getY() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER,
-                    level.getMinY(),
-                    (level.getMinY() + ((ServerLevel)level).getLogicalHeight() - 1)
-            );
-            double d2 = this.getZ() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
-            if (this.isPassenger()) {
-                this.stopRiding();
-            }
+//    public void tpRandomly(Level level) {
+//        for (int i = 0; i < 16; i++) {
+//            double d0 = this.getX() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
+//            double d1 = Mth.clamp(
+//                    this.getY() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER,
+//                    level.getMinY(),
+//                    (level.getMinY() + ((ServerLevel)level).getLogicalHeight() - 1)
+//            );
+//            double d2 = this.getZ() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
+//            if (this.isPassenger()) {
+//                this.stopRiding();
+//            }
+//
+//            if (!(Util.squareAABB(new Vec3(getArenaCenter()), ARENA_SIZE)).contains(new Vec3(d0, d1, d2))) {
+//                continue;
+//            }
+//
+//            Vec3 vec3 = this.position();
+//            if (this.randomTeleport(d0, d1, d2, true)) {
+//                level.gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
+//                level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS);
+//                this.resetFallDistance();
+//                break;
+//            }
+//        }
+//    }
 
-            if (!(Util.squareAABB(new Vec3(getArenaCenter()), ARENA_SIZE)).contains(new Vec3(d0, d1, d2))) {
-                continue;
-            }
+    protected void tpRandomly(Level serverLevel) {
+        if (!this.level().isClientSide() && this.isAlive()) {
+            double x = this.getX() + (this.random.nextDouble() - 0.5) * TP_DIAMETER;
+            double y = this.getY() + (double)(this.random.nextInt(TP_DIAMETER / 3)) + TP_DIAMETER / 2f;
+            double z = this.getZ() + (this.random.nextDouble() - 0.5) * TP_DIAMETER;
+            this.teleport(x, y, z);
+        }
+    }
 
+    private void teleport(double x, double y, double z) {
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
+
+        while (blockpos$mutableblockpos.getY() > this.level().getMinY() && !this.level().getBlockState(blockpos$mutableblockpos).blocksMotion()) {
+            blockpos$mutableblockpos.move(Direction.DOWN);
+        }
+
+        BlockState blockstate = this.level().getBlockState(blockpos$mutableblockpos);
+        if (blockstate.blocksMotion()) {
             Vec3 vec3 = this.position();
-            if (this.randomTeleport(d0, d1, d2, true)) {
-                level.gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
-                level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS);
-                this.resetFallDistance();
-                break;
+            boolean flag2 = this.randomTeleport(x, y, z, true);
+            if (flag2) {
+                this.level().gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
+                if (!this.isSilent()) {
+                    this.level().playSound(null, this.xo, this.yo, this.zo, SoundEvents.ENDERMAN_TELEPORT,
+                            this.getSoundSource(), 1.0F, 1.0F);
+                    this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+                }
             }
         }
     }

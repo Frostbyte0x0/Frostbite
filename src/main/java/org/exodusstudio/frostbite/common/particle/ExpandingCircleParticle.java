@@ -18,9 +18,10 @@ public class ExpandingCircleParticle extends SimpleAnimatedParticle {
         this.friction = 0.96F;
         this.sprites = sprite;
         this.hasPhysics = true;
+        this.gravity = 0;
         this.quadSize = 2;
         this.xd = xSpeed;
-        this.yd = ySpeed;
+        this.yd = 0;
         this.zd = zSpeed;
         this.setSpriteFromAge(sprite);
     }

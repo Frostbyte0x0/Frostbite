@@ -85,5 +85,11 @@
     "sounds": [
       "frostbite:sniper_fail"
     ]
+  },
+  "snow_wind_ambience": {
+    "subtitle": "sounds.frostbite.snow_wind_ambience",
+    "sounds": [
+      "frostbite:snow_wind_ambience"
+    ]
   }
 }

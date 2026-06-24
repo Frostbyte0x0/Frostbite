@@ -1,12 +1,17 @@
 package org.exodusstudio.frostbite.common.registry;
 
-import org.exodusstudio.frostbite.Frostbite;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.exodusstudio.frostbite.Frostbite;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 public class SoundRegistry {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
@@ -27,8 +32,32 @@ public class SoundRegistry {
     public static final Supplier<SoundEvent> SNIPER_PING = registerSoundEvent("sniper_ping");
     public static final Supplier<SoundEvent> SNIPER_FAIL = registerSoundEvent("sniper_fail");
 
+    public static final Supplier<SoundEvent> SNOW_WIND_AMBIENCE = registerSoundEvent("snow_wind_ambience");
+
     private static Supplier<SoundEvent> registerSoundEvent(String name) {
         Identifier id = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, name);
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
+    }
+
+    public static class Ambience {
+        public static final SoundRegistry.Ambience[] AMBIENCES = {
+                new SoundRegistry.Ambience(46 * 20, 4 * 20, 1.5f, SoundRegistry.SNOW_WIND_AMBIENCE,
+                        (level) -> level instanceof ClientLevel && isFrostbite(level))
+        };
+
+        public final float length;
+        public final float fadeLength;
+        public final float volume;
+        public final Supplier<SoundEvent> soundEvent;
+        public final Function<Level, Boolean> shouldPlay;
+        public double startTime;
+
+        public Ambience(float length, float fadeLength, float volume, Supplier<SoundEvent> soundEvent, Function<Level, Boolean> shouldPlay) {
+            this.length = length;
+            this.fadeLength = fadeLength;
+            this.volume = volume;
+            this.soundEvent = soundEvent;
+            this.shouldPlay = shouldPlay;
+        }
     }
 }

@@ -47,7 +47,7 @@ public class ShamanStaffItem extends ModeWeapon {
                 case "Curse" -> {
                     CurseBallEntity curse = new CurseBallEntity(null, serverLevel);
                     Vec3 v = owner.calculateViewVector(owner.getXRot(), owner.getYRot()).normalize();
-                    curse.setPos(owner.position().add(v));
+                    curse.setPos(owner.getEyePosition().add(v));
                     curse.setOwnerUUID(owner.getUUID());
                     curse.setLaunchDirection(v);
                     serverLevel.addFreshEntity(curse);

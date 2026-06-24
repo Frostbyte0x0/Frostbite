@@ -2,9 +2,11 @@ package org.exodusstudio.frostbite.common.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -189,6 +191,18 @@ public class ModEvents {
         if (event.getEntity().level() instanceof ServerLevel serverLevel && isFrostbite(serverLevel) && serverLevel.getGameTime() % 400 == 0) {
             for (int i = 43; i < 48; i++) {
                 event.getEntity().getInventory().getItem(i).hurtAndBreak(1, serverLevel, (ServerPlayer) (event.getEntity()), (item) -> {});
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void ambience(PlayerTickEvent.Post event) {
+        for (SoundRegistry.Ambience ambience : SoundRegistry.Ambience.AMBIENCES) {
+            if (ambience.shouldPlay.apply(event.getEntity().level()) && event.getEntity().level() instanceof ClientLevel level) {
+                if (level.getGameTime() + ambience.fadeLength - ambience.startTime > ambience.length) {
+                    ambience.startTime = level.getGameTime();
+                    level.playLocalSound(event.getEntity(), ambience.soundEvent.get(), SoundSource.AMBIENT, ambience.volume, 1);
+                }
             }
         }
     }

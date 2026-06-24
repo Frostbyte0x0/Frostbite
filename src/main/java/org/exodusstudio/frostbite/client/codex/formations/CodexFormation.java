@@ -21,9 +21,7 @@ public abstract class CodexFormation {
         computePlacements();
     }
 
-    protected void computePlacements() {
-
-    }
+    protected abstract void computePlacements();
 
     public int[] getPlacement(CodexWidget widget) {
         return widgetPlacements.get(widget);

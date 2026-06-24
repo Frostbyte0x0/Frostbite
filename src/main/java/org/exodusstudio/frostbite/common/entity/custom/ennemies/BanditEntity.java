@@ -182,4 +182,9 @@ public class BanditEntity extends Animal implements TemperatureEntity {
     public LivingEntity getInstance() {
         return this;
     }
+
+    @Override
+    public boolean scalesWithCold() {
+        return false;
+    }
 }
