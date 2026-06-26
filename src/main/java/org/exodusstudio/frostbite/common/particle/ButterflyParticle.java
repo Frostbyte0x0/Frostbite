@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.common.particle;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import org.joml.Math;
@@ -112,11 +112,6 @@ public class ButterflyParticle extends SingleQuadParticle {
 
     private void setSecondSprite() {
         this.sprite = spriteSet.get(this.lifetime, this.lifetime);
-    }
-
-    @Override
-    public int getLightColor(float p_233902_) {
-        return 240;
     }
 
     public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {

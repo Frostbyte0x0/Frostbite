@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.client.codex.tabs;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.common.util.Util;
@@ -72,7 +72,7 @@ public enum CodexTabType {
         return this.max;
     }
 
-    public void draw(GuiGraphics guiGraphics, int offsetX, int offsetY, boolean isSelected, int index) {
+    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor, int offsetX, int offsetY, boolean isSelected, int index) {
         Sprites advancementtabtype$sprites = isSelected ? this.selectedSprites : this.unselectedSprites;
         Identifier identifier;
         if (index == 0) {
@@ -83,10 +83,10 @@ public enum CodexTabType {
             identifier = advancementtabtype$sprites.middle();
         }
 
-        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, identifier, offsetX, offsetY, this.width, this.height);
+        GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, identifier, offsetX, offsetY, this.width, this.height);
     }
 
-    public void drawIcon(GuiGraphics guiGraphics, int offsetX, int offsetY, int index, Identifier identifier) {
+    public void drawIcon(GuiGraphicsExtractor GuiGraphicsExtractor, int offsetX, int offsetY, int index, Identifier identifier) {
         int i = offsetX + this.getX(index);
         int j = offsetY + this.getY(index);
         switch (this.ordinal()) {
@@ -107,7 +107,7 @@ public enum CodexTabType {
                 j += 5;
         }
 
-        Util.drawTexture(guiGraphics, i, j, 16, 16, identifier);
+        Util.drawTexture(GuiGraphicsExtractor, i, j, 16, 16, identifier);
     }
 
     public int getX(int index) {

@@ -21,7 +21,7 @@ public class PostChainMixin {
     Minecraft frostbite$mc = Minecraft.getInstance();
 
     @Inject(at = @At("HEAD"), method = "addToFrame", cancellable = true)
-    private void addToFrame(FrameGraphBuilder frameGraphBuilder, int width, int height, PostChain.TargetBundle targetBundle, CallbackInfo ci) {
+    private void addToFrame(FrameGraphBuilder frame, int screenWidth, int screenHeight, PostChain.TargetBundle providedTargets, CallbackInfo ci) {
         if (frostbite$setPostChain() && Sets.difference(frostbite$chain.externalTargets, LevelTargetBundle.OUTLINE_TARGETS).isEmpty() && frostbite$shouldShowEntityOutlines()) {
             ci.cancel();
         }

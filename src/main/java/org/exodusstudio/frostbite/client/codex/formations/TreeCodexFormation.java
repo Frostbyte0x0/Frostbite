@@ -3,14 +3,27 @@ package org.exodusstudio.frostbite.client.codex.formations;
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
 import org.exodusstudio.frostbite.client.codex.entries.TargetCodexEntry;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class TreeCodexFormation extends CodexFormation {
+    public HashMap<Integer, ArrayList<CodexWidget>> widgetsPerDepth = new HashMap<>();
+    public int height = 0;
+
     public TreeCodexFormation(int centerX, int centerY) {
         super(centerX, centerY);
     }
 
     @Override
-    protected void computePlacements() {
-        if (widgetPlacements.isEmpty()) return;
+    public void addWidget(CodexWidget widget) {
+        if (widget.getDepth() > height) height = widget.getDepth();
+        widgetsPerDepth.computeIfAbsent(widget.getDepth(), k -> new ArrayList<>()).add(widget);
+        super.addWidget(widget);
+    }
+
+    @Override
+    public void computePlacements() {
+        if (widgetsPerDepth.isEmpty()) return;
 
         int levelWidth = 30;
         int levelHeight = 30;
@@ -32,5 +45,20 @@ public class TreeCodexFormation extends CodexFormation {
             widgetPlacements.put(widget, new int[]{x, y});
             index++;
         }
+
+//        widgetsPerDepth.get(1).sort((w1, w2) -> CodexWidget.getNearestSharedParentDepth(w1, w2));
+////        widgetsPerDepth.get(1).getFirst().setX(centerX);
+////        widgetsPerDepth.get(1).getFirst().setY(centerY);
+//        for (int i = 1; i < widgetsPerDepth.get(1).size(); i++) {
+//            CodexWidget prevWidget = widgetsPerDepth.get(1).get(i - 1);
+//            CodexWidget widget = widgetsPerDepth.get(1).get(i);
+//        }
+//
+//        for (int depth : widgetsPerDepth.keySet()) {
+//            if (depth == 1) break;
+//            for (CodexWidget widget : widgetsPerDepth.get(depth)) {
+//
+//            }
+//        }
     }
 }

@@ -101,7 +101,7 @@ public class LastStandEntity extends Entity {
             if (this.tickCount % HAILCOIL_RELEASE_FREQUENCY == 0) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     HailcoilEntity hailcoil = new HailcoilEntity(EntityRegistry.HAILCOIL.get(), serverLevel);
-                    hailcoil.move(MoverType.SELF, this.blockPosition().getCenter());
+                    hailcoil.move(MoverType.SELF, Vec3.atCenterOf(this.blockPosition()));
                     hailcoil.setInvulnerable(true);
                     hailcoils.add(hailcoil);
 

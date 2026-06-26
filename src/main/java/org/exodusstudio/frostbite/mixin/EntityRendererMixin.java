@@ -5,12 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.util.TE;
 import org.exodusstudio.frostbite.common.util.UUIDState;
@@ -29,20 +28,20 @@ public class EntityRendererMixin<T extends Entity, S extends EntityRenderState> 
     Minecraft frostbite$mc = Minecraft.getInstance();
 
     @Inject(at = @At("HEAD"), method = "submit")
-    private void submit(S renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState, CallbackInfo ci) {
-        UUID uuid = ((UUIDState) renderState).frostbite$getUUID();
+    private void submit(S state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera, CallbackInfo ci) {
+        UUID uuid = ((UUIDState) state).frostbite$getUUID();
         if (uuid == null) return;
         if (frostbite$shouldShowEntityOutlines() && Minecraft.getInstance().level.getEntity(uuid) instanceof LivingEntity l && l.distanceTo(Minecraft.getInstance().player) <= 30) {
-            renderState.nameTag = null;
+            state.nameTag = null;
             poseStack.pushPose();
             poseStack.translate(0, 0.5, 0);
-            nodeCollector.submitNameTag(poseStack, renderState.nameTagAttachment, 0,
+            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, 0,
                     Component.literal(((TE) l).getOuterTemp() + "°C"),
-                    true, renderState.lightCoords, renderState.distanceToCameraSq, cameraRenderState);
+                    true, state.lightCoords, camera);
             poseStack.translate(0, -0.3, 0);
-            nodeCollector.submitNameTag(poseStack, renderState.nameTagAttachment, 0,
+            submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, 0,
                     Component.literal(((TE) l).getInnerTemp() + "°C"),
-                    true, renderState.lightCoords, renderState.distanceToCameraSq, cameraRenderState);
+                    true, state.lightCoords, camera);
             poseStack.popPose();
         }
     }

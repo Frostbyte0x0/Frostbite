@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.client.codex.tabs;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
@@ -36,18 +36,19 @@ public class TreeCodexTab extends CodexTab {
             this.widgets.put(entry, widget);
             this.addWidget(widget);
         }
+        this.widgets.get(entries[0]).codexFormation.computePlacements();
     }
 
     @Override
-    public void drawTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int width, int height) {
-        super.drawTooltips(guiGraphics, mouseX, mouseY, width, height);
+    public void drawTooltips(GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY, int width, int height) {
+        super.drawTooltips(GuiGraphicsExtractor, mouseX, mouseY, width, height);
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);
         if (mouseX > 0 && mouseX < 234 && mouseY > 0 && mouseY < 113) {
             for (CodexWidget widget : this.widgets.values()) {
                 if (widget.isMouseOver(i, j, mouseX, mouseY, zoom)) {
                     increaseFade = true;
-                    widget.drawHover(guiGraphics, i, j, width, zoom);
+                    widget.drawHover(GuiGraphicsExtractor, i, j, width, zoom);
                     return;
                 }
             }
@@ -66,31 +67,31 @@ public class TreeCodexTab extends CodexTab {
         this.maxY = Math.max(this.maxY, l);
     }
 
-    public void drawContents(GuiGraphics guiGraphics, int scrollX, int scrollY) {
-        super.drawContents(guiGraphics, scrollX, scrollY);
+    public void drawContents(GuiGraphicsExtractor GuiGraphicsExtractor, int scrollX, int scrollY) {
+        super.drawContents(GuiGraphicsExtractor, scrollX, scrollY);
 
-        guiGraphics.enableScissor(scrollX, scrollY, scrollX + 234, scrollY + 113);
-        guiGraphics.pose().pushMatrix();
-        guiGraphics.pose().translate(scrollX, scrollY);
+        GuiGraphicsExtractor.enableScissor(scrollX, scrollY, scrollX + 234, scrollY + 113);
+        GuiGraphicsExtractor.pose().pushMatrix();
+        GuiGraphicsExtractor.pose().translate(scrollX, scrollY);
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);
 
         int s = (int) (16 * zoom);
         for (int x = -s; x < 234 + s; x += s) {
             for (int y = -s; y < 113 + s; y += s) {
-                Util.drawTexture(guiGraphics, x + (i % s), y + (j % s), s, s,
+                Util.drawTexture(GuiGraphicsExtractor, x + (i % s), y + (j % s), s, s,
                         Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/block/misty_log.png"));
             }
         }
 
         for (CodexWidget widget : this.widgets.values()) {
-            widget.drawConnectivity(guiGraphics, i, j, zoom);
+            widget.drawConnectivity(GuiGraphicsExtractor, i, j, zoom);
         }
         for (CodexWidget widget : this.widgets.values()) {
-            widget.draw(guiGraphics, i, j, zoom);
+            widget.draw(GuiGraphicsExtractor, i, j, zoom);
         }
-        guiGraphics.pose().popMatrix();
-        guiGraphics.disableScissor();
+        GuiGraphicsExtractor.pose().popMatrix();
+        GuiGraphicsExtractor.disableScissor();
     }
 
     public void zoom(double amount) {

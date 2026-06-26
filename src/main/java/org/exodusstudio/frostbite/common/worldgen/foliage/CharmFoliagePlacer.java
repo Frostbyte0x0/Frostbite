@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.worldgen.foliage;
 
+import com.mojang.datafixers.Products;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -7,7 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -21,12 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CharmFoliagePlacer extends FoliagePlacer {
-    public static final MapCodec<CharmFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) ->
-            foliagePlacerParts(instance)
-                    .and(IntProvider.codec(0, 24).fieldOf("trunk_height")
-                    .forGetter((foliagePlacer) -> foliagePlacer.trunkHeight))
-                    .apply(instance, CharmFoliagePlacer::new));
-    private final IntProvider trunkHeight;
+    public static final MapCodec<CharmFoliagePlacer> CODEC =
+            RecordCodecBuilder.mapCodec(i -> parts(i).apply(i, CharmFoliagePlacer::new));
+
+    protected static <P extends CharmFoliagePlacer> Products.P3<RecordCodecBuilder.Mu<P>, IntProvider, IntProvider, IntProvider> parts(RecordCodecBuilder.Instance<P> instance) {
+        return foliagePlacerParts(instance).and(IntProviders.codec(0, 16).fieldOf("trunk_height").forGetter(p -> p.trunkHeight));
+    }
+
+    final IntProvider trunkHeight;
     private int treeHeight;
     private final List<Pair<BlockPos, BlockPos>> leafPositions = new ArrayList<>();
     private final List<Pair<BlockPos, BlockPos>> leafPositionsToRemove = new ArrayList<>();
@@ -40,9 +45,8 @@ public class CharmFoliagePlacer extends FoliagePlacer {
         return FoliagePlacerRegistry.CHARM_FOLIAGE_PLACER.get();
     }
 
-
     protected void createFoliage(
-            LevelSimulatedReader level,
+            WorldGenLevel level,
             FoliageSetter blockSetter,
             RandomSource random,
             TreeConfiguration config,
@@ -75,7 +79,6 @@ public class CharmFoliagePlacer extends FoliagePlacer {
         deleteLonelyLeaves(level, blockSetter);
     }
 
-
     private void placeLeavesFromSphereCenter(
             BlockPos sphereCenter,
             float radius,
@@ -83,7 +86,7 @@ public class CharmFoliagePlacer extends FoliagePlacer {
             RandomSource random,
             BlockPos origin,
             AABB locations,
-            LevelSimulatedReader level,
+            WorldGenLevel level,
             TreeConfiguration treeConfiguration
     ) {
         BlockPos.MutableBlockPos relativeLeafPos = new BlockPos.MutableBlockPos();

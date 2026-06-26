@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.client.overlays;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -18,7 +18,7 @@ public class LiningBarOverlay {
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/lining_bar/lining_bar_full.png");
 
 
-    public static void render(GuiGraphics graphics, DeltaTracker ignored) {
+    public static void render(GuiGraphicsExtractor graphics, DeltaTracker ignored) {
         Player player = Minecraft.getInstance().player;
         if (player != null) {
             assert Minecraft.getInstance().gameMode != null;
@@ -29,7 +29,7 @@ public class LiningBarOverlay {
         }
     }
 
-    private static void renderLining(GuiGraphics guiGraphics, Player player, int y, int heartRows, int height, int x) {
+    private static void renderLining(GuiGraphicsExtractor GuiGraphicsExtractor, Player player, int y, int heartRows, int height, int x) {
         int i = ((PlayerWrapper) player).frostbite$getLiningLevel();
         if (i > 0) {
             int j = y - (heartRows - 1) * height - 15;
@@ -37,18 +37,18 @@ public class LiningBarOverlay {
             for (int k = 0; k < 10; ++k) {
                 int l = x + k * 8;
                 if (k * 2 + 1 < i) {
-                    drawTexture(guiGraphics, l, j, 9, 9, ARMOR_FULL_SPRITE, i);
+                    drawTexture(GuiGraphicsExtractor, l, j, 9, 9, ARMOR_FULL_SPRITE, i);
                 }
 
                 if (k * 2 + 1 == i) {
-                    drawTexture(guiGraphics, l, j, 9, 9, ARMOR_HALF_SPRITE, i);
+                    drawTexture(GuiGraphicsExtractor, l, j, 9, 9, ARMOR_HALF_SPRITE, i);
                 }
             }
         }
 
     }
 
-    public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, Identifier texture, int level) {
+    public static void drawTexture(GuiGraphicsExtractor graphics, int leftPos, int topPos, int width, int height, Identifier texture, int level) {
         int green = (int) Mth.lerp(Math.max(0, level - 20) / 4f, 255, 40);
         int colour = ARGB.color(220, green, 220);
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height, colour);

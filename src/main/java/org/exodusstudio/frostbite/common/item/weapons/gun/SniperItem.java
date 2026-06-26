@@ -8,7 +8,7 @@ import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 
 public class SniperItem extends AbstractGun {
     public SniperItem(Properties properties) {
-        super(properties, 6f, 0.5f, 60, 20, 8, ItemRegistry.SNIPER_BULLET.toStack());
+        super(properties, 6f, 0.5f, 60, 20, 8, ItemRegistry.SNIPER_BULLET.asItem());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.client.codex.tabs;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -43,7 +43,7 @@ public class CodexTab {
         return this.title;
     }
 
-    public void drawTab(GuiGraphics graphics, int x, int y, int p_470594_, int p_470666_, boolean p_283052_) {
+    public void drawTab(GuiGraphicsExtractor graphics, int x, int y, int p_470594_, int p_470666_, boolean p_283052_) {
         int i = x + this.type.getX(this.index);
         int j = y + this.type.getY(this.index);
         this.type.draw(graphics, i, j, p_283052_, this.index);
@@ -53,11 +53,11 @@ public class CodexTab {
 
     }
 
-    public void drawIcon(GuiGraphics guiGraphics, int offsetX, int offsetY) {
-        this.type.drawIcon(guiGraphics, offsetX, offsetY, this.index, this.icon);
+    public void drawIcon(GuiGraphicsExtractor GuiGraphicsExtractor, int offsetX, int offsetY) {
+        this.type.drawIcon(GuiGraphicsExtractor, offsetX, offsetY, this.index, this.icon);
     }
 
-    public void drawContents(GuiGraphics guiGraphics, int x, int y) {
+    public void drawContents(GuiGraphicsExtractor GuiGraphicsExtractor, int x, int y) {
         if (!this.centered) {
             this.scrollX = 117 - (this.maxX + this.minX) / 2f;
             this.scrollY = 56 - (this.maxY + this.minY) / 2f;
@@ -65,8 +65,8 @@ public class CodexTab {
         }
     }
 
-    public void drawTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int width, int height) {
-        guiGraphics.fill(0, 0, 234, 113, Mth.floor(this.fade * 255.0F) << 24);
+    public void drawTooltips(GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY, int width, int height) {
+        GuiGraphicsExtractor.fill(0, 0, 234, 113, Mth.floor(this.fade * 255.0F) << 24);
 
         if (increaseFade) {
             this.fade = Mth.clamp(this.fade + 0.02F, 0.0F, 0.3F);

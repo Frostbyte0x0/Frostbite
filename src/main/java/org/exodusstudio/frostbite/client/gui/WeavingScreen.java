@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.client.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -30,9 +30,10 @@ public class WeavingScreen extends ItemCombinerScreen<WeavingMenu> {
         return super.keyPressed(event);
     }
 
-    protected void renderErrorIcon(GuiGraphics graphics, int p_283237_, int p_282237_) {
+    @Override
+    protected void extractErrorIcon(GuiGraphicsExtractor graphics, int i, int i1) {
         if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(this.menu.getResultSlot()).hasItem()) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ERROR_SPRITE, p_283237_ + 99, p_282237_ + 45, 28, 21);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ERROR_SPRITE, i + 99, i1 + 45, 28, 21);
         }
     }
 }

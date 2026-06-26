@@ -26,7 +26,7 @@ public class HeaterStorage {
                 Frostbite.heatersToRemove.add(this);
             }
         } else {
-            block.tick(level.getBlockState(pos), level, pos, level.random);
+            block.tick(level.getBlockState(pos), level, pos, level.getRandom());
         }
     }
 

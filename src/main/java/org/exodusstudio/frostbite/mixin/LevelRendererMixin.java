@@ -4,10 +4,10 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.LevelRenderState;
+import net.minecraft.client.renderer.extract.LevelExtractor;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -26,30 +26,30 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(LevelRenderer.class)
+@Mixin(LevelExtractor.class)
 public class LevelRendererMixin {
     @Unique
-    LevelRenderer frostbite$levelRenderer = (LevelRenderer) ((Object) this);
+    LevelExtractor frostbite$levelExtractor = (LevelExtractor) ((Object) this);
     @Unique
     Minecraft frostbite$mc = Minecraft.getInstance();
 
     @Inject(at = @At("HEAD"), method = "extractVisibleEntities", cancellable = true)
-    private void extractVisibleEntities(Camera camera, Frustum frustum, DeltaTracker deltaTracker, LevelRenderState renderState, CallbackInfo ci) {
+    private void extractVisibleEntities(Camera camera, Frustum frustum, DeltaTracker deltaTracker, LevelRenderState output, CallbackInfo ci) {
         setFrostbite$levelRenderer();
         Vec3 vec3 = camera.position();
         double d0 = vec3.x();
         double d1 = vec3.y();
         double d2 = vec3.z();
         TickRateManager tickratemanager = frostbite$mc.level.tickRateManager();
-        boolean flag = frostbite$levelRenderer.shouldShowEntityOutlines();
+        boolean flag = frostbite$levelExtractor.shouldShowEntityOutlines(camera);
         Entity.setViewScale(Mth.clamp(frostbite$mc.options.getEffectiveRenderDistance() / 8f, 1, 2.5) * frostbite$mc.options.entityDistanceScaling().get());
 
-        assert frostbite$levelRenderer.level != null;
+        assert frostbite$levelExtractor.level != null;
         assert frostbite$mc.player != null;
-        for (Entity entity : frostbite$levelRenderer.level.entitiesForRendering()) {
-            if (frostbite$levelRenderer.entityRenderDispatcher.shouldRender(entity, frustum, d0, d1, d2) || entity.hasIndirectPassenger(frostbite$mc.player)) {
+        for (Entity entity : frostbite$levelExtractor.level.entitiesForRendering()) {
+            if (frostbite$levelExtractor.levelRenderer.entityRenderDispatcher.shouldRender(entity, frustum, d0, d1, d2) || entity.hasIndirectPassenger(frostbite$mc.player)) {
                 BlockPos blockpos = entity.blockPosition();
-                if ((frostbite$levelRenderer.level.isOutsideBuildHeight(blockpos.getY()) || frostbite$levelRenderer.isSectionCompiledAndVisible(blockpos)) && (entity != camera.entity() || camera.isDetached() || camera.entity() instanceof LivingEntity && ((LivingEntity)camera.entity()).isSleeping()) && (!(entity instanceof LocalPlayer) || camera.entity() == entity || entity == frostbite$mc.player && !frostbite$mc.player.isSpectator())) {
+                if ((frostbite$levelExtractor.level.isOutsideBuildHeight(blockpos.getY()) || frostbite$levelExtractor.levelRenderer.isSectionCompiledAndVisible(blockpos)) && (entity != camera.entity() || camera.isDetached() || camera.entity() instanceof LivingEntity && ((LivingEntity)camera.entity()).isSleeping()) && (!(entity instanceof LocalPlayer) || camera.entity() == entity || entity == frostbite$mc.player && !frostbite$mc.player.isSpectator())) {
                     if (entity.tickCount == 0) {
                         entity.xOld = entity.getX();
                         entity.yOld = entity.getY();
@@ -57,7 +57,7 @@ public class LevelRendererMixin {
                     }
 
                     float f = deltaTracker.getGameTimeDeltaPartialTick(!tickratemanager.isEntityFrozen(entity));
-                    EntityRenderState entityrenderstate = frostbite$levelRenderer.extractEntity(entity, f);
+                    EntityRenderState entityrenderstate = frostbite$levelExtractor.extractEntity(entity, f);
                     ((UUIDState) entityrenderstate).frostbite$setUUID(entity.getUUID());
 
                     if (frostbite$shouldShowEntityOutlines() && entity instanceof LivingEntity livingEntity && frostbite$mc.player.distanceTo(entity) < 30) {
@@ -69,11 +69,9 @@ public class LevelRendererMixin {
                         entityrenderstate.outlineColor = ARGB.color(255, ARGB.red(i), ARGB.green(i), ARGB.blue(i));
                     }
 
-                    renderState.entityRenderStates.add(entityrenderstate);
+                    output.entityRenderStates.add(entityrenderstate);
                     if (entityrenderstate.appearsGlowing() && flag) {
-                        renderState.haveGlowingEntities = true;
-                    } else if (flag && entity.hasCustomOutlineRendering(frostbite$mc.player)) {
-                        renderState.haveGlowingEntities = true;
+                        output.shouldShowEntityOutlines = true;
                     }
                 }
             }
@@ -268,8 +266,8 @@ public class LevelRendererMixin {
 
     @Unique
     public void setFrostbite$levelRenderer() {
-        if (frostbite$levelRenderer == null) {
-            frostbite$levelRenderer = (LevelRenderer) ((Object) this);
+        if (frostbite$levelExtractor == null) {
+            frostbite$levelExtractor = (LevelExtractor) ((Object) this);
         }
     }
 

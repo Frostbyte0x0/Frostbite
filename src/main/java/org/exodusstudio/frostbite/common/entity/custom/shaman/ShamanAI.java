@@ -4,8 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.ActivityData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
@@ -35,15 +36,15 @@ public class ShamanAI extends StateBossAI<ShamanEntity> {
         return Stream.concat(super.getMemoryTypes().stream(), MEMORY_TYPES.stream()).toList();
     }
 
-    protected void initCoreActivity(Brain<ShamanEntity> brain) {
-        brain.addActivity(Activity.CORE, 0, ImmutableList.of(
+    protected ActivityData<ShamanEntity> initCoreActivity() {
+        return ActivityData.create(Activity.CORE, 0, ImmutableList.of(
                 new Swim<Mob>(0.8F),
-                SetEntityLookTargetSometimes.create(EntityType.PLAYER, 10, UniformInt.of(10, 30)),
+                SetEntityLookTargetSometimes.create(EntityTypes.PLAYER, 10, UniformInt.of(10, 30)),
                 new MoveToTargetSink(500, 700)));
     }
 
-    protected void initFightActivity(Brain<ShamanEntity> brain) {
-        brain.addActivityWithConditions(Activity.FIGHT, ImmutableList.of(
+    protected ActivityData<ShamanEntity> initFightActivity() {
+        return ActivityData.create(Activity.FIGHT, ImmutableList.of(
                 Pair.of(0, new Ethereal()),
                 Pair.of(0, new Whirlpool()),
                 Pair.of(0, new Summon()),

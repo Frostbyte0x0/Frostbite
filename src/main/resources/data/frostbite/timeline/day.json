@@ -1,5 +1,6 @@
 {
   "period_ticks": 24000,
+  "clock": "minecraft:overworld",
   "tracks": {
     "minecraft:audio/firefly_bush_sounds": {
       "keyframes": [

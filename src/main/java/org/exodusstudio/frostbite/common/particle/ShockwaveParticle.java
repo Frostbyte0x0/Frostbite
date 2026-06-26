@@ -28,11 +28,6 @@ public class ShockwaveParticle extends SingleQuadParticle {
     }
 
     @Override
-    public int getLightColor(float p_233902_) {
-        return 240;
-    }
-
-    @Override
     public SingleQuadParticle.Layer getLayer() {
         return Layer.TRANSLUCENT;
     }

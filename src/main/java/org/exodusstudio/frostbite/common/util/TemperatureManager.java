@@ -110,7 +110,7 @@ public class TemperatureManager {
         for (BlockPos pos : Util.getBlockPositionsInAABB(aabb)) {
             String blockname = entity.level().getBlockState(pos).getBlock().toString().replace("Block{minecraft:", "").replace("}", "");
             if (tempsPerBlock.containsKey(blockname)) {
-                temp[0] += (float) (tempsPerBlock.get(blockname) / (0.5 + entity.distanceToSqr(pos.getCenter())));
+                temp[0] += (float) (tempsPerBlock.get(blockname) / (0.5 + entity.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)));
             }
         }
 

@@ -50,7 +50,7 @@ public class BlueHardenedSnowballProjectileEntity extends ThrowableItemProjectil
 
     private ParticleOptions getParticle() {
         ItemStack itemstack = this.getItem();
-        return itemstack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemParticleOption(ParticleTypes.ITEM, itemstack);
+        return itemstack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemParticleOption(ParticleTypes.ITEM, itemstack.getItem());
     }
 
     public void handleEntityEvent(byte p_37402_) {

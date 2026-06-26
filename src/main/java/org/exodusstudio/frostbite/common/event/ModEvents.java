@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
@@ -99,10 +100,10 @@ public class ModEvents {
                             flag1 = !flag1;
                         }
                     } else if (flag1) {
-                        j = WeatherInfo.WHITEOUT_DURATION.sample(serverLevel.random);
+                        j = WeatherInfo.WHITEOUT_DURATION.sample(serverLevel.getRandom());
                         Frostbite.weatherInfo.setWhiteouting();
                     } else {
-                        j = WeatherInfo.WHITEOUT_DELAY.sample(serverLevel.random);
+                        j = WeatherInfo.WHITEOUT_DELAY.sample(serverLevel.getRandom());
                         Frostbite.weatherInfo.setSnowing();
                     }
 
@@ -111,10 +112,10 @@ public class ModEvents {
                             flag2 = !flag2;
                         }
                     } else if (flag2) {
-                        k = WeatherInfo.BLIZZARD_DURATION.sample(serverLevel.random);
+                        k = WeatherInfo.BLIZZARD_DURATION.sample(serverLevel.getRandom());
                         Frostbite.weatherInfo.setBlizzarding();
                     } else {
-                        k = WeatherInfo.BLIZZARD_DELAY.sample(serverLevel.random);
+                        k = WeatherInfo.BLIZZARD_DELAY.sample(serverLevel.getRandom());
                         Frostbite.weatherInfo.setSnowing();
                     }
                 }
@@ -298,7 +299,7 @@ public class ModEvents {
                     level.addFreshEntityWithPassengers(e);
                     level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(e));
                     if (e instanceof MonkEntity monkEntity) {
-                        monkEntity.setArenaCenter(pos.getCenter().toVector3f());
+                        monkEntity.setArenaCenter(Vec3.atCenterOf(pos).toVector3f());
                     }
                 });
                 Frostbite.addedBosses.putAll(Frostbite.bossesToAdd);
@@ -332,7 +333,7 @@ public class ModEvents {
     public static void heater(InputEvent.Key event) {
         if (KeyMappingRegistry.CODEX.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent()))) {
             while (KeyMappingRegistry.CODEX.consumeClick()) {
-                Minecraft.getInstance().setScreen(new CodexScreen());
+                Minecraft.getInstance().gui.setScreen(new CodexScreen());
             }
         }
     }

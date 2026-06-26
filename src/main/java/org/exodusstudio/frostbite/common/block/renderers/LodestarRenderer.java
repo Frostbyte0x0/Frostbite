@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.renderer.SpriteMapper;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -11,11 +12,11 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.MaterialSet;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -32,14 +33,14 @@ import org.jspecify.annotations.Nullable;
 
 public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity, LodestarRenderState> {
     public static final Identifier BEAM_LOCATION = Identifier.withDefaultNamespace("textures/entity/beacon_beam.png");
-    public static final Material CAGE_TEXTURE;
-    public static final Material EYE_TEXTURE;
+    public static final SpriteId CAGE_TEXTURE;
+    public static final SpriteId EYE_TEXTURE;
     private final ModelPart eye;
     private final ModelPart cage;
-    private final MaterialSet materials;
+    private final SpriteGetter materials;
 
     public LodestarRenderer(BlockEntityRendererProvider.Context context) {
-        this.materials = context.materials();
+        this.materials = context.sprites();
         this.eye = context.bakeLayer(ModModelLayers.LODESTAR_EYE);
         this.cage = context.bakeLayer(ModModelLayers.LODESTAR_CAGE);
     }
@@ -92,7 +93,7 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
         stack.translate(0.5, 0.45 + f1 * 0.2, 0.5);
         Vector3f vector3f = (new Vector3f(0.5F, 1.0F, 0.5F)).normalize();
         stack.mulPose((new Quaternionf()).rotationAxis(f * ((float)Math.PI / 180F), vector3f));
-        submitNodeCollector.submitModelPart(this.cage, stack, CAGE_TEXTURE.renderType(RenderTypes::entityCutoutNoCull), state.lightCoords, OverlayTexture.NO_OVERLAY, this.materials.get(CAGE_TEXTURE), -1, state.breakProgress);
+        submitNodeCollector.submitModelPart(this.cage, stack, CAGE_TEXTURE.renderType(RenderTypes::entityCutout), state.lightCoords, OverlayTexture.NO_OVERLAY, this.materials.get(CAGE_TEXTURE), -1, state.breakProgress);
         stack.popPose();
 
         // Eye
@@ -102,7 +103,7 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
         stack.mulPose(cameraRenderState.orientation);
         stack.mulPose((new Quaternionf()).rotationZ((float)Math.PI).rotateY((float)Math.PI));
         stack.scale(1.3333334F, 1.3333334F, 1.3333334F);
-        submitNodeCollector.submitModelPart(this.eye, stack, EYE_TEXTURE.renderType(RenderTypes::entityCutoutNoCull), state.lightCoords, OverlayTexture.NO_OVERLAY, this.materials.get(EYE_TEXTURE));
+        submitNodeCollector.submitModelPart(this.eye, stack, EYE_TEXTURE.renderType(RenderTypes::entityCutout), state.lightCoords, OverlayTexture.NO_OVERLAY, this.materials.get(EYE_TEXTURE));
         stack.popPose();
 
         float f2 = Mth.sin(state.animTime * 0.1F) / 2.0F + 0.5F;
@@ -133,7 +134,8 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
     }
 
     static {
-        CAGE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/cage"));
-        EYE_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/eye"));
+        SpriteMapper MAPPER = new SpriteMapper(TextureAtlas.LOCATION_BLOCKS, "entity/conduit");
+        CAGE_TEXTURE = MAPPER.apply(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/cage"));
+        EYE_TEXTURE = MAPPER.apply(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/eye"));
     }
 }

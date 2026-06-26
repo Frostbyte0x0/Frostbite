@@ -26,8 +26,8 @@ public class MistyGrassBlock extends GrassBlock {
         } else if (blockstate.getFluidState().getAmount() == 8) {
             return false;
         } else {
-            int i = LightEngine.getLightBlockInto(state, blockstate, Direction.UP, blockstate.getLightBlock());
-            return i < 15;
+            int lightDampeningTopFace = LightEngine.getLightDampeningInto(state, blockstate, Direction.UP, blockstate.getLightDampening());
+            return lightDampeningTopFace < 15;
         }
     }
 

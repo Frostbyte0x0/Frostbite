@@ -61,12 +61,13 @@ public class WoollySheepModel extends QuadrupedModel<SheepRenderState> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
-        body.render(poseStack, vertexConsumer, packedLight, packedOverlay);
-        rightHindLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay);
-        leftHindLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay);
-        rightFrontLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay);
-        leftFrontLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay);
-        head.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int lightCoords, int overlayCoords, int color) {
+        super.renderToBuffer(poseStack, vertexConsumer, lightCoords, overlayCoords, color);
+        body.render(poseStack, vertexConsumer, lightCoords, overlayCoords);
+        rightHindLeg.render(poseStack, vertexConsumer, lightCoords, overlayCoords);
+        leftHindLeg.render(poseStack, vertexConsumer, lightCoords, overlayCoords);
+        rightFrontLeg.render(poseStack, vertexConsumer, lightCoords, overlayCoords);
+        leftFrontLeg.render(poseStack, vertexConsumer, lightCoords, overlayCoords);
+        head.render(poseStack, vertexConsumer, lightCoords, overlayCoords);
     }
 }

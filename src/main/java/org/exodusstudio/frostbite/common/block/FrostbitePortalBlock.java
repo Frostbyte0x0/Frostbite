@@ -111,7 +111,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
                 StructureStart structurestart = structure.generate(p_structure, destinationLevel.dimension(),
                         destinationLevel.getServer().registryAccess(), chunkgenerator, chunkgenerator.getBiomeSource(),
                         destinationLevel.getChunkSource().randomState(), destinationLevel.getStructureManager(), destinationLevel.getSeed(),
-                        new ChunkPos(pos), 0, destinationLevel, (p_214580_) -> true);
+                        new ChunkPos(pos.getX(), pos.getZ()), 0, destinationLevel, (p_214580_) -> true);
                 BoundingBox boundingbox = structurestart.getBoundingBox();
                 ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()),
                         SectionPos.blockToSectionCoord(boundingbox.minZ()));

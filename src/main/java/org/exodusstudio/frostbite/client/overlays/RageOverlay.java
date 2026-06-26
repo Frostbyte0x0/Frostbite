@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.client.overlays;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -15,35 +15,35 @@ public class RageOverlay {
             "textures/overlays/rage.png");
     private static final Identifier VIGNETTE_LOCATION = Identifier.withDefaultNamespace("textures/misc/vignette.png");
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void render(GuiGraphicsExtractor GuiGraphicsExtractor, DeltaTracker deltaTracker) {
         Player player = Minecraft.getInstance().player;
 
         assert player != null;
         if (player.hasEffect(EffectRegistry.RAGE)) {
-            guiGraphics.blit(
+            GuiGraphicsExtractor.blit(
                     RenderPipelines.GUI_TEXTURED,
                     RAGE,
                     0,
                     0,
                     0.0F,
                     0.0F,
-                    guiGraphics.guiWidth(),
-                    guiGraphics.guiHeight(),
-                    guiGraphics.guiWidth(),
-                    guiGraphics.guiHeight(),
+                    GuiGraphicsExtractor.guiWidth(),
+                    GuiGraphicsExtractor.guiHeight(),
+                    GuiGraphicsExtractor.guiWidth(),
+                    GuiGraphicsExtractor.guiHeight(),
                     ARGB.color(1000, 256, 256));
 
-            guiGraphics.blit(
+            GuiGraphicsExtractor.blit(
                     RenderPipelines.VIGNETTE,
                     VIGNETTE_LOCATION,
                     0,
                     0,
                     0.0F,
                     0.0F,
-                    guiGraphics.guiWidth(),
-                    guiGraphics.guiHeight(),
-                    guiGraphics.guiWidth(),
-                    guiGraphics.guiHeight(),
+                    GuiGraphicsExtractor.guiWidth(),
+                    GuiGraphicsExtractor.guiHeight(),
+                    GuiGraphicsExtractor.guiWidth(),
+                    GuiGraphicsExtractor.guiHeight(),
                     ARGB.colorFromFloat(1, 0, 10, 10));
         }
     }

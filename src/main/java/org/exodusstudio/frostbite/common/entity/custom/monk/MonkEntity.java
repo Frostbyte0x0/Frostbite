@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.custom.monk;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -18,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
@@ -45,7 +45,6 @@ import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -70,7 +69,8 @@ public class MonkEntity extends Monster implements TargetingEntity {
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.VECTOR3);
     private static final Component MONK_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
-            new ServerBossEvent(MONK_NAME_COMPONENT, BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
+            new ServerBossEvent(Mth.createInsecureUUID(this.random), MONK_NAME_COMPONENT,
+                    BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
     public final AnimationState clapAnimationState = new AnimationState();
     public static final int TP_DIAMETER = 15;
     public static final int ILLUSION_AMOUNT = 10;
@@ -146,8 +146,8 @@ public class MonkEntity extends Monster implements TargetingEntity {
     }
 
     @Override
-    protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return MonkAI.makeBrain(this, dynamic);
+    protected Brain<? extends LivingEntity> makeBrain(Brain.Packed packedBrain) {
+        return MonkAI.makeBrain(this, packedBrain);
     }
 
     public Entity getInstance() {
@@ -168,13 +168,13 @@ public class MonkEntity extends Monster implements TargetingEntity {
                     for (BlockPos blockpos : BOOKSHELF_OFFSETS) {
                         serverLevel.sendParticles(
                                 ParticleTypes.ENCHANT,
-                                getX() + (0.5 - level().random.nextFloat()) * 0.5,
-                                getEyeY() + (0.5 - level().random.nextFloat()) * 0.5 + 1,
-                                getZ() + (0.5 - level().random.nextFloat()) * 0.5,
+                                getX() + (0.5 - level().getRandom().nextFloat()) * 0.5,
+                                getEyeY() + (0.5 - level().getRandom().nextFloat()) * 0.5 + 1,
+                                getZ() + (0.5 - level().getRandom().nextFloat()) * 0.5,
                                 0,
-                                blockpos.getX() + level().random.nextFloat() - 0.5,
-                                blockpos.getY() - level().random.nextFloat() - 1.0F,
-                                blockpos.getZ() + level().random.nextFloat() - 0.5,
+                                blockpos.getX() + level().getRandom().nextFloat() - 0.5,
+                                blockpos.getY() - level().getRandom().nextFloat() - 1.0F,
+                                blockpos.getZ() + level().getRandom().nextFloat() - 0.5,
                                 1
                         );
                     }

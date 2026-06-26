@@ -35,21 +35,6 @@ public class IcyBreathParticle extends SingleQuadParticle {
         this.setLocationFromBoundingbox();
     }
 
-    public int getLightColor(float partialTick) {
-        int i = super.getLightColor(partialTick);
-        float f = (float) age / (float) lifetime;
-        f *= f;
-        f *= f;
-        int j = i & 255;
-        int k = i >> 16 & 255;
-        k += (int)(f * 15.0F * 16.0F);
-        if (k > 240) {
-            k = 240;
-        }
-
-        return j | k << 16;
-    }
-
     public void tick() {
         if (age > 40) {
             setAlpha(1 - (float) (age - 40) / 10);

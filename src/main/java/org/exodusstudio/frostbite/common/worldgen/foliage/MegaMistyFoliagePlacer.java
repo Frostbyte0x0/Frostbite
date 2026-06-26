@@ -8,12 +8,10 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerTy
 import org.exodusstudio.frostbite.common.registry.FoliagePlacerRegistry;
 
 public class MegaMistyFoliagePlacer extends MistyFoliagePlacer {
-    public static final MapCodec<MegaMistyFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) ->
-            foliagePlacerParts(instance)
-                    .and(IntProvider.codec(0, 24).fieldOf("trunk_height")
-                            .forGetter((foliagePlacer) -> foliagePlacer.trunkHeight))
-                    .apply(instance, MegaMistyFoliagePlacer::new));
-    private final IntProvider trunkHeight;
+    public static final MapCodec<MegaMistyFoliagePlacer> CODEC =
+            RecordCodecBuilder.mapCodec(i -> parts(i).apply(i, MegaMistyFoliagePlacer::new));
+
+    final IntProvider trunkHeight;
 
     public MegaMistyFoliagePlacer(IntProvider radius, IntProvider offset, IntProvider trunkHeight) {
         super(radius, offset, trunkHeight);

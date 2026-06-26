@@ -29,7 +29,7 @@ public class FrozenRemnantsRenderer extends LivingEntityRenderer<FrozenRemnantsE
     @Override
     public void extractRenderState(FrozenRemnantsEntity frozenRemnants, FrozenRemnantsRenderState renderState, float p_361157_) {
         super.extractRenderState(frozenRemnants, renderState, p_361157_);
-        Frustum frustum = Minecraft.getInstance().levelRenderer.getCapturedFrustum();
+        Frustum frustum = Minecraft.getInstance().gameRenderer.mainCamera().getCapturedFrustum();
         if  (frustum != null) {
             renderState.isOnScreen = shouldRender(frozenRemnants, frustum, frustum.getCamX(), frustum.getCamY(), frustum.getCamZ());
             frozenRemnants.setOnScreen(renderState.isOnScreen);

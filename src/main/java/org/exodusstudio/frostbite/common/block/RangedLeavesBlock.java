@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.OptionalInt;
 
-import static net.minecraft.world.level.block.SnowyDirtBlock.SNOWY;
+import static net.minecraft.world.level.block.SnowyBlock.SNOWY;
 
 public class RangedLeavesBlock extends LeavesBlock {
     public static final IntegerProperty DISTANCE;

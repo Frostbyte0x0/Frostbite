@@ -18,10 +18,10 @@ public abstract class CodexFormation {
     public void addWidget(CodexWidget widget) {
         widget.codexFormation = this;
         widgetPlacements.put(widget, null);
-        computePlacements();
+        //computePlacements();
     }
 
-    protected abstract void computePlacements();
+    public abstract void computePlacements();
 
     public int[] getPlacement(CodexWidget widget) {
         return widgetPlacements.get(widget);

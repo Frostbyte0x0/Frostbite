@@ -11,7 +11,7 @@ public class CircleCodexFormation extends CodexFormation {
     }
 
     @Override
-    protected void computePlacements() {
+    public void computePlacements() {
         int widgetCount = widgetPlacements.size();
         if (widgetCount == 0) return;
 

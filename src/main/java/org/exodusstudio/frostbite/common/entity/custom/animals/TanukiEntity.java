@@ -159,7 +159,7 @@ public class TanukiEntity extends Animal implements TemperatureEntity {
                 vec31 = vec31.add(this.getX(), this.getEyeY() + 1.0, this.getZ());
                 this.level()
                         .addParticle(
-                                new ItemParticleOption(ParticleTypes.ITEM, this.getItemBySlot(EquipmentSlot.MAINHAND)),
+                                new ItemParticleOption(ParticleTypes.ITEM, this.getItemBySlot(EquipmentSlot.MAINHAND).getItem()),
                                 vec31.x,
                                 vec31.y,
                                 vec31.z,

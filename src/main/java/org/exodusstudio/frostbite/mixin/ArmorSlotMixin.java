@@ -19,9 +19,9 @@ public class ArmorSlotMixin {
     }
 
     @Inject(at = @At("TAIL"), method = "mayPlace", cancellable = true)
-    public void mayPlace(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+    public void mayPlace(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
         if (!Frostbite.shouldShowLining) {
-            cir.setReturnValue(cir.getReturnValueZ() && !(stack.getItem() instanceof LiningItem));
+            cir.setReturnValue(cir.getReturnValueZ() && !(itemStack.getItem() instanceof LiningItem));
         }
     }
 }

@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.common.particle;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
@@ -24,11 +24,6 @@ public class ExpandingCircleParticle extends SimpleAnimatedParticle {
         this.yd = 0;
         this.zd = zSpeed;
         this.setSpriteFromAge(sprite);
-    }
-
-    @Override
-    public int getLightColor(float p_233902_) {
-        return 240;
     }
 
     @Override

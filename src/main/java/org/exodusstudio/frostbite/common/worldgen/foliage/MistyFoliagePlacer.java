@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.worldgen.foliage;
 
+import com.mojang.datafixers.Products;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -7,7 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -24,11 +27,12 @@ import java.util.List;
 import static org.exodusstudio.frostbite.common.util.Util.plusOrMinus;
 
 public class MistyFoliagePlacer extends FoliagePlacer {
-    public static final MapCodec<MistyFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((instance) ->
-            foliagePlacerParts(instance)
-                    .and(IntProvider.codec(0, 24).fieldOf("trunk_height")
-                    .forGetter((foliagePlacer) -> foliagePlacer.trunkHeight))
-                    .apply(instance, MistyFoliagePlacer::new));
+    public static final MapCodec<MistyFoliagePlacer> CODEC =
+            RecordCodecBuilder.mapCodec(i -> parts(i).apply(i, MistyFoliagePlacer::new));
+
+    protected static <P extends MistyFoliagePlacer> Products.P3<RecordCodecBuilder.Mu<P>, IntProvider, IntProvider, IntProvider> parts(RecordCodecBuilder.Instance<P> instance) {
+        return foliagePlacerParts(instance).and(IntProviders.codec(0, 16).fieldOf("trunk_height").forGetter(p -> p.trunkHeight));
+    }
     protected final IntProvider trunkHeight;
     protected int treeHeight;
     protected int maxRadius;
@@ -52,7 +56,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
     }
 
     protected void createFoliage(
-            LevelSimulatedReader level,
+            WorldGenLevel level,
             FoliagePlacer.FoliageSetter blockSetter,
             RandomSource random,
             TreeConfiguration config,
@@ -116,7 +120,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
             RandomSource random,
             BlockPos origin,
             AABB locations,
-            LevelSimulatedReader level,
+            WorldGenLevel level,
             TreeConfiguration treeConfiguration
     ) {
         BlockPos.MutableBlockPos relativeLeafPos = new BlockPos.MutableBlockPos();

@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -39,14 +39,14 @@ public class FireOverlay {
             FIRE4, FIRE5, FIRE6, FIRE7};
 
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker ignored) {
+    public static void render(GuiGraphicsExtractor gui, DeltaTracker ignored) {
         Player player = Minecraft.getInstance().player;
         assert player != null;
 
 
         float innerTemp = (float) Math.round(((TE) player).getInnerTemp() * 10f) / 10f;
 
-        if (!isFrostbite(player.level()) && innerTemp == MAX_TEMP || Minecraft.getInstance().options.hideGui) {
+        if (!isFrostbite(player.level()) && innerTemp == MAX_TEMP || Minecraft.getInstance().gui.hud.isHidden()) {
             return;
         }
 
@@ -55,16 +55,16 @@ public class FireOverlay {
         int textureWidth = 24;
         int textureHeight = 24;
 
-        int width = guiGraphics.guiWidth();
-        int height = guiGraphics.guiHeight();
+        int width = gui.guiWidth();
+        int height = gui.guiHeight();
         int x = width / 2 + 95;
         int y = height - textureHeight - 2;
 
 
-        Util.drawTexture(guiGraphics, x, y, textureWidth, textureHeight, FIRES[fireToShow]);
+        Util.drawTexture(gui, x, y, textureWidth, textureHeight, FIRES[fireToShow]);
 
         Font font = Minecraft.getInstance().font;
         Component text = Component.literal("§7" + innerTemp + "C").withStyle(ChatFormatting.RED);
-        guiGraphics.drawString(font, text, (x + (textureWidth - font.width(text)) / 2), y - textureHeight + 11, ARGB.color(255, 255, 255, 255));
+        gui.text(font, text, (x + (textureWidth - font.width(text)) / 2), y - textureHeight + 11, ARGB.color(255, 255, 255, 255));
     }
 }

@@ -19,11 +19,6 @@ public class DebugParticle extends SingleQuadParticle {
     }
 
     @Override
-    public int getLightColor(float p_233902_) {
-        return 240;
-    }
-
-    @Override
     protected Layer getLayer() {
         return Layer.TRANSLUCENT;
     }

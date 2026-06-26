@@ -63,7 +63,7 @@ public class IceBlockEntity extends FallingBlockEntity {
                                 d0 /= d3;
                                 d1 /= d3;
                                 d2 /= d3;
-                                float f = 3 * (0.7F + this.level().random.nextFloat() * 0.6F);
+                                float f = 3 * (0.7F + this.level().getRandom().nextFloat() * 0.6F);
                                 double d4 = this.getX();
                                 double d5 = this.getY();
                                 double d6 = this.getZ();
@@ -76,7 +76,7 @@ public class IceBlockEntity extends FallingBlockEntity {
                                     }
 
                                     if (!blockstate.is(Blocks.AIR) && blockstate.getExplosionResistance(this.level(), blockpos, null) < 10
-                                            && this.distanceToSqr(blockpos.getCenter()) < 9f) {
+                                            && this.distanceToSqr(Vec3.atCenterOf(blockpos)) < 9f) {
                                         set.add(blockpos);
                                     }
 

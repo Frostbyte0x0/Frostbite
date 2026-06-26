@@ -48,7 +48,7 @@ public class MouseHandlerMixin {
         // iChun wrote the line for when the game is paused, not me
         // https://github.com/iChun/MultiplayerServerPause/blob/1.21.4/common/src/main/java/me/ichun/mods/serverpause/client/core/EventHandlerClient.java#L33
         Minecraft mc = Minecraft.getInstance();
-        boolean gamePaused = mc.getConnection() != null && mc.getConnection().getConnection().isConnected() && (mc.screen != null && mc.screen.isPauseScreen() || mc.getOverlay() != null && mc.getOverlay().isPauseScreen());
+        boolean gamePaused = mc.getConnection() != null && mc.getConnection().getConnection().isConnected() && (mc.gui.screen() != null && mc.gui.screen().isPauseScreen());
 
         if (mc.player != null && !gamePaused) {
             if (mc.player.hasEffect(EffectRegistry.FATIGUE)) {

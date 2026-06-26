@@ -5,6 +5,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
@@ -34,8 +35,8 @@ public class FlyingRandomMoveGoal extends Goal {
 
             HitResult hitResult = monster.level().clip(
                     new ClipContext(
-                            target.getBottomCenter(),
-                            target.offset(0, -15, 0).getBottomCenter(),
+                            Vec3.atCenterOf(target),
+                            Vec3.atCenterOf(target.offset(0, -15, 0)),
                             ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, monster));
 
             if (hitResult.getType() == HitResult.Type.MISS) {

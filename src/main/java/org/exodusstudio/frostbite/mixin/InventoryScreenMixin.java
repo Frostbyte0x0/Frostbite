@@ -1,6 +1,6 @@
 package org.exodusstudio.frostbite.mixin;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
@@ -25,10 +25,10 @@ public class InventoryScreenMixin {
         frostbite$screen.addRenderableWidget(frostbite$cycleButton);
     }
 
-    @Inject(at = @At("HEAD"), method = "render")
-    private void render(GuiGraphics p_283246_, int p_98876_, int p_98877_, float p_98878_, CallbackInfo ci) {
-        frostbite$cycleButton.setX(frostbite$screen.getGuiLeft() + 76);
-        frostbite$cycleButton.setY(frostbite$screen.getGuiTop() + 44);
+    @Inject(at = @At("HEAD"), method = "extractBackground")
+    private void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci) {
+        frostbite$cycleButton.setX(frostbite$screen.getLeftPos() + 76);
+        frostbite$cycleButton.setY(frostbite$screen.getTopPos() + 44);
     }
 
     @Unique
@@ -42,7 +42,7 @@ public class InventoryScreenMixin {
         frostbite$cycleButton = CycleButton
                 .booleanBuilder(Component.literal("A"), Component.literal("L"), !Frostbite.shouldShowLining)
                 .displayOnlyValue()
-                .create(frostbite$screen.getGuiLeft() + 468, frostbite$screen.getGuiTop() + 208, 16, 16,
+                .create(frostbite$screen.getLeftPos() + 468, frostbite$screen.getTopPos() + 208, 16, 16,
                         Component.literal("A"), (button, bool) -> Frostbite.shouldShowLining = !bool);
     }
 }

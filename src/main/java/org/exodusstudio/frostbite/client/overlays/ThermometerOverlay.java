@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -39,13 +39,13 @@ public class ThermometerOverlay {
             THERMOMETER4, THERMOMETER5, THERMOMETER6, THERMOMETER7};
 
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker ignored) {
+    public static void render(GuiGraphicsExtractor gui, DeltaTracker ignored) {
         Player player = Minecraft.getInstance().player;
         assert player != null;
 
         float outer_temp = (float) Math.round(((TE) player).getOuterTemp() * 10f) / 10f;
 
-        if (!isFrostbite(player.level()) && outer_temp == MAX_TEMP || Minecraft.getInstance().options.hideGui) {
+        if (!isFrostbite(player.level()) && outer_temp == MAX_TEMP || Minecraft.getInstance().gui.hud.isHidden()) {
             return;
         }
 
@@ -54,15 +54,15 @@ public class ThermometerOverlay {
         int textureWidth = 24;
         int textureHeight = 24;
 
-        int width = guiGraphics.guiWidth();
-        int height = guiGraphics.guiHeight();
+        int width = gui.guiWidth();
+        int height = gui.guiHeight();
         int x = width / 2 + 130;
         int y = height - textureHeight - 2;
 
-        Util.drawTexture(guiGraphics, x, y, textureWidth, textureHeight, THERMOMETERS[thermometerToShow]);
+        Util.drawTexture(gui, x, y, textureWidth, textureHeight, THERMOMETERS[thermometerToShow]);
 
         Font font = Minecraft.getInstance().font;
         Component text = Component.literal("").append("§7" + outer_temp + "C").withStyle(ChatFormatting.BLUE);
-        guiGraphics.drawString(font, text, (x + (textureWidth - font.width(text)) / 2), y - textureHeight + 11, ARGB.color(255, 255, 255, 255));
+        gui.text(font, text, (x + (textureWidth - font.width(text)) / 2), y - textureHeight + 11, ARGB.color(255, 255, 255, 255));
     }
 }

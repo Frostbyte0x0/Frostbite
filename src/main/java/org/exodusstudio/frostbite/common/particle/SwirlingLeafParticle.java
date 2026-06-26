@@ -6,7 +6,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -33,11 +33,6 @@ public class SwirlingLeafParticle extends SingleQuadParticle {
         this.flipXAngle = (float) (random.nextFloat() * Math.PI * 2);
         this.hasPhysics = false;
         this.setSpriteFromAge(sprite);
-    }
-
-    @Override
-    public int getLightColor(float p_233902_) {
-        return 240;
     }
 
     @Override

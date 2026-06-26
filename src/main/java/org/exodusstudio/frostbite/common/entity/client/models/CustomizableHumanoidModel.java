@@ -32,7 +32,7 @@ public class CustomizableHumanoidModel<T extends HumanoidRenderState> extends En
     protected ModelPart leftLeg;
 
     public CustomizableHumanoidModel(ModelPart root) {
-        this(root, RenderTypes::entityCutoutNoCull);
+        this(root, RenderTypes::entityCutout);
     }
 
     public CustomizableHumanoidModel(ModelPart root, Function<Identifier, RenderType> renderType) {

@@ -3,9 +3,9 @@ package org.exodusstudio.frostbite.common.entity.custom.monk;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.ActivityData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -40,12 +40,9 @@ public class MonkAI {
             MemoryModuleType.NEAREST_ATTACKABLE,
             MemoryModuleTypeRegistry.ATTACK_COOLDOWN.get());
 
-    protected static Brain<?> makeBrain(MonkEntity ignored, Dynamic<?> ops) {
-        Brain.Provider<MonkEntity> provider = Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
-        Brain<MonkEntity> brain = provider.makeBrain(ops);
-        initCoreActivity(brain);
-        initIdleActivity(brain);
-        initFightActivity(brain);
+    protected static Brain<?> makeBrain(MonkEntity entity, Brain.Packed packed) {
+        Brain.Provider<MonkEntity> provider = Brain.provider(MEMORY_TYPES, SENSOR_TYPES, _ -> getActivities());
+        Brain<MonkEntity> brain = provider.makeBrain(entity, packed);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.useDefaultActivity();
@@ -53,18 +50,22 @@ public class MonkAI {
         return brain;
     }
 
-    private static void initCoreActivity(Brain<MonkEntity> brain) {
-        brain.addActivity(Activity.CORE, 0, ImmutableList.of(new Swim<Mob>(0.8F),
+    protected static List<ActivityData<MonkEntity>> getActivities() {
+        return List.of(initCoreActivity(), initFightActivity(), initIdleActivity());
+    }
+
+    private static ActivityData<MonkEntity> initCoreActivity() {
+        return ActivityData.create(Activity.CORE, 0, ImmutableList.of(new Swim<Mob>(0.8F),
                 new MoveToTargetSink(500, 700)));
     }
 
-    private static void initFightActivity(Brain<MonkEntity> brain) {
-        brain.addActivityWithConditions(Activity.FIGHT, ImmutableList.of(Pair.of(0, new Attack())),
+    private static ActivityData<MonkEntity> initFightActivity() {
+        return ActivityData.create(Activity.FIGHT, ImmutableList.of(Pair.of(0, new Attack())),
                 Set.of(Pair.of(MemoryModuleType.NEAREST_ATTACKABLE, MemoryStatus.VALUE_PRESENT)));
     }
 
-    private static void initIdleActivity(Brain<MonkEntity> brain) {
-        brain.addActivityWithConditions(Activity.IDLE, ImmutableList.of(Pair.of(2, new LookAtTargetSink(45, 90)),
+    private static ActivityData<MonkEntity> initIdleActivity() {
+        return ActivityData.create(Activity.IDLE, ImmutableList.of(Pair.of(2, new LookAtTargetSink(45, 90)),
                         Pair.of(4, new RunOne<>(ImmutableList.of(
                                 Pair.of(new DoNothing(5, 20), 2))))),
                 Set.of());

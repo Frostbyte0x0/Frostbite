@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.common.util;
 
 import net.minecraft.client.animation.KeyframeAnimation;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -48,7 +48,7 @@ public class Util {
     };
 
     public static HashMap<Item, HashMap<Item, Item>> linings = new HashMap<>() {{
-        put(Items.WHITE_WOOL.asItem(), new HashMap<>() {{
+        put(Items.WOOL.white().asItem(), new HashMap<>() {{
             put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.WOOL_LINING_HELMET.asItem());
             put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.WOOL_LINING_CHESTPLATE.asItem());
             put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.WOOL_LINING_LEGGINGS.asItem());
@@ -335,7 +335,7 @@ public class Util {
         }
     }
 
-    public static void drawTexture(GuiGraphics graphics, int leftPos, int topPos, int width, int height, Identifier texture) {
+    public static void drawTexture(GuiGraphicsExtractor graphics, int leftPos, int topPos, int width, int height, Identifier texture) {
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
     }
 }

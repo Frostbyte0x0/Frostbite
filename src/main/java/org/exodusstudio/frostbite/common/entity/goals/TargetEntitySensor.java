@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.common.entity.goals;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.NearestLivingEntitySensor;
@@ -28,8 +28,8 @@ public class TargetEntitySensor extends NearestLivingEntitySensor<LivingEntity> 
     @Override
     protected void doTick(ServerLevel level, LivingEntity entity) {
         super.doTick(level, entity);
-        getClosest(entity, arg -> arg.getType() == EntityType.PLAYER)
-                .or(() -> getClosest(entity, arg -> arg.getType() != EntityType.PLAYER))
+        getClosest(entity, arg -> arg.getType() == EntityTypes.PLAYER)
+                .or(() -> getClosest(entity, arg -> arg.getType() != EntityTypes.PLAYER))
                 .ifPresentOrElse(arg2 -> entity.getBrain()
                         .setMemory(MemoryModuleType.NEAREST_ATTACKABLE, arg2), () -> entity.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE));
     }

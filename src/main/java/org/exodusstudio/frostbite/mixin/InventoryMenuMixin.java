@@ -18,8 +18,6 @@ import java.util.Map;
 @Mixin(InventoryMenu.class)
 public class InventoryMenuMixin {
     @Unique
-    private InventoryMenu frostbite$inventoryMenu = (InventoryMenu) ((Object) this);
-    @Unique
     private static final EquipmentSlot[] SLOT_IDS =
             new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     @Unique
@@ -47,11 +45,12 @@ public class InventoryMenuMixin {
     );
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void constructor(Inventory playerInventory, boolean active, final Player owner, CallbackInfo ci) {
+    private void constructor(Inventory inventory, boolean active, final Player owner, CallbackInfo ci) {
+        InventoryMenu frostbite$inventoryMenu = (InventoryMenu) ((Object) this);
         for (int i = 0; i < 4; i++) {
             EquipmentSlot equipmentslot = SLOT_IDS[i];
             Identifier Identifier = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
-            frostbite$inventoryMenu.addSlot(new LiningSlot(playerInventory, owner,
+            frostbite$inventoryMenu.addSlot(new LiningSlot(inventory, owner,
                     equipmentslot, 43 + i, 8, 8 + i * 18, Identifier));
         }
     }

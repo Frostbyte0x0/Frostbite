@@ -51,7 +51,7 @@ public class WeavingMenu extends ItemCombinerMenu {
         if ((isLiningMaterial(inputSlots.getItem(0))) &&
             isWeavingPattern(pattern)) {
             if (inputSlots.getItem(0).is(ItemTags.WOOL)) {
-                material = Items.WHITE_WOOL;
+                material = Items.WOOL.white();
             }
 
             resultSlots.setItem(0, new ItemStack(Util.linings.get(material).get(pattern)));

@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.client.gui;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.Screen;
@@ -82,7 +82,7 @@ public class CodexScreen extends Screen {
         }
 
         if (KeyMappingRegistry.CODEX.matches(keyEvent)) {
-            this.minecraft.setScreen(null);
+            this.minecraft.gui.setScreen(null);
             this.minecraft.mouseHandler.grabMouse();
             return true;
         } else {
@@ -91,15 +91,16 @@ public class CodexScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int p_282255_, int p_283354_, float p_283123_) {
-        super.render(graphics, p_282255_, p_283354_, p_283123_);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
+
         int i = (this.width - 252) / 2;
         int j = (this.height - 140) / 2;
 
         graphics.nextStratum();
         this.renderInside(graphics, i, j);
         graphics.nextStratum();
-        this.renderWindow(graphics, i, j, p_282255_, p_283354_);
+        this.renderWindow(graphics, i, j, mouseX, mouseY);
         if (this.isScrolling && this.selectedTab != null) {
             if (this.selectedTab.canScrollHorizontally() && this.selectedTab.canScrollVertically()) {
                 graphics.requestCursor(CursorTypes.RESIZE_ALL);
@@ -110,7 +111,7 @@ public class CodexScreen extends Screen {
             }
         }
 
-        this.renderTooltips(graphics, p_282255_, p_283354_, i, j);
+        this.renderTooltips(graphics, mouseX, mouseY, i, j);
     }
 
     @Override
@@ -150,43 +151,43 @@ public class CodexScreen extends Screen {
         }
     }
 
-    private void renderInside(GuiGraphics guiGraphics, int x, int y) {
+    private void renderInside(GuiGraphicsExtractor gui, int x, int y) {
         CodexTab tab = this.selectedTab;
         if (tab == null) {
-            guiGraphics.fill(x + 9, y + 18, x + 9 + 234, y + 18 + 113, -16777216);
+            gui.fill(x + 9, y + 18, x + 9 + 234, y + 18 + 113, -16777216);
             int i = x + 9 + 117;
-            guiGraphics.drawCenteredString(this.font, NO_ADVANCEMENTS_LABEL, i, y + 18 + 56 - 9 / 2, -1);
-            guiGraphics.drawCenteredString(this.font, VERY_SAD_LABEL, i, y + 18 + 113 - 9, -1);
+            gui.text(this.font, NO_ADVANCEMENTS_LABEL, i, y + 18 + 56 - 9 / 2, -1);
+            gui.text(this.font, VERY_SAD_LABEL, i, y + 18 + 113 - 9, -1);
         } else {
-            tab.drawContents(guiGraphics, x + 9, y + 18);
+            tab.drawContents(gui, x + 9, y + 18);
         }
     }
 
-    public void renderWindow(GuiGraphics guiGraphics, int offsetX, int offsetY, int p_470848_, int p_470691_) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WINDOW_LOCATION, offsetX, offsetY, 0, 0, 252, 140, 256, 256);
+    public void renderWindow(GuiGraphicsExtractor gui, int offsetX, int offsetY, int p_470848_, int p_470691_) {
+        gui.blit(RenderPipelines.GUI_TEXTURED, WINDOW_LOCATION, offsetX, offsetY, 0, 0, 252, 140, 256, 256);
         for (CodexTab tab : Codex.TABS) {
-            tab.drawTab(guiGraphics, offsetX, offsetY, p_470848_, p_470691_, tab == this.selectedTab);
+            tab.drawTab(gui, offsetX, offsetY, p_470848_, p_470691_, tab == this.selectedTab);
         }
 
         for (CodexTab tab : Codex.TABS) {
-            tab.drawIcon(guiGraphics, offsetX, offsetY);
+            tab.drawIcon(gui, offsetX, offsetY);
         }
 
-        guiGraphics.drawString(this.font, this.selectedTab != null ? this.selectedTab.getTitle() : TITLE, offsetX + 8, offsetY + 6, -12566464, false);
+        gui.text(this.font, this.selectedTab != null ? this.selectedTab.getTitle() : TITLE, offsetX + 8, offsetY + 6, -12566464, false);
     }
 
-    private void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int offsetX, int offsetY) {
+    private void renderTooltips(GuiGraphicsExtractor gui, int mouseX, int mouseY, int offsetX, int offsetY) {
         if (this.selectedTab != null) {
-            guiGraphics.pose().pushMatrix();
-            guiGraphics.pose().translate(offsetX + 9, offsetY + 18);
-            guiGraphics.nextStratum();
-            this.selectedTab.drawTooltips(guiGraphics, mouseX - offsetX - 9, mouseY - offsetY - 18, offsetX, offsetY);
-            guiGraphics.pose().popMatrix();
+            gui.pose().pushMatrix();
+            gui.pose().translate(offsetX + 9, offsetY + 18);
+            gui.nextStratum();
+            this.selectedTab.drawTooltips(gui, mouseX - offsetX - 9, mouseY - offsetY - 18, offsetX, offsetY);
+            gui.pose().popMatrix();
         }
 
         for (CodexTab tab : Codex.TABS) {
             if (tab.isMouseOver(offsetX, offsetY, mouseX, mouseY)) {
-                guiGraphics.setTooltipForNextFrame(this.font, tab.getTitle(), mouseX, mouseY);
+                gui.setTooltipForNextFrame(this.font, tab.getTitle(), mouseX, mouseY);
             }
         }
     }

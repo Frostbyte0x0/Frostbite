@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.GunData;
+import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.SniperBulletItem;
@@ -30,10 +31,9 @@ public abstract class AbstractGun extends Item {
     private final int reloadTime;
     private final int chamberTime;
     private final int magSize;
-    private final ItemStack bulletType;
+    private final Item bulletType;
 
-
-    public AbstractGun(Properties properties, float bulletVelocity, float bulletInaccuracy, int reloadTime, int chamberTime, int magSize, ItemStack bulletType) {
+    public AbstractGun(Properties properties, float bulletVelocity, float bulletInaccuracy, int reloadTime, int chamberTime, int magSize, Item bulletType) {
         super(properties);
         this.bulletVelocity = bulletVelocity;
         this.bulletInaccuracy = bulletInaccuracy;
@@ -65,13 +65,13 @@ public abstract class AbstractGun extends Item {
             case "canShoot":
                 sound = getShootSound(player, level);
                 if (level instanceof ServerLevel serverlevel) {
-                    shoot(serverlevel, player, hand, player.getItemInHand(hand), this.bulletType, this.bulletVelocity, this.bulletInaccuracy);
+                    shoot(serverlevel, player, hand, player.getItemInHand(hand), this.bulletType.getDefaultInstance(), this.bulletVelocity, this.bulletInaccuracy);
                 }
                 break;
             case "lastShot":
                 sound = getLastShotSound(player, level);
                 if (level instanceof ServerLevel serverlevel) {
-                    shoot(serverlevel, player, hand, player.getItemInHand(hand), this.bulletType, this.bulletVelocity, this.bulletInaccuracy);
+                    shoot(serverlevel, player, hand, player.getItemInHand(hand), this.bulletType.getDefaultInstance(), this.bulletVelocity, this.bulletInaccuracy);
                 }
                 break;
             case "shouldReload":
@@ -142,9 +142,9 @@ public abstract class AbstractGun extends Item {
             return sniperBullet;
         }
         else if (ammo.getItem() instanceof RevolverBulletItem revolverBulletItem) {
-            SniperBulletEntity sniperBullet = revolverBulletItem.createBullet(level);
-            sniperBullet.moveOrInterpolateTo(new Vec3(shooter.getX(), shooter.getY(), shooter.getZ()), shooter.getYRot(), 0.0F);
-            return sniperBullet;
+            RevolverBulletEntity revolverBullet = revolverBulletItem.createBullet(level);
+            revolverBullet.moveOrInterpolateTo(new Vec3(shooter.getX(), shooter.getY(), shooter.getZ()), shooter.getYRot(), 0.0F);
+            return revolverBullet;
         }
 
         return null;

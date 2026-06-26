@@ -4,15 +4,14 @@ import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.LevelSettings;
-import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.storage.PrimaryLevelData;
+import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
+import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,78 +21,79 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Mixin(PrimaryLevelData.class)
 public class PrimaryLevelDataMixin {
     @Inject(at = @At("HEAD"), method = "setTagData")
-    public void save(RegistryAccess registry, CompoundTag nbt, CompoundTag playerNBT, CallbackInfo ci) {
+    public void save(CompoundTag tag, UUID singlePlayerUUID, CallbackInfo ci) {
         assert Minecraft.getInstance().level != null;
         List<HeaterStorage> heaters = Frostbite.heaterStorages;
 
-        nbt.putInt("heater_count", heaters.size());
+        tag.putInt("heater_count", heaters.size());
         for (int i = 0; i < heaters.size(); i++) {
             HeaterStorage heater = heaters.get(i);
-            nbt.putInt("heater_posX" + i, (int) heater.getPos().getCenter().x);
-            nbt.putInt("heater_posY" + i, (int) heater.getPos().getCenter().y);
-            nbt.putInt("heater_posZ" + i, (int) heater.getPos().getCenter().z);
-            nbt.putString("heater_dimension" + i, heater.getDimensionName());
+            tag.putInt("heater_posX" + i, (int) Vec3.atCenterOf(heater.getPos()).x);
+            tag.putInt("heater_posY" + i, (int) Vec3.atCenterOf(heater.getPos()).y);
+            tag.putInt("heater_posZ" + i, (int) Vec3.atCenterOf(heater.getPos()).z);
+            tag.putString("heater_dimension" + i, heater.getDimensionName());
         }
 
-        nbt.putBoolean("canSpawnOTF", OTFPortal.canSpawn);
-        nbt.putBoolean("canSpawnFTO", FTOPortal.canSpawn);
+        tag.putBoolean("canSpawnOTF", OTFPortal.canSpawn);
+        tag.putBoolean("canSpawnFTO", FTOPortal.canSpawn);
 
-        nbt.putIntArray("frostbiteSpawnPoint", new int[]{
+        tag.putIntArray("frostbiteSpawnPoint", new int[]{
                 Frostbite.frostbiteSpawnPoint.getX(),
                 Frostbite.frostbiteSpawnPoint.getY(),
                 Frostbite.frostbiteSpawnPoint.getZ()});
-        nbt.putIntArray("overworldSpawnPoint", new int[]{
+        tag.putIntArray("overworldSpawnPoint", new int[]{
                 Frostbite.overworldSpawnPoint.getX(),
                 Frostbite.overworldSpawnPoint.getY(),
                 Frostbite.overworldSpawnPoint.getZ()});
 
-        nbt.putInt("snowTime", Frostbite.weatherInfo.snowTime);
-        nbt.putInt("blizzardTime", Frostbite.weatherInfo.blizzardTime);
-        nbt.putInt("whiteoutTime", Frostbite.weatherInfo.whiteoutTime);
-        nbt.putBoolean("isBlizzarding", Frostbite.weatherInfo.isBlizzarding);
-        nbt.putBoolean("isWhiteouting", Frostbite.weatherInfo.isWhiteouting);
-        nbt.putFloat("blizzardLevel", Frostbite.weatherInfo.blizzardLevel);
-        nbt.putFloat("whiteoutLevel", Frostbite.weatherInfo.whiteoutLevel);
+        tag.putInt("snowTime", Frostbite.weatherInfo.snowTime);
+        tag.putInt("blizzardTime", Frostbite.weatherInfo.blizzardTime);
+        tag.putInt("whiteoutTime", Frostbite.weatherInfo.whiteoutTime);
+        tag.putBoolean("isBlizzarding", Frostbite.weatherInfo.isBlizzarding);
+        tag.putBoolean("isWhiteouting", Frostbite.weatherInfo.isWhiteouting);
+        tag.putFloat("blizzardLevel", Frostbite.weatherInfo.blizzardLevel);
+        tag.putFloat("whiteoutLevel", Frostbite.weatherInfo.whiteoutLevel);
     }
 
 
     @Inject(at = @At("HEAD"), method = "parse")
-    private static <T> void parse(Dynamic<T> tag, LevelSettings levelSettings, PrimaryLevelData.SpecialWorldProperty specialWorldProperty, WorldOptions worldOptions, Lifecycle worldGenSettingsLifecycle, CallbackInfoReturnable<PrimaryLevelData> cir) {
-        for (int i = 0; i < tag.get("heater_count").asInt(0); i++) {
+    private static <T> void parse(Dynamic<T> input, LevelSettings settings, PrimaryLevelData.SpecialWorldProperty specialWorldProperty, Lifecycle worldGenSettingsLifecycle, CallbackInfoReturnable<PrimaryLevelData> cir) {
+        for (int i = 0; i < input.get("heater_count").asInt(0); i++) {
             String heaterDimensionKey = "heater_dimension" + i;
 
-            BlockPos blockPos = BlockPos.containing(tag.get("heater_posX" + i).asInt(0),
-                    tag.get("heater_posY" + i).asInt(0),
-                    tag.get("heater_posZ" + i).asInt(0) - 1);
+            BlockPos blockPos = BlockPos.containing(input.get("heater_posX" + i).asInt(0),
+                    input.get("heater_posY" + i).asInt(0),
+                    input.get("heater_posZ" + i).asInt(0) - 1);
 
-            Frostbite.heaterStorages.add(new HeaterStorage(blockPos, null, tag.get(heaterDimensionKey).asString("")));
+            Frostbite.heaterStorages.add(new HeaterStorage(blockPos, null, input.get(heaterDimensionKey).asString("")));
         }
 
-        OTFPortal.canSpawn = tag.get("canSpawnOTF").asBoolean(true);
-        FTOPortal.canSpawn = tag.get("canSpawnFTO").asBoolean(true);
+        OTFPortal.canSpawn = input.get("canSpawnOTF").asBoolean(true);
+        FTOPortal.canSpawn = input.get("canSpawnFTO").asBoolean(true);
 
-        int[] pos = tag.get("frostbiteSpawnPoint").asIntStream().toArray();
-        int[] pos1 = tag.get("overworldSpawnPoint").asIntStream().toArray();
+        int[] pos = input.get("frostbiteSpawnPoint").asIntStream().toArray();
+        int[] pos1 = input.get("overworldSpawnPoint").asIntStream().toArray();
         if (Arrays.stream(pos).findAny().isPresent() && Arrays.stream(pos1).findAny().isPresent()) {
             Frostbite.frostbiteSpawnPoint = new BlockPos(pos[0], pos[1], pos[2]);
             Frostbite.overworldSpawnPoint = new BlockPos(pos1[0], pos1[1], pos1[2]);
         }
 
-        boolean isBlizzarding = tag.get("isBlizzarding").asBoolean(false);
-        boolean isWhiteouting = tag.get("isWhiteouting").asBoolean(false);
+        boolean isBlizzarding = input.get("isBlizzarding").asBoolean(false);
+        boolean isWhiteouting = input.get("isWhiteouting").asBoolean(false);
 
         Frostbite.weatherInfo = new WeatherInfo(
-                tag.get("snowTime").asInt(0),
-                tag.get("blizzardTime").asInt(0),
-                tag.get("whiteoutTime").asInt(0),
+                input.get("snowTime").asInt(0),
+                input.get("blizzardTime").asInt(0),
+                input.get("whiteoutTime").asInt(0),
                 isBlizzarding,
                 isWhiteouting,
-                tag.get("blizzardLevel").asFloat(0),
-                tag.get("whiteoutLevel").asFloat(0));
+                input.get("blizzardLevel").asFloat(0),
+                input.get("whiteoutLevel").asFloat(0));
 
         if (isWhiteouting) {
             Frostbite.weatherInfo.setWhiteouting();

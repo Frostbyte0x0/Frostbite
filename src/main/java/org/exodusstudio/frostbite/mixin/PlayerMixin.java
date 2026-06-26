@@ -80,10 +80,10 @@ public class PlayerMixin implements PlayerWrapper {
     }
 
     @Inject(at = @At("HEAD"), method = "hurtServer", cancellable = true)
-    private void hurtServer(ServerLevel serverLevel, DamageSource damageSource, float damage, CallbackInfoReturnable<Boolean> cir) {
-        if (frostbite$isAccumulatingDamage && !frostbite$player.isInvulnerableTo(serverLevel, damageSource)
+    private void hurtServer(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
+        if (frostbite$isAccumulatingDamage && !frostbite$player.isInvulnerableTo(level, source)
                 && !frostbite$player.getAbilities().invulnerable
-                && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             frostbite$accumulatedDamage += damage;
             frostbite$accumulatedDamage = Math.min(frostbite$accumulatedDamage, 100);
             cir.cancel();
@@ -91,10 +91,10 @@ public class PlayerMixin implements PlayerWrapper {
     }
 
     @Inject(at = @At("HEAD"), method = "dropEquipment", cancellable = true)
-    private void dropEquipment(ServerLevel serverLevel, CallbackInfo ci) {
-        if (FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
+    private void dropEquipment(ServerLevel level, CallbackInfo ci) {
+        if (FrozenRemnantsEntity.shouldSpawnFrozenRemnants(level)) {
             ci.cancel();
-        } else if (!serverLevel.getGameRules().get(GameRules.KEEP_INVENTORY)) {
+        } else if (!level.getGameRules().get(GameRules.KEEP_INVENTORY)) {
             EntityEquipment equipment = ((InventoryWrapper) (frostbite$player.getInventory())).frostbite$getEquipment();
             equipment.dropAll(frostbite$player);
         }

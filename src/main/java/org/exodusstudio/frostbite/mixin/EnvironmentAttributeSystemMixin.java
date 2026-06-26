@@ -6,6 +6,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.attribute.EnvironmentAttribute;
 import net.minecraft.world.attribute.EnvironmentAttributeSystem;
+import net.minecraft.world.clock.ClockManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
@@ -19,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
-import java.util.function.LongSupplier;
 import java.util.stream.Stream;
 
 @Mixin(EnvironmentAttributeSystem.class)
@@ -30,10 +30,10 @@ public class EnvironmentAttributeSystemMixin {
             RegistryAccess registryaccess = level.registryAccess();
             BiomeManager biomemanager = level.getBiomeManager();
             Objects.requireNonNull(level);
-            LongSupplier longsupplier = level::getDayTime;
+            ClockManager clockManager = level.clockManager();
             frostbite$addDimensionLayer(builder, level.dimensionType());
             frostbite$addBiomeLayer(builder, registryaccess.lookupOrThrow(Registries.BIOME), biomemanager);
-            level.dimensionType().timelines().forEach((p_466516_) -> builder.addTimelineLayer(p_466516_, longsupplier));
+            level.dimensionType().timelines().forEach((p_466516_) -> builder.addTimelineLayer(p_466516_, clockManager));
             FrostbiteWeatherAttributes.addBuiltinLayers(builder, FrostbiteWeatherAttributes.WeatherAccess.from());
             ci.cancel();
         }

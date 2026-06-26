@@ -4,8 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.ActivityData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
@@ -34,15 +35,15 @@ public class ChiefGuardAI extends StateBossAI<ChiefGuardEntity>  {
         return Stream.concat(super.getMemoryTypes().stream(), MEMORY_TYPES.stream()).toList();
     }
 
-    protected void initCoreActivity(Brain<ChiefGuardEntity> brain) {
-        brain.addActivity(Activity.CORE, 0, ImmutableList.of(
+    protected ActivityData<ChiefGuardEntity> initCoreActivity() {
+        return ActivityData.create(Activity.CORE, 0, ImmutableList.of(
                 new Swim<Mob>(0.8F),
-                SetEntityLookTargetSometimes.create(EntityType.PLAYER, 10, UniformInt.of(10, 30)),
+                SetEntityLookTargetSometimes.create(EntityTypes.PLAYER, 10, UniformInt.of(10, 30)),
                 new MoveToTargetSink(500, 700)));
     }
 
-    protected void initFightActivity(Brain<ChiefGuardEntity> brain) {
-        brain.addActivityWithConditions(Activity.FIGHT, ImmutableList.of(
+    protected ActivityData<ChiefGuardEntity> initFightActivity() {
+        return ActivityData.create(Activity.FIGHT, ImmutableList.of(
                 Pair.of(1, new Dash()),
                 Pair.of(1, new Attack()),
                 Pair.of(1, new Guard()),

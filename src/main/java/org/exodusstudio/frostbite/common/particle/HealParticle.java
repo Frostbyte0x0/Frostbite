@@ -21,11 +21,6 @@ public class HealParticle extends SingleQuadParticle {
         this.setParticleSpeed(xd * 0.96, yd * 0.96, zd * 0.96);
     }
 
-    @Override
-    public int getLightColor(float p_233902_) {
-        return 240;
-    }
-
     public SingleQuadParticle.Layer getLayer() {
         return Layer.TRANSLUCENT;
     }

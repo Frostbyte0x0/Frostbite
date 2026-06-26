@@ -38,21 +38,6 @@ public class RoamingBlizzardParticle extends SingleQuadParticle {
         return this.quadSize * f;
     }
 
-    public int getLightColor(float partialTick) {
-        int i = super.getLightColor(partialTick);
-        float f = (float)this.age / (float)this.lifetime;
-        f *= f;
-        f *= f;
-        int j = i & 255;
-        int k = i >> 16 & 255;
-        k += (int)(f * 15.0F * 16.0F);
-        if (k > 240) {
-            k = 240;
-        }
-
-        return j | k << 16;
-    }
-
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;

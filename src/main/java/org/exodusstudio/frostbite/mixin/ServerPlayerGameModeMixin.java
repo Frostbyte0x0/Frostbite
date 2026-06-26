@@ -40,9 +40,9 @@ public class ServerPlayerGameModeMixin {
     @Unique
     private static final Logger frostbite$LOGGER = LogUtils.getLogger();
 
-
     @Inject(at = @At("HEAD"), method = "tick", cancellable = true)
     private void tick(CallbackInfo ci) {
+        frostbite$this = (ServerPlayerGameMode) ((Object) this);
         frostbite$this.gameTicks++;
 
         if (frostbite$this.hasDelayedDestroy) {

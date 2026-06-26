@@ -1,12 +1,13 @@
 package org.exodusstudio.frostbite.common.entity.custom.guards;
 
-import com.mojang.serialization.Dynamic;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -27,7 +28,6 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -35,8 +35,6 @@ public class ChiefGuardEntity extends StateBossMonster<ChiefGuardEntity> impleme
     private static final EntityDataAccessor<Boolean> DATA_FREEZE_BODY_ROT =
             SynchedEntityData.defineId(ChiefGuardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final Component NAME_COMPONENT = Component.translatable("entity.chief_guard.boss_bar");
-    private final ServerBossEvent bossEvent = (ServerBossEvent)
-            new ServerBossEvent(NAME_COMPONENT, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false);
     public static final int ATTACK_COOLDOWN = 60;
     public static final int SUMMON_COOLDOWN = 300;
     public static final int DASH_COOLDOWN = 60;
@@ -52,7 +50,8 @@ public class ChiefGuardEntity extends StateBossMonster<ChiefGuardEntity> impleme
 
     public ChiefGuardEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.CHIEF_GUARD.get(), level, BLEND_TICKS,
-                (ServerBossEvent) new ServerBossEvent(NAME_COMPONENT, BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false),
+                (ServerBossEvent) new ServerBossEvent(Mth.createInsecureUUID(RandomSource.create()), NAME_COMPONENT,
+                        BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false),
                 ChiefGuardAI::updateActivity,
                 cooldowns);
         setIdle();
@@ -73,8 +72,8 @@ public class ChiefGuardEntity extends StateBossMonster<ChiefGuardEntity> impleme
     }
 
     @Override
-    protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return (new ChiefGuardAI()).makeBrain(this, dynamic);
+    protected Brain<? extends LivingEntity> makeBrain(Brain.Packed packedBrain) {
+        return (new ChiefGuardAI()).makeBrain(this, packedBrain);
     }
 
     @Override

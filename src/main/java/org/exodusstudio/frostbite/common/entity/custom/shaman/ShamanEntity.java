@@ -1,12 +1,13 @@
 package org.exodusstudio.frostbite.common.entity.custom.shaman;
 
-import com.mojang.serialization.Dynamic;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -31,7 +32,6 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.util.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -61,7 +61,8 @@ public class ShamanEntity extends StateBossMonster<ShamanEntity> implements Targ
 
     public ShamanEntity(EntityType<? extends ShamanEntity> ignored, Level level) {
         super(EntityRegistry.SHAMAN.get(), level, BLEND_TICKS,
-                (ServerBossEvent) new ServerBossEvent(SHAMAN_NAME_COMPONENT, BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false),
+                (ServerBossEvent) new ServerBossEvent(Mth.createInsecureUUID(RandomSource.create()), SHAMAN_NAME_COMPONENT,
+                        BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false),
                 ShamanAI::updateActivity,
                 cooldowns);
     }
@@ -81,8 +82,8 @@ public class ShamanEntity extends StateBossMonster<ShamanEntity> implements Targ
     }
 
     @Override
-    protected @NotNull Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return (new ShamanAI()).makeBrain(this, dynamic);
+    protected Brain<? extends LivingEntity> makeBrain(Brain.Packed packedBrain) {
+        return (new ShamanAI()).makeBrain(this, packedBrain);
     }
 
     @Override

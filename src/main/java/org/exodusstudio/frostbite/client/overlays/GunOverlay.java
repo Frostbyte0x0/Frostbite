@@ -2,7 +2,7 @@ package org.exodusstudio.frostbite.client.overlays;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
@@ -22,7 +22,7 @@ public class GunOverlay {
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/sniper_overlay.png");
     private static boolean isAiming = true;
 
-    public static void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public static void render(GuiGraphicsExtractor GuiGraphicsExtractor, DeltaTracker deltaTracker) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         assert player != null;
@@ -31,7 +31,7 @@ public class GunOverlay {
         scopeScale = Mth.lerp(0.5F * f, scopeScale, 1.125F);
         if (mc.options.getCameraType().isFirstPerson()) {
             if (player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.SNIPER) && player.isShiftKeyDown()) {
-                renderSpyglassOverlay(guiGraphics, scopeScale);
+                renderSpyglassOverlay(GuiGraphicsExtractor, scopeScale);
             } else {
                 scopeScale = 0.5F;
 
@@ -39,42 +39,42 @@ public class GunOverlay {
                     ItemStack itemstack = player.getItemBySlot(equipmentslot);
                     Equippable equippable = itemstack.get(DataComponents.EQUIPPABLE);
                     if (equippable != null && equippable.slot() == equipmentslot && equippable.cameraOverlay().isPresent()) {
-                        renderTextureOverlay(guiGraphics, equippable.cameraOverlay().get().withPath(p_380782_ -> "textures/" + p_380782_ + ".png"), 1.0F);
+                        renderTextureOverlay(GuiGraphicsExtractor, equippable.cameraOverlay().get().withPath(p_380782_ -> "textures/" + p_380782_ + ".png"), 1.0F);
                     }
                 }
             }
         }
     }
 
-    private static void renderSpyglassOverlay(GuiGraphics guiGraphics, float scopeScale) {
-        float f = (float)Math.min(guiGraphics.guiWidth(), guiGraphics.guiHeight());
-        float f1 = Math.min((float)guiGraphics.guiWidth() / f, (float)guiGraphics.guiHeight() / f) * scopeScale;
+    private static void renderSpyglassOverlay(GuiGraphicsExtractor GuiGraphicsExtractor, float scopeScale) {
+        float f = (float)Math.min(GuiGraphicsExtractor.guiWidth(), GuiGraphicsExtractor.guiHeight());
+        float f1 = Math.min((float)GuiGraphicsExtractor.guiWidth() / f, (float)GuiGraphicsExtractor.guiHeight() / f) * scopeScale;
         int i = Mth.floor(f * f1);
         int j = Mth.floor(f * f1);
-        int k = (guiGraphics.guiWidth() - i) / 2;
-        int l = (guiGraphics.guiHeight() - j) / 2;
+        int k = (GuiGraphicsExtractor.guiWidth() - i) / 2;
+        int l = (GuiGraphicsExtractor.guiHeight() - j) / 2;
         int i1 = k + i;
         int j1 = l + j;
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, SNIPER_SCOPE_LOCATION, k, l, 0.0F, 0.0F, i, j, i, j);
-        guiGraphics.fill(RenderPipelines.GUI, 0, j1, guiGraphics.guiWidth(), guiGraphics.guiHeight(), -16777216);
-        guiGraphics.fill(RenderPipelines.GUI, 0, 0, guiGraphics.guiWidth(), l, -16777216);
-        guiGraphics.fill(RenderPipelines.GUI, 0, l, k, j1, -16777216);
-        guiGraphics.fill(RenderPipelines.GUI, i1, l, guiGraphics.guiWidth(), j1, -16777216);
+        GuiGraphicsExtractor.blit(RenderPipelines.GUI_TEXTURED, SNIPER_SCOPE_LOCATION, k, l, 0.0F, 0.0F, i, j, i, j);
+        GuiGraphicsExtractor.fill(RenderPipelines.GUI, 0, j1, GuiGraphicsExtractor.guiWidth(), GuiGraphicsExtractor.guiHeight(), -16777216);
+        GuiGraphicsExtractor.fill(RenderPipelines.GUI, 0, 0, GuiGraphicsExtractor.guiWidth(), l, -16777216);
+        GuiGraphicsExtractor.fill(RenderPipelines.GUI, 0, l, k, j1, -16777216);
+        GuiGraphicsExtractor.fill(RenderPipelines.GUI, i1, l, GuiGraphicsExtractor.guiWidth(), j1, -16777216);
     }
 
-    private static void renderTextureOverlay(GuiGraphics guiGraphics, Identifier shaderLocation, float alpha) {
+    private static void renderTextureOverlay(GuiGraphicsExtractor GuiGraphicsExtractor, Identifier shaderLocation, float alpha) {
         int i = ARGB.white(alpha);
-        guiGraphics.blit(
+        GuiGraphicsExtractor.blit(
                 RenderPipelines.GUI_TEXTURED,
                 shaderLocation,
                 0,
                 0,
                 0.0F,
                 0.0F,
-                guiGraphics.guiWidth(),
-                guiGraphics.guiHeight(),
-                guiGraphics.guiWidth(),
-                guiGraphics.guiHeight(),
+                GuiGraphicsExtractor.guiWidth(),
+                GuiGraphicsExtractor.guiHeight(),
+                GuiGraphicsExtractor.guiWidth(),
+                GuiGraphicsExtractor.guiHeight(),
                 i
         );
     }

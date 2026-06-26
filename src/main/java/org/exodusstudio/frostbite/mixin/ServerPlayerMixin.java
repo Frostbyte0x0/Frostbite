@@ -16,13 +16,13 @@ public class ServerPlayerMixin {
     ServerPlayer frostbite$serverPlayer = (ServerPlayer) ((Object) this);
 
     @Inject(at = @At("RETURN"), method = "restoreFrom")
-    private void restoreFrom(ServerPlayer that, boolean keepEverything, CallbackInfo ci) {
-        if (!keepEverything && (frostbite$serverPlayer.level().getGameRules().get(GameRules.KEEP_INVENTORY) || that.isSpectator())) {
-            frostbite$serverPlayer.getInventory().replaceWith(that.getInventory());
-            frostbite$serverPlayer.getInventory().setItem(43, ((InventoryWrapper) that.getInventory()).frostbite$getEquipment().get(EquipmentSlot.FEET));
-            frostbite$serverPlayer.getInventory().setItem(44, ((InventoryWrapper) that.getInventory()).frostbite$getEquipment().get(EquipmentSlot.LEGS));
-            frostbite$serverPlayer.getInventory().setItem(45, ((InventoryWrapper) that.getInventory()).frostbite$getEquipment().get(EquipmentSlot.CHEST));
-            frostbite$serverPlayer.getInventory().setItem(46, ((InventoryWrapper) that.getInventory()).frostbite$getEquipment().get(EquipmentSlot.HEAD));
+    public void restoreFrom(ServerPlayer oldPlayer, boolean restoreAll, CallbackInfo ci) {
+        if (!restoreAll && (frostbite$serverPlayer.level().getGameRules().get(GameRules.KEEP_INVENTORY) || oldPlayer.isSpectator())) {
+            frostbite$serverPlayer.getInventory().replaceWith(oldPlayer.getInventory());
+            frostbite$serverPlayer.getInventory().setItem(43, ((InventoryWrapper) oldPlayer.getInventory()).frostbite$getEquipment().get(EquipmentSlot.FEET));
+            frostbite$serverPlayer.getInventory().setItem(44, ((InventoryWrapper) oldPlayer.getInventory()).frostbite$getEquipment().get(EquipmentSlot.LEGS));
+            frostbite$serverPlayer.getInventory().setItem(45, ((InventoryWrapper) oldPlayer.getInventory()).frostbite$getEquipment().get(EquipmentSlot.CHEST));
+            frostbite$serverPlayer.getInventory().setItem(46, ((InventoryWrapper) oldPlayer.getInventory()).frostbite$getEquipment().get(EquipmentSlot.HEAD));
         }
     }
 }

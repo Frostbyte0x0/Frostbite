@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.ActivityData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.DoNothing;
 import net.minecraft.world.entity.ai.behavior.RandomStroll;
@@ -20,7 +20,7 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
 import java.util.List;
 
-public class StateBossAI<E extends StateBossMonster<E>> {
+public abstract class StateBossAI<E extends StateBossMonster<E>> {
     private static final List<SensorType<? extends Sensor<? super StateBossMonster<?>>>> SENSOR_TYPES =
             List.of(SensorType.NEAREST_PLAYERS, EntityRegistry.TARGET_ENTITY_SENSOR.get());
     private static final List<MemoryModuleType<?>> MEMORY_TYPES = List.of(
@@ -37,12 +37,9 @@ public class StateBossAI<E extends StateBossMonster<E>> {
             MemoryModuleType.ATTACK_COOLING_DOWN,
             MemoryModuleType.NEAREST_ATTACKABLE);
 
-    public Brain<?> makeBrain(E ignored, Dynamic<?> ops) {
-        Brain.Provider<E> provider = Brain.provider(getMemoryTypes(), getSensorTypes());
-        Brain<E> brain = provider.makeBrain(ops);
-        initCoreActivity(brain);
-        initIdleActivity(brain);
-        initFightActivity(brain);
+    public Brain<?> makeBrain(E entity, Brain.Packed packed) {
+        Brain.Provider<E> provider = Brain.provider(getMemoryTypes(), getSensorTypes(), _ -> getActivities());
+        Brain<E> brain = provider.makeBrain(entity, packed);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.useDefaultActivity();
@@ -58,14 +55,16 @@ public class StateBossAI<E extends StateBossMonster<E>> {
         return SENSOR_TYPES;
     }
 
-    protected void initCoreActivity(Brain<E> brain) {
+    protected List<ActivityData<E>> getActivities() {
+        return List.of(initCoreActivity(), initFightActivity(), initIdleActivity());
     }
 
-    protected void initFightActivity(Brain<E> brain) {
-    }
+    protected abstract ActivityData<E> initCoreActivity();
 
-    protected void initIdleActivity(Brain<E> brain) {
-        brain.addActivityWithConditions(Activity.IDLE,
+    protected abstract ActivityData<E> initFightActivity();
+
+    protected ActivityData<E> initIdleActivity() {
+        return ActivityData.create(Activity.IDLE,
                 ImmutableList.of(
                         Pair.of(4, new RunOne<>(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
                                 Pair.of(RandomStroll.stroll(1), 1),
