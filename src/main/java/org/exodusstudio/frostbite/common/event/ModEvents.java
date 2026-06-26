@@ -330,7 +330,7 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void heater(InputEvent.Key event) {
+    public static void codex(InputEvent.Key event) {
         if (KeyMappingRegistry.CODEX.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent()))) {
             while (KeyMappingRegistry.CODEX.consumeClick()) {
                 Minecraft.getInstance().gui.setScreen(new CodexScreen());

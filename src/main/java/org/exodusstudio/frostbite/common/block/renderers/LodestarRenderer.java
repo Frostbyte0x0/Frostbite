@@ -32,7 +32,7 @@ import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
 public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity, LodestarRenderState> {
-    public static final Identifier BEAM_LOCATION = Identifier.withDefaultNamespace("textures/entity/beacon_beam.png");
+    public static final Identifier BEAM_LOCATION = Identifier.withDefaultNamespace("textures/entity/beacon/beacon_beam.png");
     public static final SpriteId CAGE_TEXTURE;
     public static final SpriteId EYE_TEXTURE;
     private final ModelPart eye;
@@ -134,8 +134,8 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
     }
 
     static {
-        SpriteMapper MAPPER = new SpriteMapper(TextureAtlas.LOCATION_BLOCKS, "entity/conduit");
-        CAGE_TEXTURE = MAPPER.apply(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/cage"));
-        EYE_TEXTURE = MAPPER.apply(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "block/lodestar/eye"));
+        SpriteMapper MAPPER = new SpriteMapper(TextureAtlas.LOCATION_BLOCKS, "block/lodestar");
+        CAGE_TEXTURE = MAPPER.apply(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cage"));
+        EYE_TEXTURE = MAPPER.apply(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "eye"));
     }
 }

@@ -22,16 +22,16 @@ public class InventoryMenuMixin {
             new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     @Unique
     private static final Identifier EMPTY_ARMOR_SLOT_HELMET =
-            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_helmet_slot.png");
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "empty_helmet_slot");
     @Unique
     private static final Identifier EMPTY_ARMOR_SLOT_CHESTPLATE =
-            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_chestplate_slot.png");
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "empty_chestplate_slot");
     @Unique
     private static final Identifier EMPTY_ARMOR_SLOT_LEGGINGS =
-            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_leggings_slot.png");
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "empty_leggings_slot");
     @Unique
     private static final Identifier EMPTY_ARMOR_SLOT_BOOTS =
-            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/gui/empty_boots_slot.png");
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "empty_boots_slot");
     @Unique
     private static final Map<EquipmentSlot, Identifier> TEXTURE_EMPTY_SLOTS = Map.of(
             EquipmentSlot.FEET,
@@ -49,9 +49,9 @@ public class InventoryMenuMixin {
         InventoryMenu frostbite$inventoryMenu = (InventoryMenu) ((Object) this);
         for (int i = 0; i < 4; i++) {
             EquipmentSlot equipmentslot = SLOT_IDS[i];
-            Identifier Identifier = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
+            Identifier id = TEXTURE_EMPTY_SLOTS.get(equipmentslot);
             frostbite$inventoryMenu.addSlot(new LiningSlot(inventory, owner,
-                    equipmentslot, 43 + i, 8, 8 + i * 18, Identifier));
+                    equipmentslot, 43 + i, 8, 8 + i * 18, id));
         }
     }
 }

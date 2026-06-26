@@ -8,9 +8,8 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.util.TemperatureManager;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Supplier;
 
 public class AttachementRegistry {
@@ -25,12 +24,12 @@ public class AttachementRegistry {
             FriendlyByteBuf::readUtf);
 
     public static final Supplier<AttachmentType<Float>> INNER_TEMPERATURE = ATTACHMENT_TYPES.register(
-            "inner_temperature", () -> AttachmentType.builder(() -> 0f)
+            "inner_temperature", () -> AttachmentType.builder(() -> TemperatureManager.MAX_TEMP)
                     .sync(FLOAT_STREAM_CODEC)
                     .serialize(Codec.FLOAT.fieldOf("inner_temperature")).build());
 
     public static final Supplier<AttachmentType<Float>> OUTER_TEMPERATURE = ATTACHMENT_TYPES.register(
-            "outer_temperature", () -> AttachmentType.builder(() -> 0f)
+            "outer_temperature", () -> AttachmentType.builder(() -> TemperatureManager.MAX_TEMP)
                     .sync(FLOAT_STREAM_CODEC)
                     .serialize(Codec.FLOAT.fieldOf("outer_temperature")).build());
 

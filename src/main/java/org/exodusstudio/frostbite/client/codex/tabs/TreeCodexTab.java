@@ -6,10 +6,10 @@ import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
 import org.exodusstudio.frostbite.client.codex.entries.TargetCodexEntry;
+import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
 import org.exodusstudio.frostbite.common.util.Util;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class TreeCodexTab extends CodexTab {
     private final Map<TargetCodexEntry, CodexWidget> widgets;
@@ -22,6 +22,7 @@ public class TreeCodexTab extends CodexTab {
     public TreeCodexTab(String title, CodexTabType type, int index, String icon, TargetCodexEntry... entries) {
         super(title, type, index, icon);
         this.widgets = new HashMap<>();
+        Set<CodexFormation> formations = new HashSet<>();
         this.minX = initialMinX;
         this.minY = initialMinY;
         this.maxX = initialMaxX;
@@ -33,10 +34,16 @@ public class TreeCodexTab extends CodexTab {
             widget.parent = this.widgets.get(entry.parent);
             widget.codexFormation = entry.formation;
             widget.codexFormation.addWidget(widget);
+            formations.add(widget.codexFormation);
             this.widgets.put(entry, widget);
-            this.addWidget(widget);
         }
-        this.widgets.get(entries[0]).codexFormation.computePlacements();
+
+        for (CodexFormation formation : formations) {
+            formation.computePlacements();
+        }
+        for (CodexWidget widget : this.widgets.values()) {
+            this.findMinMaxXY(widget);
+        }
     }
 
     @Override
@@ -56,7 +63,7 @@ public class TreeCodexTab extends CodexTab {
         }
     }
 
-    private void addWidget(CodexWidget widget) {
+    private void findMinMaxXY(CodexWidget widget) {
         int i = widget.getX();
         int j = i + 28;
         int k = widget.getY();

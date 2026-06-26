@@ -65,10 +65,6 @@ public class AmbientSnowParticle extends BaseAshSmokeParticle {
                 double zd,
                 RandomSource source
         ) {
-            //double d0 = source.nextFloat() * -1.9 * source.nextFloat() * 0.1;
-            //double d1 = source.nextFloat() * -0.5F * source.nextFloat() * 0.1 * 5.0F;
-            //double d2 = source.nextFloat() * -1.9 * source.nextFloat() * 0.1;
-            //return new AmbientSnowParticle(p_108526_, p_108527_, p_108528_, p_108529_, d0, d1, d2, 1.0F, this.sprites);
             return new AmbientSnowParticle(p_108526_, p_108527_, p_108528_, p_108529_, xd, yd, zd, 1.0F, this.sprites);
         }
     }

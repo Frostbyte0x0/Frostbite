@@ -16,7 +16,6 @@
     "ServerPlayerMixin"
   ],
   "client": [
-    "AbstractContainerScreenMixin",
     "CreativeModeInventoryScreenMixin",
     "EntityRendererMixin",
     "EntityRenderStateMixin",
