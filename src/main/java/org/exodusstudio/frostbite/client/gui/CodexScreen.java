@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundSeenAdvancementsPacket;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.client.codex.Codex;
+import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
@@ -67,6 +68,7 @@ public class CodexScreen extends Screen {
             for (CodexTab tab : Codex.TABS) {
                 if (tab.isMouseOver(i, j, event.x(), event.y())) {
                     selectedTab = tab;
+                    if (tab instanceof TreeCodexTab) ((TreeCodexTab) tab).formations.forEach(CodexFormation::computePlacements);
                     break;
                 }
             }
@@ -137,14 +139,14 @@ public class CodexScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double p_295690_, double p_295286_, double p_295339_, double p_296270_) {
+    public boolean mouseScrolled(double x, double y, double scrollX, double scrollY) {
         if (this.selectedTab instanceof TreeCodexTab tab) {
-            tab.zoom(p_296270_);
+            tab.zoom(scrollY);
             return true;
         }
 
         if (this.selectedTab != null) {
-            this.selectedTab.scroll(p_295339_ * 16, p_296270_ * 16);
+            this.selectedTab.scroll(scrollX * 16, scrollY * 16);
             return true;
         } else {
             return false;

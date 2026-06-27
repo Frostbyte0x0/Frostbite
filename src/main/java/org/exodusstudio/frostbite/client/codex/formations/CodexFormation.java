@@ -3,10 +3,11 @@ package org.exodusstudio.frostbite.client.codex.formations;
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class CodexFormation {
-    protected final Map<CodexWidget, int[]> widgetPlacements = new HashMap<>();
+    protected final LinkedHashMap<CodexWidget, int[]> widgetPlacements = new LinkedHashMap<>();
     protected int centerX;
     protected int centerY;
 
@@ -32,5 +33,9 @@ public abstract class CodexFormation {
 
     public int getYPlacement(CodexWidget widget) {
         return getPlacement(widget)[1];
+    }
+
+    public LinkedHashMap<CodexWidget, int[]> getWidgetPlacements() {
+        return widgetPlacements;
     }
 }

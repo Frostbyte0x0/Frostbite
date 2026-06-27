@@ -12,8 +12,6 @@ public abstract class CodexEntry {
     public final String id;
     public final Component title;
     public final Identifier image;
-//    public int x;
-//    public int y;
 
     public CodexEntry(String id) {
         this.id = id;

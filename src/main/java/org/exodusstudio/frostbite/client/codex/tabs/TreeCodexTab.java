@@ -13,6 +13,7 @@ import java.util.*;
 
 public class TreeCodexTab extends CodexTab {
     private final Map<TargetCodexEntry, CodexWidget> widgets;
+    public final Set<CodexFormation> formations = new HashSet<>();
     private float zoom = 1;
     private static final int initialMinX = -700;
     private static final int initialMinY = -300;
@@ -22,7 +23,6 @@ public class TreeCodexTab extends CodexTab {
     public TreeCodexTab(String title, CodexTabType type, int index, String icon, TargetCodexEntry... entries) {
         super(title, type, index, icon);
         this.widgets = new HashMap<>();
-        Set<CodexFormation> formations = new HashSet<>();
         this.minX = initialMinX;
         this.minY = initialMinY;
         this.maxX = initialMaxX;
@@ -102,7 +102,7 @@ public class TreeCodexTab extends CodexTab {
     }
 
     public void zoom(double amount) {
-        zoom = (float) Mth.clamp(zoom + amount / 6f, 0.5, 1.5);
+        zoom = (float) Mth.clamp(zoom + amount * 0.1f, 0.5f, 1f);
         this.minX = (int) (initialMinX * zoom);
         this.minY = (int) (initialMinY * zoom);
         this.maxX = (int) (initialMaxX * zoom);

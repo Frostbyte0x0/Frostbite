@@ -1,13 +1,13 @@
 package org.exodusstudio.frostbite.client.codex.formations;
 
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
-import org.exodusstudio.frostbite.client.codex.entries.TargetCodexEntry;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class TreeCodexFormation extends CodexFormation {
-    public HashMap<Integer, ArrayList<CodexWidget>> widgetsPerDepth = new HashMap<>();
+    public LinkedHashMap<Integer, ArrayList<CodexWidget>> widgetsPerDepth = new LinkedHashMap<>();
     public int height = 0;
 
     public TreeCodexFormation(int centerX, int centerY) {
@@ -28,37 +28,47 @@ public class TreeCodexFormation extends CodexFormation {
         int levelWidth = 30;
         int levelHeight = 30;
 
-        int index = -widgetPlacements.size() / 2;
-        for (CodexWidget widget : widgetPlacements.keySet()) {
-            int xOffset = index * levelWidth;
-            int level = 0;
-            TargetCodexEntry parent = widget.codexEntry.parent;
-            while (parent != null) {
-                level++;
-                parent = parent.parent;
-            }
-            int yOffset = level * levelHeight;
-
-            int x = centerX + xOffset;
-            int y = centerY + yOffset;
-
-            widgetPlacements.put(widget, new int[]{x, y});
-            index++;
+        LinkedHashMap<CodexWidget, List<CodexWidget>> widgetsPerParent = new LinkedHashMap<>();
+        for (CodexWidget w : widgetsPerDepth.get(height)) {
+            widgetsPerParent.computeIfAbsent(w.parent, _ -> new ArrayList<>()).add(w);
         }
 
-//        widgetsPerDepth.get(1).sort((w1, w2) -> CodexWidget.getNearestSharedParentDepth(w1, w2));
-////        widgetsPerDepth.get(1).getFirst().setX(centerX);
-////        widgetsPerDepth.get(1).getFirst().setY(centerY);
-//        for (int i = 1; i < widgetsPerDepth.get(1).size(); i++) {
-//            CodexWidget prevWidget = widgetsPerDepth.get(1).get(i - 1);
-//            CodexWidget widget = widgetsPerDepth.get(1).get(i);
-//        }
-//
-//        for (int depth : widgetsPerDepth.keySet()) {
-//            if (depth == 1) break;
-//            for (CodexWidget widget : widgetsPerDepth.get(depth)) {
-//
-//            }
-//        }
+        int currentX = 0;
+        for (int i = 0; i < widgetsPerParent.size(); i++) {
+            CodexWidget parent = widgetsPerParent.sequencedKeySet().toArray(new CodexWidget[0])[i];
+
+            for (CodexWidget child : widgetsPerParent.get(parent)) {
+                int x = centerX + currentX;
+                int y = centerY + levelHeight * height;
+                widgetPlacements.put(child, new int[]{x, y});
+                currentX += levelWidth;
+            }
+
+            if (i == widgetsPerParent.size() - 1) continue;
+            currentX += levelWidth * (CodexWidget.getNearestSharedParentDepth(
+                    widgetsPerParent.sequencedKeySet().toArray(new CodexWidget[0])[i],
+                    widgetsPerParent.sequencedKeySet().toArray(new CodexWidget[0])[i+1]));
+        }
+
+        for (int i = height - 1; i >= 0; i--) {
+            int depth = widgetsPerDepth.sequencedKeySet().toArray(new Integer[0])[i];
+
+            for (CodexWidget widget : widgetsPerDepth.get(depth)) {
+                int maxX = 0;
+                int minX = (int) 10E9;
+
+                for (CodexWidget child : widgetPlacements.keySet()) {
+                    if (child.parent == widget) {
+                        int[] placement = widgetPlacements.get(child);
+                        maxX = Math.max(maxX, placement[0]);
+                        minX = Math.min(minX, placement[0]);
+                    }
+                }
+
+                int x = (maxX + minX) / 2;
+                int y = centerY + levelHeight * depth;
+                widgetPlacements.put(widget, new int[]{x, y});
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.codex.formations.CircleCodexFormation;
 import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.common.util.Util;
@@ -36,7 +37,6 @@ public class CodexWidget {
     public @Nullable CodexWidget parent;
     public CodexFormation codexFormation;
     private GuiGraphicsExtractor gui;
-    private final boolean shouldShowHitBoxes = false;
 
     public CodexWidget(TargetCodexEntry codexEntry) {
         this.codexEntry = codexEntry;
@@ -44,7 +44,7 @@ public class CodexWidget {
         Stream<FormattedCharSequence> var10000 = this.titleLines.stream();
         Font var10001 = minecraft.font;
         Objects.requireNonNull(var10001);
-        int i = Math.max(var10000.mapToInt(var10001::width).max().orElse(0), 80);
+        int i = Math.max(var10000.mapToInt(var10001::width).max().orElse(0), 100);
         int k = 29 + i;
         this.description = Language.getInstance().getVisualOrder(findOptimalLines(ComponentUtils.mergeStyles(codexEntry.description, Style.EMPTY.withColor(ChatFormatting.AQUA)), k));
 
@@ -93,11 +93,27 @@ public class CodexWidget {
             gui.horizontalLine(originX, endX, stepY, -1);
             gui.verticalLine(endX, stepY, endY, -1);
         }
+
+        if (codexFormation instanceof CircleCodexFormation cf) {
+            int index = cf.getWidgetPlacements().sequencedKeySet().stream().toList().indexOf(this) + 1;
+            CodexWidget next = cf.getWidgetPlacements().sequencedKeySet().stream().toList().get(index % cf.getWidgetPlacements().sequencedKeySet().size());
+            int originX = (int) (x + (this.getX() + 19) * zoom);
+            int originY = (int) (y + (this.getY() + 16) * zoom);
+            int endX = (int) (x + (codexFormation.getWidgetPlacements().get(next)[0] + 19) * zoom);
+            int endY = (int) (y + (codexFormation.getWidgetPlacements().get(next)[1] + 16) * zoom);
+            if ((endX - originX) * (endY - originY) < 0) {
+                gui.verticalLine(originX, originY, endY, -1);
+                gui.horizontalLine(originX, endX, endY, -1);
+            } else {
+                gui.horizontalLine(originX, endX, originY, -1);
+                gui.verticalLine(endX, originY, endY, -1);
+            }
+        }
     }
 
-    public void draw(GuiGraphicsExtractor GuiGraphicsExtractor, int x, int y, float zoom) {
-        gui = GuiGraphicsExtractor;
-        Util.drawTexture(GuiGraphicsExtractor, (int) (x + (getX() + 8) * zoom), (int) (y + (getY() + 5) * zoom), (int) (24 * zoom), (int) (24 * zoom), getImage());
+    public void draw(GuiGraphicsExtractor extractor, int x, int y, float zoom) {
+        gui = extractor;
+        Util.drawTexture(gui, (int) (x + (getX() + 8) * zoom), (int) (y + (getY() + 5) * zoom), (int) (24 * zoom), (int) (24 * zoom), getImage());
     }
 
     public Identifier getImage() {
@@ -114,28 +130,22 @@ public class CodexWidget {
 
     public void drawHover(GuiGraphicsExtractor gui, int scrollX, int scrollY, int width, float zoom) {
         int i = 9 * this.titleLines.size() + 9 + 8;
-        int j = (int) (scrollY + (2 + getY() + (24 - i) / 2) * zoom);
-        int k = j + i;
         int l = this.description.size() * 9;
         int i1 = 6 + l;
 
-        int i2 = (int) (scrollX + (4 + getX()) * zoom);
-
         int j2 = i + i1;
 
-        int boxX = (int) (scrollX + (getX() + 5) * zoom);
-        int boxY = (int) (scrollY + (getY() + 3) * zoom);
+        float sz = (1 - zoom) * 2;
+
+        int boxX = (int) (scrollX + (getX() + 8 * (1 - sz)) * zoom - 3 * sz);
+        int boxY = (int) (scrollY + (getY() + 5 * (1 - sz)) * zoom - 3 * sz);
         if (!this.description.isEmpty()) {
-            //GuiGraphicsExtractor.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, i2 + 3, k - j2 - 3, this.width, j2);
-            gui.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, boxX, boxY, this.width, j2);
+            gui.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, boxX - 6, boxY - 8, this.width, j2);
         }
 
-        int k2 = i2 + 5;
+        this.drawMultilineText(gui, this.description, boxX + 30, boxY + 1, -16711936);
 
-        this.drawMultilineText(gui, this.description, k2 + 30, k - 20, -16711936);
-//        this.drawMultilineText(GuiGraphicsExtractor, this.description, k2 + 30, j - l - 19, -16711936);
-
-        Util.drawTexture(gui, (int) (scrollX + (8 + getX()) * zoom), (int) (scrollY + (5 + getY()) * zoom), 24, 24, getImage());
+        Util.drawTexture(gui, (int) (scrollX + (8 * (1 - sz) + getX()) * zoom - 3 * sz), (int) (scrollY + (5 * (1 - sz) + getY()) * zoom - 3 * sz), 24, 24, getImage());
     }
 
     private void drawMultilineText(GuiGraphicsExtractor gui, List<FormattedCharSequence> text, int x, int y, int color) {
@@ -152,7 +162,7 @@ public class CodexWidget {
         int y0 = (int) (y + (4 + getY()) * zoom);
         int y1 = (int) (y0 + 24 * zoom);
 
-        if (shouldShowHitBoxes) {
+        if (false) {
             gui.verticalLine(x0, y0, y1, -1);
             gui.verticalLine(x1, y0, y1, -1);
             gui.horizontalLine(x0, x1, y0, -1);
