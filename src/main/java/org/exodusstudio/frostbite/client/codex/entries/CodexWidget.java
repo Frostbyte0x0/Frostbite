@@ -13,6 +13,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.Item;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.formations.CircleCodexFormation;
 import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
@@ -22,6 +23,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CodexWidget {
@@ -37,22 +39,21 @@ public class CodexWidget {
     public @Nullable CodexWidget parent;
     public CodexFormation codexFormation;
     private GuiGraphicsExtractor gui;
+    private final Optional<Item> drops;
 
     public CodexWidget(TargetCodexEntry codexEntry) {
         this.codexEntry = codexEntry;
         this.titleLines = minecraft.font.split(codexEntry.title, 163);
-        Stream<FormattedCharSequence> var10000 = this.titleLines.stream();
-        Font var10001 = minecraft.font;
-        Objects.requireNonNull(var10001);
-        int i = Math.max(var10000.mapToInt(var10001::width).max().orElse(0), 100);
+        int i = Math.max(this.titleLines.stream().mapToInt(minecraft.font::width).max().orElse(0), 100);
         int k = 29 + i;
-        this.description = Language.getInstance().getVisualOrder(findOptimalLines(ComponentUtils.mergeStyles(codexEntry.description, Style.EMPTY.withColor(ChatFormatting.AQUA)), k));
+        this.description = Language.getInstance().getVisualOrder(findOptimalLines(ComponentUtils.mergeStyles(codexEntry.description, Style.EMPTY.withColor(ChatFormatting.AQUA)), 163));
 
+        this.drops = codexEntry.drops;
         for (FormattedCharSequence formattedcharsequence : this.description) {
             k = Math.max(k, minecraft.font.width(formattedcharsequence));
         }
 
-        this.width = k + 3 + 5;
+        this.width = k + 40;
     }
 
     private static float getMaxWidth(StringSplitter manager, List<FormattedText> text) {
@@ -129,11 +130,10 @@ public class CodexWidget {
     }
 
     public void drawHover(GuiGraphicsExtractor gui, int scrollX, int scrollY, int width, float zoom) {
-        int i = 9 * this.titleLines.size() + 9 + 8;
+        int i = 9 * this.titleLines.size() + 5;
         int l = this.description.size() * 9;
-        int i1 = 6 + l;
 
-        int j2 = i + i1;
+        int j2 = i + 32 + l;
 
         float sz = (1 - zoom) * 2;
 
@@ -142,8 +142,10 @@ public class CodexWidget {
         if (!this.description.isEmpty()) {
             gui.blitSprite(RenderPipelines.GUI_TEXTURED, TITLE_BOX_SPRITE, boxX - 6, boxY - 8, this.width, j2);
         }
+        this.drops.ifPresent(item -> gui.item(item.getDefaultInstance(), boxX + 4, boxY + 29));
 
-        this.drawMultilineText(gui, this.description, boxX + 30, boxY + 1, -16711936);
+        this.drawMultilineText(gui, this.titleLines, boxX + 30, boxY + 1, 0xFF5836e0);
+        this.drawMultilineText(gui, this.description, boxX + 30, boxY + i, -16711936);
 
         Util.drawTexture(gui, (int) (scrollX + (8 * (1 - sz) + getX()) * zoom - 3 * sz), (int) (scrollY + (5 * (1 - sz) + getY()) * zoom - 3 * sz), 24, 24, getImage());
     }

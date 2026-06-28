@@ -10,12 +10,11 @@ import java.util.Arrays;
 
 public abstract class CodexEntry {
     public final String id;
-    public final Component title;
+    public Component title;
     public final Identifier image;
 
     public CodexEntry(String id) {
         this.id = id;
-        this.title = Component.translatable("codex.entry." + id);
         this.image = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/codex/entries/" + id + ".png");
     }
 

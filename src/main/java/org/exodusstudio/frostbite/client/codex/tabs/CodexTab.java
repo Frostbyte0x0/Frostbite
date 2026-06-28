@@ -8,7 +8,7 @@ import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
 
-public class CodexTab {
+public abstract class CodexTab {
     protected CodexScreen screen;
     protected final CodexTabType type;
     protected final int index;
@@ -50,7 +50,6 @@ public class CodexTab {
         if (!p_283052_ && p_470594_ > i && p_470666_ > j && p_470594_ < i + this.type.getWidth() && p_470666_ < j + this.type.getHeight()) {
             graphics.requestCursor(CursorTypes.POINTING_HAND);
         }
-
     }
 
     public void drawIcon(GuiGraphicsExtractor GuiGraphicsExtractor, int offsetX, int offsetY) {

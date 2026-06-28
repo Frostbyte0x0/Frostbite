@@ -206,6 +206,9 @@
 
   "general.frostbite.outer_temp": "Outer Temperature",
 
+  "codex.target_entry.elf_general.title": "Elf General",
+  "codex.target_entry.elf_general.description": "He's an elf general, and he is very strong. He can summon elves to help him in battle.",
+
   "sounds.frostbite.sniper_ping": "Sniper pings",
   "sounds.frostbite.sniper_reload": "Sniper reloads",
   "sounds.frostbite.sniper_shoot": "Sniper shoots",

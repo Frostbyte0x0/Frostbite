@@ -8,8 +8,10 @@ import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTabType;
 import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
+import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Codex {
     // Formations
@@ -20,27 +22,27 @@ public class Codex {
 
     // Entries
     // General
-    public static final ListCodexEntry TEMPERATURE_ENTRY = new ListCodexEntry("general");
+    public static final ListCodexEntry TEMPERATURE_ENTRY = new ListCodexEntry("temperature");
     // Targets
-    public static final TargetCodexEntry GENERAL = new TargetCodexEntry("general", null, "The General The General The General The General The General The General The General The General The General The General The General The General The General The General The General The General The General The General The General The General The General ", SPECIES_TREE);
-    public static final TargetCodexEntry ELF_GENERAL = new TargetCodexEntry("elf_general", GENERAL, "The Elf General", SPECIES_TREE);
-    public static final TargetCodexEntry CASTER_ELF = new TargetCodexEntry("caster_elf", ELF_GENERAL, "The Caster Elf", SPECIES_TREE);
-    public static final TargetCodexEntry HEALER_ELF = new TargetCodexEntry("healer_elf", ELF_GENERAL, "The Healer Elf", SPECIES_TREE);
-    public static final TargetCodexEntry SUMMONER_ELF = new TargetCodexEntry("summoner_elf", ELF_GENERAL, "The Summoner Elf", SPECIES_TREE);
-    public static final TargetCodexEntry ELF_GENERAL2 = new TargetCodexEntry("elf_general2", GENERAL, "The Elf General", SPECIES_TREE);
-    public static final TargetCodexEntry CASTER_ELF2 = new TargetCodexEntry("caster_elf2", ELF_GENERAL2, "The Caster Elf", SPECIES_TREE);
-    public static final TargetCodexEntry CASTER_ELF3 = new TargetCodexEntry("caster_elf3", ELF_GENERAL2, "The Caster Elf", SPECIES_TREE);
-    public static final TargetCodexEntry HEALER_ELF2 = new TargetCodexEntry("healer_elf2", ELF_GENERAL2, "The Healer Elf", SPECIES_TREE);
-    public static final TargetCodexEntry SUMMONER_ELF2 = new TargetCodexEntry("summoner_elf2", ELF_GENERAL2, "The Summoner Elf", SPECIES_TREE);
+    public static final TargetCodexEntry GENERAL = new TargetCodexEntry("general", null, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry ELF_GENERAL = new TargetCodexEntry("elf_general", GENERAL, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry CASTER_ELF = new TargetCodexEntry("caster_elf", ELF_GENERAL, SPECIES_TREE, Optional.of(ItemRegistry.CASTING_STAFF.get()));
+    public static final TargetCodexEntry HEALER_ELF = new TargetCodexEntry("healer_elf", ELF_GENERAL, SPECIES_TREE, Optional.of(ItemRegistry.HEALING_STAFF.get()));
+    public static final TargetCodexEntry SUMMONER_ELF = new TargetCodexEntry("summoner_elf", ELF_GENERAL, SPECIES_TREE, Optional.of(ItemRegistry.SUMMONING_STAFF.get()));
+    public static final TargetCodexEntry ELF_GENERAL2 = new TargetCodexEntry("elf_general2", GENERAL, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry CASTER_ELF2 = new TargetCodexEntry("caster_elf2", ELF_GENERAL2, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry CASTER_ELF3 = new TargetCodexEntry("caster_elf3", ELF_GENERAL2, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry HEALER_ELF2 = new TargetCodexEntry("healer_elf2", ELF_GENERAL2, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry SUMMONER_ELF2 = new TargetCodexEntry("summoner_elf2", ELF_GENERAL2, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
 
-    public static final TargetCodexEntry SHAMAN = new TargetCodexEntry("shaman", null, "The Shaman", BIOME_CIRCLE);
-    public static final TargetCodexEntry MONK = new TargetCodexEntry("monk", null, "The Monk", BIOME_CIRCLE);
-    public static final TargetCodexEntry MONK1 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
-    public static final TargetCodexEntry MONK2 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
-    public static final TargetCodexEntry MONK3 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
-    public static final TargetCodexEntry MONK4 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
-    public static final TargetCodexEntry MONK5 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
-    public static final TargetCodexEntry MONK6 = new TargetCodexEntry("summoner_elf", null, "The Summoner Elf", BIOME_CIRCLE);
+    public static final TargetCodexEntry SHAMAN = new TargetCodexEntry("shaman", null, BIOME_CIRCLE, Optional.of(ItemRegistry.METAL_COG.get()));
+    public static final TargetCodexEntry MONK = new TargetCodexEntry("monk", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry MONK1 = new TargetCodexEntry("summoner_elf", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry MONK2 = new TargetCodexEntry("summoner_elf", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry MONK3 = new TargetCodexEntry("summoner_elf", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry MONK4 = new TargetCodexEntry("summoner_elf", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry MONK5 = new TargetCodexEntry("summoner_elf", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
+    public static final TargetCodexEntry MONK6 = new TargetCodexEntry("summoner_elf", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
     // Entities
     public static final ListCodexEntry BIG_LEVITATING_JELLYFISH_ENTRY = new ListCodexEntry("big_levitating_jellyfish");
     public static final ListCodexEntry BOAR_ENTRY = new ListCodexEntry("boar");
