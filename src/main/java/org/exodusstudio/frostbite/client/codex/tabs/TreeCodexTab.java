@@ -20,8 +20,8 @@ public class TreeCodexTab extends CodexTab {
     private static final int initialMaxX = 700;
     private static final int initialMaxY = 300;
 
-    public TreeCodexTab(String title, CodexTabType type, int index, String icon, TargetCodexEntry... entries) {
-        super(title, type, index, icon);
+    public TreeCodexTab(String id, CodexTabType type, int index, String icon, TargetCodexEntry... entries) {
+        super(id, type, index, icon);
         this.widgets = new HashMap<>();
         this.minX = initialMinX;
         this.minY = initialMinY;

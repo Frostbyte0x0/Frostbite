@@ -200,14 +200,26 @@
   "container.frozen_remnants": "Frozen Remnants",
   "container.weaving_table": "Weaving Table",
 
+  "general.frostbite.outer_temp": "Outer Temperature",
+
+
   "key.codex": "Open Codex",
   "key.category.frostbite.frostbite": "Frostbite",
   "gui.codex": "Codex",
 
-  "general.frostbite.outer_temp": "Outer Temperature",
+  "codex.tab.general.title": "General",
+  "codex.tab.bosses.title": "Bosses",
+  "codex.tab.entities.title": "Entities",
+  "codex.tab.biomes.title": "Biomes",
+  "codex.tab.structures.title": "Structures",
 
   "codex.target_entry.elf_general.title": "Elf General",
   "codex.target_entry.elf_general.description": "He's an elf general, and he is very strong. He can summon elves to help him in battle.",
+
+  "codex.list_entry.temperature.title": "Temperature",
+  "codex.list_entry.temperature.description": "Each entity has a temperature, which can be affected by the environment and the items they wear. If your temperature drops too low, you will start to take damage over time.",
+  "codex.list_entry.temperature.tips": "Wear lining to protect yourself from lower temperatures \nYou can also use the bottle of warmth to increase your temperature",
+
 
   "sounds.frostbite.sniper_ping": "Sniper pings",
   "sounds.frostbite.sniper_reload": "Sniper reloads",

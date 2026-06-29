@@ -1,6 +1,8 @@
 package org.exodusstudio.frostbite.common.util;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.KeyframeAnimation;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
@@ -8,6 +10,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
@@ -337,5 +340,13 @@ public class Util {
 
     public static void drawTexture(GuiGraphicsExtractor graphics, int leftPos, int topPos, int width, int height, Identifier texture) {
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0f, 0f, width, height, width, height);
+    }
+
+    public static void drawMultilineText(GuiGraphicsExtractor gui, List<FormattedCharSequence> text, int x, int y, int color) {
+        Font font = Minecraft.getInstance().font;
+
+        for (int i = 0; i < text.size(); ++i) {
+            gui.text(font, text.get(i), x, y + i * 9, color);
+        }
     }
 }

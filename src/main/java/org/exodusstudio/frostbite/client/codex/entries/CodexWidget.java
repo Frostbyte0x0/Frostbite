@@ -144,18 +144,10 @@ public class CodexWidget {
         }
         this.drops.ifPresent(item -> gui.item(item.getDefaultInstance(), boxX + 4, boxY + 29));
 
-        this.drawMultilineText(gui, this.titleLines, boxX + 30, boxY + 1, 0xFF5836e0);
-        this.drawMultilineText(gui, this.description, boxX + 30, boxY + i, -16711936);
+        Util.drawMultilineText(gui, this.titleLines, boxX + 30, boxY + 1, 0xFF5836e0);
+        Util.drawMultilineText(gui, this.description, boxX + 30, boxY + i, -16711936);
 
         Util.drawTexture(gui, (int) (scrollX + (8 * (1 - sz) + getX()) * zoom - 3 * sz), (int) (scrollY + (5 * (1 - sz) + getY()) * zoom - 3 * sz), 24, 24, getImage());
-    }
-
-    private void drawMultilineText(GuiGraphicsExtractor gui, List<FormattedCharSequence> text, int x, int y, int color) {
-        Font font = this.minecraft.font;
-
-        for (int i = 0; i < text.size(); ++i) {
-            gui.text(font, text.get(i), x, y + i * 9, color);
-        }
     }
 
     public boolean isMouseOver(int x, int y, int mouseX, int mouseY, float zoom) {
