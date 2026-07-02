@@ -87,6 +87,10 @@ public class Codex {
             Codex.SHROUDED_FOREST_ENTRY,
             Codex.ICEBOUND_PLAINS_ENTRY,
             Codex.FRIGID_PEAKS_ENTRY,
+            Codex.CHARM_WOODS_ENTRY,
+            Codex.SHROUDED_FOREST_ENTRY,
+            Codex.ICEBOUND_PLAINS_ENTRY,
+            Codex.FRIGID_PEAKS_ENTRY,
             Codex.CHARM_WOODS_ENTRY
     );
     public static final CodexTab STRUCTURES_TAB = new ListCodexTab("structures", CodexTabType.ABOVE, 4, "item/frozen_arrow",

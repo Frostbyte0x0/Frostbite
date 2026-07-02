@@ -17,6 +17,7 @@ import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.client.codex.Codex;
 import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
+import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 import org.jspecify.annotations.Nullable;
@@ -72,6 +73,7 @@ public class CodexScreen extends Screen {
                     break;
                 }
             }
+            if (selectedTab instanceof ListCodexTab) ((ListCodexTab) selectedTab).selectTile((int) event.x(), (int) event.y());
         }
 
         return super.mouseClicked(event, p_433867_);
@@ -125,7 +127,7 @@ public class CodexScreen extends Screen {
             if (!this.isScrolling) {
                 this.isScrolling = true;
             } else if (this.selectedTab != null) {
-                this.selectedTab.scroll(p_97347_, p_97348_);
+                this.selectedTab.scroll(event.x(), event.y(), p_97347_, p_97348_);
             }
 
             return true;
@@ -146,7 +148,7 @@ public class CodexScreen extends Screen {
         }
 
         if (this.selectedTab != null) {
-            this.selectedTab.scroll(scrollX * 16, scrollY * 16);
+            this.selectedTab.scroll(x, y, scrollX * 8, scrollY * 8);
             return true;
         } else {
             return false;

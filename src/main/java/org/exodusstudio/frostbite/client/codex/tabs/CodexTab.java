@@ -78,7 +78,16 @@ public abstract class CodexTab {
         return this.type.isMouseOver(offsetX, offsetY, this.index, mouseX, mouseY);
     }
 
-    public void scroll(double dragX, double dragY) {
+    public boolean isMouseInside(int mouseX, int mouseY) {
+        int fromX = (screen.width - 234) / 2;
+        int toX = (screen.width + 234) / 2;
+        int fromY = (screen.height - 113) / 2;
+        int toY = (screen.height + 113) / 2;
+
+        return !(mouseX < fromX || mouseX > toX || mouseY < fromY || mouseY > toY);
+    }
+
+    public void scroll(double mouseX, double mouseY, double dragX, double dragY) {
         if (this.canScrollHorizontally()) {
             this.scrollX = Mth.clamp(this.scrollX + dragX, -(this.maxX - 234), 0);
         }
