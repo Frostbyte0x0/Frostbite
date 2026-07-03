@@ -19,16 +19,23 @@ public class TreeCodexTab extends CodexTab {
     private static final int initialMinY = -300;
     private static final int initialMaxX = 700;
     private static final int initialMaxY = 300;
+    private boolean isInitialized = false;
+    private TargetCodexEntry[] targetEntries;
 
     public TreeCodexTab(String id, CodexTabType type, int index, String icon, TargetCodexEntry... entries) {
-        super(id, type, index, icon);
+        super(id, type, index, icon, entries);
         this.widgets = new HashMap<>();
         this.minX = initialMinX;
         this.minY = initialMinY;
         this.maxX = initialMaxX;
         this.maxY = initialMaxY;
+        this.targetEntries = entries;
+    }
 
-        for (TargetCodexEntry entry : entries) {
+    public void tryInit() {
+        if (isInitialized) return;
+
+        for (TargetCodexEntry entry : targetEntries) {
             CodexWidget widget = new CodexWidget(entry);
             widget.setTab(this);
             widget.parent = this.widgets.get(entry.parent);
@@ -44,11 +51,14 @@ public class TreeCodexTab extends CodexTab {
         for (CodexWidget widget : this.widgets.values()) {
             this.findMinMaxXY(widget);
         }
+        isInitialized = true;
     }
 
     @Override
     public void drawTooltips(GuiGraphicsExtractor GuiGraphicsExtractor, int mouseX, int mouseY, int width, int height) {
         super.drawTooltips(GuiGraphicsExtractor, mouseX, mouseY, width, height);
+        tryInit();
+
         int i = Mth.floor(this.scrollX);
         int j = Mth.floor(this.scrollY);
         if (mouseX > 0 && mouseX < 234 && mouseY > 0 && mouseY < 113) {
@@ -77,6 +87,7 @@ public class TreeCodexTab extends CodexTab {
     @Override
     public void drawContents(GuiGraphicsExtractor GuiGraphicsExtractor, int scrollX, int scrollY) {
         super.drawContents(GuiGraphicsExtractor, scrollX, scrollY);
+        tryInit();
 
         GuiGraphicsExtractor.enableScissor(scrollX, scrollY, scrollX + 234, scrollY + 113);
         GuiGraphicsExtractor.pose().pushMatrix();

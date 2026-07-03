@@ -29,8 +29,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity {
-    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME;
-    private static final UniformInt PERSISTENT_ANGER_TIME;
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME =
+            SynchedEntityData.defineId(BoarEntity.class, EntityDataSerializers.INT);
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private static final EntityDataAccessor<Long> DATA_ANGER_END_TIME =
             SynchedEntityData.defineId(BoarEntity.class, EntityDataSerializers.LONG);
     @Nullable
@@ -65,6 +66,7 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_REMAINING_ANGER_TIME, 0);
+        builder.define(DATA_ANGER_END_TIME, 0L);
     }
 
     @Override
@@ -135,11 +137,6 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
     @Override
     public LivingEntity getInstance() {
         return this;
-    }
-
-    static {
-        DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BoarEntity.class, EntityDataSerializers.INT);
-        PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     }
 
     static class ChargeTowardsTargetGoal extends Goal {

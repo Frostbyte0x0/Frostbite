@@ -8,20 +8,25 @@ import java.util.Arrays;
 
 public class ListCodexTab extends CodexTab {
     private static final int SCROLL_BAR_WIDTH = 5;
-    private final SideTile[] tiles;
+    private SideTile[] tiles;
     private SideTile selectedTile;
     private float sideScrollAmount = 0;
     private float contentScrollAmount = 0;
+    private final ListCodexEntry[] listEntries;
 
     public ListCodexTab(String id, CodexTabType type, int index, String icon, ListCodexEntry... entries) {
-        super(id, type, index, icon);
-        this.tiles = Arrays.stream(entries).map(SideTile::new).toArray(SideTile[]::new);
-        this.selectedTile = tiles[0];
+        super(id, type, index, icon, entries);
+        this.listEntries = entries;
     }
 
     @Override
     public void drawContents(GuiGraphicsExtractor gui, int scrollX, int scrollY) {
         super.drawContents(gui, scrollX, scrollY);
+
+        if (tiles == null) {
+            this.tiles = Arrays.stream(listEntries).map(SideTile::new).toArray(SideTile[]::new);
+            this.selectedTile = tiles[0];
+        }
 
         gui.enableScissor(scrollX, scrollY, scrollX + 234, scrollY + 113);
 

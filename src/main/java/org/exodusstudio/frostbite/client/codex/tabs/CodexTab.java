@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
 
 public abstract class CodexTab {
@@ -23,8 +24,9 @@ public abstract class CodexTab {
     protected float fade;
     protected boolean centered;
     protected boolean increaseFade = false;
+    public final CodexEntry[] entries;
 
-    public CodexTab(String id, CodexTabType type, int index, String icon) {
+    public CodexTab(String id, CodexTabType type, int index, String icon, CodexEntry... entries) {
         this.minX = Integer.MAX_VALUE;
         this.minY = Integer.MAX_VALUE;
         this.maxX = Integer.MIN_VALUE;
@@ -33,6 +35,7 @@ public abstract class CodexTab {
         this.index = index;
         this.icon = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/" + icon + ".png");
         this.title = Component.translatable("codex.tab." + id + ".title");
+        this.entries = entries;
     }
 
     public CodexTabType getType() {

@@ -1,26 +1,21 @@
 package org.exodusstudio.frostbite.client.codex.entries;
 
-import net.minecraft.client.Minecraft;
+import com.mojang.datafixers.util.Either;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.FormattedCharSequence;
 
-import java.util.List;
+import java.util.function.Function;
 
 public class ListCodexEntry extends CodexEntry {
     public final Component title;
-    public final List<FormattedCharSequence> titleLines;
     public final Component description;
-    public final List<FormattedCharSequence> descriptionLines;
     public final Component tips;
-    public final List<FormattedCharSequence> tipsLines;
+    public final Either<ListEntryType, Function<EntryContext, Boolean>> typeOrFunction;
 
-    public ListCodexEntry(String id) {
+    public ListCodexEntry(String id, Either<ListEntryType, Function<EntryContext, Boolean>> typeOrFunction) {
         super(id);
+        this.typeOrFunction = typeOrFunction;
         this.title = Component.translatable("codex.list_entry." + id + ".title");
-        this.titleLines = Minecraft.getInstance().font.split(this.title, 65);
         this.description = Component.translatable("codex.list_entry." + id + ".description");
-        this.descriptionLines = Minecraft.getInstance().font.split(this.description, 145);
         this.tips = Component.translatable("codex.list_entry." + id + ".tips");
-        this.tipsLines = Minecraft.getInstance().font.split(this.tips, 145);
     }
 }

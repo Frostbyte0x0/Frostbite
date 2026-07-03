@@ -30,12 +30,21 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.codex.Codex;
+import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
+import org.exodusstudio.frostbite.client.codex.entries.EntryContext;
+import org.exodusstudio.frostbite.client.codex.entries.ListCodexEntry;
+import org.exodusstudio.frostbite.client.codex.entries.ListEntryType;
+import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
+import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
+import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
@@ -330,10 +339,66 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void codex(InputEvent.Key event) {
+    public static void codexOpen(InputEvent.Key event) {
         if (KeyMappingRegistry.CODEX.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent()))) {
             while (KeyMappingRegistry.CODEX.consumeClick()) {
                 Minecraft.getInstance().gui.setScreen(new CodexScreen());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void targetCodex(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof LivingEntity livingEntity) {
+            for (CodexTab tab : Codex.TABS) {
+                if (tab instanceof TreeCodexTab treeTab) {
+                    for (CodexEntry entry : treeTab.entries) {
+                        String name = livingEntity.typeHolder().getRegisteredName().split(":")[1];
+                        if (!entry.id.equals(name)) continue;
+                        CodexEntry.addEntryToPlayer(player, entry);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void listCodex(PlayerTickEvent.Post event) {
+        if (event.getEntity().tickCount % 20 != 0) return;
+
+        for (CodexTab tab : Codex.TABS) {
+            if (tab instanceof ListCodexTab listTab) {
+                for (CodexEntry entry : listTab.entries) {
+                    if (entry instanceof ListCodexEntry listEntry && !CodexEntry.playerHasEntry(event.getEntity(), entry)) {
+//                        if (listEntry.typeOrFunction.left().isPresent()) {
+//                            switch (listEntry.typeOrFunction.left().get()) {
+//                                case BIOME: if ()
+//                            }
+//                        } else {
+//                            if (!listEntry.typeOrFunction.right().orElseThrow().apply(
+//                                    new EntryContext(event.getEntity().level(), event.getEntity()))) continue;
+//                        }
+                        CodexEntry.addEntryToPlayer(event.getEntity(), entry);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void listCodex(AdvancementEvent.AdvancementEarnEvent event) {
+        for (CodexTab tab : Codex.TABS) {
+            if (tab instanceof ListCodexTab listTab) {
+                for (CodexEntry entry : listTab.entries) {
+                    if (entry instanceof ListCodexEntry listEntry && !CodexEntry.playerHasEntry(event.getEntity(), entry)) {
+//                        if (listEntry.typeOrFunction.left().isPresent() &&
+//                                listEntry.typeOrFunction.left().get() == ListEntryType.BIOME &&
+//                                event.getAdvancement().getId().toString().equals("minecraft:adventure/adventuring_time")
+//                        ) {
+//                            CodexEntry.addEntryToPlayer(event.getEntity(), entry);
+//                        }
+                    }
+                }
             }
         }
     }
