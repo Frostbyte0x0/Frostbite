@@ -69,7 +69,8 @@ public class CodexScreen extends Screen {
             for (CodexTab tab : Codex.TABS) {
                 if (tab.isMouseOver(i, j, event.x(), event.y())) {
                     selectedTab = tab;
-                    if (tab instanceof TreeCodexTab) ((TreeCodexTab) tab).formations.forEach(CodexFormation::computePlacements);
+                    if (tab instanceof TreeCodexTab t) t.formations.forEach(CodexFormation::computePlacements);
+                    if (selectedTab instanceof ListCodexTab t) t.reloadTiles();
                     break;
                 }
             }

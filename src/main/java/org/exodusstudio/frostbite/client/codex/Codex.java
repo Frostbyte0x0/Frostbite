@@ -1,8 +1,7 @@
 package org.exodusstudio.frostbite.client.codex;
 
-import com.mojang.datafixers.util.Either;
+import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
 import org.exodusstudio.frostbite.client.codex.entries.ListCodexEntry;
-import org.exodusstudio.frostbite.client.codex.entries.ListEntryType;
 import org.exodusstudio.frostbite.client.codex.entries.TargetCodexEntry;
 import org.exodusstudio.frostbite.client.codex.formations.CircleCodexFormation;
 import org.exodusstudio.frostbite.client.codex.formations.TreeCodexFormation;
@@ -25,7 +24,7 @@ public class Codex {
 
     // Entries
     // General
-    public static final ListCodexEntry TEMPERATURE_ENTRY = new ListCodexEntry("temperature", Either.right(c -> ((TE) c.player()).getInnerTemp() < 0));
+    public static final ListCodexEntry TEMPERATURE_ENTRY = new ListCodexEntry("temperature", c -> ((TE) c.player()).getInnerTemp() < 0);
     // Targets
     public static final TargetCodexEntry GENERAL = new TargetCodexEntry("general", null, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
     public static final TargetCodexEntry ELF_GENERAL = new TargetCodexEntry("elf_general", GENERAL, SPECIES_TREE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
@@ -47,15 +46,15 @@ public class Codex {
     public static final TargetCodexEntry MONK5 = new TargetCodexEntry("monk5", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
     public static final TargetCodexEntry MONK6 = new TargetCodexEntry("monk6", null, BIOME_CIRCLE, Optional.of(ItemRegistry.ADVANCED_CLOCK.get()));
     // Entities
-    public static final ListCodexEntry BIG_LEVITATING_JELLYFISH_ENTRY = new ListCodexEntry("big_levitating_jellyfish", Either.left(ListEntryType.ENTITY));
-    public static final ListCodexEntry BOAR_ENTRY = new ListCodexEntry("boar", Either.left(ListEntryType.ENTITY));
+    public static final ListCodexEntry BIG_LEVITATING_JELLYFISH_ENTRY = new ListCodexEntry("big_levitating_jellyfish");
+    public static final ListCodexEntry BOAR_ENTRY = new ListCodexEntry("boar");
     // Biomes
-    public static final ListCodexEntry SHROUDED_FOREST_ENTRY = new ListCodexEntry("shrouded_forest", Either.left(ListEntryType.BIOME));
-    public static final ListCodexEntry ICEBOUND_PLAINS_ENTRY = new ListCodexEntry("icebound_plains", Either.left(ListEntryType.BIOME));
-    public static final ListCodexEntry FRIGID_PEAKS_ENTRY = new ListCodexEntry("frigid_peaks", Either.left(ListEntryType.BIOME));
-    public static final ListCodexEntry CHARM_WOODS_ENTRY = new ListCodexEntry("charm_woods", Either.left(ListEntryType.BIOME));
+    public static final ListCodexEntry SHROUDED_FOREST_ENTRY = new ListCodexEntry("shrouded_forest");
+    public static final ListCodexEntry ICEBOUND_PLAINS_ENTRY = new ListCodexEntry("icebound_plains");
+    public static final ListCodexEntry FRIGID_PEAKS_ENTRY = new ListCodexEntry("frigid_peaks");
+    public static final ListCodexEntry CHARM_WOODS_ENTRY = new ListCodexEntry("charm_woods");
     // Structures
-    public static final ListCodexEntry PORTAL_ENTRY = new ListCodexEntry("otf_portal", Either.left(ListEntryType.STRUCTURE));
+    public static final ListCodexEntry PORTAL_ENTRY = new ListCodexEntry("otf_portal");
 
 
     // Tabs
@@ -107,4 +106,20 @@ public class Codex {
             BIOMES_TAB,
             STRUCTURES_TAB
     );
+
+    public static String TRACKED_LIST_ENTRIES = "";
+
+    static {
+
+
+        for (CodexTab tab : TABS) {
+            if (tab instanceof ListCodexTab listTab) {
+                for (CodexEntry entry : listTab.entries) {
+                    if (entry instanceof ListCodexEntry listEntry) {
+                        TRACKED_LIST_ENTRIES += listEntry.id + ";";
+                    }
+                }
+            }
+        }
+    }
 }

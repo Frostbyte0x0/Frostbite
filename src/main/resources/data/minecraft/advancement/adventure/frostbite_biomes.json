@@ -1,0 +1,175 @@
+{
+  "parent": "minecraft:adventure/sleep_in_bed",
+  "criteria": {
+    "frostbite:shrouded_forest": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:shrouded_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "frostbite:murky_woods": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:murky_woods"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "frostbite:icebound_plains": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:icebound_plains"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "frostbite:ice_canyon": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:ice_canyon"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "frostbite:frozen_cave": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:frozen_cave"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "frostbite:frosted_forest": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:frosted_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "frostbite:frigid_peaks": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:frigid_peaks"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "frostbite:charm_grove": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:location": {
+                "biomes": "frostbite:charm_grove"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.adventure.adventuring_time.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "id": "minecraft:netherite_boots"
+    },
+    "title": {
+      "translate": "advancements.adventure.adventuring_time.title"
+    }
+  },
+  "requirements": [
+    [
+      "frostbite:shrouded_forest"
+    ],
+    [
+      "frostbite:murky_woods"
+    ],
+    [
+      "frostbite:icebound_plains"
+    ],
+    [
+      "frostbite:ice_canyon"
+    ],
+    [
+      "frostbite:frozen_cave"
+    ],
+    [
+      "frostbite:frosted_forest"
+    ],
+    [
+      "frostbite:frigid_peaks"
+    ],
+    [
+      "frostbite:charm_grove"
+    ]
+  ],
+  "rewards": {
+    "experience": 500
+  },
+  "sends_telemetry_event": true
+}

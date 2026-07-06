@@ -1,6 +1,8 @@
 package org.exodusstudio.frostbite.client.codex.tabs;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
 import org.exodusstudio.frostbite.client.codex.entries.ListCodexEntry;
 import org.exodusstudio.frostbite.client.codex.entries.SideTile;
 
@@ -24,8 +26,7 @@ public class ListCodexTab extends CodexTab {
         super.drawContents(gui, scrollX, scrollY);
 
         if (tiles == null) {
-            this.tiles = Arrays.stream(listEntries).map(SideTile::new).toArray(SideTile[]::new);
-            this.selectedTile = tiles[0];
+            reloadTiles();
         }
 
         gui.enableScissor(scrollX, scrollY, scrollX + 234, scrollY + 113);
@@ -33,6 +34,12 @@ public class ListCodexTab extends CodexTab {
         gui.pose().pushMatrix();
         gui.pose().translate(scrollX, scrollY);
         gui.fill(0, 0, 234, 113, 0xFFC6C6C6);
+
+        if (selectedTile == null) {
+            gui.pose().popMatrix();
+            gui.disableScissor();
+            return;
+        }
 
         int j = 0;
 
@@ -59,6 +66,14 @@ public class ListCodexTab extends CodexTab {
         gui.disableScissor();
     }
 
+    public void reloadTiles() {
+        this.tiles = Arrays.stream(listEntries)
+                .filter(e -> CodexEntry.playerHasEntry(Minecraft.getInstance().player, e))
+                .map(SideTile::new)
+                .toArray(SideTile[]::new);
+        this.selectedTile = tiles.length > 0 ? tiles[0] : null;
+    }
+
     public void selectTile(int mouseX, int mouseY) {
         int fromX = (screen.width - 234) / 2;
         int fromY = (screen.height - 113) / 2;
@@ -75,6 +90,8 @@ public class ListCodexTab extends CodexTab {
 
     @Override
     public void scroll(double mouseX, double mouseY, double dragX, double dragY) {
+        if (selectedTile == null) return;
+
         int fromX = (screen.width - 234) / 2;
 
         if (!isMouseInside((int) mouseX, (int) mouseY)) return;

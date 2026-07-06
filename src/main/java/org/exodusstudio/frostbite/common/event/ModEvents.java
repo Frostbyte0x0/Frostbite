@@ -41,7 +41,6 @@ import org.exodusstudio.frostbite.client.codex.Codex;
 import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
 import org.exodusstudio.frostbite.client.codex.entries.EntryContext;
 import org.exodusstudio.frostbite.client.codex.entries.ListCodexEntry;
-import org.exodusstudio.frostbite.client.codex.entries.ListEntryType;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
@@ -350,14 +349,19 @@ public class ModEvents {
     @SubscribeEvent
     public static void targetCodex(LivingDamageEvent.Post event) {
         if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof LivingEntity livingEntity) {
+            String name = livingEntity.typeHolder().getRegisteredName().split(":")[1];
+
             for (CodexTab tab : Codex.TABS) {
                 if (tab instanceof TreeCodexTab treeTab) {
                     for (CodexEntry entry : treeTab.entries) {
-                        String name = livingEntity.typeHolder().getRegisteredName().split(":")[1];
                         if (!entry.id.equals(name)) continue;
                         CodexEntry.addEntryToPlayer(player, entry);
                     }
                 }
+            }
+
+            if (Codex.TRACKED_LIST_ENTRIES.contains(name)) {
+                CodexEntry.addEntryToPlayer(player, name);
             }
         }
     }
@@ -369,15 +373,11 @@ public class ModEvents {
         for (CodexTab tab : Codex.TABS) {
             if (tab instanceof ListCodexTab listTab) {
                 for (CodexEntry entry : listTab.entries) {
-                    if (entry instanceof ListCodexEntry listEntry && !CodexEntry.playerHasEntry(event.getEntity(), entry)) {
-//                        if (listEntry.typeOrFunction.left().isPresent()) {
-//                            switch (listEntry.typeOrFunction.left().get()) {
-//                                case BIOME: if ()
-//                            }
-//                        } else {
-//                            if (!listEntry.typeOrFunction.right().orElseThrow().apply(
-//                                    new EntryContext(event.getEntity().level(), event.getEntity()))) continue;
-//                        }
+                    if (entry instanceof ListCodexEntry listEntry &&
+                        !CodexEntry.playerHasEntry(event.getEntity(), entry) &&
+                        listEntry.function != null &&
+                        listEntry.function.apply(new EntryContext(event.getEntity().level(), event.getEntity()))) {
+
                         CodexEntry.addEntryToPlayer(event.getEntity(), entry);
                     }
                 }
@@ -386,20 +386,10 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void listCodex(AdvancementEvent.AdvancementEarnEvent event) {
-        for (CodexTab tab : Codex.TABS) {
-            if (tab instanceof ListCodexTab listTab) {
-                for (CodexEntry entry : listTab.entries) {
-                    if (entry instanceof ListCodexEntry listEntry && !CodexEntry.playerHasEntry(event.getEntity(), entry)) {
-//                        if (listEntry.typeOrFunction.left().isPresent() &&
-//                                listEntry.typeOrFunction.left().get() == ListEntryType.BIOME &&
-//                                event.getAdvancement().getId().toString().equals("minecraft:adventure/adventuring_time")
-//                        ) {
-//                            CodexEntry.addEntryToPlayer(event.getEntity(), entry);
-//                        }
-                    }
-                }
-            }
+    public static void listCodex(AdvancementEvent.AdvancementProgressEvent event) {
+        String entry = event.getCriterionName().split(":")[1];
+        if (Codex.TRACKED_LIST_ENTRIES.contains(entry)) {
+            CodexEntry.addEntryToPlayer(event.getEntity(), entry);
         }
     }
 }

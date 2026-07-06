@@ -24,6 +24,12 @@ public abstract class CodexEntry {
         }
     }
 
+    public static void addEntryToPlayer(Player player, String entryId) {
+        if (!player.getData(AttachementRegistry.UNLOCKED_ENTRIES).contains(entryId)) {
+            player.setData(AttachementRegistry.UNLOCKED_ENTRIES, player.getData(AttachementRegistry.UNLOCKED_ENTRIES) + entryId + ";");
+        }
+    }
+
     public static boolean playerHasEntry(Player player, CodexEntry entry) {
         return Arrays.stream((player.getData(AttachementRegistry.UNLOCKED_ENTRIES).split(";"))).anyMatch(s -> s.equals(entry.id));
     }
