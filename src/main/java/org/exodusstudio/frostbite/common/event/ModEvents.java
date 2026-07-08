@@ -349,6 +349,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void targetCodex(LivingDamageEvent.Post event) {
         if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof LivingEntity livingEntity) {
+            Frostbite.LOGGER.debug(String.valueOf(event.getInflictedDamage()));
             String name = livingEntity.typeHolder().getRegisteredName().split(":")[1];
 
             for (CodexTab tab : Codex.TABS) {
@@ -387,7 +388,9 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void listCodex(AdvancementEvent.AdvancementProgressEvent event) {
-        String entry = event.getCriterionName().split(":")[1];
+        String[] s = event.getCriterionName().split(":");
+        if (s.length < 2) return;
+        String entry = s[1];
         if (Codex.TRACKED_LIST_ENTRIES.contains(entry)) {
             CodexEntry.addEntryToPlayer(event.getEntity(), entry);
         }

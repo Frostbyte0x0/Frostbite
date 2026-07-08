@@ -19,7 +19,7 @@
     "CreativeModeInventoryScreenMixin",
     "EntityRendererMixin",
     "EntityRenderStateMixin",
-    "GuiMixin",
+    "HudMixin",
     "InventoryScreenMixin",
     "LevelRendererMixin",
     "LivingEntityRendererMixin",

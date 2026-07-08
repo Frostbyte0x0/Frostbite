@@ -4,9 +4,13 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DeathProtection;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -19,13 +23,11 @@ import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.weapons.GaleFanItem;
-import org.exodusstudio.frostbite.common.item.weapons.IceHammerItem;
-import org.exodusstudio.frostbite.common.item.weapons.ShamanStaffItem;
-import org.exodusstudio.frostbite.common.item.weapons.StunningBellItem;
+import org.exodusstudio.frostbite.common.item.weapons.*;
 import org.exodusstudio.frostbite.common.item.weapons.elf.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.SummoningStaffItem;
+import org.exodusstudio.frostbite.common.item.weapons.goat.DaggersItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
@@ -255,6 +257,14 @@ public class ItemRegistry {
                     .food(FoodRegistry.WARMING_BOTTLE, ConsumableRegistry.HEAT_BOTTLE)
                     .usingConvertsTo(Items.GLASS_BOTTLE)
                     .stacksTo(16)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+
+    public static final DeferredItem<Item> DAGGERS =
+            ITEMS.register("daggers", (id) -> new DaggersItem(new Item.Properties()
+                    .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
+                    .attributes(DaggersItem.createAttributes())
+                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
 

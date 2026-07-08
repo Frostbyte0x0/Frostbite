@@ -16,12 +16,28 @@ public class AttachementRegistry {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Frostbite.MOD_ID);
 
+    public static final StreamCodec<RegistryFriendlyByteBuf, Integer> INT_STREAM_CODEC = StreamCodec.of(
+            FriendlyByteBuf::writeInt,
+            FriendlyByteBuf::readInt);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Long> LONG_STREAM_CODEC = StreamCodec.of(
+            FriendlyByteBuf::writeLong,
+            FriendlyByteBuf::readLong);
     public static final StreamCodec<RegistryFriendlyByteBuf, Float> FLOAT_STREAM_CODEC = StreamCodec.of(
             FriendlyByteBuf::writeFloat,
             FriendlyByteBuf::readFloat);
     public static final StreamCodec<RegistryFriendlyByteBuf, String> STRING_STREAM_CODEC = StreamCodec.of(
             FriendlyByteBuf::writeUtf,
             FriendlyByteBuf::readUtf);
+
+    public static final Supplier<AttachmentType<Integer>> COMBO_INDEX = ATTACHMENT_TYPES.register(
+            "combo_index", () -> AttachmentType.builder(() -> 0)
+                    .sync(INT_STREAM_CODEC)
+                    .serialize(Codec.INT.fieldOf("combo_index")).build());
+
+    public static final Supplier<AttachmentType<Long>> LAST_HIT = ATTACHMENT_TYPES.register(
+            "last_hit", () -> AttachmentType.builder(() -> 0L)
+                    .sync(LONG_STREAM_CODEC)
+                    .serialize(Codec.LONG.fieldOf("last_hit")).build());
 
     public static final Supplier<AttachmentType<Float>> INNER_TEMPERATURE = ATTACHMENT_TYPES.register(
             "inner_temperature", () -> AttachmentType.builder(() -> TemperatureManager.MAX_TEMP)

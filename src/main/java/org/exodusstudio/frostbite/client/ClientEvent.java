@@ -21,6 +21,8 @@ public class ClientEvent {
                 ThermometerOverlay::render);
         event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "fire_overlay"),
                 FireOverlay::render);
+        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "combo_overlay"),
+                ComboOverlay::render);
         event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
                 GunOverlay::render);
         event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
