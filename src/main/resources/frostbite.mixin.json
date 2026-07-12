@@ -21,6 +21,7 @@
     "EntityRenderStateMixin",
     "HudMixin",
     "InventoryScreenMixin",
+    "LevelExtractorMixin",
     "LevelRendererMixin",
     "LivingEntityRendererMixin",
     "MobRendererMixin",

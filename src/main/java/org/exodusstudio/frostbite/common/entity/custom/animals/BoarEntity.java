@@ -135,6 +135,11 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
     }
 
     @Override
+    public boolean scalesWithCold() {
+        return false;
+    }
+
+    @Override
     public LivingEntity getInstance() {
         return this;
     }

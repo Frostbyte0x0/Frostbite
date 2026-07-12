@@ -18,18 +18,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.goals.OwnerHurtByTargetGoal;
 import org.exodusstudio.frostbite.common.entity.goals.OwnerHurtTargetGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.util.Ownable;
 import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-public class RoamingBlizzardEntity extends Monster implements Ownable {
+public class RoamingBlizzardEntity extends Monster implements Ownable, TemperatureEntity {
     @Nullable
     private EntityReference<LivingEntity> owner;
     private final Vec3 windDir = new Vec3(
@@ -145,5 +144,10 @@ public class RoamingBlizzardEntity extends Monster implements Ownable {
         }
 
         super.tick();
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
     }
 }

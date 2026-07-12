@@ -39,6 +39,21 @@ public class AttachementRegistry {
                     .sync(LONG_STREAM_CODEC)
                     .serialize(Codec.LONG.fieldOf("last_hit")).build());
 
+    public static final Supplier<AttachmentType<Float>> COMBO_LENGTH = ATTACHMENT_TYPES.register(
+            "combo_length", () -> AttachmentType.builder(() -> 0f)
+                    .sync(FLOAT_STREAM_CODEC)
+                    .serialize(Codec.FLOAT.fieldOf("combo_length")).build());
+
+    public static final Supplier<AttachmentType<String>> CURRENT_CHARGE_ATTACK = ATTACHMENT_TYPES.register(
+            "current_charge_attack", () -> AttachmentType.builder(() -> "")
+                    .sync(STRING_STREAM_CODEC)
+                    .serialize(Codec.STRING.fieldOf("current_charge_attack")).build());
+
+    public static final Supplier<AttachmentType<Long>> CHARGE_ATTACK_START = ATTACHMENT_TYPES.register(
+            "charge_attack_start", () -> AttachmentType.builder(() -> 0L)
+                    .sync(LONG_STREAM_CODEC)
+                    .serialize(Codec.LONG.fieldOf("charge_attack_start")).build());
+
     public static final Supplier<AttachmentType<Float>> INNER_TEMPERATURE = ATTACHMENT_TYPES.register(
             "inner_temperature", () -> AttachmentType.builder(() -> TemperatureManager.MAX_TEMP)
                     .sync(FLOAT_STREAM_CODEC)
