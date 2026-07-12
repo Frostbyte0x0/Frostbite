@@ -28,6 +28,7 @@ import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.SummoningStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.goat.BlueJadeKatanaItem;
 import org.exodusstudio.frostbite.common.item.weapons.goat.DaggersItem;
+import org.exodusstudio.frostbite.common.item.weapons.goat.NaginataItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
@@ -264,6 +265,12 @@ public class ItemRegistry {
             ITEMS.register("daggers", (id) -> new DaggersItem(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
                     .attributes(DaggersItem.createAttributes())
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> NAGINATA =
+            ITEMS.register("naginata", (id) -> new NaginataItem(new Item.Properties()
+                    .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
+                    .attributes(NaginataItem.createAttributes())
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLUE_JADE_KATANA =
