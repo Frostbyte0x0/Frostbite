@@ -38,8 +38,12 @@ public class DamageParticle extends SingleQuadParticle {
 
     @Override
     public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
-        if (age >= 60 && alpha > 0.01f) {
-            this.alpha = 1f - ((age + partialTicks) - 60) / 40;
+        if (age + partialTicks >= lifetime) {
+            this.remove();
+            return;
+        }
+        if (age >= 40 && alpha > 0.01f) {
+            this.alpha = 1f - ((age + partialTicks) - 40) / 10;
         }
 
         SubmitNodeStorage collector = new SubmitNodeStorage();
@@ -93,7 +97,7 @@ public class DamageParticle extends SingleQuadParticle {
 
             damageParticle.setSize(1.5f, 1.5f);
             damageParticle.setParticleSpeed(xSpeed, ySpeed, zSpeed);
-            damageParticle.setLifetime(100);
+            damageParticle.setLifetime(50);
             return damageParticle;
         }
     }

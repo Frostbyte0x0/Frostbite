@@ -1,6 +1,8 @@
 package org.exodusstudio.frostbite.common.item.weapons;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,9 +14,8 @@ public abstract class ComboWeapon extends Item {
     private final ComboStep[] steps;
 
     // ComboOverlay bar
-    //  - Advance bar with time
     // Animations + smoothing
-    // Deal damage based on the step + timing
+    // Sounds
 
     public ComboWeapon(Properties properties, ComboStep... steps) {
         super(properties);
@@ -26,8 +27,12 @@ public abstract class ComboWeapon extends Item {
             if (attacker.getItemInHand(attacker.getUsedItemHand()).getItem() instanceof ComboWeapon comboWeapon) {
                 ComboStep currentStep = comboWeapon.getComboStep(attacker);
                 if (currentStep != null) {
+                    float ret = 0;
+                    float t = Math.abs(0.5f - getStepProgress(attacker));
+                    if (t < currentStep.critTolerance) ret = currentStep.extraDamage * 2;
+                    if (t < currentStep.tolerance) ret = currentStep.extraDamage;
                     attacks(attacker);
-                    return currentStep.extraDamage;
+                    return ret;
                 }
             }
         }
@@ -37,13 +42,27 @@ public abstract class ComboWeapon extends Item {
     public static void attacks(LivingEntity entity) {
         if (entity.getItemInHand(entity.getUsedItemHand()).getItem() instanceof ComboWeapon comboWeapon) {
             float timeSinceLastHit = getTimeSinceLastHit(entity);
-            int index = getComboIndex(entity);
+            float index = getComboIndex(entity);
+            int stepCount = comboWeapon.getComboStepCount();
             ComboStep currentStep = comboWeapon.getComboStep(entity);
+            float t = Math.abs(0.5f - getStepProgress(entity));
 
             if (
                 currentStep != null &&
-                timeSinceLastHit >= currentStep.minDelayToNext &&
                 timeSinceLastHit <= currentStep.delayToNext * 2 &&
+                t <= currentStep.tolerance &&
+                index < comboWeapon.steps.length
+            ) {
+                if (t < currentStep.critTolerance) entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                        SoundEvents.ANVIL_LAND, entity.getSoundSource(), 0.5f, 1f + index / (2f * stepCount));
+                else if (t < currentStep.tolerance) entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                        SoundEvents.ARROW_HIT_PLAYER, entity.getSoundSource(), 0.5f, 1f + index / (2f * stepCount));
+            }
+
+            if (
+                currentStep != null &&
+                timeSinceLastHit <= currentStep.delayToNext * 2 &&
+                t <= currentStep.tolerance &&
                 index < comboWeapon.steps.length - 1
             ) {
                 increaseComboIndex(entity);
@@ -73,6 +92,12 @@ public abstract class ComboWeapon extends Item {
         }
     }
 
+    public static float getStepProgress(LivingEntity entity) {
+        float lastHit = ComboWeapon.getTimeSinceLastHit(entity);
+        float comboLength = ComboWeapon.getComboLength(entity);
+        return lastHit / (2 * comboLength);
+    }
+
     public static float getComboLength(LivingEntity entity) {
         return entity.getData(AttachementRegistry.COMBO_LENGTH);
     }
@@ -98,5 +123,9 @@ public abstract class ComboWeapon extends Item {
         return index >= 0 && index < steps.length ? steps[index] : null;
     }
 
-    public record ComboStep(int extraDamage, float minDelayToNext, float delayToNext, int range) {}
+    public int getComboStepCount() {
+        return steps.length;
+    }
+
+    public record ComboStep(float extraDamage, float delayToNext, float tolerance, float critTolerance) {}
 }
