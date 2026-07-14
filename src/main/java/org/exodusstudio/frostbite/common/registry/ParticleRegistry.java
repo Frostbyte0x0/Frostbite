@@ -58,6 +58,9 @@ public class ParticleRegistry {
     public static final Supplier<SimpleParticleType> AMBIENT_SNOW_PARTICLE =
             PARTICLE_TYPES.register("ambient_snow", () -> new SimpleParticleType(false));
 
+    public static final Supplier<SimpleParticleType> SLASH_PARTICLE =
+            PARTICLE_TYPES.register("slash", () -> new SimpleParticleType(false));
+
 
     private static <T extends ParticleOptions> Supplier<ParticleType<T>> makeSupplier(
             final Function<ParticleType<T>, MapCodec<T>> codecGetter,
