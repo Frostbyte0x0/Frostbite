@@ -12,6 +12,7 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.particle.options.BooleanParticleOption;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.particle.types.ColorParticleType;
+import org.exodusstudio.frostbite.common.particle.types.DamageParticleType;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -57,6 +58,9 @@ public class ParticleRegistry {
 
     public static final Supplier<SimpleParticleType> AMBIENT_SNOW_PARTICLE =
             PARTICLE_TYPES.register("ambient_snow", () -> new SimpleParticleType(false));
+
+    public static final Supplier<DamageParticleType> DAMAGE_PARTICLE =
+            PARTICLE_TYPES.register("damage", () -> new DamageParticleType(false));
 
 
     private static <T extends ParticleOptions> Supplier<ParticleType<T>> makeSupplier(

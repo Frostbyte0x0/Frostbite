@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -52,11 +53,13 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
+import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.structures.FTOPortal;
 import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.*;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +68,8 @@ import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEvents {
+    public static RandomSource random = RandomSource.create();
+
     @SubscribeEvent
     public static void reset(ServerStoppedEvent event) {
         OTFPortal.canSpawn = true;
@@ -348,9 +353,26 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void targetCodex(LivingDamageEvent.Post event) {
-        if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof LivingEntity livingEntity) {
+        if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof LivingEntity target) {
+            Vector3f speed = new Vector3f(
+                    random.nextFloat(),
+                    Math.abs(random.nextFloat()),
+                    random.nextFloat())
+                    .normalize(0.1f);
+
+            Minecraft.getInstance().level.addParticle(
+                    StringParticleOption.create(ParticleRegistry.DAMAGE_PARTICLE.get(),
+                            String.format("%.1f", event.getInflictedDamage())
+                    ),
+                    target.getRandomX(0.7F),
+                    target.getRandomY() + 1,
+                    target.getRandomZ(0.7F),
+                    speed.x(),
+                    speed.y(),
+                    speed.z());
+
             Frostbite.LOGGER.debug(String.valueOf(event.getInflictedDamage()));
-            String name = livingEntity.typeHolder().getRegisteredName().split(":")[1];
+            String name = target.typeHolder().getRegisteredName().split(":")[1];
 
             for (CodexTab tab : Codex.TABS) {
                 if (tab instanceof TreeCodexTab treeTab) {

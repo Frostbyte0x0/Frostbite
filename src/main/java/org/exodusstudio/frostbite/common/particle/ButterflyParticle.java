@@ -118,19 +118,19 @@ public class ButterflyParticle extends SingleQuadParticle {
         public Particle createParticle(
                 SimpleParticleType simpleParticleOption,
                 ClientLevel clientLevel,
-                double p_233920_,
-                double p_233921_,
-                double p_233922_,
-                double p_233923_,
-                double p_233924_,
-                double p_233925_,
+                double x,
+                double y,
+                double z,
+                double xSpeed,
+                double ySpeed,
+                double zSpeed,
                 RandomSource source
         ) {
             ButterflyParticle butterflyParticle = new ButterflyParticle(
-                    clientLevel, p_233920_, p_233921_, p_233922_, p_233923_, p_233924_, p_233925_, this.sprite
+                    clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite
             );
 
-            butterflyParticle.setParticleSpeed(p_233923_, p_233924_, p_233925_);
+            butterflyParticle.setParticleSpeed(xSpeed, ySpeed, zSpeed);
             butterflyParticle.setLifetime(100);
             return butterflyParticle;
         }
