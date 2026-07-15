@@ -25,8 +25,9 @@ public abstract class ChargeAttackWeapon extends ComboWeapon {
     }
 
     public static void addChargeAttack(LivingEntity user, String chargeAttackRenderable) {
-        Map<UUID, List<Pair<String, Long>>> currentCharges = user.level().getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS);
+        Map<UUID, List<Pair<String, Long>>> currentCharges = new HashMap<>(user.level().getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS));
         if (currentCharges.get(user.getUUID()) != null) {
+            currentCharges.put(user.getUUID(), new ArrayList<>(currentCharges.get(user.getUUID())));
             currentCharges.get(user.getUUID()).add(Pair.of(chargeAttackRenderable, user.level().getGameTime()));
         } else {
             currentCharges.put(user.getUUID(), new ArrayList<>(List.of(Pair.of(chargeAttackRenderable, user.level().getGameTime()))));
