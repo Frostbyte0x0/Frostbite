@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
@@ -29,41 +28,36 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class HuntersCatalyst extends Item {
+    public static final int DURATION = 100;
+
     public HuntersCatalyst(Properties properties) {
         super(properties);
     }
 
-    public static boolean normal = true;
-    public static boolean charged = false;
-
-    public static int beamTicksRemaining = 100;
-
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
-        ChargeAttackWeapon.addChargeAttack(player, "hunters_catalyst_charge_attack");
+        setData(player.getUseItem(), new HuntersCatalystData(DURATION));
+        Renderable.addRenderable(player, "hunters_catalyst_charge_attack");
         return InteractionResult.PASS;
     }
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
-        if (level.isClientSide()) return;
-        if (ticksRemaining <= 30) {
-            normal = false;
-            charged = true;
+        setData(itemStack, new HuntersCatalystData(ticksRemaining));
+        if (ticksRemaining <= 0) {
+            releaseUsing(itemStack, level, livingEntity, ticksRemaining);
         }
     }
 
     @Override
     public boolean useOnRelease(ItemStack itemStack) {
-        charged = false;
-        normal = true;
         return true;
     }
 
     @Override
     public int getUseDuration(ItemStack itemStack, LivingEntity user) {
-        return getData(itemStack).beamTicksRemaining();
+        return DURATION;
     }
 
     @Override
@@ -71,7 +65,21 @@ public class HuntersCatalyst extends Item {
         return ItemUseAnimation.BOW;
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
 
+    private static HuntersCatalystData getData(ItemStack itemStack) {
+        return itemStack.getOrDefault(
+                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
+                new HuntersCatalystData(DURATION)
+        );
+    }
+
+    private static void setData(ItemStack itemStack, HuntersCatalystData data) {
+        itemStack.set(DataComponentTypeRegistry.HUNTERS_CATALYST.get(), data);
+    }
 
     public static boolean shouldStopRendering(Renderable.RenderableContext context) {
         ItemStack stack = context.user().getUseItem();
@@ -80,21 +88,10 @@ public class HuntersCatalyst extends Item {
 
         int ticks = stack.getOrDefault(
                 DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
-                new HuntersCatalystData(100)
-        ).beamTicksRemaining();
+                new HuntersCatalystData(DURATION)
+        ).ticksRemaining();
 
-        return ticks <= 0;
-    }
-
-    private static HuntersCatalystData getData(ItemStack itemStack) {
-        return itemStack.getOrDefault(
-                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
-                new HuntersCatalystData(100)
-        );
-    }
-
-    private static void setData(ItemStack itemStack, HuntersCatalystData data) {
-        itemStack.set(DataComponentTypeRegistry.HUNTERS_CATALYST.get(), data);
+        return ticks <= 1;
     }
 
     public static void render(Renderable.RenderableContext context) {
@@ -107,8 +104,7 @@ public class HuntersCatalyst extends Item {
         float partialTicks = mc.getDeltaTracker().getGameTimeDeltaPartialTick(!mc.level.tickRateManager().isEntityFrozen(user));
 
         Vec3 beamPos = user.getPosition(partialTicks)
-                .add(0, user.getEyeHeight() * 0.75, 0)
-//                .add(look.scale(1.5))
+                .add(0, user.getEyeHeight() * 1.5, 0)
                 .subtract(camera);
 
         Quaternionf rotation = new Quaternionf()
@@ -121,35 +117,24 @@ public class HuntersCatalyst extends Item {
         stack.translate(beamPos.x, beamPos.y, beamPos.z);
         stack.mulPose(rotation);
 
-        if (normal) {
-            submitBeaconBeam(
-                    stack,
-                    output,
-                    BeaconRenderer.BEAM_LOCATION,
-                    1.0f,
-                    user.level().getGameTime(),
-                    0,
-                    10,
-                    0xff00ffff,
-                    0.45f,
-                    0.55f
-            );
-        }
+        int ticks = getData(context.user().getUseItem()).ticksRemaining();
+        float radius = 0.5f * ticks / DURATION;
+        int r = (int) Mth.lerp((ticks + partialTicks) / DURATION, 255, 0);
+        int g = (int) Mth.lerp((ticks + partialTicks) / DURATION, 128, 255);
+        int b = (int) Mth.lerp((ticks + partialTicks) / DURATION, 0, 255);
 
-        if (charged) {
-            submitBeaconBeam(
-                stack,
-                output,
-                BeaconRenderer.BEAM_LOCATION,
-                1.0f,
-                user.level().getGameTime(),
-                    0,
-                    10,
-                    0xFF0000,
-                    0.15f,
-                    0.15f
-                    );
-        }
+        submitBeaconBeam(
+            stack,
+            output,
+            BeaconRenderer.BEAM_LOCATION,
+            1,
+            user.level().getGameTime() + partialTicks,
+            0,
+            10,
+            ARGB.color(r, g, b),
+            radius,
+            radius * 1.05f
+            );
 
         stack.popPose();
     }
@@ -202,5 +187,4 @@ public class HuntersCatalyst extends Item {
     private static void addVertex(PoseStack.Pose pose, VertexConsumer builder, int color, int y, float x, float z, float u, float v) {
         builder.addVertex(pose, x, (float)y, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(pose, 0.0F, 1.0F, 0.0F);
     }
-
 }

@@ -21,18 +21,7 @@ public abstract class ChargeAttackWeapon extends ComboWeapon {
 //        user.startUsingItem(user.getUsedItemHand());
 
         //if (Minecraft.getInstance().level == null) return; // TODO: fix this, has to run on server side, not client side
-        addChargeAttack(user, chargeAttack);
-    }
-
-    public static void addChargeAttack(LivingEntity user, String chargeAttackRenderable) {
-        Map<UUID, List<Pair<String, Long>>> currentCharges = new HashMap<>(user.level().getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS));
-        if (currentCharges.get(user.getUUID()) != null) {
-            currentCharges.put(user.getUUID(), new ArrayList<>(currentCharges.get(user.getUUID())));
-            currentCharges.get(user.getUUID()).add(Pair.of(chargeAttackRenderable, user.level().getGameTime()));
-        } else {
-            currentCharges.put(user.getUUID(), new ArrayList<>(List.of(Pair.of(chargeAttackRenderable, user.level().getGameTime()))));
-        }
-        user.level().setData(AttachementRegistry.CURRENT_RENDERING_ATTACKS, currentCharges);
+        Renderable.addRenderable(user, chargeAttack);
     }
 
     public static void removeChargeAttack(LivingEntity user, String chargeAttackRenderable) {
