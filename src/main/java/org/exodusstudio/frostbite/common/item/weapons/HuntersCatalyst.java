@@ -21,6 +21,8 @@ import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
 import org.joml.Quaternionf;
@@ -31,6 +33,11 @@ public class HuntersCatalyst extends Item {
         super(properties);
     }
 
+    public static boolean normal = true;
+    public static boolean charged = false;
+
+    public static int beamTicksRemaining = 100;
+
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
@@ -39,8 +46,24 @@ public class HuntersCatalyst extends Item {
     }
 
     @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
+        if (level.isClientSide()) return;
+        if (ticksRemaining <= 30) {
+            normal = false;
+            charged = true;
+        }
+    }
+
+    @Override
+    public boolean useOnRelease(ItemStack itemStack) {
+        charged = false;
+        normal = true;
+        return true;
+    }
+
+    @Override
     public int getUseDuration(ItemStack itemStack, LivingEntity user) {
-        return 72000;
+        return getData(itemStack).beamTicksRemaining();
     }
 
     @Override
@@ -48,8 +71,30 @@ public class HuntersCatalyst extends Item {
         return ItemUseAnimation.BOW;
     }
 
+
+
     public static boolean shouldStopRendering(Renderable.RenderableContext context) {
-        return context.user().getUseItem().getItem() != ItemRegistry.HUNTERS_CATALYST.get();
+        ItemStack stack = context.user().getUseItem();
+
+        if (stack.getItem() != ItemRegistry.HUNTERS_CATALYST.get()) return true;
+
+        int ticks = stack.getOrDefault(
+                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
+                new HuntersCatalystData(100)
+        ).beamTicksRemaining();
+
+        return ticks <= 0;
+    }
+
+    private static HuntersCatalystData getData(ItemStack itemStack) {
+        return itemStack.getOrDefault(
+                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
+                new HuntersCatalystData(100)
+        );
+    }
+
+    private static void setData(ItemStack itemStack, HuntersCatalystData data) {
+        itemStack.set(DataComponentTypeRegistry.HUNTERS_CATALYST.get(), data);
     }
 
     public static void render(Renderable.RenderableContext context) {
@@ -76,18 +121,35 @@ public class HuntersCatalyst extends Item {
         stack.translate(beamPos.x, beamPos.y, beamPos.z);
         stack.mulPose(rotation);
 
-        submitBeaconBeam(
+        if (normal) {
+            submitBeaconBeam(
+                    stack,
+                    output,
+                    BeaconRenderer.BEAM_LOCATION,
+                    1.0f,
+                    user.level().getGameTime(),
+                    0,
+                    10,
+                    0xff00ffff,
+                    0.45f,
+                    0.55f
+            );
+        }
+
+        if (charged) {
+            submitBeaconBeam(
                 stack,
                 output,
                 BeaconRenderer.BEAM_LOCATION,
                 1.0f,
                 user.level().getGameTime(),
-                0,
-                10,
-                0xff00ffff,
-                0.15f,
-                0.25f
-        );
+                    0,
+                    10,
+                    0xFF0000,
+                    0.15f,
+                    0.15f
+                    );
+        }
 
         stack.popPose();
     }
@@ -140,4 +202,5 @@ public class HuntersCatalyst extends Item {
     private static void addVertex(PoseStack.Pose pose, VertexConsumer builder, int color, int y, float x, float z, float u, float v) {
         builder.addVertex(pose, x, (float)y, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(pose, 0.0F, 1.0F, 0.0F);
     }
+
 }

@@ -12,10 +12,7 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.component.ChargeData;
-import org.exodusstudio.frostbite.common.component.CooldownData;
-import org.exodusstudio.frostbite.common.component.GunData;
-import org.exodusstudio.frostbite.common.component.ModeData;
+import org.exodusstudio.frostbite.common.component.*;
 import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
@@ -285,6 +282,7 @@ public class ItemRegistry {
     public static final DeferredItem<Item> HUNTERS_CATALYST =
             ITEMS.register("hunters_catalyst", (id) -> new HuntersCatalyst(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
+                    .component(DataComponentTypeRegistry.HUNTERS_CATALYST, new HuntersCatalystData(100))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
