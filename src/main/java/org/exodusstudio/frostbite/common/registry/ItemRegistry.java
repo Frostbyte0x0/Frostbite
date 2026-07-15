@@ -19,10 +19,7 @@ import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.weapons.GaleFanItem;
-import org.exodusstudio.frostbite.common.item.weapons.IceHammerItem;
-import org.exodusstudio.frostbite.common.item.weapons.ShamanStaffItem;
-import org.exodusstudio.frostbite.common.item.weapons.StunningBellItem;
+import org.exodusstudio.frostbite.common.item.weapons.*;
 import org.exodusstudio.frostbite.common.item.weapons.elf.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.SummoningStaffItem;
@@ -277,6 +274,13 @@ public class ItemRegistry {
             ITEMS.register("blue_jade_katana", (id) -> new BlueJadeKatanaItem(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
                     .attributes(BlueJadeKatanaItem.createAttributes())
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+
+    public static final DeferredItem<Item> HUNTERS_CATALYST =
+            ITEMS.register("hunters_catalyst", (id) -> new HuntersCatalyst(new Item.Properties()
+                    .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 

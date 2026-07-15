@@ -203,6 +203,9 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.DAGGERS);
                     output.accept(ItemRegistry.NAGINATA);
                     output.accept(ItemRegistry.BLUE_JADE_KATANA);
+
+                    output.accept(ItemRegistry.HUNTERS_CATALYST);
+
                     output.accept(ItemRegistry.SHAMAN_STAFF);
 
                     output.accept(BlockRegistry.WEAVING_TABLE);
