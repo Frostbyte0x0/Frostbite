@@ -18,11 +18,13 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.item.weapons.ChargeAttackWeapon;
 import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
+import org.exodusstudio.frostbite.common.registry.Renderables;
 import org.exodusstudio.frostbite.common.rendering.RenderToolkit;
+import org.exodusstudio.frostbite.common.util.Renderable;
 
 public class BlueJadeKatanaItem extends ChargeAttackWeapon {
     public BlueJadeKatanaItem(Properties pProperties) {
-        super(pProperties, "blue_jade_katana_charge_attack");
+        super(pProperties, Renderables.BLUE_JADE_KATANA_CHARGE_ATTACK);
     }
 
     @Override
@@ -37,12 +39,16 @@ public class BlueJadeKatanaItem extends ChargeAttackWeapon {
                         AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build();
     }
 
-    public static void renderChargeAttack(LivingEntity user, PoseStack poseStack, LevelRenderState levelRenderState, SubmitNodeCollector output) {
+    public static void render(Renderable.RenderableContext context) {
+        LivingEntity user = context.user();
+        PoseStack poseStack = context.poseStack();
+        LevelRenderState levelRenderState = context.levelRenderState();
+        SubmitNodeCollector output = context.output();
+
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
 
         float partialTicks = mc.getDeltaTracker().getGameTimeDeltaPartialTick(!mc.level.tickRateManager().isEntityFrozen(user));
-        float t = (levelRenderState.gameTime + partialTicks - user.getData(AttachementRegistry.CHARGE_ATTACK_START)) / 20f;
         poseStack.pushPose();
         poseStack.translate(
                 -mc.gameRenderer.mainCamera().position().x,
@@ -55,12 +61,16 @@ public class BlueJadeKatanaItem extends ChargeAttackWeapon {
         output.submitCustomGeometry(
                 poseStack,
                 RenderTypes.entityTranslucent(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/environement/celestial/space_blue.png")),
-                (pose, buffer) -> RenderToolkit.renderSphere(pose, buffer, 3 * t - 0.001f, 25));
+                (pose, buffer) -> RenderToolkit.renderSphere(pose, buffer, 3 * context.secondsSinceStart() - 0.001f, 25));
 //        output.submitCustomGeometry(poseStack, RenderTypes.endPortal(),
-//                (pose, buffer) -> RenderToolkit.renderSphere(pose, buffer, 3 * t, 25));
+//                (pose, buffer) -> RenderToolkit.renderSphere(pose, buffer, 3 * context.secondsSinceStart(), 25));
         poseStack.popPose();
-        if (t > 4) {
-            user.setData(AttachementRegistry.CURRENT_CHARGE_ATTACK, "");
-        }
+    }
+
+    public static boolean shouldStopRendering(Renderable.RenderableContext context) {
+        LivingEntity user = context.user();
+        LevelRenderState levelRenderState = context.levelRenderState();
+        Minecraft mc = Minecraft.getInstance();
+        return context.secondsSinceStart() > 4;
     }
 }

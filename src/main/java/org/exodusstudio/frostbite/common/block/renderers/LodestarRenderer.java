@@ -118,9 +118,6 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
             BeaconRenderer.submitBeaconBeam(stack, submitNodeCollector, BEAM_LOCATION, 1, state.animTime,
                     i, 1, colour, 0.2f, 0.25f);
         }
-
-//        submitBeaconBeam(poseStack, nodeCollector, BEAM_LOCATION, 1.0F, state.animTime, yOffset, height,
-//                color, 0.2F * radiusScale, 0.25F * radiusScale);
     }
 
     public AABB getRenderBoundingBox(LodestarBlockEntity blockEntity) {

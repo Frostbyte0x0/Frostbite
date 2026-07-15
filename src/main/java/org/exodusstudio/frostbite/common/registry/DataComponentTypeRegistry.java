@@ -18,6 +18,9 @@ public class DataComponentTypeRegistry {
     public static final Supplier<DataComponentType<ChargeData>> CHARGE = DATA_COMPONENT_TYPES.registerComponentType("charge",
             builder -> builder.persistent(ChargeData.CODEC).networkSynchronized(ChargeData.STREAM_CODEC));
 
+    public static final Supplier<DataComponentType<CooldownData>> COOLDOWN = DATA_COMPONENT_TYPES.registerComponentType("cooldown",
+            builder -> builder.persistent(CooldownData.CODEC).networkSynchronized(CooldownData.STREAM_CODEC));
+
     public static final Supplier<DataComponentType<GunData>> GUN = DATA_COMPONENT_TYPES.registerComponentType("gun",
             builder -> builder.persistent(GunData.CODEC).networkSynchronized(GunData.STREAM_CODEC));
 }

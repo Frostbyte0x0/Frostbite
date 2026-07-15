@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
 
 public class DamageParticle extends SingleQuadParticle {

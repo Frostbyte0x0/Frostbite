@@ -5,6 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -28,6 +30,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -415,6 +418,14 @@ public class ModEvents {
         String entry = s[1];
         if (Codex.TRACKED_LIST_ENTRIES.contains(entry)) {
             CodexEntry.addEntryToPlayer(event.getEntity(), entry);
+        }
+    }
+
+    @SubscribeEvent
+    public static void comboCharge(RenderGuiLayerEvent.Post event) {
+        if (event.getName().equals(Identifier.withDefaultNamespace("hotbar"))) {
+            event.getGuiGraphics().text(Minecraft.getInstance().font,
+                    Component.literal(String.format("%.1f", 100f)).getVisualOrderText(), 10, 10, 0xFFFFFFFF, false);
         }
     }
 }

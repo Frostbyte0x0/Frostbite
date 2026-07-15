@@ -13,6 +13,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
+import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.*;
@@ -263,12 +264,15 @@ public class ItemRegistry {
     public static final DeferredItem<Item> DAGGERS =
             ITEMS.register("daggers", (id) -> new DaggersItem(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
+                    .component(DataComponentTypeRegistry.COOLDOWN, new CooldownData(0))
                     .attributes(DaggersItem.createAttributes())
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLUE_JADE_KATANA =
             ITEMS.register("blue_jade_katana", (id) -> new BlueJadeKatanaItem(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
+                    .component(DataComponentTypeRegistry.CHARGE, new ChargeData(0))
+                    .component(DataComponentTypeRegistry.COOLDOWN, new CooldownData(0))
                     .attributes(BlueJadeKatanaItem.createAttributes())
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));

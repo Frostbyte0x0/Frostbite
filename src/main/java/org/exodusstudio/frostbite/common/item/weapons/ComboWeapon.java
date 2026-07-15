@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.item.weapons;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -13,9 +12,7 @@ import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
 public abstract class ComboWeapon extends Item {
     private final ComboStep[] steps;
 
-    // ComboOverlay bar
-    // Animations + smoothing
-    // Sounds
+    // TODO: Animations + smoothing
 
     public ComboWeapon(Properties properties, ComboStep... steps) {
         super(properties);

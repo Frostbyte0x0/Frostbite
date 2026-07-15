@@ -12,5 +12,6 @@ public record ChargeData(int charge) {
     public static final Codec<ChargeData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(Codec.INT.fieldOf("charge").forGetter(ChargeData::charge)).apply(instance, ChargeData::new));
 
-    public static final StreamCodec<ByteBuf, ChargeData> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.INT, ChargeData::charge, ChargeData::new);
+    public static final StreamCodec<ByteBuf, ChargeData> STREAM_CODEC =
+            StreamCodec.composite(ByteBufCodecs.INT, ChargeData::charge, ChargeData::new);
 }
