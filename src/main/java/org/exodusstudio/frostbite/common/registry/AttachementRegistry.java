@@ -118,11 +118,6 @@ public class AttachementRegistry {
                     .sync(MAP_UUID_LIST_STRING_LONG_PAIR_STREAM_CODEC)
                     .serialize(Codec.unboundedMap(UUID_CODEC, LONG_STRING_PAIR_CODEC.listOf()).fieldOf("current_rendering_attacks")).build());
 
-    public static final Supplier<AttachmentType<Long>> CHARGE_ATTACK_START = ATTACHMENT_TYPES.register(
-            "charge_attack_start", () -> AttachmentType.builder(() -> 0L)
-                    .sync(LONG_STREAM_CODEC)
-                    .serialize(Codec.LONG.fieldOf("charge_attack_start")).build());
-
     public static final Supplier<AttachmentType<Float>> INNER_TEMPERATURE = ATTACHMENT_TYPES.register(
             "inner_temperature", () -> AttachmentType.builder(() -> TemperatureManager.MAX_TEMP)
                     .sync(FLOAT_STREAM_CODEC)

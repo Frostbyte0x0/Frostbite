@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,7 +16,6 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.item.weapons.ChargeAttackWeapon;
-import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
 import org.exodusstudio.frostbite.common.registry.Renderables;
 import org.exodusstudio.frostbite.common.rendering.RenderToolkit;
 import org.exodusstudio.frostbite.common.util.Renderable;
@@ -42,7 +40,6 @@ public class BlueJadeKatanaItem extends ChargeAttackWeapon {
     public static void render(Renderable.RenderableContext context) {
         LivingEntity user = context.user();
         PoseStack poseStack = context.poseStack();
-        LevelRenderState levelRenderState = context.levelRenderState();
         SubmitNodeCollector output = context.output();
 
         Minecraft mc = Minecraft.getInstance();
@@ -68,9 +65,6 @@ public class BlueJadeKatanaItem extends ChargeAttackWeapon {
     }
 
     public static boolean shouldStopRendering(Renderable.RenderableContext context) {
-        LivingEntity user = context.user();
-        LevelRenderState levelRenderState = context.levelRenderState();
-        Minecraft mc = Minecraft.getInstance();
         return context.secondsSinceStart() > 4;
     }
 }

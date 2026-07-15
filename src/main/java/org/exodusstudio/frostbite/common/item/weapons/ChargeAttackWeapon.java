@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.item.weapons;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
@@ -22,7 +21,6 @@ public abstract class ChargeAttackWeapon extends ComboWeapon {
 //        user.startUsingItem(user.getUsedItemHand());
 
         //if (Minecraft.getInstance().level == null) return; // TODO: fix this, has to run on server side, not client side
-        user.setData(AttachementRegistry.CHARGE_ATTACK_START, Minecraft.getInstance().level.getGameTime());
         addChargeAttack(user, chargeAttack);
     }
 
