@@ -1,9 +1,9 @@
 package org.exodusstudio.frostbite.common.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -54,6 +54,7 @@ import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
+import org.exodusstudio.frostbite.common.item.weapons.ChargeAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
@@ -64,8 +65,7 @@ import org.exodusstudio.frostbite.common.util.*;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
@@ -291,6 +291,33 @@ public class ModEvents {
     public static void serverTick(ServerTickEvent.Pre event) {
         List<LivingEntity> entities = new ArrayList<>();
         event.getServer().getAllLevels().forEach((level) -> {
+            HashMap<UUID, Pair<String, Long>> toRemove = new HashMap<>();
+
+            level.getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS).forEach((uuid, chargeAttackRenderables) -> {
+                for (Pair<String, Long> chargeAttackRenderable : chargeAttackRenderables) {
+                    LivingEntity user = (LivingEntity) level.getEntity(uuid);
+                    if (user != null) {
+                        Renderable renderable = Renderables.RENDERABLES.get(chargeAttackRenderable.getFirst());
+                        if (renderable.shouldStopRendering(new Renderable.RenderableContext(
+                                user,
+                                null,
+                                null,
+                                (level.getGameTime() - chargeAttackRenderable.getSecond()) / 20f,
+                                null
+                        ))) {
+                            toRemove.put(uuid, chargeAttackRenderable);
+                        }
+                    }
+                }
+            });
+
+            for (Map.Entry<UUID, Pair<String, Long>> entry : toRemove.entrySet()) {
+                LivingEntity user = (LivingEntity) level.getEntity(entry.getKey());
+                if (user == null) continue;
+                String chargeAttackRenderable = entry.getValue().getFirst();
+                ChargeAttackWeapon.removeChargeAttack(user, chargeAttackRenderable);
+            }
+
             level.getEntities().getAll().forEach((entity) -> {
                 if (entity instanceof LivingEntity livingEntity) {
                     entities.add(livingEntity);

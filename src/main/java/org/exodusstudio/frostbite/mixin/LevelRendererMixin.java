@@ -58,5 +58,6 @@ public class LevelRendererMixin {
             String chargeAttackRenderable = entry.getValue().getFirst();
             ChargeAttackWeapon.removeChargeAttack(user, chargeAttackRenderable);
         }
+        mc.level.setData(AttachementRegistry.CURRENT_RENDERING_ATTACKS, mc.level.getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS));
     }
 }

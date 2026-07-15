@@ -6,10 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class ChargeAttackWeapon extends ComboWeapon {
     public final String chargeAttack;
@@ -40,9 +37,10 @@ public abstract class ChargeAttackWeapon extends ComboWeapon {
     }
 
     public static void removeChargeAttack(LivingEntity user, String chargeAttackRenderable) {
-        Map<UUID, List<Pair<String, Long>>> currentCharges = user.level().getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS);
+        Map<UUID, List<Pair<String, Long>>> currentCharges = new HashMap<>(user.level().getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS));
         for (Pair<String, Long> pair : currentCharges.get(user.getUUID())) {
             if (pair.getFirst().equals(chargeAttackRenderable)) {
+                currentCharges.put(user.getUUID(), new ArrayList<>(currentCharges.get(user.getUUID())));
                 currentCharges.get(user.getUUID()).remove(pair);
                 break;
             }
