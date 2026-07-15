@@ -20,15 +20,13 @@ import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.weapons.GaleFanItem;
-import org.exodusstudio.frostbite.common.item.weapons.IceHammerItem;
-import org.exodusstudio.frostbite.common.item.weapons.ShamanStaffItem;
-import org.exodusstudio.frostbite.common.item.weapons.StunningBellItem;
+import org.exodusstudio.frostbite.common.item.weapons.*;
 import org.exodusstudio.frostbite.common.item.weapons.elf.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.SummoningStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.goat.BlueJadeKatanaItem;
 import org.exodusstudio.frostbite.common.item.weapons.goat.DaggersItem;
+import org.exodusstudio.frostbite.common.item.weapons.goat.NaginataItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.SniperItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
@@ -268,12 +266,25 @@ public class ItemRegistry {
                     .attributes(DaggersItem.createAttributes())
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> NAGINATA =
+            ITEMS.register("naginata", (id) -> new NaginataItem(new Item.Properties()
+                    .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
+                    .attributes(NaginataItem.createAttributes())
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> BLUE_JADE_KATANA =
             ITEMS.register("blue_jade_katana", (id) -> new BlueJadeKatanaItem(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
                     .component(DataComponentTypeRegistry.CHARGE, new ChargeData(0))
                     .component(DataComponentTypeRegistry.COOLDOWN, new CooldownData(0))
                     .attributes(BlueJadeKatanaItem.createAttributes())
+                    .stacksTo(1)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+
+    public static final DeferredItem<Item> HUNTERS_CATALYST =
+            ITEMS.register("hunters_catalyst", (id) -> new HuntersCatalyst(new Item.Properties()
+                    .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
