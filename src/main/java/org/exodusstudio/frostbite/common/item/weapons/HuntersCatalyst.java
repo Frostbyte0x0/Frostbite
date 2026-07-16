@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -24,8 +23,8 @@ import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
 import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
@@ -35,7 +34,9 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class HuntersCatalyst extends Item {
-    public static final int DURATION = 100;
+    public static final Identifier BEAM_LOCATION =
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/hunters_catalyst/hunters_catalyst.png");
+    public static final int DURATION = 50;
 
     public HuntersCatalyst(Properties properties) {
         super(properties);
@@ -69,7 +70,7 @@ public class HuntersCatalyst extends Item {
 
         if (entityHit != null) {
             Entity entity = entityHit.getEntity();
-            entity.hurt(entity.damageSources().source(DamageTypeRegistry.HUNTERS_CATALYST), 5);
+            entity.hurt(livingEntity.damageSources().source(DamageTypeRegistry.HUNTERS_CATALYST, livingEntity), 1);
         }
 
         setData(itemStack, new HuntersCatalystData(ticksRemaining));
@@ -145,23 +146,24 @@ public class HuntersCatalyst extends Item {
         stack.translate(beamPos.x, beamPos.y, beamPos.z);
         stack.mulPose(rotation);
 
-        int ticks = getData(context.user().getUseItem()).ticksRemaining();
-        float radius = 0.5f * ticks / DURATION;
-        int r = (int) Mth.lerp((ticks + partialTicks) / DURATION, 255, 0);
-        int g = (int) Mth.lerp((ticks + partialTicks) / DURATION, 128, 255);
-        int b = (int) Mth.lerp((ticks + partialTicks) / DURATION, 0, 255);
+        int ticks = DURATION - getData(context.user().getUseItem()).ticksRemaining();
+        float progress = (ticks + partialTicks) / DURATION;
+        float radius = progress < 0.95f ? 0.5f * (1 - progress) : (float) (150 * Math.pow(progress - 0.95, 2) + 0.025);
+        int r = (int) Mth.lerp(progress, 242, 240);
+        int g = (int) Mth.lerp(progress, 195, 26);
+        int b = (int) Mth.lerp(progress, 41, 119);
 
         submitBeaconBeam(
             stack,
             output,
-            BeaconRenderer.BEAM_LOCATION,
+            BEAM_LOCATION,
             1,
             user.level().getGameTime() + partialTicks,
             0,
             10,
             ARGB.color(r, g, b),
             radius,
-            radius * 1.05f
+            0
             );
 
         stack.popPose();
