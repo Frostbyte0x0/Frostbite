@@ -27,6 +27,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.overlays.FlashbangOverlay;
 import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
 import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
@@ -56,7 +57,9 @@ public class HuntersCatalyst extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
-        chargePellet(level, livingEntity, itemStack, ticksRemaining);
+//        chargePellet(level, livingEntity, itemStack, ticksRemaining);
+//        impactPellet();
+        flashPellet();
 
         setData(itemStack, new HuntersCatalystData(ticksRemaining));
         if (ticksRemaining <= 0) {
@@ -118,6 +121,14 @@ public class HuntersCatalyst extends Item {
                 }
             }
         }
+    }
+
+    public static void impactPellet() {
+
+    }
+
+    public static void flashPellet() {
+        FlashbangOverlay.trigger(100);
     }
 
     @Override
