@@ -8,7 +8,9 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +31,9 @@ import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
 import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -52,6 +56,15 @@ public class HuntersCatalyst extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
+        chargePellet(level, livingEntity, itemStack, ticksRemaining);
+
+        setData(itemStack, new HuntersCatalystData(ticksRemaining));
+        if (ticksRemaining <= 0) {
+            releaseUsing(itemStack, level, livingEntity, ticksRemaining);
+        }
+    }
+
+    public static void chargePellet(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
         Vec3 start = livingEntity.getEyePosition();
         Vec3 look = livingEntity.getLookAngle();
         Vec3 end = start.add(look.scale(10));
@@ -73,9 +86,37 @@ public class HuntersCatalyst extends Item {
             entity.hurt(livingEntity.damageSources().source(DamageTypeRegistry.HUNTERS_CATALYST, livingEntity), 1);
         }
 
-        setData(itemStack, new HuntersCatalystData(ticksRemaining));
-        if (ticksRemaining <= 0) {
-            releaseUsing(itemStack, level, livingEntity, ticksRemaining);
+        if (ticksRemaining <= 1) {
+            if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                double radius = 0.5;
+                int points = 32;
+                int ringCount = 4;
+                double spacing = 2.0;
+
+                for (int r = 0; r < ringCount; r++) {
+                    double distance = 1.0f + r * spacing;
+                    Vec3 center = livingEntity.position().add(look.scale(distance));
+
+                    for (int i = 0; i < points; i++) {
+                        Quaternionf q = Util.getRotationQuaternionAroundLookVector(i, points, livingEntity, look);
+
+                        Vec3 base = new Vec3(0, radius, 0);
+                        Vector3f rotated = base.toVector3f();
+                        rotated.rotate(q);
+
+                        Vec3 offset = new Vec3(rotated.x(), rotated.y(), rotated.z());
+                        Vec3 pos = center.add(offset);
+
+                        Vec3 velocity = offset.scale(0.5);
+
+                        serverLevel.sendParticles(
+                                ParticleTypes.SOUL_FIRE_FLAME,
+                                pos.x, pos.y + 1, pos.z,
+                                0, velocity.x, velocity.y, velocity.z, 1
+                        );
+                    }
+                }
+            }
         }
     }
 
