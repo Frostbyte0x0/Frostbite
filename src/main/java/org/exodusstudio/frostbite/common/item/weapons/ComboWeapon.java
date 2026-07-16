@@ -25,7 +25,7 @@ import java.util.List;
 
 public abstract class ComboWeapon extends Item {
     private final ComboStep[] steps;
-    private final int chargeRequired;
+    protected final int chargeRequired;
 
     // TODO: Animations + smoothing
 
@@ -130,7 +130,7 @@ public abstract class ComboWeapon extends Item {
                 else if (t < currentStep.tolerance) {
                     entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                             SoundEvents.ARROW_HIT_PLAYER, entity.getSoundSource(), 0.5f, 1f + index / (2f * stepCount));
-                    increaseCharge(stack, 4);
+                    increaseCharge(stack, 1);
                 }
             }
 
@@ -212,11 +212,11 @@ public abstract class ComboWeapon extends Item {
     }
 
     public void setCharge(ItemStack stack, int charge) {
-        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(charge));
+        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(Math.clamp(charge, 0, chargeRequired)));
     }
 
     public void increaseCharge(ItemStack stack, int charge) {
-        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(getCharge(stack) + charge));
+        setCharge(stack, getCharge(stack) + charge);
     }
 
     public int chargeRequired() {

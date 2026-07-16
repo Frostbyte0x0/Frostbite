@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -174,6 +173,7 @@ public class ModEvents {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @SubscribeEvent
     public static void spicyStew(LivingEntityUseItemEvent.Tick event) {
         if (
@@ -342,6 +342,10 @@ public class ModEvents {
                     if (Frostbite.addedBosses.containsKey(pos)) return;
 
                     Entity e = boss.create(level, EntitySpawnReason.STRUCTURE);
+                    if (e == null) {
+                        Frostbite.LOGGER.error("Failed to spawn boss at {}", pos);
+                        return;
+                    }
                     e.setPos(pos.getX(), pos.getY(), pos.getZ());
                     level.addFreshEntityWithPassengers(e);
                     level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(e));
@@ -388,6 +392,26 @@ public class ModEvents {
     @SubscribeEvent
     public static void targetCodex(LivingDamageEvent.Post event) {
         if (event.getSource().getEntity() instanceof Player player && event.getEntity() instanceof LivingEntity target) {
+            String name = target.typeHolder().getRegisteredName().split(":")[1];
+
+            for (CodexTab tab : Codex.TABS) {
+                if (tab instanceof TreeCodexTab treeTab) {
+                    for (CodexEntry entry : treeTab.entries) {
+                        if (!entry.id.equals(name)) continue;
+                        CodexEntry.addEntryToPlayer(player, entry);
+                    }
+                }
+            }
+
+            if (Codex.TRACKED_LIST_ENTRIES.contains(name)) {
+                CodexEntry.addEntryToPlayer(player, name);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void damageParticle(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof Player && event.getEntity() instanceof LivingEntity target && Minecraft.getInstance().level != null) {
             Vector3f speed = new Vector3f(
                     random.nextFloat(),
                     Math.abs(random.nextFloat()),
@@ -406,20 +430,6 @@ public class ModEvents {
                     speed.z());
 
             Frostbite.LOGGER.debug(String.valueOf(event.getInflictedDamage()));
-            String name = target.typeHolder().getRegisteredName().split(":")[1];
-
-            for (CodexTab tab : Codex.TABS) {
-                if (tab instanceof TreeCodexTab treeTab) {
-                    for (CodexEntry entry : treeTab.entries) {
-                        if (!entry.id.equals(name)) continue;
-                        CodexEntry.addEntryToPlayer(player, entry);
-                    }
-                }
-            }
-
-            if (Codex.TRACKED_LIST_ENTRIES.contains(name)) {
-                CodexEntry.addEntryToPlayer(player, name);
-            }
         }
     }
 
@@ -460,45 +470,37 @@ public class ModEvents {
         if (player == null || level == null) return;
 
         if (event.getName().equals(Identifier.withDefaultNamespace("hotbar"))) {
-            ItemStack offhand = player.getOffhandItem();
-            HumanoidArm offhandArm = player.getMainArm().getOpposite();
             int screenCenter = graphics.guiWidth() / 2;
-            int hotbarWidth = 182;
-            int halfHotbar = 91;
+            int barHeight = 16;
+            int endY = graphics.guiHeight() - 16 - 3;
+            int startY = endY + barHeight;
 
-            for (int i = 0; i < 9; i++) {
-                int x = screenCenter - 90 + i * 20 + 2;
-                int y = graphics.guiHeight() - 16 - 3;
-                ItemStack item = player.getInventory().getItem(i);
-                if (!(item.getItem() instanceof ComboWeapon comboWeapon)) continue;
-
-                int charge = comboWeapon.getCharge(item);
-                if (charge > 0) {
-                    graphics.verticalLine(x + 8, y - 10, y - 10 - charge, 0xFFFFFFFF);
-                    graphics.text(Minecraft.getInstance().font,
-                            Component.literal(String.format("%d", charge)).getVisualOrderText(), x + 8, y - 10, 0xFFFFFFFF, false);
-                }
-
-                if (!(comboWeapon instanceof SeriousAttackWeapon)) continue;
-
-                int cooldown = CooldownData.secondsSinceLastUsed(item, level.getGameTime());
-                if (cooldown > 0) {
-                    graphics.text(Minecraft.getInstance().font,
-                            Component.literal(String.format("%d", cooldown)).getVisualOrderText(), x + 8, y - 20, 0xFFFFFFFF, false);
-                }
-            }
-
-            if (!offhand.isEmpty()) {
+            for (int i = 0; i < 10; i++) {
                 int x;
-                int y = graphics.guiHeight() - 16 - 3;
-                if (offhandArm == HumanoidArm.LEFT) {
-                    x = screenCenter - 91 - 26;
+                ItemStack stack;
+
+                if (i == 9) {
+                    stack = player.getOffhandItem();
+                    x = player.getMainArm().getOpposite() == HumanoidArm.LEFT ? screenCenter - 91 - 26 : screenCenter + 91 + 10;
                 } else {
-                    x = screenCenter + 91 + 10;
+                    stack = player.getInventory().getItem(i);
+                    x = screenCenter - 90 + i * 20 + 2;
                 }
+
+                if (!(stack.getItem() instanceof ComboWeapon comboWeapon)) continue;
+
+                int charge = comboWeapon.getCharge(stack);
+                float chargeProgress = charge / (float) comboWeapon.chargeRequired();
+                graphics.verticalLine(x, startY, endY, 0xFFFFFFFF);
+                graphics.verticalLine(x, startY, (int) Mth.lerp(chargeProgress, startY, endY), 0xFF00FF00);
+
+                if (!(comboWeapon instanceof SeriousAttackWeapon seriousAttackWeapon)) continue;
+
+                int cooldown = (int) Math.min(seriousAttackWeapon.getCooldown(), CooldownData.secondsSinceLastUsed(stack, level.getGameTime()));
+                float cooldownProgress = cooldown / seriousAttackWeapon.getCooldown();
+                graphics.verticalLine(x + 14, startY, endY , 0xFFFFFFFF);
+                graphics.verticalLine(x + 14, startY, (int) Mth.lerp(cooldownProgress, startY, endY), 0xFF3898f2);
             }
-            event.getGuiGraphics().text(Minecraft.getInstance().font,
-                    Component.literal(String.format("%.1f", 100f)).getVisualOrderText(), 10, 10, 0xFFFFFFFF, false);
         }
     }
 }

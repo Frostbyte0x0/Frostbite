@@ -4,6 +4,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
@@ -28,13 +29,23 @@ public abstract class SeriousAttackWeapon extends ComboWeapon {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
-        if (CooldownData.canUse(player.getItemInHand(usedHand), level.getGameTime(), cooldown) && player.isShiftKeyDown()) {
+        ItemStack stack = player.getItemInHand(usedHand);
+        if (CooldownData.canUse(player.getItemInHand(usedHand), level.getGameTime(), cooldown)) {
             doCooldownAttack(level, player, usedHand);
             CooldownData.setLastUsed(player.getItemInHand(usedHand));
             return InteractionResult.SUCCESS;
         }
-        return super.use(level, player, usedHand);
+        if (getCharge(stack) >= chargeRequired && player.isShiftKeyDown()) {
+            doChargeAttack(level, player, usedHand);
+            setCharge(stack, 0);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
     public abstract void doCooldownAttack(Level level, LivingEntity user, InteractionHand usedHand);
+
+    public float getCooldown() {
+        return cooldown;
+    }
 }
