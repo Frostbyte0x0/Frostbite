@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.entity.LivingEntity;
-import org.exodusstudio.frostbite.common.item.weapons.ChargeAttackWeapon;
 import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
 import org.exodusstudio.frostbite.common.registry.Renderables;
 import org.exodusstudio.frostbite.common.util.Renderable;
@@ -56,7 +55,7 @@ public class LevelRendererMixin {
             LivingEntity user = (LivingEntity) Minecraft.getInstance().level.getEntity(entry.getKey());
             if (user == null) continue;
             String chargeAttackRenderable = entry.getValue().getFirst();
-            ChargeAttackWeapon.removeChargeAttack(user, chargeAttackRenderable);
+            Renderable.removeRenderable(user, chargeAttackRenderable);
         }
         mc.level.setData(AttachementRegistry.CURRENT_RENDERING_ATTACKS, mc.level.getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS));
     }

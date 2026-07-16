@@ -1,19 +1,25 @@
 package org.exodusstudio.frostbite.common.registry;
 
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DeathProtection;
+import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.ChargeData;
-import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.*;
@@ -262,7 +268,6 @@ public class ItemRegistry {
     public static final DeferredItem<Item> DAGGERS =
             ITEMS.register("daggers", (id) -> new DaggersItem(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
-                    .component(DataComponentTypeRegistry.COOLDOWN, new CooldownData(0))
                     .attributes(DaggersItem.createAttributes())
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
@@ -275,9 +280,21 @@ public class ItemRegistry {
     public static final DeferredItem<Item> BLUE_JADE_KATANA =
             ITEMS.register("blue_jade_katana", (id) -> new BlueJadeKatanaItem(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
-                    .component(DataComponentTypeRegistry.CHARGE, new ChargeData(0))
-                    .component(DataComponentTypeRegistry.COOLDOWN, new CooldownData(0))
                     .attributes(BlueJadeKatanaItem.createAttributes())
+                    .component(
+                            DataComponents.TOOL,
+                            new Tool(
+                                    List.of(
+                                            Tool.Rule.minesAndDrops(HolderSet.direct(Blocks.COBWEB.builtInRegistryHolder()), 15.0F),
+                                            Tool.Rule.overrideSpeed(getRegistrationLookup().getOrThrow(BlockTags.SWORD_INSTANTLY_MINES), Float.MAX_VALUE),
+                                            Tool.Rule.overrideSpeed(getRegistrationLookup().getOrThrow(BlockTags.SWORD_EFFICIENT), 1.5F)
+                                    ),
+                                    1.0F,
+                                    2,
+                                    false
+                            )
+                    )
+                    .fireResistant()
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
@@ -383,4 +400,8 @@ public class ItemRegistry {
     public static final DeferredItem<Item> FIRE =
             ITEMS.register("fire", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static HolderGetter<Block> getRegistrationLookup() {
+        return BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
+    }
 }

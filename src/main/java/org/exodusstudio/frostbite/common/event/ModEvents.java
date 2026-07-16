@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -17,6 +18,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -52,9 +54,11 @@ import org.exodusstudio.frostbite.client.gui.CodexScreen;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
+import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
-import org.exodusstudio.frostbite.common.item.weapons.ChargeAttackWeapon;
+import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
+import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
@@ -315,7 +319,7 @@ public class ModEvents {
                 LivingEntity user = (LivingEntity) level.getEntity(entry.getKey());
                 if (user == null) continue;
                 String chargeAttackRenderable = entry.getValue().getFirst();
-                ChargeAttackWeapon.removeChargeAttack(user, chargeAttackRenderable);
+                Renderable.removeRenderable(user, chargeAttackRenderable);
             }
 
             level.getEntities().getAll().forEach((entity) -> {
@@ -450,7 +454,49 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void comboCharge(RenderGuiLayerEvent.Post event) {
+        Player player = Minecraft.getInstance().player;
+        Level level = Minecraft.getInstance().level;
+        GuiGraphicsExtractor graphics = event.getGuiGraphics();
+        if (player == null || level == null) return;
+
         if (event.getName().equals(Identifier.withDefaultNamespace("hotbar"))) {
+            ItemStack offhand = player.getOffhandItem();
+            HumanoidArm offhandArm = player.getMainArm().getOpposite();
+            int screenCenter = graphics.guiWidth() / 2;
+            int hotbarWidth = 182;
+            int halfHotbar = 91;
+
+            for (int i = 0; i < 9; i++) {
+                int x = screenCenter - 90 + i * 20 + 2;
+                int y = graphics.guiHeight() - 16 - 3;
+                ItemStack item = player.getInventory().getItem(i);
+                if (!(item.getItem() instanceof ComboWeapon comboWeapon)) continue;
+
+                int charge = comboWeapon.getCharge(item);
+                if (charge > 0) {
+                    graphics.verticalLine(x + 8, y - 10, y - 10 - charge, 0xFFFFFFFF);
+                    graphics.text(Minecraft.getInstance().font,
+                            Component.literal(String.format("%d", charge)).getVisualOrderText(), x + 8, y - 10, 0xFFFFFFFF, false);
+                }
+
+                if (!(comboWeapon instanceof SeriousAttackWeapon)) continue;
+
+                int cooldown = CooldownData.secondsSinceLastUsed(item, level.getGameTime());
+                if (cooldown > 0) {
+                    graphics.text(Minecraft.getInstance().font,
+                            Component.literal(String.format("%d", cooldown)).getVisualOrderText(), x + 8, y - 20, 0xFFFFFFFF, false);
+                }
+            }
+
+            if (!offhand.isEmpty()) {
+                int x;
+                int y = graphics.guiHeight() - 16 - 3;
+                if (offhandArm == HumanoidArm.LEFT) {
+                    x = screenCenter - 91 - 26;
+                } else {
+                    x = screenCenter + 91 + 10;
+                }
+            }
             event.getGuiGraphics().text(Minecraft.getInstance().font,
                     Component.literal(String.format("%.1f", 100f)).getVisualOrderText(), 10, 10, 0xFFFFFFFF, false);
         }

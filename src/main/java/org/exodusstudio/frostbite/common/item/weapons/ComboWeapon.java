@@ -1,22 +1,93 @@
 package org.exodusstudio.frostbite.common.item.weapons;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+
+import java.util.List;
 
 public abstract class ComboWeapon extends Item {
     private final ComboStep[] steps;
+    private final int chargeRequired;
 
     // TODO: Animations + smoothing
 
-    public ComboWeapon(Properties properties, ComboStep... steps) {
+    public ComboWeapon(Properties properties, int chargeRequired, ComboStep... steps) {
+        properties.component(DataComponentTypeRegistry.CHARGE, new ChargeData(0));
         super(properties);
+        this.chargeRequired = chargeRequired;
         this.steps = steps;
+    }
+
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
+        ItemStack stack = player.getItemInHand(usedHand);
+        if (getCharge(stack) >= chargeRequired) {
+            doChargeAttack(level, player, usedHand);
+            setCharge(stack, 0);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    public abstract void doChargeAttack(Level level, LivingEntity user, InteractionHand usedHand);
+
+    public static void genericSweepAttack(Level level, LivingEntity user, InteractionHand usedHand) {
+        float yaw = user.getYRot() * ((float) Math.PI / 180f);
+
+        BlockPos pos = BlockPos.containing(user.position().add(
+                -Mth.sin(yaw) * 1.4, user.getEyeHeight() / 2.0f, Mth.cos(yaw) * 1.4f
+        ));
+
+        List<LivingEntity> targets = level.getEntitiesOfClass(
+                LivingEntity.class, new AABB(pos).inflate(3.0, 1.0, 3.0),
+                (entity) -> entity != user);
+
+//        stack.damage(1, user, EquipmentSlot.MAINHAND);
+
+        targets.forEach(target -> {
+            double distance = user.distanceToSqr(target);
+            if (distance < 6.0 || distance >= 36.0) return;
+
+            if (!(target instanceof ArmorStand)) {
+                target.push(
+                        0.4,
+                        Mth.sin(user.getYHeadRot() * 0.017453292F),
+                        -Mth.cos(user.getYHeadRot() * 0.017453292F)
+                );
+            }
+
+            if (user.level() instanceof ServerLevel serverLevel) {
+                if (user instanceof Player player) {
+                    target.hurtServer(serverLevel, target.damageSources().playerAttack(player), 5.5f);
+                } else {
+                    target.hurtServer(serverLevel, target.damageSources().mobAttack(user), 5.5f);
+                }
+            }
+        });
+        user.swing(usedHand);
+        level.playSound(
+                null, user.blockPosition(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS,
+                1.0f,
+                0.9f + level.getRandom().nextFloat() * 0.2f
+        );
     }
 
     public float getAttackDamageBonus(Entity victim, float ignoredDamage, DamageSource damageSource) {
@@ -36,8 +107,9 @@ public abstract class ComboWeapon extends Item {
         return 0;
     }
 
-    public static void attacks(LivingEntity entity) {
-        if (entity.getItemInHand(entity.getUsedItemHand()).getItem() instanceof ComboWeapon comboWeapon) {
+    public void attacks(LivingEntity entity) {
+        ItemStack stack = entity.getItemInHand(entity.getUsedItemHand());
+        if (stack.getItem() instanceof ComboWeapon comboWeapon) {
             float timeSinceLastHit = getTimeSinceLastHit(entity);
             float index = getComboIndex(entity);
             int stepCount = comboWeapon.getComboStepCount();
@@ -50,10 +122,16 @@ public abstract class ComboWeapon extends Item {
                 t <= currentStep.tolerance &&
                 index < comboWeapon.steps.length
             ) {
-                if (t < currentStep.critTolerance) entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                        SoundEvents.ANVIL_LAND, entity.getSoundSource(), 0.5f, 1f + index / (2f * stepCount));
-                else if (t < currentStep.tolerance) entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-                        SoundEvents.ARROW_HIT_PLAYER, entity.getSoundSource(), 0.5f, 1f + index / (2f * stepCount));
+                if (t < currentStep.critTolerance) {
+                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.ANVIL_LAND, entity.getSoundSource(), 0.5f, 1f + index / (2f * stepCount));
+                    increaseCharge(stack, 2);
+                }
+                else if (t < currentStep.tolerance) {
+                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                            SoundEvents.ARROW_HIT_PLAYER, entity.getSoundSource(), 0.5f, 1f + index / (2f * stepCount));
+                    increaseCharge(stack, 4);
+                }
             }
 
             if (
@@ -122,6 +200,27 @@ public abstract class ComboWeapon extends Item {
 
     public int getComboStepCount() {
         return steps.length;
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    public int getCharge(ItemStack stack) {
+        if (stack.get(DataComponentTypeRegistry.CHARGE) != null) {
+            return stack.get(DataComponentTypeRegistry.CHARGE).charge();
+        }
+        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(0));
+        return 0;
+    }
+
+    public void setCharge(ItemStack stack, int charge) {
+        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(charge));
+    }
+
+    public void increaseCharge(ItemStack stack, int charge) {
+        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(getCharge(stack) + charge));
+    }
+
+    public int chargeRequired() {
+        return chargeRequired;
     }
 
     public record ComboStep(float extraDamage, float delayToNext, float tolerance, float critTolerance) {}

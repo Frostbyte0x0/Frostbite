@@ -24,20 +24,20 @@ public record CooldownData(int lastUsed) {
         stack.set(DataComponentTypeRegistry.COOLDOWN, cooldownData);
     }
 
-    public static boolean canUse(ItemStack stack, int cooldownSeconds) {
+    public static boolean canUse(ItemStack stack, long currentTime, float cooldownSeconds) {
         CooldownData cooldownData = stack.get(DataComponentTypeRegistry.COOLDOWN);
         if (cooldownData == null) {
             return false;
         }
-        return secondsSinceLastUsed(stack) >= cooldownSeconds;
+        return secondsSinceLastUsed(stack, currentTime) >= cooldownSeconds;
     }
 
-    public static int secondsSinceLastUsed(ItemStack stack) {
+    public static int secondsSinceLastUsed(ItemStack stack, long currentTime) {
         CooldownData cooldownData = stack.get(DataComponentTypeRegistry.COOLDOWN);
         if (cooldownData == null) {
             return -1;
         }
         assert Minecraft.getInstance().level != null;
-        return 20 * (int) (Minecraft.getInstance().level.getGameTime() - cooldownData.lastUsed());
+        return (int) (currentTime - cooldownData.lastUsed()) / 20;
     }
 }

@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
 import org.joml.Quaternionf;
@@ -34,7 +33,7 @@ public class HuntersCatalyst extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
-        ChargeAttackWeapon.addChargeAttack(player, "hunters_catalyst_charge_attack");
+        Renderable.addRenderable(player, "hunters_catalyst_charge_attack");
         return InteractionResult.PASS;
     }
 
@@ -56,6 +55,7 @@ public class HuntersCatalyst extends Item {
         LivingEntity user = context.user();
         SubmitNodeCollector output = context.output();
         Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || mc.level == null) return;
 
         Vec3 look = user.getLookAngle();
         Vec3 camera = Minecraft.getInstance().gameRenderer.mainCamera().position();
@@ -63,7 +63,6 @@ public class HuntersCatalyst extends Item {
 
         Vec3 beamPos = user.getPosition(partialTicks)
                 .add(0, user.getEyeHeight() * 0.75, 0)
-//                .add(look.scale(1.5))
                 .subtract(camera);
 
         Quaternionf rotation = new Quaternionf()
