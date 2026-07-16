@@ -9,18 +9,25 @@ import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
+import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
@@ -44,6 +51,27 @@ public class HuntersCatalyst extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
+        Vec3 start = livingEntity.getEyePosition();
+        Vec3 look = livingEntity.getLookAngle();
+        Vec3 end = start.add(look.scale(10));
+
+        AABB box = livingEntity.getBoundingBox().expandTowards(look.scale(10)).inflate(1.0D);
+
+        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
+                level,
+                livingEntity,
+                start,
+                end,
+                box,
+                (entity -> !entity.isSpectator() && entity.isPickable()),
+                1
+        );
+
+        if (entityHit != null) {
+            Entity entity = entityHit.getEntity();
+            entity.hurt(entity.damageSources().source(DamageTypeRegistry.HUNTERS_CATALYST), 5);
+        }
+
         setData(itemStack, new HuntersCatalystData(ticksRemaining));
         if (ticksRemaining <= 0) {
             releaseUsing(itemStack, level, livingEntity, ticksRemaining);
@@ -104,7 +132,7 @@ public class HuntersCatalyst extends Item {
         float partialTicks = mc.getDeltaTracker().getGameTimeDeltaPartialTick(!mc.level.tickRateManager().isEntityFrozen(user));
 
         Vec3 beamPos = user.getPosition(partialTicks)
-                .add(0, user.getEyeHeight() * 1.5, 0)
+                .add(0, user.getEyeHeight() * 0.5, 0)
                 .subtract(camera);
 
         Quaternionf rotation = new Quaternionf()
