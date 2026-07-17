@@ -23,4 +23,7 @@ public class DataComponentTypeRegistry {
 
     public static final Supplier<DataComponentType<GunData>> GUN = DATA_COMPONENT_TYPES.registerComponentType("gun",
             builder -> builder.persistent(GunData.CODEC).networkSynchronized(GunData.STREAM_CODEC));
+
+    public static final Supplier<DataComponentType<HuntersCatalystData>> HUNTERS_CATALYST = DATA_COMPONENT_TYPES.registerComponentType("hunters_catalyst",
+            builder -> builder.persistent(HuntersCatalystData.CODEC).networkSynchronized(HuntersCatalystData.STREAM_CODEC));
 }

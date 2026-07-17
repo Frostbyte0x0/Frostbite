@@ -8,24 +8,41 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.overlays.FlashbangOverlay;
+import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
+import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class HuntersCatalyst extends Item {
+    public static final Identifier BEAM_LOCATION =
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/hunters_catalyst/hunters_catalyst.png");
+    public static final int DURATION = 50;
+
     public HuntersCatalyst(Properties properties) {
         super(properties);
     }
@@ -33,13 +50,95 @@ public class HuntersCatalyst extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
+        setData(player.getUseItem(), new HuntersCatalystData(DURATION));
         Renderable.addRenderable(player, "hunters_catalyst_charge_attack");
         return InteractionResult.PASS;
     }
 
     @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
+//        chargePellet(level, livingEntity, itemStack, ticksRemaining);
+//        impactPellet();
+        flashPellet();
+
+        setData(itemStack, new HuntersCatalystData(ticksRemaining));
+        if (ticksRemaining <= 0) {
+            releaseUsing(itemStack, level, livingEntity, ticksRemaining);
+        }
+    }
+
+    public static void chargePellet(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
+        Vec3 start = livingEntity.getEyePosition();
+        Vec3 look = livingEntity.getLookAngle();
+        Vec3 end = start.add(look.scale(10));
+
+        AABB box = livingEntity.getBoundingBox().expandTowards(look.scale(10)).inflate(1.0D);
+
+        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
+                level,
+                livingEntity,
+                start,
+                end,
+                box,
+                (entity -> !entity.isSpectator() && entity.isPickable()),
+                1
+        );
+
+        if (entityHit != null) {
+            Entity entity = entityHit.getEntity();
+            entity.hurt(livingEntity.damageSources().source(DamageTypeRegistry.HUNTERS_CATALYST, livingEntity), 1);
+        }
+
+        if (ticksRemaining <= 1) {
+            if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                double radius = 0.5;
+                int points = 32;
+                int ringCount = 4;
+                double spacing = 2.0;
+
+                for (int r = 0; r < ringCount; r++) {
+                    double distance = 1.0f + r * spacing;
+                    Vec3 center = livingEntity.position().add(look.scale(distance));
+
+                    for (int i = 0; i < points; i++) {
+                        Quaternionf q = Util.getRotationQuaternionAroundLookVector(i, points, livingEntity, look);
+
+                        Vec3 base = new Vec3(0, radius, 0);
+                        Vector3f rotated = base.toVector3f();
+                        rotated.rotate(q);
+
+                        Vec3 offset = new Vec3(rotated.x(), rotated.y(), rotated.z());
+                        Vec3 pos = center.add(offset);
+
+                        Vec3 velocity = offset.scale(0.5);
+
+                        serverLevel.sendParticles(
+                                ParticleTypes.SOUL_FIRE_FLAME,
+                                pos.x, pos.y + 1, pos.z,
+                                0, velocity.x, velocity.y, velocity.z, 1
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    public static void impactPellet() {
+
+    }
+
+    public static void flashPellet() {
+        FlashbangOverlay.trigger(100);
+    }
+
+    @Override
+    public boolean useOnRelease(ItemStack itemStack) {
+        return true;
+    }
+
+    @Override
     public int getUseDuration(ItemStack itemStack, LivingEntity user) {
-        return 72000;
+        return DURATION;
     }
 
     @Override
@@ -47,8 +146,33 @@ public class HuntersCatalyst extends Item {
         return ItemUseAnimation.BOW;
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
+
+    private static HuntersCatalystData getData(ItemStack itemStack) {
+        return itemStack.getOrDefault(
+                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
+                new HuntersCatalystData(DURATION)
+        );
+    }
+
+    private static void setData(ItemStack itemStack, HuntersCatalystData data) {
+        itemStack.set(DataComponentTypeRegistry.HUNTERS_CATALYST.get(), data);
+    }
+
     public static boolean shouldStopRendering(Renderable.RenderableContext context) {
-        return context.user().getUseItem().getItem() != ItemRegistry.HUNTERS_CATALYST.get();
+        ItemStack stack = context.user().getUseItem();
+
+        if (stack.getItem() != ItemRegistry.HUNTERS_CATALYST.get()) return true;
+
+        int ticks = stack.getOrDefault(
+                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
+                new HuntersCatalystData(DURATION)
+        ).ticksRemaining();
+
+        return ticks <= 1;
     }
 
     public static void render(Renderable.RenderableContext context) {
@@ -62,7 +186,7 @@ public class HuntersCatalyst extends Item {
         float partialTicks = mc.getDeltaTracker().getGameTimeDeltaPartialTick(!mc.level.tickRateManager().isEntityFrozen(user));
 
         Vec3 beamPos = user.getPosition(partialTicks)
-                .add(0, user.getEyeHeight() * 0.75, 0)
+                .add(0, user.getEyeHeight() * 0.5, 0)
                 .subtract(camera);
 
         Quaternionf rotation = new Quaternionf()
@@ -75,18 +199,25 @@ public class HuntersCatalyst extends Item {
         stack.translate(beamPos.x, beamPos.y, beamPos.z);
         stack.mulPose(rotation);
 
+        int ticks = DURATION - getData(context.user().getUseItem()).ticksRemaining();
+        float progress = (ticks + partialTicks) / DURATION;
+        float radius = progress < 0.95f ? 0.5f * (1 - progress) : (float) (150 * Math.pow(progress - 0.95, 2) + 0.025);
+        int r = (int) Mth.lerp(progress, 242, 240);
+        int g = (int) Mth.lerp(progress, 195, 26);
+        int b = (int) Mth.lerp(progress, 41, 119);
+
         submitBeaconBeam(
-                stack,
-                output,
-                BeaconRenderer.BEAM_LOCATION,
-                1.0f,
-                user.level().getGameTime(),
-                0,
-                10,
-                0xff00ffff,
-                0.15f,
-                0.25f
-        );
+            stack,
+            output,
+            BEAM_LOCATION,
+            1,
+            user.level().getGameTime() + partialTicks,
+            0,
+            10,
+            ARGB.color(r, g, b),
+            radius,
+            0
+            );
 
         stack.popPose();
     }

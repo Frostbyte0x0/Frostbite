@@ -31,13 +31,7 @@ public class LevelRendererMixin {
                 if (user != null) {
                     Renderable renderable = Renderables.RENDERABLES.get(chargeAttackRenderable.getFirst());
                     float partialTicks = mc.getDeltaTracker().getGameTimeDeltaPartialTick(!mc.level.tickRateManager().isEntityFrozen(user));
-                    renderable.render(new Renderable.RenderableContext(
-                            user,
-                            poseStack,
-                            levelRenderState,
-                            (levelRenderState.gameTime + partialTicks - chargeAttackRenderable.getSecond()) / 20f,
-                            output
-                    ));
+
                     if (renderable.shouldStopRendering(new Renderable.RenderableContext(
                             user,
                             poseStack,
@@ -46,7 +40,16 @@ public class LevelRendererMixin {
                             output
                     ))) {
                         toRemove.put(uuid, chargeAttackRenderable);
+                        continue;
                     }
+
+                    renderable.render(new Renderable.RenderableContext(
+                            user,
+                            poseStack,
+                            levelRenderState,
+                            (levelRenderState.gameTime + partialTicks - chargeAttackRenderable.getSecond()) / 20f,
+                            output
+                    ));
                 }
             }
         });
