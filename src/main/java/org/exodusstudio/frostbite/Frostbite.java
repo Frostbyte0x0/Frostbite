@@ -72,7 +72,7 @@ public class Frostbite {
         MemoryModuleTypeRegistry.MEMORY_MODULE_TYPES.register(modEventBus);
         GameRuleRegistry.GAME_RULES.register(modEventBus);
         AttributeRegistry.ATTRIBUTES.register(modEventBus);
-        AttachementRegistry.ATTACHMENT_TYPES.register(modEventBus);
+        AttachmentRegistry.ATTACHMENT_TYPES.register(modEventBus);
     }
 
     @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)

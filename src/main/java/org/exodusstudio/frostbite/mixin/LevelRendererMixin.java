@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.entity.LivingEntity;
-import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
+import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.Renderables;
 import org.exodusstudio.frostbite.common.util.Renderable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public class LevelRendererMixin {
         assert mc.level != null;
         HashMap<UUID, Pair<String, Long>> toRemove = new HashMap<>();
 
-        mc.level.getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS).forEach((uuid, chargeAttackRenderables) -> {
+        mc.level.getData(AttachmentRegistry.CURRENT_RENDERING_ATTACKS).forEach((uuid, chargeAttackRenderables) -> {
             for (Pair<String, Long> chargeAttackRenderable : chargeAttackRenderables) {
                 LivingEntity user = (LivingEntity) mc.level.getEntity(uuid);
                 if (user != null) {
@@ -57,6 +57,6 @@ public class LevelRendererMixin {
             String chargeAttackRenderable = entry.getValue().getFirst();
             Renderable.removeRenderable(user, chargeAttackRenderable);
         }
-        mc.level.setData(AttachementRegistry.CURRENT_RENDERING_ATTACKS, mc.level.getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS));
+        mc.level.setData(AttachmentRegistry.CURRENT_RENDERING_ATTACKS, mc.level.getData(AttachmentRegistry.CURRENT_RENDERING_ATTACKS));
     }
 }

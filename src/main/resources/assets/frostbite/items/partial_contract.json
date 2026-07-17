@@ -1,0 +1,40 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:custom_model_data",
+    "cases": [
+      {
+        "when": "Black",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/black_contract"
+        }
+      },
+      {
+        "when": "Dark",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/dark_contract"
+        }
+      },
+      {
+        "when": "Light",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/light_contract"
+        }
+      },
+      {
+        "when": "White",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/white_contract"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "frostbite:item/white_contract"
+    }
+  }
+}

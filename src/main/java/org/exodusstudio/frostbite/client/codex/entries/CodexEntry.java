@@ -4,7 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
+import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 
 import java.util.Arrays;
 
@@ -19,18 +19,18 @@ public abstract class CodexEntry {
     }
 
     public static void addEntryToPlayer(Player player, CodexEntry entry) {
-        if (!player.getData(AttachementRegistry.UNLOCKED_ENTRIES).contains(entry.id)) {
-            player.setData(AttachementRegistry.UNLOCKED_ENTRIES, player.getData(AttachementRegistry.UNLOCKED_ENTRIES) + entry.id + ";");
+        if (!player.getData(AttachmentRegistry.UNLOCKED_ENTRIES).contains(entry.id)) {
+            player.setData(AttachmentRegistry.UNLOCKED_ENTRIES, player.getData(AttachmentRegistry.UNLOCKED_ENTRIES) + entry.id + ";");
         }
     }
 
     public static void addEntryToPlayer(Player player, String entryId) {
-        if (!player.getData(AttachementRegistry.UNLOCKED_ENTRIES).contains(entryId)) {
-            player.setData(AttachementRegistry.UNLOCKED_ENTRIES, player.getData(AttachementRegistry.UNLOCKED_ENTRIES) + entryId + ";");
+        if (!player.getData(AttachmentRegistry.UNLOCKED_ENTRIES).contains(entryId)) {
+            player.setData(AttachmentRegistry.UNLOCKED_ENTRIES, player.getData(AttachmentRegistry.UNLOCKED_ENTRIES) + entryId + ";");
         }
     }
 
     public static boolean playerHasEntry(Player player, CodexEntry entry) {
-        return Arrays.stream((player.getData(AttachementRegistry.UNLOCKED_ENTRIES).split(";"))).anyMatch(s -> s.equals(entry.id));
+        return Arrays.stream((player.getData(AttachmentRegistry.UNLOCKED_ENTRIES).split(";"))).anyMatch(s -> s.equals(entry.id));
     }
 }

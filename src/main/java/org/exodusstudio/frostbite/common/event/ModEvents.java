@@ -297,7 +297,7 @@ public class ModEvents {
         event.getServer().getAllLevels().forEach((level) -> {
             HashMap<UUID, Pair<String, Long>> toRemove = new HashMap<>();
 
-            level.getData(AttachementRegistry.CURRENT_RENDERING_ATTACKS).forEach((uuid, chargeAttackRenderables) -> {
+            level.getData(AttachmentRegistry.CURRENT_RENDERING_ATTACKS).forEach((uuid, chargeAttackRenderables) -> {
                 for (Pair<String, Long> chargeAttackRenderable : chargeAttackRenderables) {
                     LivingEntity user = (LivingEntity) level.getEntity(uuid);
                     if (user != null) {

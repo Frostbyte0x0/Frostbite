@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.exodusstudio.frostbite.common.component.ChargeData;
-import org.exodusstudio.frostbite.common.registry.AttachementRegistry;
+import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 import java.util.List;
@@ -160,10 +160,10 @@ public abstract class ComboWeapon extends Item {
     }
 
     public static void setLastHit(LivingEntity entity, ComboWeapon comboWeapon) {
-        entity.setData(AttachementRegistry.LAST_HIT, entity.level().getGameTime());
+        entity.setData(AttachmentRegistry.LAST_HIT, entity.level().getGameTime());
         ComboStep currentStep = comboWeapon.getComboStep(entity);
         if (currentStep != null) {
-            entity.setData(AttachementRegistry.COMBO_LENGTH, currentStep.delayToNext);
+            entity.setData(AttachmentRegistry.COMBO_LENGTH, currentStep.delayToNext);
         }
     }
 
@@ -174,23 +174,23 @@ public abstract class ComboWeapon extends Item {
     }
 
     public static float getComboLength(LivingEntity entity) {
-        return entity.getData(AttachementRegistry.COMBO_LENGTH);
+        return entity.getData(AttachmentRegistry.COMBO_LENGTH);
     }
 
     public static float getTimeSinceLastHit(LivingEntity entity) {
-        return (entity.level().getGameTime() - entity.getData(AttachementRegistry.LAST_HIT)) / 20f;
+        return (entity.level().getGameTime() - entity.getData(AttachmentRegistry.LAST_HIT)) / 20f;
     }
 
     public static void resetComboIndex(LivingEntity entity) {
-        entity.setData(AttachementRegistry.COMBO_INDEX, 0);
+        entity.setData(AttachmentRegistry.COMBO_INDEX, 0);
     }
 
     public static void increaseComboIndex(LivingEntity entity) {
-        entity.setData(AttachementRegistry.COMBO_INDEX, getComboIndex(entity) + 1);
+        entity.setData(AttachmentRegistry.COMBO_INDEX, getComboIndex(entity) + 1);
     }
 
     public static int getComboIndex(LivingEntity entity) {
-        return entity.getData(AttachementRegistry.COMBO_INDEX);
+        return entity.getData(AttachmentRegistry.COMBO_INDEX);
     }
 
     public ComboStep getComboStep(LivingEntity entity) {

@@ -179,6 +179,9 @@
 
   "item.frostbite.mode_weapon.mode" : "Current mode: ",
 
+  "item.frostbite.partial_contract": "Partial contract",
+  "item.frostbite.contract": "Contract",
+
 
   "effect.frostbite.twitching": "Twitching",
   "effect.frostbite.fatigue": "Fatigue",

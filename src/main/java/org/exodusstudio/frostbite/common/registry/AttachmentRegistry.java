@@ -16,7 +16,7 @@ import org.exodusstudio.frostbite.common.util.TemperatureManager;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class AttachementRegistry {
+public class AttachmentRegistry {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Frostbite.MOD_ID);
 

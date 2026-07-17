@@ -10,6 +10,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
@@ -23,7 +24,8 @@ import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.GunData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.item.*;
-import org.exodusstudio.frostbite.common.item.last_stand.LastStandItem;
+import org.exodusstudio.frostbite.common.item.contract.ContractItem;
+import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
 import org.exodusstudio.frostbite.common.item.weapons.*;
@@ -404,4 +406,12 @@ public class ItemRegistry {
     public static HolderGetter<Block> getRegistrationLookup() {
         return BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
     }
+    public static final DeferredItem<Item> PARTIAL_CONTRACT =
+            ITEMS.register("partial_contract", (id) -> new PartialContractItem(new Item.Properties()
+                    .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CONTRACT =
+            ITEMS.register("contract", (id) -> new ContractItem(new Item.Properties()
+                    .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 }
