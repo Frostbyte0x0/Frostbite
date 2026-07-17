@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +31,6 @@ import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
 import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.util.Renderable;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Quaternionf;
@@ -57,9 +55,9 @@ public class HuntersCatalyst extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticksRemaining) {
-//        chargePellet(level, livingEntity, itemStack, ticksRemaining);
+        chargePellet(level, livingEntity, itemStack, ticksRemaining);
 //        impactPellet();
-        flashPellet();
+//        flashPellet();
 
         setData(itemStack, new HuntersCatalystData(ticksRemaining));
         if (ticksRemaining <= 0) {
@@ -84,9 +82,9 @@ public class HuntersCatalyst extends Item {
                 1
         );
 
-        if (entityHit != null) {
+        if (entityHit != null && level instanceof ServerLevel serverLevel) {
             Entity entity = entityHit.getEntity();
-            entity.hurt(livingEntity.damageSources().source(DamageTypeRegistry.HUNTERS_CATALYST, livingEntity), 1);
+            entity.hurtServer(serverLevel, livingEntity.damageSources().source(DamageTypeRegistry.HUNTERS_CATALYST, livingEntity), 1);
         }
 
         if (ticksRemaining <= 1) {
