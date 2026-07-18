@@ -16,7 +16,7 @@ public class ListCodexTab extends CodexTab {
     private float contentScrollAmount = 0;
     private final ListCodexEntry[] listEntries;
 
-    public ListCodexTab(String id, CodexTabType type, int index, String icon, ListCodexEntry... entries) {
+    public ListCodexTab(String id, TabType type, int index, String icon, ListCodexEntry... entries) {
         super(id, type, index, icon, entries);
         this.listEntries = entries;
     }

@@ -7,7 +7,7 @@ import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Arrays;
 
-public enum CodexTabType {
+public enum TabType {
     ABOVE(
             new Sprites(
                     Identifier.withDefaultNamespace("advancements/tab_above_left_selected"),
@@ -47,12 +47,12 @@ public enum CodexTabType {
 
     private final Sprites selectedSprites;
     private final Sprites unselectedSprites;
-    public static final int MAX_TABS = Arrays.stream(values()).mapToInt(CodexTabType::getMax).sum();
+    public static final int MAX_TABS = Arrays.stream(values()).mapToInt(TabType::getMax).sum();
     private final int width;
     private final int height;
     private final int max;
 
-    CodexTabType(Sprites selectedSprites, Sprites unselectedSprites, int width, int height, int max) {
+    TabType(Sprites selectedSprites, Sprites unselectedSprites, int width, int height, int max) {
         this.selectedSprites = selectedSprites;
         this.unselectedSprites = unselectedSprites;
         this.width = width;
@@ -112,10 +112,7 @@ public enum CodexTabType {
 
     public int getX(int index) {
         switch (this.ordinal()) {
-            case 0 -> {
-                return (this.width + 4) * index;
-            }
-            case 1 -> {
+            case 0, 1 -> {
                 return (this.width + 4) * index;
             }
             case 2 -> {
@@ -136,10 +133,7 @@ public enum CodexTabType {
             case 1 -> {
                 return 136;
             }
-            case 2 -> {
-                return this.height * index;
-            }
-            case 3 -> {
+            case 2, 3 -> {
                 return this.height * index;
             }
             default -> throw new UnsupportedOperationException("Don't know what this tab type is!" + String.valueOf(this));

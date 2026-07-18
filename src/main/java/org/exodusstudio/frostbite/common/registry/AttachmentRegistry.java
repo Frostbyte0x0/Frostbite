@@ -11,6 +11,7 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
 import org.exodusstudio.frostbite.common.util.TemperatureManager;
 
 import java.util.*;
@@ -96,6 +97,11 @@ public class AttachmentRegistry {
         }
     };
 
+
+    public static final Supplier<AttachmentType<PlayerContractInfo>> PLAYER_CONTRACT_INFO = ATTACHMENT_TYPES.register(
+            "player_contract_info", () -> AttachmentType.builder(() -> PlayerContractInfo.EMPTY)
+                    .sync(StreamCodec.of(PlayerContractInfo::toBuffer, PlayerContractInfo::fromBuffer))
+                    .serialize(PlayerContractInfo.CODEC.fieldOf("player_contract_info")).build());
 
     public static final Supplier<AttachmentType<Integer>> COMBO_INDEX = ATTACHMENT_TYPES.register(
             "combo_index", () -> AttachmentType.builder(() -> 0)

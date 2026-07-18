@@ -42,7 +42,7 @@ public class CodexScreen extends Screen {
 
         Codex.TABS.forEach(t -> t.setScreen(this));
 
-        this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, p_331557_ -> this.onClose()).width(200).build());
+        this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, _ -> this.onClose()).width(200).build());
         this.layout.visitWidgets(this::addRenderableWidget);
         this.repositionElements();
     }
@@ -50,14 +50,6 @@ public class CodexScreen extends Screen {
     @Override
     protected void repositionElements() {
         this.layout.arrangeElements();
-    }
-
-    @Override
-    public void removed() {
-        ClientPacketListener clientpacketlistener = this.minecraft.getConnection();
-        if (clientpacketlistener != null) {
-            clientpacketlistener.send(ServerboundSeenAdvancementsPacket.closedScreen());
-        }
     }
 
     @Override

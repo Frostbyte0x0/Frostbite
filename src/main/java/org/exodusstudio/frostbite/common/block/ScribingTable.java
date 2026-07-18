@@ -15,19 +15,14 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import org.exodusstudio.frostbite.client.gui.WeavingMenu;
+import org.exodusstudio.frostbite.client.gui.ScribingMenu;
 
-public class WeavingTable extends HorizontalDirectionalBlock {
-    public static final MapCodec<WeavingTable> CODEC = simpleCodec(WeavingTable::new);
-    private static final Component CONTAINER_TITLE = Component.translatable("container.weaving_table");
+public class ScribingTable extends HorizontalDirectionalBlock {
+    public static final MapCodec<ScribingTable> CODEC = simpleCodec(ScribingTable::new);
+    private static final Component CONTAINER_TITLE = Component.translatable("container.scribing_table");
 
-    @Override
-    public MapCodec<WeavingTable> codec() {
-        return CODEC;
-    }
-
-    public WeavingTable(Properties p_49795_) {
-        super(p_49795_);
+    public ScribingTable(Properties properties) {
+        super(properties);
     }
 
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
@@ -39,8 +34,13 @@ public class WeavingTable extends HorizontalDirectionalBlock {
     }
 
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider((p_54783_, inventory, _) ->
-                new WeavingMenu(p_54783_, inventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((i, inventory, _) ->
+                new ScribingMenu(i, inventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {

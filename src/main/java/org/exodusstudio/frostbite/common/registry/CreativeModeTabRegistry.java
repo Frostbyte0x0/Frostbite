@@ -11,12 +11,11 @@ public class CreativeModeTabRegistry {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Frostbite.MOD_ID);
 
-    //public static final Supplier<CreativeModeTab> IGNORED =
     static {
         CREATIVE_MODE_TABS.register("frostbite_tab", () -> CreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.frostbite.frostbite_tab"))
                 .icon(() -> new ItemStack(ItemRegistry.FROSTBITTEN_GEM.get()))
-                .displayItems(((itemDisplayParameters, output) -> {
+                .displayItems(((_, output) -> {
                     output.accept(ItemRegistry.ADVANCED_CLOCK);
                     output.accept(ItemRegistry.LAST_STAND);
                     output.accept(ItemRegistry.METAL_COG);
@@ -209,9 +208,12 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.SHAMAN_STAFF);
 
                     output.accept(BlockRegistry.WEAVING_TABLE);
+                    output.accept(BlockRegistry.SCRIBING_TABLE);
                     output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
                     output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);
                     output.accept(BlockRegistry.BIG_HEATER_BLOCK);
+
+                    ItemRegistry.CONTRACT_FRAGMENTS.values().forEach(output::accept);
                 })).build());
     }
 }

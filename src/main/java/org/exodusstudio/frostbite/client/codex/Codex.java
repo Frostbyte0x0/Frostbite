@@ -6,7 +6,7 @@ import org.exodusstudio.frostbite.client.codex.entries.TargetCodexEntry;
 import org.exodusstudio.frostbite.client.codex.formations.CircleCodexFormation;
 import org.exodusstudio.frostbite.client.codex.formations.TreeCodexFormation;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
-import org.exodusstudio.frostbite.client.codex.tabs.CodexTabType;
+import org.exodusstudio.frostbite.client.codex.tabs.TabType;
 import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
@@ -58,10 +58,10 @@ public class Codex {
 
 
     // Tabs
-    public static final CodexTab GENERAL_TAB = new ListCodexTab("general", CodexTabType.ABOVE, 0, "item/advanced_clock",
+    public static final CodexTab GENERAL_TAB = new ListCodexTab("general", TabType.ABOVE, 0, "item/advanced_clock",
             Codex.TEMPERATURE_ENTRY
     );
-    public static final CodexTab BOSSES_TAB = new TreeCodexTab("bosses", CodexTabType.ABOVE, 1, "item/casting_staff",
+    public static final CodexTab BOSSES_TAB = new TreeCodexTab("bosses", TabType.ABOVE, 1, "item/casting_staff",
             Codex.GENERAL,
             Codex.ELF_GENERAL,
             Codex.SUMMONER_ELF,
@@ -81,11 +81,11 @@ public class Codex {
             Codex.MONK5,
             Codex.MONK6
     );
-    public static final CodexTab ENTITIES_TAB = new ListCodexTab("entities", CodexTabType.ABOVE, 2, "item/fire",
+    public static final CodexTab ENTITIES_TAB = new ListCodexTab("entities", TabType.ABOVE, 2, "item/fire",
             Codex.BIG_LEVITATING_JELLYFISH_ENTRY,
             Codex.BOAR_ENTRY
     );
-    public static final CodexTab BIOMES_TAB = new ListCodexTab("biomes", CodexTabType.ABOVE, 3, "item/frostbitten_gem",
+    public static final CodexTab BIOMES_TAB = new ListCodexTab("biomes", TabType.ABOVE, 3, "item/frostbitten_gem",
             Codex.SHROUDED_FOREST_ENTRY,
             Codex.ICEBOUND_PLAINS_ENTRY,
             Codex.FRIGID_PEAKS_ENTRY,
@@ -95,7 +95,7 @@ public class Codex {
             Codex.FRIGID_PEAKS_ENTRY,
             Codex.CHARM_WOODS_ENTRY
     );
-    public static final CodexTab STRUCTURES_TAB = new ListCodexTab("structures", CodexTabType.ABOVE, 4, "item/frozen_arrow",
+    public static final CodexTab STRUCTURES_TAB = new ListCodexTab("structures", TabType.ABOVE, 4, "item/frozen_arrow",
             Codex.PORTAL_ENTRY
     );
 

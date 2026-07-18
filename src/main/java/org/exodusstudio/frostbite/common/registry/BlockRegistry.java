@@ -41,7 +41,7 @@ public class BlockRegistry {
                     .randomTicks()
                     .strength(-1.0F)
                     .sound(SoundType.GLASS)
-                    .lightLevel(p_50884_ -> 11)
+                    .lightLevel(_ -> 11)
                     .pushReaction(PushReaction.BLOCK)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite_portal")))));
 
@@ -278,7 +278,7 @@ public class BlockRegistry {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_planks")))));
     public static final DeferredBlock<Block> SHINNING_CEDAR_LEAVES = registerBlock("shinning_cedar_leaves",
-            () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).lightLevel(p -> 10)
+            () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).lightLevel(_ -> 10)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "shinning_cedar_leaves")))));
     public static final DeferredBlock<Block> SHINNING_CEDAR_SAPLING = registerBlock("shinning_cedar_sapling",
             () -> new SaplingBlock(TreeGrowers.CHARM, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noCollision()
@@ -287,23 +287,26 @@ public class BlockRegistry {
     public static final DeferredBlock<HorizontalDirectionalBlock> WEAVING_TABLE = registerBlock("weaving_table",
             () -> new WeavingTable(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "weaving_table")))));
+    public static final DeferredBlock<HorizontalDirectionalBlock> SCRIBING_TABLE = registerBlock("scribing_table",
+            () -> new ScribingTable(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "scribing_table")))));
 
     public static final DeferredBlock<Block> SMALL_HEATER_BLOCK = registerBlock("small_heater",
             () -> new HeaterBlock(BlockBehaviour.Properties.of()
                     .strength(10f)
-                    .lightLevel(state -> 5)
+                    .lightLevel(_ -> 5)
                     .setId(ResourceKey.create(Registries.BLOCK,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "small_heater"))), 6, 5));
     public static final DeferredBlock<Block> MEDIUM_HEATER_BLOCK = registerBlock("medium_heater",
             () -> new HeaterBlock(BlockBehaviour.Properties.of()
                     .strength(10f)
-                    .lightLevel(state -> 10)
+                    .lightLevel(_ -> 10)
                     .setId(ResourceKey.create(Registries.BLOCK,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "medium_heater"))), 12, 10));
     public static final DeferredBlock<Block> BIG_HEATER_BLOCK = registerBlock("big_heater",
             () -> new HeaterBlock(BlockBehaviour.Properties.of()
                     .strength(10f)
-                    .lightLevel(state -> 15)
+                    .lightLevel(_ -> 15)
                     .setId(ResourceKey.create(Registries.BLOCK,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "big_heater"))), 20, 10));
 
@@ -313,11 +316,11 @@ public class BlockRegistry {
 
     public static final DeferredBlock<Block> STONE_LANTERN = registerBlock("stone_lantern",
             () -> new StoneLantern(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_WALL)
-                    .lightLevel((state) -> 7)
+                    .lightLevel((_) -> 7)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "stone_lantern")))));
     public static final DeferredBlock<Block> FROZEN_STONE_LANTERN = registerBlock("frozen_stone_lantern",
             () -> new StoneLantern(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_WALL)
-                    .lightLevel((state) -> 7)
+                    .lightLevel((_) -> 7)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_stone_lantern")))));
 
     public static final DeferredBlock<Block> GIANT_REED = registerBlock("giant_reed",
@@ -337,7 +340,6 @@ public class BlockRegistry {
             () -> new FrostbiteTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "snowy_fern")))));
 
-
     public static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
@@ -347,5 +349,6 @@ public class BlockRegistry {
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
         ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()
                 .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, name)))));
+
     }
 }

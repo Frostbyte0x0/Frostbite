@@ -22,7 +22,7 @@ public class TreeCodexTab extends CodexTab {
     private boolean isInitialized = false;
     private TargetCodexEntry[] targetEntries;
 
-    public TreeCodexTab(String id, CodexTabType type, int index, String icon, TargetCodexEntry... entries) {
+    public TreeCodexTab(String id, TabType type, int index, String icon, TargetCodexEntry... entries) {
         super(id, type, index, icon, entries);
         this.widgets = new HashMap<>();
         this.minX = initialMinX;

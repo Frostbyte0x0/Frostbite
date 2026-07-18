@@ -11,7 +11,7 @@ import org.exodusstudio.frostbite.client.gui.CodexScreen;
 
 public abstract class CodexTab {
     protected CodexScreen screen;
-    protected final CodexTabType type;
+    protected final TabType type;
     protected final int index;
     protected final Identifier icon;
     protected final Component title;
@@ -26,7 +26,7 @@ public abstract class CodexTab {
     protected boolean increaseFade = false;
     public final CodexEntry[] entries;
 
-    public CodexTab(String id, CodexTabType type, int index, String icon, CodexEntry... entries) {
+    public CodexTab(String id, TabType type, int index, String icon, CodexEntry... entries) {
         this.minX = Integer.MAX_VALUE;
         this.minY = Integer.MAX_VALUE;
         this.maxX = Integer.MIN_VALUE;
@@ -38,7 +38,7 @@ public abstract class CodexTab {
         this.entries = entries;
     }
 
-    public CodexTabType getType() {
+    public TabType getType() {
         return this.type;
     }
 

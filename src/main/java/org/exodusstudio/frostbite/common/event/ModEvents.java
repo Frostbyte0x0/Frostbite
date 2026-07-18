@@ -1,11 +1,14 @@
 package org.exodusstudio.frostbite.common.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,6 +35,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -56,6 +60,7 @@ import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
+import org.exodusstudio.frostbite.common.item.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
@@ -459,6 +464,13 @@ public class ModEvents {
         String entry = s[1];
         if (Codex.TRACKED_LIST_ENTRIES.contains(entry)) {
             CodexEntry.addEntryToPlayer(event.getEntity(), entry);
+        }
+    }
+
+    @SubscribeEvent
+    public static void listCodex(RenderTooltipEvent.GatherComponents event) {
+        if (event.getItemStack().getItem() instanceof ContractFragmentItem) {
+            event.getTooltipElements().add(Either.left(Component.literal("aaa").withStyle(ChatFormatting.GRAY)));
         }
     }
 

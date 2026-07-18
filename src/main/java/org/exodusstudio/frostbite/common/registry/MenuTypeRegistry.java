@@ -5,6 +5,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.client.gui.ScribingMenu;
 import org.exodusstudio.frostbite.client.gui.WeavingMenu;
 
 import java.util.function.Supplier;
@@ -15,4 +16,7 @@ public class MenuTypeRegistry {
 
     public static final Supplier<MenuType<WeavingMenu>> WEAVING_MENU =
             MENU_TYPES.register("weaving", () -> new MenuType<>(WeavingMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final Supplier<MenuType<ScribingMenu>> SCRIBING_MENU =
+            MENU_TYPES.register("scribing", () -> new MenuType<>(ScribingMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

@@ -125,6 +125,8 @@
   "item.frostbite.leggings_weaving_pattern": "Leggings weaving pattern",
   "item.frostbite.boots_weaving_pattern": "Boots weaving pattern",
   "item.frostbite.weaving_table": "Weaving Table",
+  "item.frostbite.scribing_table": "Scribing table Block",
+
 
   "item.frostbite.jelly": "Jelly",
   "item.frostbite.insulating_jelly": "Insulating jelly",
@@ -146,6 +148,7 @@
 
   "item.frostbite.daggers": "Daggers",
   "item.frostbite.blue_jade_katana": "Blue jade katana",
+  "item.frostbite.hunters_catalyst": "Hunter's catalyst",
 
   "item.frostbite.casting_staff": "Casting staff",
   "item.frostbite.summoning_staff": "Summoning staff",
@@ -179,10 +182,6 @@
 
   "item.frostbite.mode_weapon.mode" : "Current mode: ",
 
-  "item.frostbite.partial_contract": "Partial contract",
-  "item.frostbite.contract": "Contract",
-
-
   "effect.frostbite.twitching": "Twitching",
   "effect.frostbite.fatigue": "Fatigue",
   "effect.frostbite.condemned_curse": "Condemned Curse",
@@ -205,8 +204,19 @@
 
   "container.frozen_remnants": "Frozen Remnants",
   "container.weaving_table": "Weaving Table",
+  "container.scribing_table": "Scribing Table",
 
   "general.frostbite.outer_temp": "Outer Temperature",
+
+
+
+  "item.frostbite.partial_contract": "Partial contract",
+  "item.frostbite.contract": "Contract",
+  "item.frostbite.contract_fragment": "Contract fragment",
+
+  "contract.attibute.diabetic": "Diabetic",
+
+
 
 
   "key.codex": "Open Codex",
