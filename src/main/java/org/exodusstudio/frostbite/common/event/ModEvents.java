@@ -58,9 +58,11 @@ import org.exodusstudio.frostbite.common.block.HeaterBlock;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.component.CooldownData;
+import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
-import org.exodusstudio.frostbite.common.item.ContractFragmentItem;
+import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
@@ -175,6 +177,18 @@ public class ModEvents {
         if (event.getEntity() instanceof TemperatureEntity temperatureEntity) {
             ((TE) temperatureEntity).setInnerTemp(temperatureEntity.getSpawnTemperature());
             ((TE) temperatureEntity).setOuterTemp(temperatureEntity.getSpawnTemperature());
+        }
+    }
+
+    @SubscribeEvent
+    public static void diabetic(LivingEntityUseItemEvent.Start event) {
+        Contract c;
+        if (event.getEntity() instanceof Player player && (c = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get()).contract()) != null) {
+            if (c.hasAttribute(ContractAttributes.DIABETIC) && Util.isSweet(event.getItem())) {
+                event.setCanceled(true);
+            } else if (c.hasAttribute(ContractAttributes.VEGETARIAN) && Util.isMeat(event.getItem())) {
+                event.setCanceled(true);
+            }
         }
     }
 

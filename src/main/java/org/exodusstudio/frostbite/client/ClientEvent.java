@@ -7,8 +7,10 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.client.gui.ScribingScreen;
 import org.exodusstudio.frostbite.client.gui.WeavingScreen;
+import org.exodusstudio.frostbite.client.gui.scribing.ApplyingScreen;
+import org.exodusstudio.frostbite.client.gui.scribing.CombiningScreen;
+import org.exodusstudio.frostbite.client.gui.scribing.DecipheringScreen;
 import org.exodusstudio.frostbite.client.overlays.*;
 import org.exodusstudio.frostbite.common.particle.*;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
@@ -55,6 +57,8 @@ public class ClientEvent {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(MenuTypeRegistry.WEAVING_MENU.get(), WeavingScreen::new);
-        event.register(MenuTypeRegistry.SCRIBING_MENU.get(), ScribingScreen::new);
+        event.register(MenuTypeRegistry.DECIPHERING_MENU.get(), DecipheringScreen::new);
+        event.register(MenuTypeRegistry.COMBINING_MENU.get(), CombiningScreen::new);
+        event.register(MenuTypeRegistry.APPLYING_MENU.get(), ApplyingScreen::new);
     }
 }

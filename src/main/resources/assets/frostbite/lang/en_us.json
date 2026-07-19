@@ -125,8 +125,9 @@
   "item.frostbite.leggings_weaving_pattern": "Leggings weaving pattern",
   "item.frostbite.boots_weaving_pattern": "Boots weaving pattern",
   "item.frostbite.weaving_table": "Weaving Table",
-  "item.frostbite.scribing_table": "Scribing table Block",
-
+  "item.frostbite.deciphering_table": "Deciphering Table",
+  "item.frostbite.combining_table": "Combining Table",
+  "item.frostbite.applying_table": "Applying Table",
 
   "item.frostbite.jelly": "Jelly",
   "item.frostbite.insulating_jelly": "Insulating jelly",
@@ -204,7 +205,11 @@
 
   "container.frozen_remnants": "Frozen Remnants",
   "container.weaving_table": "Weaving Table",
-  "container.scribing_table": "Scribing Table",
+  "container.deciphering_table": "Deciphering Table",
+  "container.combining_table": "Combining Table",
+  "container.applying_table": "Applying Table",
+
+  "container.combining.error": "You need to put the items in the correct order to combine them",
 
   "general.frostbite.outer_temp": "Outer Temperature",
 

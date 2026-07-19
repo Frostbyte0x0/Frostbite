@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.client.gui;
+package org.exodusstudio.frostbite.client.gui.scribing;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -17,13 +17,21 @@ import org.exodusstudio.frostbite.common.util.Util;
 import static org.exodusstudio.frostbite.common.util.Util.isLiningMaterial;
 import static org.exodusstudio.frostbite.common.util.Util.isWeavingPattern;
 
-public class ScribingMenu extends ItemCombinerMenu {
-    public ScribingMenu(int containerId, Inventory playerInventory) {
+public class ApplyingMenu extends ItemCombinerMenu {
+    public ApplyingMenu(int containerId, Inventory playerInventory) {
         this(containerId, playerInventory, ContainerLevelAccess.NULL);
     }
 
-    public ScribingMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
-        super(MenuTypeRegistry.SCRIBING_MENU.get(), containerId, playerInventory, access, createInputSlotDefinitions());
+    public ApplyingMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
+        super(MenuTypeRegistry.APPLYING_MENU.get(), containerId, playerInventory, access, createInputSlotDefinitions());
+    }
+
+    protected boolean isValidBlock(BlockState state) {
+        return state.is(BlockTags.ANVIL);
+    }
+
+    protected boolean mayPickup(Player player, boolean p_39024_) {
+        return true;
     }
 
     private static ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
@@ -33,14 +41,6 @@ public class ScribingMenu extends ItemCombinerMenu {
                 .withSlot(2, 48, 53, (_) -> true)
                 .withSlot(3, 30, 35, (_) -> true)
                 .withResultSlot(4, 124, 35).build();
-    }
-
-    protected boolean isValidBlock(BlockState state) {
-        return state.is(BlockTags.ANVIL);
-    }
-
-    protected boolean mayPickup(Player player, boolean p_39024_) {
-        return true;
     }
 
     protected void onTake(Player player, ItemStack stack) {
@@ -55,7 +55,7 @@ public class ScribingMenu extends ItemCombinerMenu {
         Item material = inputSlots.getItem(0).getItem();
         Item pattern = inputSlots.getItem(1).getItem();
         if ((isLiningMaterial(inputSlots.getItem(0))) &&
-            isWeavingPattern(pattern)) {
+                isWeavingPattern(pattern)) {
             if (inputSlots.getItem(0).is(ItemTags.WOOL)) {
                 material = Items.WOOL.white();
             }

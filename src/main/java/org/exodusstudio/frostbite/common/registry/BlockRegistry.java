@@ -287,9 +287,16 @@ public class BlockRegistry {
     public static final DeferredBlock<HorizontalDirectionalBlock> WEAVING_TABLE = registerBlock("weaving_table",
             () -> new WeavingTable(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "weaving_table")))));
-    public static final DeferredBlock<HorizontalDirectionalBlock> SCRIBING_TABLE = registerBlock("scribing_table",
-            () -> new ScribingTable(BlockBehaviour.Properties.of()
-                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "scribing_table")))));
+    public static final DeferredBlock<Block> DECIPHERING_TABLE = registerBlock("deciphering_table",
+            () -> new DecipheringTableBlock(BlockBehaviour.Properties.of().strength(10f)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "deciphering_table")))));
+    public static final DeferredBlock<HorizontalDirectionalBlock> COMBINING_TABLE = registerBlock("combining_table",
+            () -> new CombiningTable(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "combining_table")))));
+    public static final DeferredBlock<Block> APPLYING_TABLE = registerBlock("applying_table",
+            () -> new ApplyingTable(BlockBehaviour.Properties.of().strength(10f)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "applying_table")))));
+
 
     public static final DeferredBlock<Block> SMALL_HEATER_BLOCK = registerBlock("small_heater",
             () -> new HeaterBlock(BlockBehaviour.Properties.of()
@@ -349,6 +356,5 @@ public class BlockRegistry {
     private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
         ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()
                 .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, name)))));
-
     }
 }

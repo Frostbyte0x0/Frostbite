@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.common.block;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -15,13 +16,14 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import org.exodusstudio.frostbite.client.gui.ScribingMenu;
+import org.exodusstudio.frostbite.client.gui.scribing.ApplyingMenu;
 
-public class ScribingTable extends HorizontalDirectionalBlock {
-    public static final MapCodec<ScribingTable> CODEC = simpleCodec(ScribingTable::new);
-    private static final Component CONTAINER_TITLE = Component.translatable("container.scribing_table");
+public class ApplyingTable extends HorizontalDirectionalBlock {
+    public static final MapCodec<ApplyingTable> CODEC = simpleCodec(ApplyingTable::new);
+    private static final Component CONTAINER_TITLE =
+            Component.translatable("container.applying_table").withStyle(ChatFormatting.WHITE);
 
-    public ScribingTable(Properties properties) {
+    public ApplyingTable(Properties properties) {
         super(properties);
     }
 
@@ -35,7 +37,7 @@ public class ScribingTable extends HorizontalDirectionalBlock {
 
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider((i, inventory, _) ->
-                new ScribingMenu(i, inventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
+                new ApplyingMenu(i, inventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
     }
 
     @Override

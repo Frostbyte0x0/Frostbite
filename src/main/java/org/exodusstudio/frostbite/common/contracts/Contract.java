@@ -36,6 +36,55 @@ public record Contract(
             List.of(),
             ContractRank.WHITE);
 
+    public boolean isEmpty() {
+        return positiveAttributes.isEmpty() &&
+               negativeAttributes.isEmpty() &&
+               positiveScalableAttributes.isEmpty() &&
+               negativeScalableAttributes.isEmpty();
+    }
+
+    public boolean balanced() {
+        return positiveAttributes.size() + positiveScalableAttributes.size() ==
+               negativeAttributes.size() + negativeScalableAttributes.size();
+    }
+
+    public boolean allSameRank() {
+        return positiveAttributes.stream().allMatch(c -> c.getRank() == rank) &&
+                negativeAttributes.stream().allMatch(c -> c.getRank() == rank) &&
+                positiveScalableAttributes.stream().allMatch(c -> c.getRank() == rank) &&
+                negativeScalableAttributes.stream().allMatch(c -> c.getRank() == rank);
+    }
+
+    public boolean isPartial() {
+        return positiveAttributes.size() + positiveScalableAttributes.size() < 4 &&
+               negativeAttributes.size() + negativeScalableAttributes.size() < 4;
+    }
+
+    public boolean isComplete() {
+        return positiveAttributes.size() + positiveScalableAttributes.size() == 4 &&
+               negativeAttributes.size() + negativeScalableAttributes.size() == 4;
+    }
+
+    public boolean hasAttribute(String id) {
+        return positiveAttributes.stream().anyMatch(c -> c.id.equals(id)) ||
+               negativeAttributes.stream().anyMatch(c -> c.id.equals(id)) ||
+               positiveScalableAttributes.stream().anyMatch(c -> c.id.equals(id)) ||
+               negativeScalableAttributes.stream().anyMatch(c -> c.id.equals(id));
+    }
+
+    public boolean hasAttribute(ContractAttribute attribute) {
+        return hasAttribute(attribute.id);
+    }
+
+    public List<ContractAttribute> allAttributes() {
+        List<ContractAttribute> allAttributes = new ArrayList<>();
+        allAttributes.addAll(positiveAttributes);
+        allAttributes.addAll(negativeAttributes);
+        allAttributes.addAll(positiveScalableAttributes);
+        allAttributes.addAll(negativeScalableAttributes);
+        return allAttributes;
+    }
+
     public static void toBuffer(final ByteBuf buffer, Contract contract) {
         int positiveAttributesSize = contract.positiveAttributes.size();
         buffer.writeInt(positiveAttributesSize);

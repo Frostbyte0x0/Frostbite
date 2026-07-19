@@ -208,7 +208,9 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.SHAMAN_STAFF);
 
                     output.accept(BlockRegistry.WEAVING_TABLE);
-                    output.accept(BlockRegistry.SCRIBING_TABLE);
+                    output.accept(BlockRegistry.DECIPHERING_TABLE);
+                    output.accept(BlockRegistry.COMBINING_TABLE);
+                    output.accept(BlockRegistry.APPLYING_TABLE);
                     output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
                     output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);
                     output.accept(BlockRegistry.BIG_HEATER_BLOCK);

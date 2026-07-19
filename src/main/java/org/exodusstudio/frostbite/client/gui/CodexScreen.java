@@ -8,11 +8,9 @@ import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ServerboundSeenAdvancementsPacket;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.client.codex.Codex;
 import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
@@ -75,6 +73,7 @@ public class CodexScreen extends Screen {
     @Override
     public boolean keyPressed(KeyEvent keyEvent) {
         if (keyEvent.key() == 256) {
+            assert Minecraft.getInstance().player != null;
             Minecraft.getInstance().player.closeContainer();
         }
 

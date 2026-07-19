@@ -349,4 +349,36 @@ public class Util {
             gui.text(font, text.get(i), x, y + i * 9, color);
         }
     }
+
+    public static boolean isSweet(ItemStack itemStack) {
+        return itemStack.is(Items.APPLE) ||
+               itemStack.is(Items.GOLDEN_APPLE) ||
+               itemStack.is(Items.ENCHANTED_GOLDEN_APPLE) ||
+               itemStack.is(Items.SWEET_BERRIES) ||
+               itemStack.is(Items.GLOW_BERRIES) ||
+               itemStack.is(Items.HONEY_BOTTLE) ||
+               itemStack.is(Items.CAKE) ||
+               itemStack.is(Items.COOKIE) ||
+               itemStack.is(Items.PUMPKIN_PIE) ||
+               itemStack.is(Items.MELON_SLICE) ||
+               itemStack.is(Items.CHORUS_FRUIT);
+    }
+
+    public static boolean isMeat(ItemStack itemStack) {
+        return itemStack.is(Items.BEEF) ||
+               itemStack.is(Items.CHICKEN) ||
+               itemStack.is(Items.PORKCHOP) ||
+               itemStack.is(Items.RABBIT) ||
+               itemStack.is(Items.RABBIT_STEW) ||
+               itemStack.is(ItemRegistry.SPICY_MEAT_STEW) ||
+               itemStack.is(Items.MUTTON) ||
+               itemStack.is(ItemRegistry.RAW_BOAR_MEAT) ||
+               itemStack.is(Items.COOKED_BEEF) ||
+               itemStack.is(Items.COOKED_CHICKEN) ||
+               itemStack.is(Items.COOKED_PORKCHOP) ||
+               itemStack.is(Items.COOKED_RABBIT) ||
+               itemStack.is(Items.COOKED_MUTTON) ||
+               itemStack.is(ItemRegistry.COOKED_BOAR_MEAT) ||
+               itemStack.is(Items.ROTTEN_FLESH);
+    }
 }

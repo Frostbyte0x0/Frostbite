@@ -4,28 +4,28 @@
     "property": "minecraft:custom_model_data",
     "cases": [
       {
-        "when": "Black",
+        "when": "BLACK",
         "model": {
           "type": "minecraft:model",
           "model": "frostbite:item/black_contract"
         }
       },
       {
-        "when": "Dark",
+        "when": "DARK",
         "model": {
           "type": "minecraft:model",
           "model": "frostbite:item/dark_contract"
         }
       },
       {
-        "when": "Light",
+        "when": "LIGHT",
         "model": {
           "type": "minecraft:model",
           "model": "frostbite:item/light_contract"
         }
       },
       {
-        "when": "White",
+        "when": "WHITE",
         "model": {
           "type": "minecraft:model",
           "model": "frostbite:item/white_contract"

@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.Utf8String;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.StreamCodec;
 
 public class ContractAttribute {
     public final String id;
@@ -35,11 +34,6 @@ public class ContractAttribute {
             ContractRank.CODEC.fieldOf("rank").forGetter(attribute -> attribute.rank),
             Polarity.CODEC.fieldOf("polarity").forGetter(attribute -> attribute.polarity)
     ).apply(instance, ContractAttribute::new));
-
-    public static final StreamCodec<ByteBuf, ContractAttribute> STREAM_CODEC = StreamCodec.of(
-            ContractAttribute::toBuffer,
-            ContractAttribute::fromBuffer
-    );
 
     public static void toBuffer(final ByteBuf buffer, ContractAttribute attribute) {
         Utf8String.write(buffer, attribute.id, 32767);

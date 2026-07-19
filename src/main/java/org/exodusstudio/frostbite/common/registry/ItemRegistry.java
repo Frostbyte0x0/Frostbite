@@ -20,13 +20,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.component.ChargeData;
-import org.exodusstudio.frostbite.common.component.GunData;
-import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
-import org.exodusstudio.frostbite.common.component.ModeData;
-import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.component.*;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.item.*;
+import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
 import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
@@ -412,23 +409,26 @@ public class ItemRegistry {
     public static final DeferredItem<Item> PARTIAL_CONTRACT =
             ITEMS.register("partial_contract", (id) -> new PartialContractItem(new Item.Properties()
                     .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))
-                    .component(DataComponentTypeRegistry.CONTRACT, Contract.EMPTY)
+                    .component(DataComponentTypeRegistry.CONTRACT, ContractData.EMPTY)
+                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> CONTRACT =
             ITEMS.register("contract", (id) -> new ContractItem(new Item.Properties()
                     .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))
-                    .component(DataComponentTypeRegistry.CONTRACT, Contract.EMPTY)
+                    .component(DataComponentTypeRegistry.CONTRACT, ContractData.EMPTY)
+                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> CONTRACT_FRAGMENT =
-            ITEMS.register("contract_fragment", (id) -> new ContractFragmentItem(new Item.Properties()
-                    .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
+//    public static final DeferredItem<Item> CONTRACT_FRAGMENT =
+//            ITEMS.register("contract_fragment", (id) -> new ContractFragmentItem(new Item.Properties()
+//                    .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))
+//                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final Map<String, DeferredItem<Item>> CONTRACT_FRAGMENTS = ContractAttributes.ATTRIBUTES.values().stream()
             .collect(Collectors.toMap(a -> a.id, a ->
                     ITEMS.register("contract_fragment_" + a.id, i -> new ContractFragmentItem(new Item.Properties()
-                    .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, a)
+                    .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a))
                     .component(DataComponents.CUSTOM_MODEL_DATA,
                             new CustomModelData(List.of(), List.of(), List.of(a.getRank().name()), List.of()))
+                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, i))))));
 
     public static HolderGetter<Block> getRegistrationLookup() {
