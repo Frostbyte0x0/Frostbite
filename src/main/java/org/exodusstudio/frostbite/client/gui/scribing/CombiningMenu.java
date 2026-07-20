@@ -171,6 +171,9 @@ public class CombiningMenu extends ItemCombinerMenu {
         if (!pc.balanced()) {
             return Pair.of("container.combining.error.unbalanced", ItemStack.EMPTY);
         }
+        if (!pc.allValidTargets()) {
+            return Pair.of("container.combining.error.targets", ItemStack.EMPTY);
+        }
         ItemStack result = new ItemStack(ItemRegistry.PARTIAL_CONTRACT.asItem());
         result.set(DataComponentTypeRegistry.CONTRACT, new ContractData(pc));
         result.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(pc.rank().name()), List.of()));
@@ -220,6 +223,9 @@ public class CombiningMenu extends ItemCombinerMenu {
 
         if (!c.balanced()) {
             return Pair.of("container.combining.error.unbalanced", ItemStack.EMPTY);
+        }
+        if (!c.allValidTargets()) {
+            return Pair.of("container.combining.error.targets", ItemStack.EMPTY);
         }
         if (!c.allSameRank()) {
             return Pair.of("container.combining.error.rank", ItemStack.EMPTY);

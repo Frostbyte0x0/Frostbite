@@ -59,7 +59,9 @@ import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
+import org.exodusstudio.frostbite.common.contracts.PlayerLiteracy;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
@@ -181,8 +183,9 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void diabetic(LivingEntityUseItemEvent.Start event) {
+    public static void food(LivingEntityUseItemEvent.Start event) {
         Contract c;
+        // TODO: change to tags
         if (event.getEntity() instanceof Player player && (c = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get()).contract()) != null) {
             if (c.hasAttribute(ContractAttributes.DIABETIC) && Util.isSweet(event.getItem())) {
                 event.setCanceled(true);
@@ -482,9 +485,18 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void listCodex(RenderTooltipEvent.GatherComponents event) {
-        if (event.getItemStack().getItem() instanceof ContractFragmentItem) {
-            event.getTooltipElements().add(Either.left(Component.literal("aaa").withStyle(ChatFormatting.GRAY)));
+    public static void contractTooltips(RenderTooltipEvent.GatherComponents event) {
+        ItemStack stack = event.getItemStack();
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return;
+        PlayerLiteracy literacy = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get()).literacyRank();
+        if (stack.getItem() instanceof ContractFragmentItem) {
+            ContractAttribute a = ContractAttribute.getAttribute(stack);
+            if (a == null) return;
+//            event.getTooltipElements().removeFirst();
+//            event.getTooltipElements().add(0, Either.left(Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.DARK_GRAY)));
+            event.getTooltipElements().add(1, Either.left(a.getDisplayInfo(literacy)));
+            event.getTooltipElements().remove(Either.left(Component.literal("frostbite:contract_fragment_" + a.id).withStyle(ChatFormatting.DARK_GRAY)));
         }
     }
 

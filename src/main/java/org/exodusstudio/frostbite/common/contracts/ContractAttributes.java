@@ -8,32 +8,37 @@ public class ContractAttributes {
     public static final ContractAttribute SEQUENCE = of(
                 "sequence",
                 ContractRank.LIGHT,
-                Polarity.POSITIVE
+                Polarity.POSITIVE,
+                ContractTarget.WEAPON
             );
     public static final ContractAttribute CRITICAL = of(
                 "critical",
                 ContractRank.LIGHT,
-                Polarity.POSITIVE
+                Polarity.POSITIVE,
+                ContractTarget.WEAPON
             );
     public static final ContractAttribute CHILLY = of(
                 "chilly",
                 ContractRank.WHITE,
-                Polarity.POSITIVE
+                Polarity.POSITIVE,
+                ContractTarget.PLAYER
             );
     public static final ContractAttribute DIABETIC = of(
                 "diabetic",
                 ContractRank.WHITE,
-                Polarity.NEGATIVE
+                Polarity.NEGATIVE,
+                ContractTarget.PLAYER
             );
     public static final ContractAttribute VEGETARIAN = of(
                 "vegetarian",
                 ContractRank.LIGHT,
-                Polarity.NEGATIVE
+                Polarity.NEGATIVE,
+                ContractTarget.PLAYER
             );
 
 
-    private static ContractAttribute of(String id, ContractRank rank, Polarity polarity) {
-        ContractAttribute attribute = new ContractAttribute(id, rank, polarity);
+    private static ContractAttribute of(String id, ContractRank rank, Polarity polarity, ContractTarget target) {
+        ContractAttribute attribute = new ContractAttribute(id, rank, polarity, target);
         ATTRIBUTES.put(attribute.id, attribute);
         return attribute;
     }

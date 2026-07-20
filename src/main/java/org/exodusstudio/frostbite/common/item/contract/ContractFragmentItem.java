@@ -4,14 +4,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.contracts.*;
-import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
+import org.exodusstudio.frostbite.common.contracts.ContractTarget;
+import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
 
 import java.util.List;
+
+import static org.exodusstudio.frostbite.common.contracts.ContractAttribute.getAttribute;
 
 public class ContractFragmentItem extends Item {
     public ContractFragmentItem(Properties pProperties) {
@@ -21,25 +23,16 @@ public class ContractFragmentItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ContractAttribute a;
-        if (getAttribute(player.getItemInHand(usedHand)) != null && (a = getAttribute(player.getItemInHand(usedHand))) != null) {
-            player.setData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get(), new PlayerContractInfo(PlayerLiteracy.ILLITERATE, new Contract(
+        if (getAttribute(player.getItemInHand(usedHand)) != null && (a = getAttribute(player.getItemInHand(usedHand))) != null && a.getTarget() == ContractTarget.PLAYER) {
+            PlayerContractInfo.setContract(player, new Contract(
                     List.of(a),
                     List.of(),
                     List.of(),
                     List.of(),
-                    ContractRank.WHITE
-            )));
+                    a.getRank()
+            ));
             Frostbite.LOGGER.debug("Added contract attribute {} to player {}", a.id, player.getName().getString());
         }
         return InteractionResult.PASS;
-    }
-
-    @SuppressWarnings("DataFlowIssue")
-    public static ContractAttribute getAttribute(ItemStack stack) {
-        ContractAttribute a;
-        if (stack.getItem() instanceof ContractFragmentItem && (a = stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).attribute()) != null) {
-            return a;
-        }
-        return null;
     }
 }

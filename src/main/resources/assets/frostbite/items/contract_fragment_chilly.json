@@ -1,0 +1,40 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:custom_model_data",
+    "cases": [
+      {
+        "when": "BLACK",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/black_fragment"
+        }
+      },
+      {
+        "when": "DARK",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/dark_fragment"
+        }
+      },
+      {
+        "when": "LIGHT",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/light_fragment"
+        }
+      },
+      {
+        "when": "WHITE",
+        "model": {
+          "type": "minecraft:model",
+          "model": "frostbite:item/white_fragment"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "frostbite:item/white_fragment"
+    }
+  }
+}

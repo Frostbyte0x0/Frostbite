@@ -1,10 +1,12 @@
 package org.exodusstudio.frostbite.common.registry;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -426,6 +428,7 @@ public class ItemRegistry {
             .collect(Collectors.toMap(a -> a.id, a ->
                     ITEMS.register("contract_fragment_" + a.id, i -> new ContractFragmentItem(new Item.Properties()
                     .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a))
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.GRAY))
                     .component(DataComponents.CUSTOM_MODEL_DATA,
                             new CustomModelData(List.of(), List.of(), List.of(a.getRank().name()), List.of()))
                     .stacksTo(1)

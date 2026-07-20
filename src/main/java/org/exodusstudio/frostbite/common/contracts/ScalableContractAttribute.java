@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.contracts;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.Utf8String;
 import net.minecraft.network.chat.Component;
 
@@ -12,13 +13,16 @@ import java.util.List;
 public class ScalableContractAttribute extends ContractAttribute {
     private final List<Float> stats;
 
-    public ScalableContractAttribute(String id, List<Float> stats, Polarity polarity) {
-        super(id, null, polarity);
+    public ScalableContractAttribute(String id, List<Float> stats, Polarity polarity, ContractTarget target) {
+        super(id, null, polarity, target);
         this.stats = stats;
     }
 
-    public Component getDisplayName() {
-        return Component.translatable("contract.attribute." + id).append(getNumeral());
+    public Component getDisplayInfo(PlayerLiteracy literacy) {
+        return Component.literal(getPolarity() == Polarity.POSITIVE ? " + " : " - ")
+                .append(Component.translatable("contract.attribute." + id))
+                .withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.GREEN : ChatFormatting.RED)
+                .append(getNumeral());
     }
 
     public float getStat() {
@@ -53,7 +57,8 @@ public class ScalableContractAttribute extends ContractAttribute {
     public static final Codec<ScalableContractAttribute> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.fieldOf("id").forGetter(attribute -> attribute.id),
             Codec.FLOAT.listOf().fieldOf("stats").forGetter(attribute -> attribute.stats),
-            Polarity.CODEC.fieldOf("polarity").forGetter(ScalableContractAttribute::getPolarity)
+            Polarity.CODEC.fieldOf("polarity").forGetter(ScalableContractAttribute::getPolarity),
+            ContractTarget.CODEC.fieldOf("target").forGetter(ScalableContractAttribute::getTarget)
     ).apply(instance, ScalableContractAttribute::new));
 
     public static void toBuffer(final ByteBuf buffer, ScalableContractAttribute attribute) {
@@ -63,6 +68,7 @@ public class ScalableContractAttribute extends ContractAttribute {
         }
         Utf8String.write(buffer, attribute.id, 32767);
         Utf8String.write(buffer, attribute.getPolarity().name(), 32767);
+        Utf8String.write(buffer, attribute.getTarget().name(), 32767);
     }
 
     public static ScalableContractAttribute fromBuffer(ByteBuf buffer) {
@@ -75,7 +81,8 @@ public class ScalableContractAttribute extends ContractAttribute {
         return new ScalableContractAttribute(
                 Utf8String.read(buffer, 32767),
                 stats,
-                Polarity.valueOf(Utf8String.read(buffer, 32767))
+                Polarity.valueOf(Utf8String.read(buffer, 32767)),
+                ContractTarget.valueOf(Utf8String.read(buffer, 32767))
         );
     }
 }

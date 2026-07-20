@@ -211,17 +211,18 @@
 
   "container.combining.error": "You need to put the items in the correct order to combine them",
 
-  "general.frostbite.outer_temp": "Outer Temperature",
-
-
-
   "item.frostbite.partial_contract": "Partial contract",
   "item.frostbite.contract": "Contract",
-  "item.frostbite.contract_fragment": "Contract fragment",
+  "item.frostbite.contract_fragment": "Contract Fragment",
 
-  "contract.attibute.diabetic": "Diabetic",
+  "contract.attribute.diabetic": "Diabetic",
+  "contract.attribute.vegetarian": "Vegetarian",
+  "contract.attribute.critical": "Critical",
+  "contract.attribute.sequence": "Sequence",
+  "contract.attribute.chilly": "Chilly",
 
 
+  "general.frostbite.outer_temp": "Outer Temperature",
 
 
   "key.codex": "Open Codex",

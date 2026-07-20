@@ -9,8 +9,6 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
-import org.exodusstudio.frostbite.common.contracts.PlayerLiteracy;
-import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 public class ContractItem extends Item {
@@ -22,7 +20,7 @@ public class ContractItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         Contract c;
         if (getContract(player.getItemInHand(usedHand)) != null && (c = getContract(player.getItemInHand(usedHand))) != null) {
-            player.setData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get(), new PlayerContractInfo(PlayerLiteracy.ILLITERATE, c));
+            PlayerContractInfo.setContract(player, c);
             Frostbite.LOGGER.debug("Added contract {} to player {}", c, player.getName().getString());
         }
         return InteractionResult.PASS;

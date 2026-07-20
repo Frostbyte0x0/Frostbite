@@ -55,6 +55,24 @@ public record Contract(
                 negativeScalableAttributes.stream().allMatch(c -> c.getRank() == rank);
     }
 
+    public boolean allValidTargets() {
+        ContractTarget strictestTarget = getStrictestTarget();
+        if (strictestTarget != ContractTarget.PLAYER)
+            return allAttributes().stream().allMatch(c -> c.getTarget() == strictestTarget);
+        return allAttributes().stream().allMatch(c -> c.getTarget() == ContractTarget.LIVING || c.getTarget() == ContractTarget.PLAYER);
+    }
+
+    public ContractTarget getStrictestTarget() {
+        List<ContractAttribute> att = allAttributes();
+        ContractTarget strictestTarget = att.getFirst().getTarget();
+        if (strictestTarget != ContractTarget.LIVING) return strictestTarget;
+
+        for (ContractAttribute attribute : att) {
+            if (attribute.getTarget() == ContractTarget.PLAYER) return ContractTarget.PLAYER;
+        }
+        return strictestTarget;
+    }
+
     public boolean isPartial() {
         return positiveAttributes.size() + positiveScalableAttributes.size() < 4 &&
                negativeAttributes.size() + negativeScalableAttributes.size() < 4;
