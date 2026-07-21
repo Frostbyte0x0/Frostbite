@@ -24,6 +24,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.*;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
+import org.exodusstudio.frostbite.common.contracts.ContractRank;
+import org.exodusstudio.frostbite.common.contracts.ScalableContractAttribute;
 import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
@@ -420,17 +422,13 @@ public class ItemRegistry {
                     .component(DataComponentTypeRegistry.CONTRACT, ContractData.EMPTY)
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-//    public static final DeferredItem<Item> CONTRACT_FRAGMENT =
-//            ITEMS.register("contract_fragment", (id) -> new ContractFragmentItem(new Item.Properties()
-//                    .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))
-//                    .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final Map<String, DeferredItem<Item>> CONTRACT_FRAGMENTS = ContractAttributes.ATTRIBUTES.values().stream()
             .collect(Collectors.toMap(a -> a.id, a ->
                     ITEMS.register("contract_fragment_" + a.id, i -> new ContractFragmentItem(new Item.Properties()
-                    .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a))
+                    .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a, 1))
                     .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.GRAY))
                     .component(DataComponents.CUSTOM_MODEL_DATA,
-                            new CustomModelData(List.of(), List.of(), List.of(a.getRank().name()), List.of()))
+                            new CustomModelData(List.of(), List.of(), List.of(a instanceof ScalableContractAttribute ? ContractRank.fromNum(1).name() : a.getRank().name()), List.of()))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, i))))));
 

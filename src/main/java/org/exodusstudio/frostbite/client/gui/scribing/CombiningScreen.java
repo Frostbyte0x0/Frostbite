@@ -39,7 +39,7 @@ public class CombiningScreen extends ItemCombinerScreen<CombiningMenu> {
             Component e = this.menu.getErrorMessage().withStyle(ChatFormatting.RED);
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ERROR_SPRITE, i + 87, i1 + 32, 28, 21);
             graphics.text(Minecraft.getInstance().font, e, leftPos + (180 - Minecraft.getInstance().font.width(e)) / 2,
-                    topPos + Minecraft.getInstance().font.lineHeight - 2, 0xFFFF0000);
+                    topPos + Minecraft.getInstance().font.lineHeight - 3, 0xFFFF0000);
         }
     }
 }

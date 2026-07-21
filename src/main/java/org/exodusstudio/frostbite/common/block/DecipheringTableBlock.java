@@ -114,15 +114,15 @@ public class DecipheringTableBlock extends BaseEntityBlock {
             double y = pos.getY();
             double z = pos.getZ() + 0.5;
             if (random.nextDouble() < 0.1) {
-                level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                level.playLocalSound(x, y, z, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 0.8f + random.nextFloat() * 0.4f, false);
             }
 
             Direction direction = state.getValue(FACING);
             Direction.Axis axis = direction.getAxis();
             double ss = random.nextDouble() * 0.6 - 0.3;
-            double dx = axis == Direction.Axis.X ? (double)direction.getStepX() * 0.52 : ss;
-            double dy = random.nextDouble() * (double)6.0F / (double)16.0F;
-            double dz = axis == Direction.Axis.Z ? (double)direction.getStepZ() * 0.52 : ss;
+            double dx = axis == Direction.Axis.X ? direction.getStepX() * 0.52 : ss;
+            double dy = random.nextDouble() * 6.0F / 16;
+            double dz = axis == Direction.Axis.Z ? direction.getStepZ() * 0.52 : ss;
             level.addParticle(ParticleTypes.ENCHANT, x + dx, y + dy, z + dz, 0, 0.2, 0);
             level.addParticle(ParticleTypes.ENCHANT, x + dx, y + dy, z + dz, 0, 0.2, 0);
         }

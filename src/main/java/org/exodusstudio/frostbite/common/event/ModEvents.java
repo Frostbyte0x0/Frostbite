@@ -61,7 +61,6 @@ import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
-import org.exodusstudio.frostbite.common.contracts.PlayerLiteracy;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
@@ -489,13 +488,11 @@ public class ModEvents {
         ItemStack stack = event.getItemStack();
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
-        PlayerLiteracy literacy = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get()).literacyRank();
         if (stack.getItem() instanceof ContractFragmentItem) {
             ContractAttribute a = ContractAttribute.getAttribute(stack);
             if (a == null) return;
-//            event.getTooltipElements().removeFirst();
-//            event.getTooltipElements().add(0, Either.left(Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.DARK_GRAY)));
-            event.getTooltipElements().add(1, Either.left(a.getDisplayInfo(literacy)));
+            event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, stack)));
+            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
             event.getTooltipElements().remove(Either.left(Component.literal("frostbite:contract_fragment_" + a.id).withStyle(ChatFormatting.DARK_GRAY)));
         }
     }

@@ -146,6 +146,7 @@ public class BlockRegistry {
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_dirt")))));
     public static final DeferredBlock<Block> SNOWY_MISTY_GRASS = registerBlock("snowy_misty_grass",
             () -> new MistyGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                    .sound(SoundType.SNOW)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "snowy_misty_grass")))));
 
     // DIM WOOD

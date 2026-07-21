@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class Util {
     static RandomSource random = RandomSource.create();
     static Item[] liningItems = new Item[] {

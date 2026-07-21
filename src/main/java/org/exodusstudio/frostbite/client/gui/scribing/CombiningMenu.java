@@ -22,7 +22,9 @@ import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CombiningMenu extends ItemCombinerMenu {
     private String errorKey = "";
@@ -137,19 +139,21 @@ public class CombiningMenu extends ItemCombinerMenu {
     public Pair<String, ItemStack> combineFragments(ItemStack... stacks) {
         List<ContractAttribute> positiveAttributes = new ArrayList<>();
         List<ContractAttribute> negativeAttributes = new ArrayList<>();
-        List<ScalableContractAttribute> positiveScalableAttributes = new ArrayList<>();
-        List<ScalableContractAttribute> negativeScalableAttributes = new ArrayList<>();
+        Map<ScalableContractAttribute, Integer> positiveScalableAttributes = new HashMap<>();
+        Map<ScalableContractAttribute, Integer> negativeScalableAttributes = new HashMap<>();
         ContractRank rank = ContractRank.WHITE;
         for (ItemStack stack : stacks) {
-            ContractAttribute attribute = attribute(stack);
-            rank = attribute.getRank();
+            ContractAttribute attribute = ContractAttribute.getAttribute(stack);
+            int level = ScalableContractAttribute.getLevel(stack);
             if (attribute instanceof ScalableContractAttribute scalableAttribute) {
+                rank = ContractRank.fromNum(level);
                 if (scalableAttribute.getPolarity() == Polarity.POSITIVE) {
-                    positiveScalableAttributes.add(scalableAttribute);
+                    positiveScalableAttributes.put(scalableAttribute, level);
                 } else {
-                    negativeScalableAttributes.add(scalableAttribute);
+                    negativeScalableAttributes.put(scalableAttribute, level);
                 }
             } else {
+                rank = attribute.getRank();
                 if (attribute.getPolarity() == Polarity.POSITIVE) {
                     positiveAttributes.add(attribute);
                 } else {
@@ -183,18 +187,19 @@ public class CombiningMenu extends ItemCombinerMenu {
     public Pair<String, ItemStack> combinePartials(ItemStack... stacks) {
         List<ContractAttribute> positiveAttributes = new ArrayList<>();
         List<ContractAttribute> negativeAttributes = new ArrayList<>();
-        List<ScalableContractAttribute> positiveScalableAttributes = new ArrayList<>();
-        List<ScalableContractAttribute> negativeScalableAttributes = new ArrayList<>();
+        Map<ScalableContractAttribute, Integer> positiveScalableAttributes = new HashMap<>();
+        Map<ScalableContractAttribute, Integer> negativeScalableAttributes = new HashMap<>();
         ContractRank rank = ContractRank.WHITE;
         for (ItemStack stack : stacks) {
             Contract c = partial(stack);
             rank = c.rank();
             for (ContractAttribute attribute : c.allAttributes()) {
                 if (attribute instanceof ScalableContractAttribute scalableAttribute) {
+                    int level = c.allScalableAttributes().get(scalableAttribute);
                     if (scalableAttribute.getPolarity() == Polarity.POSITIVE) {
-                        positiveScalableAttributes.add(scalableAttribute);
+                        positiveScalableAttributes.put(scalableAttribute, level);
                     } else {
-                        negativeScalableAttributes.add(scalableAttribute);
+                        negativeScalableAttributes.put(scalableAttribute, level);
                     }
                 } else {
                     if (attribute.getPolarity() == Polarity.POSITIVE) {
@@ -241,11 +246,6 @@ public class CombiningMenu extends ItemCombinerMenu {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public static ContractAttribute attribute(ItemStack stack) {
-        return stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).attribute();
-    }
-
-    @SuppressWarnings("DataFlowIssue")
     public static Contract partial(ItemStack stack) {
         return stack.get(DataComponentTypeRegistry.CONTRACT).contract();
     }
@@ -269,19 +269,6 @@ public class CombiningMenu extends ItemCombinerMenu {
     public static boolean isPartial(ItemStack stack) {
         return stack.getItem() instanceof PartialContractItem;
     }
-
-//    @Override
-//    public void synchronizeCarriedToRemote() {
-//        if (!suppressRemoteUpdates) {
-//            ItemStack itemstack = getCarried();
-//            if (!remoteCarried.matches(itemstack)) {
-//                setCarried(new ItemStack(((HashedStack.ActualItem) ((RemoteSlot.Synchronized) remoteCarried).remoteHash).item()));
-//                if (synchronizer != null) {
-//                    synchronizer.sendCarriedChange(this, itemstack.copy());
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public boolean stillValid(Player player) {

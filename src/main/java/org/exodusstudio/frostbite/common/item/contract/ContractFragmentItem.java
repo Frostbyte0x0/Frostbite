@@ -12,6 +12,7 @@ import org.exodusstudio.frostbite.common.contracts.ContractTarget;
 import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.exodusstudio.frostbite.common.contracts.ContractAttribute.getAttribute;
 
@@ -27,8 +28,8 @@ public class ContractFragmentItem extends Item {
             PlayerContractInfo.setContract(player, new Contract(
                     List.of(a),
                     List.of(),
-                    List.of(),
-                    List.of(),
+                    Map.of(),
+                    Map.of(),
                     a.getRank()
             ));
             Frostbite.LOGGER.debug("Added contract attribute {} to player {}", a.id, player.getName().getString());

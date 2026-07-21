@@ -35,7 +35,7 @@ public class ApplyingScreen extends ItemCombinerScreen<ApplyingMenu> {
     @Override
     protected void extractErrorIcon(GuiGraphicsExtractor graphics, int i, int i1) {
         if (!menu.canCraft()) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ERROR_SPRITE, i + 87, i1 + 32, 28, 21);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ERROR_SPRITE, i + 100, i1 + 28, 28, 21);
         }
     }
 }

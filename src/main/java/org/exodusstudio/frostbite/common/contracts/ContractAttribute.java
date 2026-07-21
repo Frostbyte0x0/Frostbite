@@ -6,9 +6,14 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.Utf8String;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
+import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+
+import static org.exodusstudio.frostbite.common.contracts.PlayerLiteracy.*;
 
 public class ContractAttribute {
     public final String id;
@@ -23,10 +28,37 @@ public class ContractAttribute {
         this.target = target;
     }
 
-    public Component getDisplayInfo(PlayerLiteracy literacy) {
+    public Component getExtraInfo(Player player, ItemStack stack) {
+        PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
+        PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
+        MutableComponent c = Component.literal("    ");
+        if (r.ordinal() == PROFICIENT.ordinal()) {
+            c.append(Component.translatable("contract.attribute." + id + "_desc"));
+        } else if (r.ordinal() == LITERATE.ordinal()) {
+            c.append(getCompleteDesc());
+        } else {
+            c.append(Component.literal("§kaaaa"));
+        }
+        return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.GREEN : ChatFormatting.RED);
+    }
+
+    public Component getSmallInfo(Player player, ItemStack stack) {
+        PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
+        PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
+
         return Component.literal(getPolarity() == Polarity.POSITIVE ? " + " : " - ")
-                .append(Component.translatable("contract.attribute." + id))
+                .append(r.ordinal() >= BASIC.ordinal() ? Component.translatable("contract.attribute." + id) : Component.literal("§kaaaa"))
+                .append(" (")
+                .append(r.ordinal() >= BASIC.ordinal() ? Component.translatable("contract.target." + target.name().toLowerCase()) : Component.literal("§kaaaa"))
+                .append(")")
                 .withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.GREEN : ChatFormatting.RED);
+    }
+
+    public Component getCompleteDesc() {
+        if (Component.translatable("contract.attribute." + id + "_desc_complete").getString().equals(Component.literal("contract.attribute." + id + "_desc_complete").getString())) {
+            return Component.translatable("contract.attribute." + id + "_desc");
+        }
+        return Component.translatable("contract.attribute." + id + "_desc_complete");
     }
 
     public ContractRank getRank() {
@@ -71,5 +103,10 @@ public class ContractAttribute {
                 Polarity.valueOf(Utf8String.read(buffer, 32767)),
                 ContractTarget.valueOf(Utf8String.read(buffer, 32767))
         );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof ContractAttribute attribute && attribute.id.equals(this.id);
     }
 }

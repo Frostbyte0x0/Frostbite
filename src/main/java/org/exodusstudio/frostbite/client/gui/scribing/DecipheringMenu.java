@@ -27,9 +27,9 @@ public class DecipheringMenu extends RecipeBookMenu {
         super(MenuTypeRegistry.DECIPHERING_MENU.get(), containerId);
         this.container = container;
         this.data = data;
-        this.addSlot(new Slot(container, 0, 52, 55));
-        this.addSlot(new DecipheringLensSlot(container, 1, 52, 14));
-        this.addSlot(new DecipheringResultSlot(inventory.player, container, 2, 118, 35));
+        this.addSlot(new Slot(container, 0, 26, 53));
+        this.addSlot(new DecipheringLensSlot(container, 1, 26, 12));
+        this.addSlot(new DecipheringResultSlot(inventory.player, container, 2, 92, 33));
         this.addStandardInventorySlots(inventory, 8, 84);
         this.addDataSlots(data);
     }
@@ -40,28 +40,11 @@ public class DecipheringMenu extends RecipeBookMenu {
                !slots.get(2).hasItem();
     }
 
-    public boolean isDeciphering() {
-        return this.data.get(0) > 0;
-    }
-
     public float getDecipheringProgress() {
         int current = this.data.get(0);
         int total = this.data.get(1);
         return total != 0 && current != 0 ? Mth.clamp((float)current / (float)total, 0.0F, 1.0F) : 0.0F;
     }
-
-//    @Override
-//    public void synchronizeCarriedToRemote() {
-//        if (!suppressRemoteUpdates) {
-//            ItemStack itemstack = getCarried();
-//            if (!remoteCarried.matches(itemstack)) {
-//                setCarried(new ItemStack(((HashedStack.ActualItem) ((RemoteSlot.Synchronized) remoteCarried).remoteHash).item()));
-//                if (synchronizer != null) {
-//                    synchronizer.sendCarriedChange(this, itemstack.copy());
-//                }
-//            }
-//        }
-//    }
 
     public ItemStack quickMoveStack(Player player, int slotIndex) {
         ItemStack clicked = ItemStack.EMPTY;

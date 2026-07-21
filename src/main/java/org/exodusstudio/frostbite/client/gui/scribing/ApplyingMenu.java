@@ -1,21 +1,18 @@
 package org.exodusstudio.frostbite.client.gui.scribing;
 
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import org.exodusstudio.frostbite.common.component.ContractData;
+import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.item.contract.ContractItem;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
-import org.exodusstudio.frostbite.common.util.Util;
-
-import static org.exodusstudio.frostbite.common.util.Util.isLiningMaterial;
-import static org.exodusstudio.frostbite.common.util.Util.isWeavingPattern;
 
 public class ApplyingMenu extends ItemCombinerMenu {
     public ApplyingMenu(int containerId, Inventory playerInventory) {
@@ -36,52 +33,34 @@ public class ApplyingMenu extends ItemCombinerMenu {
 
     private static ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
         return ItemCombinerMenuSlotDefinition.create()
-                .withSlot(0, 48, 17, (_) -> true)
-                .withSlot(1, 66, 35, (_) -> true)
-                .withSlot(2, 48, 53, (_) -> true)
-                .withSlot(3, 30, 35, (_) -> true)
-                .withResultSlot(4, 124, 35).build();
+                .withSlot(0, 27, 30, (_) -> true)
+                .withSlot(1, 76, 30, (_) -> true)
+                .withResultSlot(2, 134, 30).build();
     }
 
     protected void onTake(Player player, ItemStack stack) {
         resultSlots.setItem(0, ItemStack.EMPTY);
         inputSlots.getItem(0).shrink(1);
         inputSlots.getItem(1).shrink(1);
-        inputSlots.getItem(2).shrink(1);
-        inputSlots.getItem(3).shrink(1);
     }
 
     public void createResult() {
-        Item material = inputSlots.getItem(0).getItem();
-        Item pattern = inputSlots.getItem(1).getItem();
-        if ((isLiningMaterial(inputSlots.getItem(0))) &&
-                isWeavingPattern(pattern)) {
-            if (inputSlots.getItem(0).is(ItemTags.WOOL)) {
-                material = Items.WOOL.white();
-            }
+        if (canCraft()) {
+            ItemStack stack = inputSlots.getItem(0);
+            ItemStack contract = inputSlots.getItem(1);
+            Contract c = Contract.getContract(contract);
 
-            resultSlots.setItem(0, new ItemStack(Util.linings.get(material).get(pattern)));
+            ItemStack result = new ItemStack(stack.getItem());
+            result.set(DataComponentTypeRegistry.CONTRACT, new ContractData(c));
+            resultSlots.setItem(0, result);
         } else {
             resultSlots.setItem(0, ItemStack.EMPTY);
         }
     }
 
     public boolean canCraft() {
-        return !inputSlots.getItem(0).isEmpty();
+        return inputSlots.getItem(1).getItem() instanceof ContractItem && Contract.getContract(inputSlots.getItem(1)) != null;
     }
-
-//    @Override
-//    public void synchronizeCarriedToRemote() {
-//        if (!suppressRemoteUpdates) {
-//            ItemStack itemstack = getCarried();
-//            if (!remoteCarried.matches(itemstack)) {
-//                setCarried(new ItemStack(((HashedStack.ActualItem) ((RemoteSlot.Synchronized) remoteCarried).remoteHash).item()));
-//                if (synchronizer != null) {
-//                    synchronizer.sendCarriedChange(this, itemstack.copy());
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public boolean stillValid(Player player) {
