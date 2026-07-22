@@ -4,8 +4,7 @@ import net.minecraft.util.StringRepresentable;
 
 public enum ContractRank implements StringRepresentable {
     BLACK, // Best
-    DARK,
-    LIGHT,
+    GREY,
     WHITE; // Worst
 
     public static final StringRepresentable.EnumCodec<ContractRank> CODEC =
@@ -18,9 +17,8 @@ public enum ContractRank implements StringRepresentable {
 
     public static ContractRank fromNum(int num) {
         return switch (num) {
-            case 4 -> BLACK;
-            case 3 -> DARK;
-            case 2 -> LIGHT;
+            case 3 -> BLACK;
+            case 2 -> GREY;
             case 1 -> WHITE;
             default -> throw new IllegalArgumentException("Invalid rank number: " + num);
         };

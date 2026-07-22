@@ -39,7 +39,7 @@ public class ContractAttribute {
         } else {
             c.append(Component.literal("§kaaaa"));
         }
-        return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.GREEN : ChatFormatting.RED);
+        return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
     }
 
     public Component getSmallInfo(Player player, ItemStack stack) {

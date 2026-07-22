@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomModelData;
-import org.exodusstudio.frostbite.common.component.ContractAttributeData;
 import org.exodusstudio.frostbite.common.component.ScalableContractAttributeData;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
@@ -57,7 +56,7 @@ public class GiveFragmentCommand {
             source.sendFailure(Component.translatable("commands.give_fragment_unknown", fragment));
             return 0;
         }
-        if (level < 1 || level > 4) {
+        if (level < 1 || level > 3) {
             source.sendFailure(Component.translatable("commands.give_fragment_invalid_level"));
             return 0;
         }

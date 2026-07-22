@@ -6,25 +6,43 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.Utf8String;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import org.exodusstudio.frostbite.common.item.contract.ContractItem;
-import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public record Contract(
-        List<ContractAttribute> positiveAttributes,
-        List<ContractAttribute> negativeAttributes,
-        Map<ScalableContractAttribute, Integer> positiveScalableAttributes,
-        Map<ScalableContractAttribute, Integer> negativeScalableAttributes,
+        List<String> positiveAttributes,
+        List<String> negativeAttributes,
+        Map<String, Integer> positiveScalableAttributes,
+        Map<String, Integer> negativeScalableAttributes,
         ContractRank rank
 ) {
+    public static Contract create(
+            List<ContractAttribute> positiveAttributes,
+            List<ContractAttribute> negativeAttributes,
+            Map<ScalableContractAttribute, Integer> positiveScalableAttributes,
+            Map<ScalableContractAttribute, Integer> negativeScalableAttributes,
+            ContractRank rank
+    ) {
+        return new Contract(
+                positiveAttributes.stream().map(a -> a.id).collect(Collectors.toList()),
+                negativeAttributes.stream().map(a -> a.id).collect(Collectors.toList()),
+                positiveScalableAttributes.entrySet().stream()
+                        .collect(Collectors.toMap(entry -> entry.getKey().id, Map.Entry::getValue)),
+                negativeScalableAttributes.entrySet().stream()
+                        .collect(Collectors.toMap(entry -> entry.getKey().id, Map.Entry::getValue)),
+                rank);
+    }
+
     public static final Codec<Contract> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ContractAttribute.CODEC.listOf().fieldOf("positive_attributes").forGetter(Contract::positiveAttributes),
-            ContractAttribute.CODEC.listOf().fieldOf("negative_attributes").forGetter(Contract::negativeAttributes),
-            Codec.unboundedMap(ScalableContractAttribute.CODEC, Codec.INT).fieldOf("positive_scalable_attributes").forGetter(Contract::positiveScalableAttributes),
-            Codec.unboundedMap(ScalableContractAttribute.CODEC, Codec.INT).fieldOf("negative_scalable_attributes").forGetter(Contract::negativeScalableAttributes),
+            Codec.STRING.listOf().fieldOf("positive_attributes").forGetter(Contract::positiveAttributes),
+            Codec.STRING.listOf().fieldOf("negative_attributes").forGetter(Contract::negativeAttributes),
+            Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("positive_scalable_attributes").forGetter(Contract::positiveScalableAttributes),
+            Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("negative_scalable_attributes").forGetter(Contract::negativeScalableAttributes),
             ContractRank.CODEC.fieldOf("rank").forGetter(Contract::rank)
     ).apply(instance, Contract::new));
 
@@ -53,8 +71,8 @@ public record Contract(
     }
 
     public boolean allSameRank() {
-        return positiveAttributes.stream().allMatch(c -> c.getRank() == rank) &&
-               negativeAttributes.stream().allMatch(c -> c.getRank() == rank) &&
+        return positiveAttributes.stream().allMatch(c -> a(c).getRank() == rank) &&
+               negativeAttributes.stream().allMatch(c -> a(c).getRank() == rank) &&
                positiveScalableAttributes.entrySet().stream().allMatch(c -> ContractRank.fromNum(c.getValue()) == rank) &&
                negativeScalableAttributes.entrySet().stream().allMatch(c -> ContractRank.fromNum(c.getValue()) == rank);
     }
@@ -92,10 +110,10 @@ public record Contract(
     }
 
     public boolean hasAttribute(String id) {
-        return positiveAttributes.stream().anyMatch(c -> c.id.equals(id)) ||
-               negativeAttributes.stream().anyMatch(c -> c.id.equals(id)) ||
-               positiveScalableAttributes.keySet().stream().anyMatch(c -> c.id.equals(id)) ||
-               negativeScalableAttributes.keySet().stream().anyMatch(c -> c.id.equals(id));
+        return positiveAttributes.stream().anyMatch(c -> a(c).id.equals(id)) ||
+               negativeAttributes.stream().anyMatch(c -> a(c).id.equals(id)) ||
+               positiveScalableAttributes.keySet().stream().anyMatch(c -> a(c).id.equals(id)) ||
+               negativeScalableAttributes.keySet().stream().anyMatch(c -> a(c).id.equals(id));
     }
 
     public boolean hasAttribute(ContractAttribute attribute) {
@@ -103,25 +121,25 @@ public record Contract(
     }
 
     public List<ContractAttribute> allAttributes() {
-        List<ContractAttribute> allAttributes = new ArrayList<>();
-        allAttributes.addAll(positiveAttributes);
+        List<String> allAttributes = new ArrayList<>();
+        allAttributes.addAll(negativeScalableAttributes.keySet());
         allAttributes.addAll(negativeAttributes);
         allAttributes.addAll(positiveScalableAttributes.keySet());
-        allAttributes.addAll(negativeScalableAttributes.keySet());
-        return allAttributes;
+        allAttributes.addAll(positiveAttributes);
+        return allAttributes.stream().map(Contract::a).collect(Collectors.toList());
     }
 
     public Map<ScalableContractAttribute, Integer> allScalableAttributes() {
-        Map<ScalableContractAttribute, Integer> allScalableAttributes = new HashMap<>();
+        Map<String, Integer> allScalableAttributes = new HashMap<>();
         allScalableAttributes.putAll(positiveScalableAttributes);
         allScalableAttributes.putAll(negativeScalableAttributes);
-        return allScalableAttributes;
+        return allScalableAttributes.entrySet().stream().collect(Collectors.toMap(e -> (ScalableContractAttribute) a(e.getKey()), Map.Entry::getValue));
     }
 
     @SuppressWarnings("DataFlowIssue")
     public static Contract getContract(ItemStack stack) {
         Contract a;
-        if (stack.getItem() instanceof ContractItem || stack.getItem() instanceof PartialContractItem) {
+        if (stack.has(DataComponentTypeRegistry.CONTRACT)) {
             if ((a = stack.get(DataComponentTypeRegistry.CONTRACT).contract()) != null) {
                 return a;
             }
@@ -129,30 +147,34 @@ public record Contract(
         return null;
     }
 
+    public static ContractAttribute a(String id) {
+        return ContractAttributes.ATTRIBUTES.get(id);
+    }
+
     public static void toBuffer(final ByteBuf buffer, Contract contract) {
         int positiveAttributesSize = contract.positiveAttributes.size();
         buffer.writeInt(positiveAttributesSize);
-        for (ContractAttribute attribute : contract.positiveAttributes) {
-            ContractAttribute.toBuffer(buffer, attribute);
+        for (String attribute : contract.positiveAttributes) {
+            Utf8String.write(buffer, attribute, 32767);
         }
 
         int negativeAttributesSize = contract.negativeAttributes.size();
         buffer.writeInt(negativeAttributesSize);
-        for (ContractAttribute attribute : contract.negativeAttributes) {
-            ContractAttribute.toBuffer(buffer, attribute);
+        for (String attribute : contract.negativeAttributes) {
+            Utf8String.write(buffer, attribute, 32767);
         }
 
         int positiveScalableAttributesSize = contract.positiveScalableAttributes.size();
         buffer.writeInt(positiveScalableAttributesSize);
-        for (Map.Entry<ScalableContractAttribute, Integer> attribute : contract.positiveScalableAttributes.entrySet()) {
-            ScalableContractAttribute.toBuffer(buffer, attribute.getKey());
+        for (Map.Entry<String, Integer> attribute : contract.positiveScalableAttributes.entrySet()) {
+            Utf8String.write(buffer, attribute.getKey(), 32767);
             buffer.writeInt(attribute.getValue());
         }
 
         int negativeScalableAttributesSize = contract.negativeScalableAttributes.size();
         buffer.writeInt(negativeScalableAttributesSize);
-        for (Map.Entry<ScalableContractAttribute, Integer> attribute : contract.negativeScalableAttributes.entrySet()) {
-            ScalableContractAttribute.toBuffer(buffer, attribute.getKey());
+        for (Map.Entry<String, Integer> attribute : contract.negativeScalableAttributes.entrySet()) {
+            Utf8String.write(buffer, attribute.getKey(), 32767);
             buffer.writeInt(attribute.getValue());
         }
 
@@ -161,29 +183,29 @@ public record Contract(
 
     public static Contract fromBuffer(ByteBuf buffer) {
         int positiveAttributesSize = buffer.readInt();
-        List<ContractAttribute> positiveAttributes = new ArrayList<>();
+        List<String> positiveAttributes = new ArrayList<>();
         for (int i = 0; i < positiveAttributesSize; i++) {
-            positiveAttributes.add(ContractAttribute.fromBuffer(buffer));
+            positiveAttributes.add(Utf8String.read(buffer, 32767));
         }
 
         int negativeAttributesSize = buffer.readInt();
-        List<ContractAttribute> negativeAttributes = new ArrayList<>();
+        List<String> negativeAttributes = new ArrayList<>();
         for (int i = 0; i < negativeAttributesSize; i++) {
-            negativeAttributes.add(ContractAttribute.fromBuffer(buffer));
+            negativeAttributes.add(Utf8String.read(buffer, 32767));
         }
 
         int positiveScalableAttributesSize = buffer.readInt();
-        Map<ScalableContractAttribute, Integer> positiveScalableAttributes = new HashMap<>();
+        Map<String, Integer> positiveScalableAttributes = new HashMap<>();
         for (int i = 0; i < positiveScalableAttributesSize; i++) {
-            ScalableContractAttribute key = ScalableContractAttribute.fromBuffer(buffer);
+            String key = Utf8String.read(buffer, 32767);
             int value = buffer.readInt();
             positiveScalableAttributes.put(key, value);
         }
 
         int negativeScalableAttributesSize = buffer.readInt();
-        Map<ScalableContractAttribute, Integer> negativeScalableAttributes = new HashMap<>();
+        Map<String, Integer> negativeScalableAttributes = new HashMap<>();
         for (int i = 0; i < negativeScalableAttributesSize; i++) {
-            ScalableContractAttribute key = ScalableContractAttribute.fromBuffer(buffer);
+            String key = Utf8String.read(buffer, 32767);
             int value = buffer.readInt();
             negativeScalableAttributes.put(key, value);
         }

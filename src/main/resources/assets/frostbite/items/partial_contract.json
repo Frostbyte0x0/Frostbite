@@ -11,17 +11,10 @@
         }
       },
       {
-        "when": "DARK",
+        "when": "GREY",
         "model": {
           "type": "minecraft:model",
-          "model": "frostbite:item/dark_contract"
-        }
-      },
-      {
-        "when": "LIGHT",
-        "model": {
-          "type": "minecraft:model",
-          "model": "frostbite:item/light_contract"
+          "model": "frostbite:item/grey_contract"
         }
       },
       {

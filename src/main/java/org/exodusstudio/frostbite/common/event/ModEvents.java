@@ -65,8 +65,6 @@ import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
-import org.exodusstudio.frostbite.common.item.contract.ContractItem;
-import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
@@ -258,7 +256,7 @@ public class ModEvents {
         if (event.getEntity().isDeadOrDying() && event.getEntity() instanceof Player player) {
             if (player.level() instanceof ServerLevel serverLevel && FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
                 FrozenRemnantsEntity frozenRemnants = new FrozenRemnantsEntity(EntityRegistry.FROZEN_REMNANTS.get(), serverLevel);
-                frozenRemnants.setOwner(player);
+                frozenRemnants.setOwner(player); // TODO: fix remnants
                 frozenRemnants.moveOrInterpolateTo(player.position(), 0.0F, 0.0F);
                 frozenRemnants.setItems(player.getInventory().getNonEquipmentItems());
                 frozenRemnants.setTarget(player);
@@ -499,16 +497,16 @@ public class ModEvents {
             if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
             event.getTooltipElements().remove(Either.left(Component.literal("frostbite:contract_fragment_" + a.id).withStyle(ChatFormatting.DARK_GRAY)));
         }
-            Contract c = Contract.getContract(stack);
-            if (c == null) return;
-            List<ContractAttribute> attributes = c.allAttributes();
-            if (attributes.isEmpty()) return;
 
-            for (ContractAttribute a : c.allAttributes()) {
-                event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, stack)));
-                if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
-            }
+        Contract c = Contract.getContract(stack);
+        if (c == null) return;
+        List<ContractAttribute> attributes = c.allAttributes();
+        if (attributes.isEmpty()) return;
 
+        for (ContractAttribute a : c.allAttributes()) {
+            event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, stack)));
+            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
+        }
     }
 
     @SubscribeEvent
@@ -517,6 +515,7 @@ public class ModEvents {
         Level level = Minecraft.getInstance().level;
         GuiGraphicsExtractor graphics = event.getGuiGraphics();
         if (player == null || level == null) return;
+        if (Minecraft.getInstance().gui.hud.isHidden()) return;
 
         if (event.getName().equals(Identifier.withDefaultNamespace("hotbar"))) {
             int screenCenter = graphics.guiWidth() / 2;

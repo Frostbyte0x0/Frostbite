@@ -11,17 +11,10 @@
         }
       },
       {
-        "when": "DARK",
+        "when": "GREY",
         "model": {
           "type": "minecraft:model",
-          "model": "frostbite:item/dark_fragment"
-        }
-      },
-      {
-        "when": "LIGHT",
-        "model": {
-          "type": "minecraft:model",
-          "model": "frostbite:item/light_fragment"
+          "model": "frostbite:item/grey_fragment"
         }
       },
       {

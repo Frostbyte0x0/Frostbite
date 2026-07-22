@@ -23,9 +23,11 @@ public class ContractFragmentItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
+        if (!player.isCreative() || !player.isShiftKeyDown()) return InteractionResult.PASS;
+
         ContractAttribute a;
-        if (getAttribute(player.getItemInHand(usedHand)) != null && (a = getAttribute(player.getItemInHand(usedHand))) != null && a.getTarget() == ContractTarget.PLAYER) {
-            PlayerContractInfo.setContract(player, new Contract(
+        if ((a = getAttribute(player.getItemInHand(usedHand))) != null && a.getTarget() == ContractTarget.PLAYER) {
+            PlayerContractInfo.setContract(player, Contract.create(
                     List.of(a),
                     List.of(),
                     Map.of(),

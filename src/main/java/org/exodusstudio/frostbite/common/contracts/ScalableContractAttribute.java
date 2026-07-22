@@ -40,7 +40,7 @@ public class ScalableContractAttribute extends ContractAttribute {
         } else {
             c.append(Component.literal("§kaaaa"));
         }
-        return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.GREEN : ChatFormatting.RED);
+        return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
     }
 
     public Component getSmallInfo(Player player, ItemStack stack) {
@@ -64,7 +64,7 @@ public class ScalableContractAttribute extends ContractAttribute {
     public static float getStat(ItemStack stack) {
         if (stack.has(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE)) {
             ScalableContractAttribute attribute = stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).attribute();
-            int level = getLevel(stack);
+            int level = getLevel(stack, attribute);
             if (level > 0 && level <= attribute.stats.size()) {
                 return attribute.stats.get(level - 1);
             }
@@ -85,7 +85,7 @@ public class ScalableContractAttribute extends ContractAttribute {
     }
 
     public String getNumeral(ItemStack stack) {
-        return switch(getLevel(stack)) {
+        return switch(getLevel(stack, this)) {
             case 1 -> "I";
             case 2 -> "II";
             case 3 -> "III";
@@ -95,9 +95,12 @@ public class ScalableContractAttribute extends ContractAttribute {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public static int getLevel(ItemStack stack) {
-        if (stack.getItem() instanceof ContractFragmentItem) {
+    public static int getLevel(ItemStack stack, ScalableContractAttribute attribute) {
+        if (stack.has(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE) && stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).attribute().equals(attribute)) {
             return stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).level();
+        }
+        if (stack.has(DataComponentTypeRegistry.CONTRACT) && stack.get(DataComponentTypeRegistry.CONTRACT).contract() != null) {
+            return stack.get(DataComponentTypeRegistry.CONTRACT).contract().allScalableAttributes().getOrDefault(attribute, 1);
         }
         return 0;
     }

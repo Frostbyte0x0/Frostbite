@@ -145,7 +145,7 @@ public class CombiningMenu extends ItemCombinerMenu {
         for (ItemStack stack : stacks) {
             ContractAttribute attribute = ContractAttribute.getAttribute(stack);
             if (attribute instanceof ScalableContractAttribute scalableAttribute) {
-                int level = ScalableContractAttribute.getLevel(stack);
+                int level = ScalableContractAttribute.getLevel(stack, scalableAttribute);
                 rank = ContractRank.fromNum(level);
                 if (scalableAttribute.getPolarity() == Polarity.POSITIVE) {
                     positiveScalableAttributes.put(scalableAttribute, level);
@@ -162,7 +162,7 @@ public class CombiningMenu extends ItemCombinerMenu {
             }
         }
 
-        Contract pc = new Contract(
+        Contract pc = Contract.create(
                 positiveAttributes,
                 negativeAttributes,
                 positiveScalableAttributes,
@@ -214,7 +214,7 @@ public class CombiningMenu extends ItemCombinerMenu {
             }
         }
 
-        Contract c = new Contract(
+        Contract c = Contract.create(
                 positiveAttributes,
                 negativeAttributes,
                 positiveScalableAttributes,
