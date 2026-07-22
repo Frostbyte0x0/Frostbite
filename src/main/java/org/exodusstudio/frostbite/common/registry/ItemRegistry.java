@@ -443,6 +443,14 @@ public class ItemRegistry {
                                 .setId(ResourceKey.create(Registries.ITEM, i))));
                     }
                     ));
+//    public static final Map<String, DeferredItem<Item>> SPAWN_EGGS = EntityRegistry.ENTITY_TYPES.getEntries().stream().map(DeferredHolder::value)
+//            .filter(t -> t.create(null, (EntitySpawnReason) null) instanceof LivingEntity)
+//            .collect(Collectors.toMap(t -> t.getClass().descriptorString().toLowerCase(), a ->
+//                    ITEMS.register("spawn_egg_" + a.getClass().descriptorString().toLowerCase(), i -> new SpawnEggItem(new Item.Properties()
+//                    .spawnEgg(a)
+//                    .component(DataComponents.CUSTOM_NAME, Component.translatable("spawn_egg_" + a.getClass().descriptorString().toLowerCase()).withStyle(ChatFormatting.WHITE))
+//                    .setId(ResourceKey.create(Registries.ITEM, i))))
+//                    ));
 
     public static HolderGetter<Block> getRegistrationLookup() {
         return BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);

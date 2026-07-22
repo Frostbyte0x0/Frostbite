@@ -19,7 +19,15 @@ import java.util.Map;
 
 public record LiningMaterial(int durability, Map<ArmorType, Integer> coldProtection, int enchantmentValue, Holder<SoundEvent> equipSound, TagKey<Item> repairIngredient, ResourceKey<EquipmentAsset> assetId) {
     public Item.Properties humanoidProperties(Item.Properties properties, ArmorType armorType) {
-        return properties.durability(armorType.getDurability(this.durability)).attributes(this.createAttributes(armorType)).enchantable(this.enchantmentValue).component(DataComponents.EQUIPPABLE, Equippable.builder(armorType.getSlot()).setEquipSound(this.equipSound).setAsset(this.assetId).build()).repairable(this.repairIngredient);
+        return properties
+                .durability(armorType.getDurability(this.durability))
+                .attributes(this.createAttributes(armorType))
+                .enchantable(this.enchantmentValue)
+                .component(DataComponents.EQUIPPABLE,
+                    Equippable.builder(armorType.getSlot())
+                        .setEquipSound(this.equipSound)
+                        .setAsset(this.assetId).build())
+                .repairable(this.repairIngredient);
     }
 
     private ItemAttributeModifiers createAttributes(ArmorType armorType) {

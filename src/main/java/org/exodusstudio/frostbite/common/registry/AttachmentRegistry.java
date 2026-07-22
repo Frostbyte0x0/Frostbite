@@ -33,6 +33,9 @@ public class AttachmentRegistry {
     public static final StreamCodec<RegistryFriendlyByteBuf, String> STRING_STREAM_CODEC = StreamCodec.of(
             FriendlyByteBuf::writeUtf,
             FriendlyByteBuf::readUtf);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Boolean> BOOLEAN_STREAM_CODEC = StreamCodec.of(
+            FriendlyByteBuf::writeBoolean,
+            FriendlyByteBuf::readBoolean);
     public static final StreamCodec<RegistryFriendlyByteBuf, Map<UUID, List<Pair<String, Long>>>> MAP_UUID_LIST_STRING_LONG_PAIR_STREAM_CODEC = StreamCodec.of(
             (b, m) -> {
                 b.writeInt(m.size());
@@ -139,4 +142,9 @@ public class AttachmentRegistry {
             "unlocked_entries", () -> AttachmentType.builder(() -> "")
                     .sync(STRING_STREAM_CODEC)
                     .serialize(Codec.STRING.fieldOf("unlocked_entries")).build());
+
+    public static final Supplier<AttachmentType<Boolean>> SHOW_LINING = ATTACHMENT_TYPES.register(
+            "show_lining", () -> AttachmentType.builder(() -> false)
+//                    .sync(BOOLEAN_STREAM_CODEC)
+                    .serialize(Codec.BOOL.fieldOf("show_lining")).build());
 }

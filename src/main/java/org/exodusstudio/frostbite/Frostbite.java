@@ -47,7 +47,6 @@ public class Frostbite {
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static List<BreathEntityLike> breathEntityLikes = new ArrayList<>();
     public static List<BreathEntityLike> breathEntityLikesToRemove = new ArrayList<>();
-    public static boolean shouldShowLining = false;
     public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
     public static WeatherInfo weatherInfo = new WeatherInfo();
@@ -56,10 +55,10 @@ public class Frostbite {
 
     public Frostbite(IEventBus modEventBus, ModContainer ignored) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
+        EntityRegistry.ENTITY_TYPES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
         CreativeModeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
-        EntityRegistry.ENTITY_TYPES.register(modEventBus);
         EntityRegistry.SENSOR.register(modEventBus);
         EffectRegistry.MOB_EFFECTS.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);

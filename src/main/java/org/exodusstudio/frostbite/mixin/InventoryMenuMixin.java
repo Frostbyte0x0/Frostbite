@@ -18,6 +18,9 @@ import java.util.Map;
 @Mixin(InventoryMenu.class)
 public class InventoryMenuMixin {
     @Unique
+    private InventoryMenu frostbite$inventoryMenu = (InventoryMenu) ((Object) this);
+
+    @Unique
     private static final EquipmentSlot[] SLOT_IDS =
             new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     @Unique
@@ -54,4 +57,24 @@ public class InventoryMenuMixin {
                     equipmentslot, 43 + i, 8, 8 + i * 18, id));
         }
     }
+
+//    @Inject(method = "quickMoveStack", at = @At("TAIL"))
+//    private void quickMoveStack(Player player, int slotIndex, CallbackInfoReturnable<ItemStack> cir) {
+//        ItemStack clicked;
+//        Slot slot = frostbite$inventoryMenu.slots.get(slotIndex);
+//        if (slot.hasItem()) {
+//            ItemStack stack = slot.getItem();
+//            clicked = stack.copy();
+//            EquipmentSlot eqSlot = player.getEquipmentSlotForItem(clicked);
+//            if (slotIndex == 0) {
+//            } else if (slotIndex >= 1 && slotIndex < 5) {
+//            } else if (slotIndex >= 5 && slotIndex < 9) {
+//            } else if (eqSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR && !frostbite$inventoryMenu.slots.get(8 - eqSlot.getIndex()).hasItem()) {
+//                int pos = 8 - eqSlot.getIndex();
+//                if (!frostbite$inventoryMenu.moveItemStackTo(stack, pos, pos + 1, false)) {
+//                    return ItemStack.EMPTY;
+//                }
+//            }
+//        }
+//    }
 }

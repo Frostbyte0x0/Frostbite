@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
+import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 
 import javax.annotation.Nullable;
 
@@ -35,12 +36,12 @@ public class LiningSlot extends Slot {
     }
 
     public boolean mayPlace(ItemStack stack) {
-        return Frostbite.shouldShowLining && stack.canEquip(this.slot, this.owner) && stack.getItem() instanceof LiningItem;
+        return stack.canEquip(this.slot, this.owner) && stack.getItem() instanceof LiningItem;
     }
 
     public boolean mayPickup(Player player) {
         ItemStack itemstack = this.getItem();
-        return Frostbite.shouldShowLining && !itemstack.isEmpty() && itemstack.getItem() instanceof LiningItem;
+        return !itemstack.isEmpty() && itemstack.getItem() instanceof LiningItem;
     }
 
     @Nullable
@@ -49,6 +50,6 @@ public class LiningSlot extends Slot {
     }
 
     public boolean isActive() {
-        return Frostbite.shouldShowLining;
+        return owner.getData(AttachmentRegistry.SHOW_LINING);
     }
 }

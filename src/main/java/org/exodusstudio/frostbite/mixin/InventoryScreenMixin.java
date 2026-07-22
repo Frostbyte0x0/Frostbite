@@ -1,10 +1,11 @@
 package org.exodusstudio.frostbite.mixin;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,9 +41,9 @@ public class InventoryScreenMixin {
     @Unique
     private void frostbite$refreshButton() {
         frostbite$cycleButton = CycleButton
-                .booleanBuilder(Component.literal("A"), Component.literal("L"), !Frostbite.shouldShowLining)
+                .booleanBuilder(Component.literal("A"), Component.literal("L"), !frostbite$screen.getMinecraft().player.getData(AttachmentRegistry.SHOW_LINING))
                 .displayOnlyValue()
                 .create(frostbite$screen.getLeftPos() + 468, frostbite$screen.getTopPos() + 208, 16, 16,
-                        Component.literal("A"), (button, bool) -> Frostbite.shouldShowLining = !bool);
+                        Component.literal("A"), (button, bool) -> Minecraft.getInstance().player.setData(AttachmentRegistry.SHOW_LINING, !bool));
     }
 }
