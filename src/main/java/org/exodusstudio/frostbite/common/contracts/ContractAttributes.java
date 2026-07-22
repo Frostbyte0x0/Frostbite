@@ -6,16 +6,25 @@ import java.util.List;
 public class ContractAttributes {
     public static final HashMap<String, ContractAttribute> ATTRIBUTES = new HashMap<>();
 
-    public static final ContractAttribute SEQUENCE = of(
+    public static final ScalableContractAttribute SEQUENCE = of(
                 "sequence",
-                ContractRank.LIGHT,
+                List.of(0.1f, 0.2f, 0.3f, 0.4f),
+                0,
                 Polarity.POSITIVE,
                 ContractTarget.WEAPON
             );
-    public static final ContractAttribute CRITICAL = of(
+    public static final ScalableContractAttribute CRITICAL = of(
                 "critical",
-                ContractRank.LIGHT,
+                List.of(0.1f, 0.2f, 0.3f, 0.4f),
+                0,
                 Polarity.POSITIVE,
+                ContractTarget.WEAPON
+            );
+    public static final ScalableContractAttribute CORROSION = of(
+                "corrosion",
+                List.of(0.1f, 0.2f, 0.3f, 0.4f),
+                0,
+                Polarity.NEGATIVE,
                 ContractTarget.WEAPON
             );
     public static final ScalableContractAttribute CHILLY = of(

@@ -73,13 +73,17 @@ public class ContractAttribute {
         return target;
     }
 
+    public boolean isScalable() {
+        return this instanceof ScalableContractAttribute;
+    }
+
     @SuppressWarnings("DataFlowIssue")
     public static ContractAttribute getAttribute(ItemStack stack) {
         ContractAttribute a;
-        if (stack.getItem() instanceof ContractFragmentItem && (a = stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).attribute()) != null) {
+        if (stack.getItem() instanceof ContractFragmentItem && stack.has(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE) && (a = stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).attribute()) != null) {
             return a;
         }
-        return null;
+        return ScalableContractAttribute.getAttribute(stack);
     }
 
     public static final Codec<ContractAttribute> CODEC = RecordCodecBuilder.create(instance -> instance.group(

@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 public class ContractItem extends Item {
     public ContractItem(Properties pProperties) {
@@ -19,7 +18,7 @@ public class ContractItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         Contract c;
-        if (getContract(player.getItemInHand(usedHand)) != null && (c = getContract(player.getItemInHand(usedHand))) != null) {
+        if (Contract.getContract(player.getItemInHand(usedHand)) != null && (c = Contract.getContract(player.getItemInHand(usedHand))) != null) {
             PlayerContractInfo.setContract(player, c);
             Frostbite.LOGGER.debug("Added contract {} to player {}", c, player.getName().getString());
         }
@@ -29,14 +28,5 @@ public class ContractItem extends Item {
     @Override
     public boolean isFoil(ItemStack itemStack) {
         return true;
-    }
-
-    @SuppressWarnings("DataFlowIssue")
-    public static Contract getContract(ItemStack stack) {
-        Contract c;
-        if (stack.getItem() instanceof ContractItem && (c = stack.get(DataComponentTypeRegistry.CONTRACT).contract()) != null) {
-            return c;
-        }
-        return null;
     }
 }

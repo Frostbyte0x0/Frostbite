@@ -55,6 +55,7 @@ import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
 import org.exodusstudio.frostbite.common.block.HeaterBlock;
+import org.exodusstudio.frostbite.common.commands.GiveFragmentCommand;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
 import org.exodusstudio.frostbite.common.component.CooldownData;
@@ -64,6 +65,8 @@ import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
+import org.exodusstudio.frostbite.common.item.contract.ContractItem;
+import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
@@ -226,6 +229,7 @@ public class ModEvents {
     public static void commands(RegisterCommandsEvent event) {
         SpawnLastStandCommand.register(event.getDispatcher(), event.getBuildContext());
         WeatherCommand.register(event.getDispatcher());
+        GiveFragmentCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -495,6 +499,16 @@ public class ModEvents {
             if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
             event.getTooltipElements().remove(Either.left(Component.literal("frostbite:contract_fragment_" + a.id).withStyle(ChatFormatting.DARK_GRAY)));
         }
+            Contract c = Contract.getContract(stack);
+            if (c == null) return;
+            List<ContractAttribute> attributes = c.allAttributes();
+            if (attributes.isEmpty()) return;
+
+            for (ContractAttribute a : c.allAttributes()) {
+                event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, stack)));
+                if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
+            }
+
     }
 
     @SubscribeEvent

@@ -15,6 +15,7 @@ import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.exodusstudio.frostbite.common.contracts.PlayerLiteracy.*;
 
@@ -35,7 +36,7 @@ public class ScalableContractAttribute extends ContractAttribute {
         if (r.ordinal() == PROFICIENT.ordinal()) {
             c.append(Component.translatable("contract.attribute." + id + "_desc"));
         } else if (r.ordinal() == LITERATE.ordinal()) {
-            c.append(Component.translatable("contract.attribute." + id + "_desc_complete", getStat(stack), "%"));
+            c.append(Component.translatable("contract.attribute." + id + "_desc_complete", ("" + getStat(stack)).replace(".0", ""), "%"));
         } else {
             c.append(Component.literal("§kaaaa"));
         }
@@ -59,12 +60,27 @@ public class ScalableContractAttribute extends ContractAttribute {
         return start;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     public static float getStat(ItemStack stack) {
-        ScalableContractAttribute attribute = (ScalableContractAttribute) stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).attribute();
-        int level = getLevel(stack);
-        if (level > 0 && level <= attribute.stats.size()) {
-            return attribute.stats.get(level - 1);
+        if (stack.has(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE)) {
+            ScalableContractAttribute attribute = stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).attribute();
+            int level = getLevel(stack);
+            if (level > 0 && level <= attribute.stats.size()) {
+                return attribute.stats.get(level - 1);
+            }
+        } else if (stack.has(DataComponentTypeRegistry.CONTRACT)) {
+            Contract contract = stack.get(DataComponentTypeRegistry.CONTRACT).contract();
+            if (contract == null) return 0;
+            for (Map.Entry<ScalableContractAttribute, Integer> data : contract.allScalableAttributes().entrySet()) {
+                if (data.getKey() instanceof ScalableContractAttribute attribute) {
+                    int level = data.getValue();
+                    if (level > 0 && level <= attribute.stats.size()) {
+                        return attribute.stats.get(level - 1);
+                    }
+                }
+            }
         }
+
         return 0.0f;
     }
 
@@ -81,9 +97,18 @@ public class ScalableContractAttribute extends ContractAttribute {
     @SuppressWarnings("DataFlowIssue")
     public static int getLevel(ItemStack stack) {
         if (stack.getItem() instanceof ContractFragmentItem) {
-            return stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).level();
+            return stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).level();
         }
         return 0;
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    public static ScalableContractAttribute getAttribute(ItemStack stack) {
+        ScalableContractAttribute a;
+        if (stack.getItem() instanceof ContractFragmentItem && stack.has(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE) && (a = stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).attribute()) != null) {
+            return a;
+        }
+        return null;
     }
 
     public static final Codec<ScalableContractAttribute> CODEC = RecordCodecBuilder.create(instance -> instance.group(

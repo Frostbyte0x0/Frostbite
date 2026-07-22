@@ -144,8 +144,8 @@ public class CombiningMenu extends ItemCombinerMenu {
         ContractRank rank = ContractRank.WHITE;
         for (ItemStack stack : stacks) {
             ContractAttribute attribute = ContractAttribute.getAttribute(stack);
-            int level = ScalableContractAttribute.getLevel(stack);
             if (attribute instanceof ScalableContractAttribute scalableAttribute) {
+                int level = ScalableContractAttribute.getLevel(stack);
                 rank = ContractRank.fromNum(level);
                 if (scalableAttribute.getPolarity() == Polarity.POSITIVE) {
                     positiveScalableAttributes.put(scalableAttribute, level);
@@ -177,6 +177,9 @@ public class CombiningMenu extends ItemCombinerMenu {
         }
         if (!pc.allValidTargets()) {
             return Pair.of("container.combining.error.targets", ItemStack.EMPTY);
+        }
+        if (!pc.noDuplicates()) {
+            return Pair.of("container.combining.error.duplicate", ItemStack.EMPTY);
         }
         ItemStack result = new ItemStack(ItemRegistry.PARTIAL_CONTRACT.asItem());
         result.set(DataComponentTypeRegistry.CONTRACT, new ContractData(pc));
@@ -219,13 +222,9 @@ public class CombiningMenu extends ItemCombinerMenu {
                 rank
         );
 
-        ItemStack ct = new ItemStack(ItemRegistry.CONTRACT.asItem());
-        ItemStack pct = new ItemStack(ItemRegistry.PARTIAL_CONTRACT.asItem());
-        ct.set(DataComponentTypeRegistry.CONTRACT, new ContractData(c));
-        ct.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(c.rank().name()), List.of()));
-        pct.set(DataComponentTypeRegistry.CONTRACT, new ContractData(c));
-        pct.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(c.rank().name()), List.of()));
-
+        if (!c.noDuplicates()) {
+            return Pair.of("container.combining.error.duplicates", ItemStack.EMPTY);
+        }
         if (!c.balanced()) {
             return Pair.of("container.combining.error.unbalanced", ItemStack.EMPTY);
         }
@@ -235,6 +234,14 @@ public class CombiningMenu extends ItemCombinerMenu {
         if (!c.allSameRank()) {
             return Pair.of("container.combining.error.rank", ItemStack.EMPTY);
         }
+
+        ItemStack ct = new ItemStack(ItemRegistry.CONTRACT.asItem());
+        ItemStack pct = new ItemStack(ItemRegistry.PARTIAL_CONTRACT.asItem());
+        ct.set(DataComponentTypeRegistry.CONTRACT, new ContractData(c));
+        ct.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(c.rank().name()), List.of()));
+        pct.set(DataComponentTypeRegistry.CONTRACT, new ContractData(c));
+        pct.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(c.rank().name()), List.of()));
+
         if (c.isPartial()) {
             return Pair.of("", pct);
         }

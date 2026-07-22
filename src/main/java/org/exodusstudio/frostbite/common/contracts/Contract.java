@@ -7,6 +7,7 @@ import net.minecraft.network.Utf8String;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
+import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 import java.util.*;
@@ -59,7 +60,7 @@ public record Contract(
     }
 
     public boolean noDuplicates() {
-        return new HashSet<>(allAttributes()).size() == allAttributes().size();
+        return allAttributes().stream().map(a -> a.id).collect(Collectors.toSet()).size() == allAttributes().size();
     }
 
     public boolean allValidTargets() {
@@ -120,8 +121,10 @@ public record Contract(
     @SuppressWarnings("DataFlowIssue")
     public static Contract getContract(ItemStack stack) {
         Contract a;
-        if (stack.getItem() instanceof ContractItem && (a = stack.get(DataComponentTypeRegistry.CONTRACT).contract()) != null) {
-            return a;
+        if (stack.getItem() instanceof ContractItem || stack.getItem() instanceof PartialContractItem) {
+            if ((a = stack.get(DataComponentTypeRegistry.CONTRACT).contract()) != null) {
+                return a;
+            }
         }
         return null;
     }

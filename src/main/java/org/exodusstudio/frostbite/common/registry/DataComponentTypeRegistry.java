@@ -6,6 +6,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.*;
 import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.contracts.ScalableContractAttribute;
 
 import java.util.function.Supplier;
 
@@ -24,6 +25,8 @@ public class DataComponentTypeRegistry {
 
     public static final Supplier<DataComponentType<ContractAttributeData>> CONTRACT_ATTRIBUTE = DATA_COMPONENT_TYPES.registerComponentType("contract_attribute",
             builder -> builder.persistent(ContractAttributeData.CODEC).networkSynchronized(ContractAttributeData.STREAM_CODEC));
+    public static final Supplier<DataComponentType<ScalableContractAttributeData>> SCALABLE_CONTRACT_ATTRIBUTE = DATA_COMPONENT_TYPES.registerComponentType("scalable_contract_attribute",
+            builder -> builder.persistent(ScalableContractAttributeData.CODEC).networkSynchronized(ScalableContractAttributeData.STREAM_CODEC));
 
     public static final Supplier<DataComponentType<CooldownData>> COOLDOWN = DATA_COMPONENT_TYPES.registerComponentType("cooldown",
             builder -> builder.persistent(CooldownData.CODEC).networkSynchronized(CooldownData.STREAM_CODEC));

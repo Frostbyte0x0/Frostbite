@@ -4,6 +4,7 @@
   "package": "org.exodusstudio.frostbite.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "ArgumentTypeRegistryMixin",
     "ArmorSlotMixin",
     "EntityMixin",
     "EnvironmentAttributeSystemMixin",

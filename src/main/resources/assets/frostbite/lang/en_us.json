@@ -228,6 +228,7 @@
   "container.combining.error.unbalanced": "Need as many + as -",
   "container.combining.error.targets": "Incompatible targets",
   "container.combining.error.too_many": "Too many attributes (max 4)",
+  "container.combining.error.duplicates": "Duplicate attributes",
 
   "item.frostbite.partial_contract": "Partial contract",
   "item.frostbite.contract": "Contract",
@@ -240,12 +241,18 @@
   "contract.attribute.critical": "Critical",
   "contract.attribute.critical_desc": "Critical hits deal more damage",
   "contract.attribute.critical_desc_complete": "Critical hits deal %s%s more damage",
+  "contract.attribute.corrosion": "Corrosion",
+  "contract.attribute.corrosion_desc": "Deals less damage over time",
+  "contract.attribute.corrosion_desc_complete": "Deals %s%s less damage over time",
   "contract.attribute.sequence": "Sequence",
   "contract.attribute.sequence_desc": "Combos deal more damage",
   "contract.attribute.sequence_desc_complete": "Combos deal %s%s more damage",
   "contract.attribute.chilly": "Chilly",
   "contract.attribute.chilly_desc": "You deal more damage when colder",
   "contract.attribute.chilly_desc_complete": "You deal %s%s more damage for every degree below 10°C inner temperature",
+
+  "commands.give_fragment_unknown": "Unknown fragment: %s",
+  "commands.give_fragment_invalid_leveld": "Level has to be between 1 and 4",
 
 
   "general.frostbite.outer_temp": "Outer Temperature",
