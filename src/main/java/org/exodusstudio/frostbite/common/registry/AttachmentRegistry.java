@@ -101,7 +101,8 @@ public class AttachmentRegistry {
     public static final Supplier<AttachmentType<PlayerContractInfo>> PLAYER_CONTRACT_INFO = ATTACHMENT_TYPES.register(
             "player_contract_info", () -> AttachmentType.builder(() -> PlayerContractInfo.EMPTY)
                     .sync(StreamCodec.of(PlayerContractInfo::toBuffer, PlayerContractInfo::fromBuffer))
-                    .serialize(PlayerContractInfo.CODEC.fieldOf("player_contract_info")).build());
+                    .serialize(PlayerContractInfo.CODEC.fieldOf("player_contract_info"))
+                    .copyOnDeath().build());
 
     public static final Supplier<AttachmentType<Integer>> COMBO_INDEX = ATTACHMENT_TYPES.register(
             "combo_index", () -> AttachmentType.builder(() -> 0)

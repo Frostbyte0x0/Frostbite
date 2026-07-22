@@ -277,7 +277,7 @@
   "contract.attribute.catlike_desc": "Take no fall damage",
   "contract.attribute.cowardly": "Cowardly",
   "contract.attribute.cowardly_desc": "Less knockback",
-  "contract.attribute.cowardly_desc_complete": "%s less knockback",
+  "contract.attribute.cowardly_desc_complete": "%s%s less knockback",
   "contract.attribute.berserk": "Berserk",
   "contract.attribute.berserk_desc": "Deal more damage when low on health",
   "contract.attribute.berserk_desc_complete": "Deal %s%s more damage when below 50% health",

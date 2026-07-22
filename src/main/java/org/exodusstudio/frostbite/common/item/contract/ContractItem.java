@@ -24,7 +24,7 @@ public class ContractItem extends Item {
 
         Contract c;
         if ((c = Contract.getContract(player.getItemInHand(usedHand))) == null) return InteractionResult.PASS;
-        if (c.getStrictestTarget() != ContractTarget.PLAYER || c.getStrictestTarget() != ContractTarget.LIVING) return InteractionResult.PASS;
+        if (c.getStrictestTarget() != ContractTarget.PLAYER && c.getStrictestTarget() != ContractTarget.LIVING) return InteractionResult.PASS;
 
         PlayerContractInfo.setContract(player, c);
         Frostbite.LOGGER.debug("Added contract {} to player {}", c, player.getName().getString());

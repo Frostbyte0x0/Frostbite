@@ -223,10 +223,11 @@ public class ItemRegistry {
 
     public static final DeferredItem<Item> THERMAL_LENS =
             ITEMS.register("thermal_lens", (id) -> new ThermalLensItem(new Item.Properties()
+                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-
     public static final DeferredItem<Item> ADVANCED_THERMAL_LENS =
             ITEMS.register("advanced_thermal_lens", (id) -> new AdvancedThermalLensItem(new Item.Properties()
+                    .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> HELMET_WEAVING_PATTERN =

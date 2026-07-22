@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.contracts;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -28,7 +29,7 @@ public class ContractAttribute {
         this.target = target;
     }
 
-    public Component getExtraInfo(Player player, ItemStack stack) {
+    public Component getExtraInfo(Player player, Either<ItemStack, Contract> stack) {
         PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
         PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
         MutableComponent c = Component.literal("    ");
@@ -42,7 +43,7 @@ public class ContractAttribute {
         return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
     }
 
-    public Component getSmallInfo(Player player, ItemStack stack) {
+    public Component getSmallInfo(Player player, Either<ItemStack, Contract> stack) {
         PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
         PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
 

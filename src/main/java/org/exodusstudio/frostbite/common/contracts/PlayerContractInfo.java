@@ -64,6 +64,11 @@ public record PlayerContractInfo(
         ));
     }
 
+    public static Contract getContract(Player player) {
+        PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
+        return info.contract();
+    }
+
     public static void toBuffer(final ByteBuf buffer, PlayerContractInfo contract) {
         buffer.writeInt(contract.discoveredAttributes().size());
         for (String attribute : contract.discoveredAttributes()) {

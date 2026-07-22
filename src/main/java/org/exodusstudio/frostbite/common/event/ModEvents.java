@@ -5,8 +5,12 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -18,10 +22,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -32,10 +33,7 @@ import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
-import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -62,6 +60,7 @@ import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
+import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
@@ -256,9 +255,19 @@ public class ModEvents {
         if (event.getEntity().isDeadOrDying() && event.getEntity() instanceof Player player) {
             if (player.level() instanceof ServerLevel serverLevel && FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
                 FrozenRemnantsEntity frozenRemnants = new FrozenRemnantsEntity(EntityRegistry.FROZEN_REMNANTS.get(), serverLevel);
-                frozenRemnants.setOwner(player); // TODO: fix remnants
+                frozenRemnants.setOwner(player);
                 frozenRemnants.moveOrInterpolateTo(player.position(), 0.0F, 0.0F);
-                frozenRemnants.setItems(player.getInventory().getNonEquipmentItems());
+                List<ItemStack> items = new ArrayList<>(player.getInventory().getNonEquipmentItems());
+                items.add(((InventoryWrapper) player.getInventory()).frostbite$getEquipment().get(EquipmentSlot.FEET));
+                items.add(((InventoryWrapper) player.getInventory()).frostbite$getEquipment().get(EquipmentSlot.LEGS));
+                items.add(((InventoryWrapper) player.getInventory()).frostbite$getEquipment().get(EquipmentSlot.CHEST));
+                items.add(((InventoryWrapper) player.getInventory()).frostbite$getEquipment().get(EquipmentSlot.HEAD));
+                items.add(player.getInventory().equipment.get(EquipmentSlot.FEET));
+                items.add(player.getInventory().equipment.get(EquipmentSlot.LEGS));
+                items.add(player.getInventory().equipment.get(EquipmentSlot.CHEST));
+                items.add(player.getInventory().equipment.get(EquipmentSlot.HEAD));
+                items.add(player.getOffhandItem());
+                frozenRemnants.setItems(NonNullList.copyOf(items));
                 frozenRemnants.setTarget(player);
 
                 serverLevel.addFreshEntityWithPassengers(frozenRemnants);
@@ -493,8 +502,8 @@ public class ModEvents {
         if (stack.getItem() instanceof ContractFragmentItem) {
             ContractAttribute a = ContractAttribute.getAttribute(stack);
             if (a == null) return;
-            event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, stack)));
-            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
+            event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, Either.left(stack))));
+            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack))));
             event.getTooltipElements().remove(Either.left(Component.literal("frostbite:contract_fragment_" + a.id).withStyle(ChatFormatting.DARK_GRAY)));
         }
 
@@ -504,8 +513,34 @@ public class ModEvents {
         if (attributes.isEmpty()) return;
 
         for (ContractAttribute a : c.allAttributes()) {
-            event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, stack)));
-            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, stack)));
+            event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, Either.left(stack))));
+            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack))));
+        }
+    }
+
+    @SubscribeEvent
+    public static void inventoryContract(ScreenEvent.Render.Post event) {
+        Player player = Minecraft.getInstance().player;
+        Font font = Minecraft.getInstance().font;
+        Level level = Minecraft.getInstance().level;
+        GuiGraphicsExtractor graphics = event.getGuiGraphics();
+        if (player == null || level == null) return;
+
+        if (event.getScreen() instanceof InventoryScreen || event.getScreen() instanceof CreativeModeInventoryScreen) {
+            int screenCenter = graphics.guiHeight() / 2;
+
+            Contract c = PlayerContractInfo.getContract(player);
+            if (c == null) return;
+            List<ContractAttribute> attributes = c.allAttributes();
+            if (attributes.isEmpty()) return;
+
+            int i = -attributes.size() / 2;
+            for (ContractAttribute a : attributes) {
+                graphics.text(font, a.getExtraInfo(player, Either.right(c)), 0, screenCenter - i * font.lineHeight, 0xFFFFFFFF);
+                i++;
+                graphics.text(font, a.getSmallInfo(player, Either.right(c)), 0, screenCenter - i * font.lineHeight, 0xFFFFFFFF);
+                i++;
+            }
         }
     }
 

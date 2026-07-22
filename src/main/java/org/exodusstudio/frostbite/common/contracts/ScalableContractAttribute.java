@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.contracts;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -29,21 +30,21 @@ public class ScalableContractAttribute extends ContractAttribute {
         this.start = start;
     }
 
-    public Component getExtraInfo(Player player, ItemStack stack) {
+    public Component getExtraInfo(Player player, Either<ItemStack, Contract> stack) {
         PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
         PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
         MutableComponent c = Component.literal("    ");
         if (r.ordinal() == PROFICIENT.ordinal()) {
             c.append(Component.translatable("contract.attribute." + id + "_desc"));
         } else if (r.ordinal() == LITERATE.ordinal()) {
-            c.append(Component.translatable("contract.attribute." + id + "_desc_complete", ("" + getStat(stack)).replace(".0", ""), "%"));
+            c.append(Component.translatable("contract.attribute." + id + "_desc_complete", ("" + getStat(stack, this)).replace(".0", ""), "%"));
         } else {
             c.append(Component.literal("§kaaaa"));
         }
         return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
     }
 
-    public Component getSmallInfo(Player player, ItemStack stack) {
+    public Component getSmallInfo(Player player, Either<ItemStack, Contract> stack) {
         PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
         PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
 
@@ -61,37 +62,53 @@ public class ScalableContractAttribute extends ContractAttribute {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public static float getStat(ItemStack stack) {
-        if (stack.has(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE)) {
-            ScalableContractAttribute attribute = stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).attribute();
-            int level = getLevel(stack, attribute);
-            if (level > 0 && level <= attribute.stats.size()) {
-                return attribute.stats.get(level - 1);
-            }
-        } else if (stack.has(DataComponentTypeRegistry.CONTRACT)) {
-            Contract contract = stack.get(DataComponentTypeRegistry.CONTRACT).contract();
-            if (contract == null) return 0;
-            for (Map.Entry<ScalableContractAttribute, Integer> data : contract.allScalableAttributes().entrySet()) {
-                if (data.getKey() instanceof ScalableContractAttribute attribute) {
-                    int level = data.getValue();
-                    if (level > 0 && level <= attribute.stats.size()) {
-                        return attribute.stats.get(level - 1);
+    public static float getStat(Either<ItemStack, Contract> ic, ScalableContractAttribute scalableContractAttribute) {
+        if (ic.left().isPresent()) {
+            ItemStack stack = ic.left().get();
+            if (stack.has(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE)) {
+                ScalableContractAttribute attribute = stack.get(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE).attribute();
+                int level = getLevel(stack, attribute);
+                if (level > 0 && level <= attribute.stats.size()) {
+                    return attribute.stats.get(level - 1);
+                }
+            } else if (stack.has(DataComponentTypeRegistry.CONTRACT)) {
+                Contract contract = stack.get(DataComponentTypeRegistry.CONTRACT).contract();
+                if (contract == null) return 0;
+                for (Map.Entry<ScalableContractAttribute, Integer> data : contract.allScalableAttributes().entrySet()) {
+                    if (data.getKey() instanceof ScalableContractAttribute attribute) {
+                        int level = data.getValue();
+                        if (level > 0 && level <= attribute.stats.size()) {
+                            return attribute.stats.get(level - 1);
+                        }
                     }
                 }
             }
+        } else if (ic.right().isPresent()) {
+            Contract c = ic.right().get();
+            return c.allScalableAttributes().get(scalableContractAttribute);
         }
 
-        return 0.0f;
+        return 0;
     }
 
-    public String getNumeral(ItemStack stack) {
+    public String getNumeral(Either<ItemStack, Contract> stack) {
         return switch(getLevel(stack, this)) {
             case 1 -> "I";
             case 2 -> "II";
             case 3 -> "III";
-            case 4 -> "IV";
             default -> "";
         };
+    }
+
+    public static int getLevel(Either<ItemStack, Contract> ic, ScalableContractAttribute scalableContractAttribute) {
+        if (ic.left().isPresent()) {
+            ItemStack stack = ic.left().get();
+            return getLevel(stack, scalableContractAttribute);
+        } else if (ic.right().isPresent()) {
+            Contract c = ic.right().get();
+            return getLevel(c, scalableContractAttribute);
+        }
+        return 0;
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -103,6 +120,11 @@ public class ScalableContractAttribute extends ContractAttribute {
             return stack.get(DataComponentTypeRegistry.CONTRACT).contract().allScalableAttributes().getOrDefault(attribute, 1);
         }
         return 0;
+    }
+
+    public static int getLevel(Contract contract, ScalableContractAttribute attribute) {
+        if (contract == null) return 0;
+        return contract.allScalableAttributes().getOrDefault(attribute, 1);
     }
 
     @SuppressWarnings("DataFlowIssue")

@@ -39,6 +39,7 @@ public class FrozenRemnantsEntity extends Mob{
     private static final EntityDataAccessor<Boolean> DATA_IS_ON_SCREEN;
     private static final EntityDataAccessor<Float> DATA_HEAD_PITCH;
     private static final EntityDataAccessor<Boolean> DATA_SHOULD_PLAY_SOUND;
+    protected final InterpolationHandler interpolation = new InterpolationHandler(this);
 
     public FrozenRemnantsEntity(EntityType<? extends Mob> ignored, Level level) {
         super(EntityRegistry.FROZEN_REMNANTS.get(), level);
@@ -141,6 +142,11 @@ public class FrozenRemnantsEntity extends Mob{
         this.getEntityData().set(DATA_OWNER_UUID, Optional.of(EntityReference.of(uuid)));
     }
 
+    @Override
+    public InterpolationHandler getInterpolation() {
+        return null;
+    }
+
     public UUID getOwnerUUID() {
         if (this.getEntityData().get(DATA_OWNER_UUID).isEmpty()) {
             return null;
@@ -177,7 +183,7 @@ public class FrozenRemnantsEntity extends Mob{
 
         if (this.shouldPlaySound()) {
             this.setShouldPlaySound(false);
-            this.level().playSound(null, this.getOnPos(), SoundEvents.CREAKING_FREEZE, SoundSource.HOSTILE, 1f, this.level().getRandom().nextFloat() * 0.1F + 0.9F);
+            this.level().playSound(owner, this.getOnPos(), SoundEvents.POWDER_SNOW_PLACE, SoundSource.HOSTILE, 1f, this.level().getRandom().nextFloat() * 0.1F + 0.9F);
         }
     }
 
@@ -190,7 +196,7 @@ public class FrozenRemnantsEntity extends Mob{
         double d1 = owner.getEyeY() - this.getEyeY();
         double d2 = owner.getZ() - this.getZ();
         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-        return !(Math.abs(d1) > (double)1.0E-5F) && !(Math.abs(d3) > (double)1.0E-5F) ? Optional.empty() : Optional.of((float)(-(Mth.atan2(d1, d3) * (double)180.0F / (double)(float)Math.PI)));
+        return !(Math.abs(d1) > 1.0E-5F) && !(Math.abs(d3) > 1.0E-5F) ? Optional.empty() : Optional.of((float)(-(Mth.atan2(d1, d3) * 180 / Math.PI)));
     }
 
     public Optional<Float> calculateYRot() {
