@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -70,8 +71,6 @@ import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
 import org.exodusstudio.frostbite.common.registry.*;
-import org.exodusstudio.frostbite.common.structures.FTOPortal;
-import org.exodusstudio.frostbite.common.structures.OTFPortal;
 import org.exodusstudio.frostbite.common.util.*;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.joml.Vector3f;
@@ -109,7 +108,7 @@ public class ModEvents {
         Level level = event.getLevel();
 
         if (level instanceof ServerLevel serverLevel && serverLevel.dimensionType().hasSkyLight()) {
-            WeatherInfo weatherInfo = Util.getWeatherInfo(serverLevel);
+            WeatherInfo weatherInfo = DataHelper.getWeatherInfo(serverLevel);
 
             if (serverLevel.getGameRules().get(GameRules.ADVANCE_WEATHER)) {
                 int i = weatherInfo.snowTime;
@@ -304,7 +303,7 @@ public class ModEvents {
         Level level = event.getEntity().level();
         RandomSource random = player.getRandom();
         if (level.isClientSide() && isFrostbite(level)) {
-            WeatherInfo weatherInfo = Util.getWeatherInfo(level);
+            WeatherInfo weatherInfo = DataHelper.getWeatherInfo(level);
             float r = Mth.lerp(weatherInfo.whiteoutLevel,
                       Mth.lerp(weatherInfo.blizzardLevel, 30, 20), 15);
             float offset = Mth.lerp(weatherInfo.whiteoutLevel,
@@ -377,8 +376,10 @@ public class ModEvents {
                 Frostbite.heatersToRemove.clear();
             }
             if (isFrostbite(level)) {
-                Frostbite.bossesToAdd.forEach((pos, boss) -> {
-                    if (Frostbite.addedBosses.containsKey(pos)) return;
+                Map<BlockPos, EntityType<?>> bossesToAdd = DataHelper.getBossesToAdd(level);
+                Map<BlockPos, EntityType<?>> addedBosses = DataHelper.getAddedBosses(level);
+                bossesToAdd.forEach((pos, boss) -> {
+                    if (addedBosses.containsKey(pos)) return;
 
                     Entity e = boss.create(level, EntitySpawnReason.STRUCTURE);
                     if (e == null) {
@@ -392,8 +393,8 @@ public class ModEvents {
                         monkEntity.setArenaCenter(Vec3.atCenterOf(pos).toVector3f());
                     }
                 });
-                Frostbite.addedBosses.putAll(Frostbite.bossesToAdd);
-                Frostbite.bossesToAdd.clear();
+                DataHelper.addAddedBosses(level, bossesToAdd);
+                DataHelper.clearBossesToAdd(level);
             }
         });
         TemperatureManager.getInstance().updateEntityTemperatures(entities);

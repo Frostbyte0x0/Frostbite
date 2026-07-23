@@ -44,7 +44,7 @@ public class WeatherCommand {
     }
 
     private static int setSnow(CommandSourceStack source, int time) {
-        WeatherInfo weatherInfo = Util.getWeatherInfo(source.getLevel());
+        WeatherInfo weatherInfo = DataHelper.getWeatherInfo(source.getLevel());
         weatherInfo.setSnowing();
         DataHelper.setWeatherInfo(source.getLevel(), weatherInfo);
         source.sendSuccess(() -> Component.literal("Set frostbite weather to snow"), true);
@@ -52,7 +52,7 @@ public class WeatherCommand {
     }
 
     private static int setBlizzard(CommandSourceStack source, int time) {
-        WeatherInfo weatherInfo = Util.getWeatherInfo(source.getLevel());
+        WeatherInfo weatherInfo = DataHelper.getWeatherInfo(source.getLevel());
         weatherInfo.setBlizzarding();
         DataHelper.setWeatherInfo(source.getLevel(), weatherInfo);
         source.sendSuccess(() -> Component.literal("Set frostbite weather to blizzard"), true);
@@ -60,7 +60,7 @@ public class WeatherCommand {
     }
 
     private static int setWhiteout(CommandSourceStack source, int time) {
-        WeatherInfo weatherInfo = Util.getWeatherInfo(source.getLevel());
+        WeatherInfo weatherInfo = DataHelper.getWeatherInfo(source.getLevel());
         weatherInfo.setWhiteouting();
         DataHelper.setWeatherInfo(source.getLevel(), weatherInfo);
         source.sendSuccess(() -> Component.literal("Set frostbite weather to whiteout"), true);

@@ -19,8 +19,8 @@ public class SideTile {
     public SideTile(ListCodexEntry entry) {
         this.entry = entry;
         this.titleLines = Minecraft.getInstance().font.split(entry.title, 65);
-        this.descriptionLines = Minecraft.getInstance().font.split(entry.description, 65);
-        this.tipsLines = Minecraft.getInstance().font.split(entry.tips, 65);
+        this.descriptionLines = Minecraft.getInstance().font.split(entry.description, 140);
+        this.tipsLines = Minecraft.getInstance().font.split(entry.tips, 140);
     }
 
     public void drawSide(GuiGraphicsExtractor gui, int x, int y) {

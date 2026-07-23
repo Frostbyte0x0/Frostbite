@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.FormattedCharSequence;
@@ -24,10 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
@@ -385,13 +384,7 @@ public class Util {
                itemStack.is(Items.ROTTEN_FLESH);
     }
 
-    public static WeatherInfo getWeatherInfo(Level level) {
-        if (level.hasData(AttachmentRegistry.WEATHER_INFO)) {
-            return level.getData(AttachmentRegistry.WEATHER_INFO);
-        } else {
-            WeatherInfo weatherInfo = new WeatherInfo();
-            level.setData(AttachmentRegistry.WEATHER_INFO, weatherInfo);
-            return weatherInfo;
-        }
+    public static Level getLevel(ResourceKey<Level> level) {
+        return Minecraft.getInstance().getSingleplayerServer().getLevel(level);
     }
 }

@@ -30,7 +30,7 @@ public abstract class CodexEntry {
     }
 
     public static void addEntryToPlayer(Player player, String entryId) {
-        if (!DataHelper.getString(player, "unlocked_entries").contains(entryId)) {
+        if (!DataHelper.getString(player, "unlocked_entries").contains(entryId) && Codex.ENTRIES.containsKey(entryId)) {
             DataHelper.setData(player, "unlocked_entries", DataHelper.getString(player, "unlocked_entries") + entryId + ";");
             Minecraft.getInstance().gui.toastManager().addToast(new CodexEntryToast(Codex.ENTRIES.get(entryId)));
         }

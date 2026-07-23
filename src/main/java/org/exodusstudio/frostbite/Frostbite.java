@@ -9,11 +9,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -38,7 +36,6 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Mod(Frostbite.MOD_ID)
@@ -49,8 +46,6 @@ public class Frostbite {
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static List<BreathEntityLike> breathEntityLikes = new ArrayList<>();
     public static List<BreathEntityLike> breathEntityLikesToRemove = new ArrayList<>();
-    public static final HashMap<BlockPos, EntityType<?>> addedBosses = new HashMap<>();
-    public static final HashMap<BlockPos, EntityType<?>> bossesToAdd = new HashMap<>();
     public static final ResourceKey<Level> frostbiteKey =
             ResourceKey.create(Registries.DIMENSION, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
 

@@ -55,9 +55,9 @@ public class TemperatureManager {
 
                 if (isFrostbite(entity.level())) {
                     float delta = 1.5f;
-                    if (Util.getWeatherInfo(entity.level()).isWhiteouting) {
+                    if (DataHelper.getWeatherInfo(entity.level()).isWhiteouting) {
                         delta = 3.5f;
-                    } else if (Util.getWeatherInfo(entity.level()).isBlizzarding) {
+                    } else if (DataHelper.getWeatherInfo(entity.level()).isBlizzarding) {
                         delta = 2.5f;
                     }
                     outerTempChange -= delta;

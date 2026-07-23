@@ -34,6 +34,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSetting
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
 import org.exodusstudio.frostbite.common.util.DataHelper;
+import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -83,12 +84,12 @@ public class OTFPortal extends Structure {
 
     private static boolean extraSpawningChecks(Structure.GenerationContext context) {
         float dist = Mth.sqrt((float) context.chunkPos().getWorldPosition().distToCenterSqr(0, 0, 0));
-        return DataHelper.getBoolean(Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD), "can_spawn_otf") && dist > 1250;
+        return DataHelper.getBoolean(Util.getLevel(Level.OVERWORLD), "can_spawn_otf") && dist > 1000;
     }
 
     @Override
     public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer pieces) {
-        DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD), "can_spawn_otf", false);
+        DataHelper.setData(Util.getLevel(Level.OVERWORLD), "can_spawn_otf", false);
         super.afterPlace(level, structureManager, chunkGenerator, random, boundingBox, chunkPos, pieces);
         DataHelper.setData(level.getLevel(), "overworld_spawn_point", pieces.calculateBoundingBox().getCenter());
     }
@@ -116,8 +117,8 @@ public class OTFPortal extends Structure {
                 p.setOrientation(Direction.EAST);
                 p.move(0, -4, 0);
             });
-            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "overworld_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
-            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "can_spawn_otf", false);
+            DataHelper.setData(Util.getLevel(level), "overworld_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
+            DataHelper.setData(Util.getLevel(level), "can_spawn_otf", false);
             return structureStart;
         }
         return StructureStart.INVALID_START;

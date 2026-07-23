@@ -3,7 +3,6 @@ package org.exodusstudio.frostbite.common.structures;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -34,6 +33,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
 import org.exodusstudio.frostbite.common.util.DataHelper;
+import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -105,14 +105,14 @@ public class FTOPortal extends Structure {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
                 randomState, structureTemplateManager, seed, new ChunkPos(0, 0), references, heightAccessor, validBiome);
 
-        if (!DataHelper.getBoolean(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "can_spawn_fto")) {
+        if (!DataHelper.getBoolean(Util.getLevel(level), "can_spawn_fto")) {
             return StructureStart.INVALID_START;
         }
 
         if (!structureStart.equals(StructureStart.INVALID_START)) {
             structureStart.getPieces().forEach(p -> p.setOrientation(Direction.NORTH));
-            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "frostbite_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
-            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "can_spawn_fto", false);
+            DataHelper.setData(Util.getLevel(level), "frostbite_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
+            DataHelper.setData(Util.getLevel(level), "can_spawn_fto", false);
         }
 
         return structureStart;
@@ -120,7 +120,7 @@ public class FTOPortal extends Structure {
 
     @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
-        if (!DataHelper.getBoolean(Minecraft.getInstance().getSingleplayerServer().getLevel(Frostbite.frostbiteKey), "can_spawn_fto")) {
+        if (!DataHelper.getBoolean(Util.getLevel(Frostbite.frostbiteKey), "can_spawn_fto")) {
             return Optional.empty();
         }
 
