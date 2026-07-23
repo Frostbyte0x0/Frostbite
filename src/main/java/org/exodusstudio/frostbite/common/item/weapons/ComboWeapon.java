@@ -20,6 +20,7 @@ import net.minecraft.world.phys.AABB;
 import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.exodusstudio.frostbite.common.util.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.List;
@@ -161,10 +162,10 @@ public abstract class ComboWeapon extends Item {
     }
 
     public static void setLastHit(LivingEntity entity, ComboWeapon comboWeapon) {
-        Util.setData(entity, "last_hit", (int) entity.level().getGameTime());
+        DataHelper.setData(entity, "last_hit", (int) entity.level().getGameTime());
         ComboStep currentStep = comboWeapon.getComboStep(entity);
         if (currentStep != null) {
-            Util.setData(entity, "combo_length", currentStep.delayToNext);
+            DataHelper.setData(entity, "combo_length", currentStep.delayToNext);
         }
     }
 
@@ -175,23 +176,23 @@ public abstract class ComboWeapon extends Item {
     }
 
     public static float getComboLength(LivingEntity entity) {
-        return Util.getFloat(entity, "combo_length");
+        return DataHelper.getFloat(entity, "combo_length");
     }
 
     public static float getTimeSinceLastHit(LivingEntity entity) {
-        return (entity.level().getGameTime() - Util.getInt(entity, "last_hit")) / 20f;
+        return (entity.level().getGameTime() - DataHelper.getInt(entity, "last_hit")) / 20f;
     }
 
     public static void resetComboIndex(LivingEntity entity) {
-        Util.setData(entity, "combo_index", 0);
+        DataHelper.setData(entity, "combo_index", 0);
     }
 
     public static void increaseComboIndex(LivingEntity entity) {
-        Util.setData(entity, "combo_index", getComboIndex(entity) + 1);
+        DataHelper.setData(entity, "combo_index", getComboIndex(entity) + 1);
     }
 
     public static int getComboIndex(LivingEntity entity) {
-        return Util.getInt(entity, "combo_index");
+        return DataHelper.getInt(entity, "combo_index");
     }
 
     public ComboStep getComboStep(LivingEntity entity) {

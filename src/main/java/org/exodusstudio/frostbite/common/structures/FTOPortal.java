@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.structures;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSetting
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
+import org.exodusstudio.frostbite.common.util.DataHelper;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -57,8 +59,6 @@ public class FTOPortal extends Structure {
     private final JigsawStructure.MaxDistance maxDistanceFromCenter;
     private final DimensionPadding dimensionPadding;
     private final LiquidSettings liquidSettings;
-    public static int count = 0;
-    public static boolean canSpawn = true;
 
     public FTOPortal(Structure.StructureSettings config,
                      Holder<StructureTemplatePool> startPool,
@@ -84,7 +84,7 @@ public class FTOPortal extends Structure {
     @Override
     public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer pieces) {
         super.afterPlace(level, structureManager, chunkGenerator, random, boundingBox, chunkPos, pieces);
-        Frostbite.frostbiteSpawnPoint = pieces.calculateBoundingBox().getCenter();
+        DataHelper.setData(level.getLevel(), "frostbite_spawn_point", pieces.calculateBoundingBox().getCenter());
     }
 
     @Override
@@ -105,15 +105,14 @@ public class FTOPortal extends Structure {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
                 randomState, structureTemplateManager, seed, new ChunkPos(0, 0), references, heightAccessor, validBiome);
 
-        if (!canSpawn) {//count > 1) {
+        if (!DataHelper.getBoolean(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "can_spawn_fto")) {
             return StructureStart.INVALID_START;
         }
 
         if (!structureStart.equals(StructureStart.INVALID_START)) {
-            //count++;
             structureStart.getPieces().forEach(p -> p.setOrientation(Direction.NORTH));
-            Frostbite.frostbiteSpawnPoint = structureStart.getPieces().getFirst().getLocatorPosition();
-            canSpawn = false;
+            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "frostbite_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
+            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "can_spawn_fto", false);
         }
 
         return structureStart;
@@ -121,7 +120,7 @@ public class FTOPortal extends Structure {
 
     @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
-        if (!canSpawn) {//count > 0) {
+        if (!DataHelper.getBoolean(Minecraft.getInstance().getSingleplayerServer().getLevel(Frostbite.frostbiteKey), "can_spawn_fto")) {
             return Optional.empty();
         }
 

@@ -39,6 +39,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.exodusstudio.frostbite.common.util.DataHelper;
 
 import java.util.Optional;
 
@@ -84,8 +85,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
     @Override
     public TeleportTransition getPortalDestination(ServerLevel originLevel, Entity entity, BlockPos pos) {
-        ResourceKey<Level> frostbiteKey = ResourceKey.create(Registries.DIMENSION, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
-        ResourceKey<Level> resourcekey = originLevel.dimension() == frostbiteKey ? Level.OVERWORLD : frostbiteKey;
+        ResourceKey<Level> resourcekey = originLevel.dimension() == Frostbite.frostbiteKey ? Level.OVERWORLD : Frostbite.frostbiteKey;
         ServerLevel destinationLevel = originLevel.getServer().getLevel(resourcekey);
 
         if (destinationLevel == null) {
@@ -122,9 +122,9 @@ public class FrostbitePortalBlock extends Block implements Portal {
                                 new BoundingBox(chunkPos.getMinBlockX(), destinationLevel.getMinY(), chunkPos.getMinBlockZ(),
                                         chunkPos.getMaxBlockX(), destinationLevel.getMaxY() + 1, chunkPos.getMaxBlockZ()), chunkPos));
             } catch (IllegalStateException ignored) {}
-            exitPos = Frostbite.frostbiteSpawnPoint.offset(0, -2, 0);
+            exitPos = DataHelper.getBlockPos(destinationLevel, "frostbite_spawn_point").offset(0, -2, 0);
         } else {
-            exitPos = Frostbite.overworldSpawnPoint.offset(0, -2, 0);
+            exitPos = DataHelper.getBlockPos(destinationLevel, "overworld_spawn_point").offset(0, -2, 0);
         }
 
         BlockPos finalExitPos = exitPos;

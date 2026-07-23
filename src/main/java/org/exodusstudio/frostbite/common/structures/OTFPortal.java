@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.structures;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -31,8 +32,8 @@ import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
+import org.exodusstudio.frostbite.common.util.DataHelper;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -58,8 +59,6 @@ public class OTFPortal extends Structure {
     private final JigsawStructure.MaxDistance maxDistanceFromCenter;
     private final DimensionPadding dimensionPadding;
     private final LiquidSettings liquidSettings;
-    public static int count = 0;
-    public static boolean canSpawn = true;
 
     public OTFPortal(Structure.StructureSettings config,
                          Holder<StructureTemplatePool> startPool,
@@ -84,14 +83,14 @@ public class OTFPortal extends Structure {
 
     private static boolean extraSpawningChecks(Structure.GenerationContext context) {
         float dist = Mth.sqrt((float) context.chunkPos().getWorldPosition().distToCenterSqr(0, 0, 0));
-        return canSpawn && dist > 750;
+        return DataHelper.getBoolean(Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD), "can_spawn_otf") && dist > 1250;
     }
 
     @Override
     public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer pieces) {
-        canSpawn = false;
+        DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(Level.OVERWORLD), "can_spawn_otf", false);
         super.afterPlace(level, structureManager, chunkGenerator, random, boundingBox, chunkPos, pieces);
-        Frostbite.overworldSpawnPoint = pieces.calculateBoundingBox().getCenter();
+        DataHelper.setData(level.getLevel(), "overworld_spawn_point", pieces.calculateBoundingBox().getCenter());
     }
 
     @Override
@@ -117,8 +116,8 @@ public class OTFPortal extends Structure {
                 p.setOrientation(Direction.EAST);
                 p.move(0, -4, 0);
             });
-            Frostbite.overworldSpawnPoint = structureStart.getPieces().getFirst().getLocatorPosition();
-            canSpawn = false;
+            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "overworld_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
+            DataHelper.setData(Minecraft.getInstance().getSingleplayerServer().getLevel(level), "can_spawn_otf", false);
             return structureStart;
         }
         return StructureStart.INVALID_START;

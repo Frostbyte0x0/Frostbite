@@ -86,8 +86,8 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void reset(ServerStoppedEvent event) {
-        OTFPortal.canSpawn = true;
-        FTOPortal.canSpawn = true;
+//        OTFPortal.canSpawn = true;
+//        FTOPortal.canSpawn = true;
     }
 
     @SubscribeEvent
@@ -172,7 +172,7 @@ public class ModEvents {
             }
 
             weatherInfo.blizzardLevel = Mth.clamp(weatherInfo.blizzardLevel, 0.0F, 1.0F);
-            Util.setWeatherInfo(serverLevel, weatherInfo);
+            DataHelper.setWeatherInfo(serverLevel, weatherInfo);
         }
     }
 

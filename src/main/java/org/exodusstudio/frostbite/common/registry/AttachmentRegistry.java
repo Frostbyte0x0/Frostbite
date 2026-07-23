@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -21,19 +21,40 @@ public class AttachmentRegistry {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Frostbite.MOD_ID);
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, Integer> INT_STREAM_CODEC = StreamCodec.of(
-            FriendlyByteBuf::writeInt,
-            FriendlyByteBuf::readInt);
-    public static final StreamCodec<RegistryFriendlyByteBuf, Long> LONG_STREAM_CODEC = StreamCodec.of(
-            FriendlyByteBuf::writeLong,
-            FriendlyByteBuf::readLong);
-    public static final StreamCodec<RegistryFriendlyByteBuf, Float> FLOAT_STREAM_CODEC = StreamCodec.of(
-            FriendlyByteBuf::writeFloat,
-            FriendlyByteBuf::readFloat);
-    public static final StreamCodec<RegistryFriendlyByteBuf, String> STRING_STREAM_CODEC = StreamCodec.of(
-            FriendlyByteBuf::writeUtf,
-            FriendlyByteBuf::readUtf);
-
+    public static final StreamCodec<RegistryFriendlyByteBuf, Map<String, Boolean>> MAP_STRING_BOOLEAN_STREAM_CODEC = StreamCodec.of(
+            (b, m) -> {
+                b.writeInt(m.size());
+                m.forEach((k, v) -> {
+                    b.writeUtf(k);
+                    b.writeBoolean(v);
+                });
+            },
+            b -> {
+                Map<String, Boolean> m = new HashMap<>();
+                int size = b.readInt();
+                for (int i = 0; i < size; i++) {
+                    m.put(b.readUtf(), b.readBoolean());
+                }
+                return m;
+            });
+    public static final StreamCodec<RegistryFriendlyByteBuf, Map<String, BlockPos>> MAP_STRING_BLOCK_POS_STREAM_CODEC = StreamCodec.of(
+            (b, m) -> {
+                b.writeInt(m.size());
+                m.forEach((k, v) -> {
+                    b.writeUtf(k);
+                    b.writeInt(v.getX());
+                    b.writeInt(v.getY());
+                    b.writeInt(v.getZ());
+                });
+            },
+            b -> {
+                Map<String, BlockPos> m = new HashMap<>();
+                int size = b.readInt();
+                for (int i = 0; i < size; i++) {
+                    m.put(b.readUtf(), new BlockPos(b.readInt(), b.readInt(), b.readInt()));
+                }
+                return m;
+            });
     public static final StreamCodec<RegistryFriendlyByteBuf, Map<String, Integer>> MAP_STRING_INT_STREAM_CODEC = StreamCodec.of(
             (b, m) -> {
                 b.writeInt(m.size());
@@ -164,6 +185,17 @@ public class AttachmentRegistry {
                     .sync(MAP_STRING_STRING_STREAM_CODEC)
                     .serialize(Codec.unboundedMap(Codec.STRING, Codec.STRING).fieldOf("map_string_string")).build());
 
+    public static final Supplier<AttachmentType<Map<String, BlockPos>>> MAP_STRING_BLOCK_POS = ATTACHMENT_TYPES.register(
+            "map_string_block_pos", () -> AttachmentType.builder(() -> (Map<String, BlockPos>) new HashMap<String, BlockPos>())
+                    .sync(MAP_STRING_BLOCK_POS_STREAM_CODEC)
+                    .serialize(Codec.unboundedMap(Codec.STRING, BlockPos.CODEC).fieldOf("map_string_block_pos"))
+                    .build());
+
+    public static final Supplier<AttachmentType<Map<String, Boolean>>> MAP_STRING_BOOLEAN = ATTACHMENT_TYPES.register(
+            "map_string_boolean", () -> AttachmentType.builder(() -> (Map<String, Boolean>) new HashMap<String, Boolean>())
+                    .sync(MAP_STRING_BOOLEAN_STREAM_CODEC)
+                    .serialize(Codec.unboundedMap(Codec.STRING, Codec.BOOL).fieldOf("map_string_boolean"))
+                    .build());
 
 
     public static final Supplier<AttachmentType<PlayerContractInfo>> PLAYER_CONTRACT_INFO = ATTACHMENT_TYPES.register(

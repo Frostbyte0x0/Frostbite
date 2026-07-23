@@ -270,7 +270,7 @@ public class EntityRegistry {
             ENTITY_TYPES.register("monk", () -> EntityType.Builder
                     .of(MonkEntity::new, MobCategory.MONSTER)
                     .sized(0.75f, 2f)
-                    .clientTrackingRange(3)
+                    .clientTrackingRange(2)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"))));
 
@@ -278,7 +278,7 @@ public class EntityRegistry {
             ENTITY_TYPES.register("shaman", () -> EntityType.Builder
                     .of(ShamanEntity::new, MobCategory.AMBIENT)
                     .sized(0.75f, 2f)
-                    .clientTrackingRange(3)
+                    .clientTrackingRange(2)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "shaman"))));
 
@@ -313,7 +313,7 @@ public class EntityRegistry {
             ENTITY_TYPES.register("chief_guard", () -> EntityType.Builder
                     .of(ChiefGuardEntity::new, MobCategory.AMBIENT)
                     .sized(0.6F, 1.95F)
-                    .clientTrackingRange(3)
+                    .clientTrackingRange(2)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chief_guard"))));
     public static final Supplier<EntityType<GuardEntity>> GUARD =

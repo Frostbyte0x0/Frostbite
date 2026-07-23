@@ -10,8 +10,11 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -46,10 +49,10 @@ public class Frostbite {
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static List<BreathEntityLike> breathEntityLikes = new ArrayList<>();
     public static List<BreathEntityLike> breathEntityLikesToRemove = new ArrayList<>();
-    public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
-    public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
     public static final HashMap<BlockPos, EntityType<?>> addedBosses = new HashMap<>();
     public static final HashMap<BlockPos, EntityType<?>> bossesToAdd = new HashMap<>();
+    public static final ResourceKey<Level> frostbiteKey =
+            ResourceKey.create(Registries.DIMENSION, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
 
     public Frostbite(IEventBus modEventBus, ModContainer ignored) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);

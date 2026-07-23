@@ -31,17 +31,27 @@ public class CodexEntryToast implements Toast {
 
     @Override
     public void update(ToastManager manager, long l) {
-        if (l >= 5000 * manager.getNotificationDisplayTimeMultiplier()) {
+        if (l >= 10000 * manager.getNotificationDisplayTimeMultiplier()) {
             this.visibility = Toast.Visibility.HIDE;
         }
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, Font font, long l) {
-        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE.get(true, false), -50, 0, this.width() + 50, this.height() + 11);
-        int textLeft = -8;
+    public int width() {
+        return Toast.super.width() + 50;
+    }
 
-        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, entry.image, -44, 6, 32, 32);
+    @Override
+    public int height() {
+        return Toast.super.height() + 11;
+    }
+
+    @Override
+    public void extractRenderState(GuiGraphicsExtractor graphics, Font font, long l) {
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE.get(true, false), 0, 0, this.width(), this.height());
+        int textLeft = 42;
+
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, entry.image, 6, 6, 32, 32);
 
         int textTop = 7;
 
