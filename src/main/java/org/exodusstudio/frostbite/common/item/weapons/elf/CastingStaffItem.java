@@ -8,12 +8,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
+import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.util.BreathEntityLike;
+import org.exodusstudio.frostbite.common.registry.PseudoEntityTypes;
+import org.exodusstudio.frostbite.common.util.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Vector3f;
 
@@ -67,9 +68,9 @@ public class CastingStaffItem extends ModeWeapon {
                         }
                     }
 
-                    Frostbite.breathEntityLikes.add(
-                            new BreathEntityLike(vec32.scale(0.15),
-                                    new AABB(vec3.add(0.75), vec3.subtract(0.75)), (ServerLevel) level, owner));
+                    DataHelper.addPseudoEntity(level, PseudoEntityTypes.BREATH,
+                            new PseudoEntity(vec32.scale(0.15),
+                            new AABB(vec3.add(0.75), vec3.subtract(0.75)), owner.getUUID(), level.getGameTime()));
                 }
                 break;
             case "Spikes":

@@ -7,10 +7,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
+import org.exodusstudio.frostbite.common.registry.PseudoEntityTypes;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -123,6 +127,43 @@ public class DataHelper {
 
     public static void clearBossesToAdd(IAttachmentHolder holder) {
         holder.setData(AttachmentRegistry.BOSSES_TO_ADD, new HashMap<>());
+    }
+
+    public static void addPseudoEntity(IAttachmentHolder holder, PseudoEntityTypes.PseudoEntityType type, PseudoEntity pseudoEntity) {
+        String key = type.id();
+        Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
+        if (!map.containsKey(key)) map = addValueToMap(map, key, new ArrayList<>());
+        map.get(key).add(pseudoEntity);
+        holder.setData(AttachmentRegistry.PSEUDO_ENTITIES, map);
+    }
+
+    public static List<PseudoEntity> getPseudoEntities(IAttachmentHolder holder, String key) {
+        Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
+        if (!map.containsKey(key)) map = addValueToMap(map, key, new ArrayList<>());
+        return map.get(key);
+    }
+
+    public static Map<String, List<PseudoEntity>> getAllPseudoEntities(IAttachmentHolder holder) {
+        return new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
+    }
+
+    public static void removePseudoEntity(IAttachmentHolder holder, String key, PseudoEntity pseudoEntity) {
+        Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
+        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map.get(key).remove(pseudoEntity);
+        holder.setData(AttachmentRegistry.PSEUDO_ENTITIES, map);
+    }
+
+    public static void removePseudoEntities(IAttachmentHolder holder, List<PseudoEntity> pseudoEntities) {
+        for (PseudoEntity pseudoEntity : pseudoEntities) {
+            // Find the key for this pseudoEntity and remove it
+            for (Map.Entry<String, List<PseudoEntity>> entry : getAllPseudoEntities(holder).entrySet()) {
+                if (entry.getValue().contains(pseudoEntity)) {
+                    removePseudoEntity(holder, entry.getKey(), pseudoEntity);
+                    break;
+                }
+            }
+        }
     }
 
     public static <K, V> Map<K, V> addValueToMap(Map<K, V> map, K key, V value) {

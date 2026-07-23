@@ -62,6 +62,7 @@ import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
+import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
@@ -331,7 +332,6 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void serverTick(ServerTickEvent.Pre event) {
-        List<LivingEntity> entities = new ArrayList<>();
         event.getServer().getAllLevels().forEach((level) -> {
             HashMap<UUID, Pair<String, Long>> toRemove = new HashMap<>();
 
@@ -356,13 +356,13 @@ public class ModEvents {
             for (Map.Entry<UUID, Pair<String, Long>> entry : toRemove.entrySet()) {
                 LivingEntity user = (LivingEntity) level.getEntity(entry.getKey());
                 if (user == null) continue;
-                String chargeAttackRenderable = entry.getValue().getFirst();
-                Renderable.removeRenderable(user, chargeAttackRenderable);
+                String renderable = entry.getValue().getFirst();
+                Renderable.removeRenderable(user, renderable);
             }
 
             level.getEntities().getAll().forEach((entity) -> {
                 if (entity instanceof LivingEntity livingEntity) {
-                    entities.add(livingEntity);
+                    TemperatureManager.updateEntityTemperature(livingEntity);
 //                    if (livingEntity instanceof GuardEntity guard && Minecraft.getInstance().level != null) {
 //                        Util.spawnParticlesFromAABB(Minecraft.getInstance().level, guard.getAttackAABB(), 10);
 //                    }
@@ -396,11 +396,34 @@ public class ModEvents {
                 DataHelper.addAddedBosses(level, bossesToAdd);
                 DataHelper.clearBossesToAdd(level);
             }
+
+            List<PseudoEntity> pseudoEntitiesToRemove = new ArrayList<>();
+            DataHelper.getAllPseudoEntities(level).forEach((key, pseudoEntities) -> {
+                PseudoEntityTypes.PseudoEntityType type = PseudoEntityTypes.PSEUDO_ENTITY_TYPES.get(key);
+                pseudoEntities.forEach(pseudoEntity -> {
+                    PseudoEntity.PseudoEntityContext context = new PseudoEntity.PseudoEntityContext(
+                            pseudoEntity,
+                            level,
+                            level.getEntity(pseudoEntity.owner),
+                            level.getGameTime() - pseudoEntity.startTick);
+
+                    if (Minecraft.getInstance().level != null)
+                        Util.spawnParticlesFromAABB(Minecraft.getInstance().level, pseudoEntity.aabb, 10);
+
+                    if (type == null) {
+                        Frostbite.LOGGER.error("PseudoEntityType {} not found", key);
+                        return;
+                    }
+                    if (type.shouldRemove().apply(context)) {
+                        pseudoEntitiesToRemove.add(pseudoEntity);
+                        return;
+                    }
+                    type.tick().accept(context);
+                });
+            });
+
+            DataHelper.removePseudoEntities(level, pseudoEntitiesToRemove);
         });
-        TemperatureManager.getInstance().updateEntityTemperatures(entities);
-        Frostbite.breathEntityLikes.forEach(BreathEntityLike::tick);
-        Frostbite.breathEntityLikes.removeAll(Frostbite.breathEntityLikesToRemove);
-        Frostbite.breathEntityLikesToRemove.clear();
     }
 
     @SubscribeEvent

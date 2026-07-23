@@ -29,7 +29,6 @@ import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBu
 import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
 import org.exodusstudio.frostbite.common.registry.*;
-import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.slf4j.Logger;
@@ -44,8 +43,6 @@ public class Frostbite {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static List<HeaterStorage> heaterStorages = new ArrayList<>();
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
-    public static List<BreathEntityLike> breathEntityLikes = new ArrayList<>();
-    public static List<BreathEntityLike> breathEntityLikesToRemove = new ArrayList<>();
     public static final ResourceKey<Level> frostbiteKey =
             ResourceKey.create(Registries.DIMENSION, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
 

@@ -17,9 +17,9 @@ public interface TE {
         }
 
         if (inner) {
-            ((TE) instance()).setInnerTemp(Math.max(decrease + ((TE) instance()).getInnerTemp(), MIN_INNER_TEMP));
+            ((TE) instance()).setInnerTemp(Math.max(-decrease + ((TE) instance()).getInnerTemp(), MIN_INNER_TEMP));
         } else {
-            ((TE) instance()).setOuterTemp(Math.min(decrease + ((TE) instance()).getOuterTemp(), MIN_TEMP));
+            ((TE) instance()).setOuterTemp(Math.max(-decrease + ((TE) instance()).getOuterTemp(), MIN_TEMP));
         }
     }
 
