@@ -70,7 +70,7 @@ public class MonkEntity extends Monster implements TargetingEntity {
     private static final Component MONK_NAME_COMPONENT = Component.translatable("entity.monk.boss_bar");
     private final ServerBossEvent bossEvent = (ServerBossEvent)
             new ServerBossEvent(Mth.createInsecureUUID(this.random), MONK_NAME_COMPONENT,
-                    BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
+                    BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(false);
     public final AnimationState clapAnimationState = new AnimationState();
     public static final int TP_DIAMETER = 15;
     public static final int ILLUSION_AMOUNT = 10;

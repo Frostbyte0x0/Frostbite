@@ -9,8 +9,9 @@ import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.attribute.modifier.ColorModifier;
 import net.minecraft.world.attribute.modifier.FloatModifier;
 import net.minecraft.world.attribute.modifier.FloatWithAlpha;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.timeline.Timelines;
-import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Set;
 
@@ -69,14 +70,14 @@ public class FrostbiteWeatherAttributes {
     }
 
     public interface WeatherAccess {
-        static WeatherAccess from() {
+        static WeatherAccess from(Level level) {
             return new WeatherAccess() {
                 public float blizzardLevel() {
-                    return Frostbite.weatherInfo.blizzardLevel;
+                    return Util.getWeatherInfo(level).blizzardLevel;
                 }
 
                 public float whiteoutLevel() {
-                    return Frostbite.weatherInfo.whiteoutLevel;
+                    return Util.getWeatherInfo(level).whiteoutLevel;
                 }
             };
         }

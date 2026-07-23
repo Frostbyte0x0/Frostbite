@@ -1,11 +1,30 @@
 package org.exodusstudio.frostbite.common.weather;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 
 public class WeatherInfo {
+    public static final Codec<WeatherInfo> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("snow_time").forGetter(w -> w.snowTime),
+            Codec.INT.fieldOf("blizzard_time").forGetter(w -> w.blizzardTime),
+            Codec.INT.fieldOf("whiteout_time").forGetter(w -> w.whiteoutTime),
+            Codec.BOOL.fieldOf("is_blizzarding").forGetter(w -> w.isBlizzarding),
+            Codec.BOOL.fieldOf("is_whiteouting").forGetter(w -> w.isWhiteouting),
+            Codec.FLOAT.fieldOf("blizzard_level").forGetter(w -> w.blizzardLevel),
+            Codec.FLOAT.fieldOf("whiteout_level").forGetter(w -> w.whiteoutLevel)
+    ).apply(instance, WeatherInfo::new));
+
+    public static final StreamCodec<ByteBuf, WeatherInfo> STREAM_CODEC = StreamCodec.of(
+            WeatherInfo::toBuffer,
+            WeatherInfo::fromBuffer
+    );
+
     private static final RandomSource source = RandomSource.create();
     public static final IntProvider BLIZZARD_DELAY = UniformInt.of(12000, 180000);
     public static final IntProvider BLIZZARD_DURATION = UniformInt.of(12000, 24000);
@@ -70,5 +89,27 @@ public class WeatherInfo {
         whiteoutTime = t;
         isBlizzarding = true;
         isWhiteouting = true;
+    }
+
+    public static void toBuffer(final ByteBuf buffer, WeatherInfo info) {
+        buffer.writeInt(info.snowTime);
+        buffer.writeInt(info.blizzardTime);
+        buffer.writeInt(info.whiteoutTime);
+        buffer.writeBoolean(info.isBlizzarding);
+        buffer.writeBoolean(info.isWhiteouting);
+        buffer.writeFloat(info.blizzardLevel);
+        buffer.writeFloat(info.whiteoutLevel);
+    }
+
+    public static WeatherInfo fromBuffer(ByteBuf buffer) {
+        return new WeatherInfo(
+                buffer.readInt(),
+                buffer.readInt(),
+                buffer.readInt(),
+                buffer.readBoolean(),
+                buffer.readBoolean(),
+                buffer.readFloat(),
+                buffer.readFloat()
+        );
     }
 }

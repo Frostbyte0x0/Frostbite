@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.mixin;
 import net.minecraft.world.entity.LivingEntity;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -13,22 +14,22 @@ public class LivingEntityMixin implements TE {
 
     @Override
     public float getInnerTemp() {
-        return frostbite$entity.getData(AttachmentRegistry.INNER_TEMPERATURE);
+        return Util.getFloat(frostbite$entity, "inner_temperature");
     }
 
     @Override
     public void setInnerTemp(float temp) {
-        frostbite$entity.setData(AttachmentRegistry.INNER_TEMPERATURE, temp);
+        Util.setData(frostbite$entity, "inner_temperature", temp);
     }
 
     @Override
     public float getOuterTemp() {
-        return frostbite$entity.getData(AttachmentRegistry.OUTER_TEMPERATURE);
+        return Util.getFloat(frostbite$entity, "outer_temperature");
     }
 
     @Override
     public void setOuterTemp(float temp) {
-        frostbite$entity.setData(AttachmentRegistry.OUTER_TEMPERATURE, temp);
+        Util.setData(frostbite$entity, "outer_temperature", temp);
     }
 
     @Override

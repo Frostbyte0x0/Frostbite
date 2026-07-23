@@ -51,13 +51,13 @@ public class PrimaryLevelDataMixin {
                 Frostbite.overworldSpawnPoint.getY(),
                 Frostbite.overworldSpawnPoint.getZ()});
 
-        tag.putInt("snowTime", Frostbite.weatherInfo.snowTime);
-        tag.putInt("blizzardTime", Frostbite.weatherInfo.blizzardTime);
-        tag.putInt("whiteoutTime", Frostbite.weatherInfo.whiteoutTime);
-        tag.putBoolean("isBlizzarding", Frostbite.weatherInfo.isBlizzarding);
-        tag.putBoolean("isWhiteouting", Frostbite.weatherInfo.isWhiteouting);
-        tag.putFloat("blizzardLevel", Frostbite.weatherInfo.blizzardLevel);
-        tag.putFloat("whiteoutLevel", Frostbite.weatherInfo.whiteoutLevel);
+//        tag.putInt("snowTime", Frostbite.weatherInfo.snowTime);
+//        tag.putInt("blizzardTime", Frostbite.weatherInfo.blizzardTime);
+//        tag.putInt("whiteoutTime", Frostbite.weatherInfo.whiteoutTime);
+//        tag.putBoolean("isBlizzarding", Frostbite.weatherInfo.isBlizzarding);
+//        tag.putBoolean("isWhiteouting", Frostbite.weatherInfo.isWhiteouting);
+//        tag.putFloat("blizzardLevel", Frostbite.weatherInfo.blizzardLevel);
+//        tag.putFloat("whiteoutLevel", Frostbite.weatherInfo.whiteoutLevel);
     }
 
 
@@ -83,24 +83,24 @@ public class PrimaryLevelDataMixin {
             Frostbite.overworldSpawnPoint = new BlockPos(pos1[0], pos1[1], pos1[2]);
         }
 
-        boolean isBlizzarding = input.get("isBlizzarding").asBoolean(false);
-        boolean isWhiteouting = input.get("isWhiteouting").asBoolean(false);
-
-        Frostbite.weatherInfo = new WeatherInfo(
-                input.get("snowTime").asInt(0),
-                input.get("blizzardTime").asInt(0),
-                input.get("whiteoutTime").asInt(0),
-                isBlizzarding,
-                isWhiteouting,
-                input.get("blizzardLevel").asFloat(0),
-                input.get("whiteoutLevel").asFloat(0));
-
-        if (isWhiteouting) {
-            Frostbite.weatherInfo.setWhiteouting();
-        } else if (isBlizzarding) {
-            Frostbite.weatherInfo.setBlizzarding();
-        } else {
-            Frostbite.weatherInfo.setSnowing();
-        }
+//        boolean isBlizzarding = input.get("isBlizzarding").asBoolean(false);
+//        boolean isWhiteouting = input.get("isWhiteouting").asBoolean(false);
+//
+//        Frostbite.weatherInfo = new WeatherInfo(
+//                input.get("snowTime").asInt(0),
+//                input.get("blizzardTime").asInt(0),
+//                input.get("whiteoutTime").asInt(0),
+//                isBlizzarding,
+//                isWhiteouting,
+//                input.get("blizzardLevel").asFloat(0),
+//                input.get("whiteoutLevel").asFloat(0));
+//
+//        if (isWhiteouting) {
+//            Frostbite.weatherInfo.setWhiteouting();
+//        } else if (isBlizzarding) {
+//            Frostbite.weatherInfo.setBlizzarding();
+//        } else {
+//            Frostbite.weatherInfo.setSnowing();
+//        }
     }
 }

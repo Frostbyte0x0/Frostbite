@@ -1,10 +1,13 @@
 package org.exodusstudio.frostbite.client.codex.entries;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
+import org.exodusstudio.frostbite.client.codex.Codex;
+import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
+import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Arrays;
 
@@ -19,18 +22,20 @@ public abstract class CodexEntry {
     }
 
     public static void addEntryToPlayer(Player player, CodexEntry entry) {
-        if (!player.getData(AttachmentRegistry.UNLOCKED_ENTRIES).contains(entry.id)) {
-            player.setData(AttachmentRegistry.UNLOCKED_ENTRIES, player.getData(AttachmentRegistry.UNLOCKED_ENTRIES) + entry.id + ";");
+        if (!Util.getString(player, "unlocked_entries").contains(entry.id)) {
+            Util.setData(player, "unlocked_entries", Util.getString(player, "unlocked_entries") + entry.id + ";");
+            Minecraft.getInstance().gui.toastManager().addToast(new CodexEntryToast(entry));
         }
     }
 
     public static void addEntryToPlayer(Player player, String entryId) {
-        if (!player.getData(AttachmentRegistry.UNLOCKED_ENTRIES).contains(entryId)) {
-            player.setData(AttachmentRegistry.UNLOCKED_ENTRIES, player.getData(AttachmentRegistry.UNLOCKED_ENTRIES) + entryId + ";");
+        if (!Util.getString(player, "unlocked_entries").contains(entryId)) {
+            Util.setData(player, "unlocked_entries", Util.getString(player, "unlocked_entries") + entryId + ";");
+            Minecraft.getInstance().gui.toastManager().addToast(new CodexEntryToast(Codex.ENTRIES.get(entryId)));
         }
     }
 
     public static boolean playerHasEntry(Player player, CodexEntry entry) {
-        return Arrays.stream((player.getData(AttachmentRegistry.UNLOCKED_ENTRIES).split(";"))).anyMatch(s -> s.equals(entry.id));
+        return Arrays.stream((Util.getString(player, "unlocked_entries").split(";"))).anyMatch(s -> s.equals(entry.id));
     }
 }

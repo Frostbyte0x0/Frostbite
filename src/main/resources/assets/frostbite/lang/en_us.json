@@ -351,6 +351,8 @@
   "key.category.frostbite.frostbite": "Frostbite",
   "gui.codex": "Codex",
   "codex.tips": "Tips:",
+  "codex.new_entry": "New entry discovered:",
+  "codex.tooltip": "Press '%s' to open the codex",
 
   "codex.tab.general.title": "General",
   "codex.tab.bosses.title": "Bosses",
@@ -360,6 +362,10 @@
 
   "codex.target_entry.elf_general.title": "Elf General",
   "codex.target_entry.elf_general.description": "He's an elf general, and he is very strong. He can summon elves to help him in battle.",
+  "codex.target_entry.monk.title": "Monk",
+  "codex.target_entry.monk.description": "A monk that has been corrupted by the frostbite. He is very fast and can teleport around the battlefield.",
+  "codex.target_entry.shaman.title": "Shaman",
+  "codex.target_entry.shaman.description": "A shaman that has been corrupted by the frostbite. He can summon spirits to help him in battle.",
 
   "codex.list_entry.temperature.title": "Temperature",
   "codex.list_entry.temperature.description": "Each entity has a temperature, which can be affected by the environment and the items they wear. If your temperature drops too low, you will start to take damage over time.",

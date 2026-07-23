@@ -5,7 +5,6 @@ import net.minecraft.network.chat.Component;
 import java.util.function.Function;
 
 public class ListCodexEntry extends CodexEntry {
-    public final Component title;
     public final Component description;
     public final Component tips;
     public final Function<EntryContext, Boolean> function;

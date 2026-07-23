@@ -34,7 +34,7 @@ public class EnvironmentAttributeSystemMixin {
             frostbite$addDimensionLayer(builder, level.dimensionType());
             frostbite$addBiomeLayer(builder, registryaccess.lookupOrThrow(Registries.BIOME), biomemanager);
             level.dimensionType().timelines().forEach((p_466516_) -> builder.addTimelineLayer(p_466516_, clockManager));
-            FrostbiteWeatherAttributes.addBuiltinLayers(builder, FrostbiteWeatherAttributes.WeatherAccess.from());
+            FrostbiteWeatherAttributes.addBuiltinLayers(builder, FrostbiteWeatherAttributes.WeatherAccess.from(level));
             ci.cancel();
         }
     }

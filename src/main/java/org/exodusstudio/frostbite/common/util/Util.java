@@ -24,14 +24,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.joml.Quaternionf;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
@@ -381,5 +381,65 @@ public class Util {
                itemStack.is(Items.COOKED_MUTTON) ||
                itemStack.is(ItemRegistry.COOKED_BOAR_MEAT) ||
                itemStack.is(Items.ROTTEN_FLESH);
+    }
+
+    public static WeatherInfo getWeatherInfo(Level level) {
+        if (level.hasData(AttachmentRegistry.WEATHER_INFO)) {
+            return level.getData(AttachmentRegistry.WEATHER_INFO);
+        } else {
+            WeatherInfo weatherInfo = new WeatherInfo();
+            level.setData(AttachmentRegistry.WEATHER_INFO, weatherInfo);
+            return weatherInfo;
+        }
+    }
+
+    public static void setWeatherInfo(Level level, WeatherInfo weatherInfo) {
+        level.setData(AttachmentRegistry.WEATHER_INFO, weatherInfo);
+    }
+
+    public static void setData(IAttachmentHolder holder, String key, int value) {
+        Map<String, Integer> map = holder.getData(AttachmentRegistry.MAP_STRING_INT);
+        map = addValueToMap(map, key, value);
+        holder.setData(AttachmentRegistry.MAP_STRING_INT, map);
+    }
+
+    public static int getInt(IAttachmentHolder holder, String key) {
+        Map<String, Integer> map = holder.getData(AttachmentRegistry.MAP_STRING_INT);
+        if (!map.containsKey(key)) map = addValueToMap(map, key, 0);
+        return map.get(key);
+    }
+
+    public static void setData(IAttachmentHolder holder, String key, float value) {
+        Map<String, Float> map = holder.getData(AttachmentRegistry.MAP_STRING_FLOAT);
+        map = addValueToMap(map, key, value);
+        holder.setData(AttachmentRegistry.MAP_STRING_FLOAT, map);
+    }
+
+    public static float getFloat(IAttachmentHolder holder, String key) {
+        Map<String, Float> map = holder.getData(AttachmentRegistry.MAP_STRING_FLOAT);
+        if (!map.containsKey(key)) map = addValueToMap(map, key, 0.0f);
+        return map.get(key);
+    }
+
+    public static void setData(IAttachmentHolder holder, String key, String value) {
+        Map<String, String> map = holder.getData(AttachmentRegistry.MAP_STRING_STRING);
+        map = addValueToMap(map, key, value);
+        holder.setData(AttachmentRegistry.MAP_STRING_STRING, map);
+    }
+
+    public static String getString(IAttachmentHolder holder, String key) {
+        Map<String, String> map = holder.getData(AttachmentRegistry.MAP_STRING_STRING);
+        if (!map.containsKey(key)) map = addValueToMap(map, key, "");
+        return map.get(key);
+    }
+
+    public static <K, V> Map<K, V> addValueToMap(Map<K, V> map, K key, V value) {
+        try {
+            map.put(key, value);
+        } catch (UnsupportedOperationException e) {
+            map = new HashMap<>(map);
+            map.put(key, value);
+        }
+        return map;
     }
 }

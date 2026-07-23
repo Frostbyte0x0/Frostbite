@@ -109,12 +109,14 @@ public class ModEvents {
         Level level = event.getLevel();
 
         if (level instanceof ServerLevel serverLevel && serverLevel.dimensionType().hasSkyLight()) {
+            WeatherInfo weatherInfo = Util.getWeatherInfo(serverLevel);
+
             if (serverLevel.getGameRules().get(GameRules.ADVANCE_WEATHER)) {
-                int i = Frostbite.weatherInfo.snowTime;
-                int j = Frostbite.weatherInfo.whiteoutTime;
-                int k = Frostbite.weatherInfo.blizzardTime;
-                boolean flag1 = Frostbite.weatherInfo.isWhiteouting;
-                boolean flag2 = Frostbite.weatherInfo.isBlizzarding;
+                int i = weatherInfo.snowTime;
+                int j = weatherInfo.whiteoutTime;
+                int k = weatherInfo.blizzardTime;
+                boolean flag1 = weatherInfo.isWhiteouting;
+                boolean flag2 = weatherInfo.isBlizzarding;
                 if (i > 0) {
                     i--;
                     j = flag1 ? 0 : 1;
@@ -128,10 +130,10 @@ public class ModEvents {
                         }
                     } else if (flag1) {
                         j = WeatherInfo.WHITEOUT_DURATION.sample(serverLevel.getRandom());
-                        Frostbite.weatherInfo.setWhiteouting();
+                        weatherInfo.setWhiteouting();
                     } else {
                         j = WeatherInfo.WHITEOUT_DELAY.sample(serverLevel.getRandom());
-                        Frostbite.weatherInfo.setSnowing();
+                        weatherInfo.setSnowing();
                     }
 
                     if (k > 0) {
@@ -140,36 +142,37 @@ public class ModEvents {
                         }
                     } else if (flag2) {
                         k = WeatherInfo.BLIZZARD_DURATION.sample(serverLevel.getRandom());
-                        Frostbite.weatherInfo.setBlizzarding();
+                        weatherInfo.setBlizzarding();
                     } else {
                         k = WeatherInfo.BLIZZARD_DELAY.sample(serverLevel.getRandom());
-                        Frostbite.weatherInfo.setSnowing();
+                        weatherInfo.setSnowing();
                     }
                 }
 
-                Frostbite.weatherInfo.whiteoutTime = j;
-                Frostbite.weatherInfo.blizzardTime = k;
-                Frostbite.weatherInfo.snowTime = i;
-                Frostbite.weatherInfo.isWhiteouting = flag1;
-                Frostbite.weatherInfo.isBlizzarding = flag2;
+                weatherInfo.whiteoutTime = j;
+                weatherInfo.blizzardTime = k;
+                weatherInfo.snowTime = i;
+                weatherInfo.isWhiteouting = flag1;
+                weatherInfo.isBlizzarding = flag2;
             }
 
-            Frostbite.weatherInfo.oWhiteoutLevel = Frostbite.weatherInfo.whiteoutLevel;
-            if (Frostbite.weatherInfo.isWhiteouting) {
-                Frostbite.weatherInfo.whiteoutLevel += 0.0025F;
+            weatherInfo.oWhiteoutLevel = weatherInfo.whiteoutLevel;
+            if (weatherInfo.isWhiteouting) {
+                weatherInfo.whiteoutLevel += 0.0025F;
             } else {
-                Frostbite.weatherInfo.whiteoutLevel -= 0.0025F;
+                weatherInfo.whiteoutLevel -= 0.0025F;
             }
 
-            Frostbite.weatherInfo.whiteoutLevel = Mth.clamp(Frostbite.weatherInfo.whiteoutLevel, 0.0F, 1.0F);
-            Frostbite.weatherInfo.oBlizzardLevel = Frostbite.weatherInfo.blizzardLevel;
-            if (Frostbite.weatherInfo.isBlizzarding) {
-                Frostbite.weatherInfo.blizzardLevel += 0.0025F;
+            weatherInfo.whiteoutLevel = Mth.clamp(weatherInfo.whiteoutLevel, 0.0F, 1.0F);
+            weatherInfo.oBlizzardLevel = weatherInfo.blizzardLevel;
+            if (weatherInfo.isBlizzarding) {
+                weatherInfo.blizzardLevel += 0.0025F;
             } else {
-                Frostbite.weatherInfo.blizzardLevel -= 0.0025F;
+                weatherInfo.blizzardLevel -= 0.0025F;
             }
 
-            Frostbite.weatherInfo.blizzardLevel = Mth.clamp(Frostbite.weatherInfo.blizzardLevel, 0.0F, 1.0F);
+            weatherInfo.blizzardLevel = Mth.clamp(weatherInfo.blizzardLevel, 0.0F, 1.0F);
+            Util.setWeatherInfo(serverLevel, weatherInfo);
         }
     }
 
@@ -178,6 +181,9 @@ public class ModEvents {
         if (event.getEntity() instanceof TemperatureEntity temperatureEntity) {
             ((TE) temperatureEntity).setInnerTemp(temperatureEntity.getSpawnTemperature());
             ((TE) temperatureEntity).setOuterTemp(temperatureEntity.getSpawnTemperature());
+        } else {
+            ((TE) event.getEntity()).setInnerTemp(20);
+            ((TE) event.getEntity()).setOuterTemp(20);
         }
     }
 
@@ -298,16 +304,17 @@ public class ModEvents {
         Level level = event.getEntity().level();
         RandomSource random = player.getRandom();
         if (level.isClientSide() && isFrostbite(level)) {
-            float r = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
-                      Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 30, 20), 15);
-            float offset = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
-                           Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 10, 5), 2);
-            float s = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
-                      Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 0.025f, 0.1f), 0.1f);
-            float d = Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
-                      Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 0.05f, 0.1f), 0.1f);
-            int count = (int) Mth.lerp(Frostbite.weatherInfo.whiteoutLevel,
-                              Mth.lerp(Frostbite.weatherInfo.blizzardLevel, 125, 100), 75);
+            WeatherInfo weatherInfo = Util.getWeatherInfo(level);
+            float r = Mth.lerp(weatherInfo.whiteoutLevel,
+                      Mth.lerp(weatherInfo.blizzardLevel, 30, 20), 15);
+            float offset = Mth.lerp(weatherInfo.whiteoutLevel,
+                           Mth.lerp(weatherInfo.blizzardLevel, 10, 5), 2);
+            float s = Mth.lerp(weatherInfo.whiteoutLevel,
+                      Mth.lerp(weatherInfo.blizzardLevel, 0.025f, 0.1f), 0.1f);
+            float d = Mth.lerp(weatherInfo.whiteoutLevel,
+                      Mth.lerp(weatherInfo.blizzardLevel, 0.05f, 0.1f), 0.1f);
+            int count = (int) Mth.lerp(weatherInfo.whiteoutLevel,
+                              Mth.lerp(weatherInfo.blizzardLevel, 125, 100), 75);
             for (int i = 0; i < count; i++) {
                 double d0 = player.getX() + player.getLookAngle().normalize().x * offset + (0.5D - random.nextDouble()) * r;
                 double d1 = player.getY() + player.getLookAngle().normalize().y * offset + (0.5D - random.nextDouble()) * r / 2f + r / 4f;

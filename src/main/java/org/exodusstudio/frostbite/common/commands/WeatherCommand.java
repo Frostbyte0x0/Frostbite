@@ -7,7 +7,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.TimeArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.permissions.Permissions;
-import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 public class WeatherCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -42,19 +43,25 @@ public class WeatherCommand {
     }
 
     private static int setSnow(CommandSourceStack source, int time) {
-        Frostbite.weatherInfo.setSnowing();
+        WeatherInfo weatherInfo = Util.getWeatherInfo(source.getLevel());
+        weatherInfo.setSnowing();
+        Util.setWeatherInfo(source.getLevel(), weatherInfo);
         source.sendSuccess(() -> Component.literal("Set frostbite weather to snow"), true);
         return time;
     }
 
     private static int setBlizzard(CommandSourceStack source, int time) {
-        Frostbite.weatherInfo.setBlizzarding();
+        WeatherInfo weatherInfo = Util.getWeatherInfo(source.getLevel());
+        weatherInfo.setBlizzarding();
+        Util.setWeatherInfo(source.getLevel(), weatherInfo);
         source.sendSuccess(() -> Component.literal("Set frostbite weather to blizzard"), true);
         return time;
     }
 
     private static int setWhiteout(CommandSourceStack source, int time) {
-        Frostbite.weatherInfo.setWhiteouting();
+        WeatherInfo weatherInfo = Util.getWeatherInfo(source.getLevel());
+        weatherInfo.setWhiteouting();
+        Util.setWeatherInfo(source.getLevel(), weatherInfo);
         source.sendSuccess(() -> Component.literal("Set frostbite weather to whiteout"), true);
         return time;
     }

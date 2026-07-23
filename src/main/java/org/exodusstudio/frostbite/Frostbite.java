@@ -31,7 +31,6 @@ import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.BreathEntityLike;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
 import org.exodusstudio.frostbite.common.util.ModItemProperties;
-import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +48,6 @@ public class Frostbite {
     public static List<BreathEntityLike> breathEntityLikesToRemove = new ArrayList<>();
     public static BlockPos frostbiteSpawnPoint = BlockPos.ZERO;
     public static BlockPos overworldSpawnPoint = BlockPos.ZERO;
-    public static WeatherInfo weatherInfo = new WeatherInfo();
     public static final HashMap<BlockPos, EntityType<?>> addedBosses = new HashMap<>();
     public static final HashMap<BlockPos, EntityType<?>> bossesToAdd = new HashMap<>();
 
