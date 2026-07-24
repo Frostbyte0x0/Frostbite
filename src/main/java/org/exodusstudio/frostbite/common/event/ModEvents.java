@@ -61,7 +61,7 @@ import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
-import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
+import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
@@ -191,7 +191,7 @@ public class ModEvents {
     public static void food(LivingEntityUseItemEvent.Start event) {
         Contract c;
         // TODO: change to tags
-        if (event.getEntity() instanceof Player player && (c = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get()).contract()) != null) {
+        if (event.getEntity() instanceof Player player && (c = player.getData(AttachmentRegistry.LIVING_CONTRACT_INFO.get()).contract()) != null) {
             if (c.hasAttribute(ContractAttributes.DIABETIC) && Util.isSweet(event.getItem())) {
                 event.setCanceled(true);
             } else if (c.hasAttribute(ContractAttributes.VEGETARIAN) && Util.isMeat(event.getItem())) {
@@ -560,7 +560,7 @@ public class ModEvents {
         if (event.getScreen() instanceof InventoryScreen || event.getScreen() instanceof CreativeModeInventoryScreen) {
             int screenCenter = graphics.guiHeight() / 2;
 
-            Contract c = PlayerContractInfo.getContract(player);
+            Contract c = LivingContractInfo.getContract(player);
             if (c == null) return;
             List<ContractAttribute> attributes = c.allAttributes();
             if (attributes.isEmpty()) return;

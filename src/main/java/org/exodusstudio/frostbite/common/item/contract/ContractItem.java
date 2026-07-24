@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractTarget;
-import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
+import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 
 public class ContractItem extends Item {
     public ContractItem(Properties pProperties) {
@@ -26,7 +26,7 @@ public class ContractItem extends Item {
         if ((c = Contract.getContract(player.getItemInHand(usedHand))) == null) return InteractionResult.PASS;
         if (c.getStrictestTarget() != ContractTarget.PLAYER && c.getStrictestTarget() != ContractTarget.LIVING) return InteractionResult.PASS;
 
-        PlayerContractInfo.setContract(player, c);
+        LivingContractInfo.setContract(player, c);
         Frostbite.LOGGER.debug("Added contract {} to player {}", c, player.getName().getString());
 
         if (level.isClientSide()) {

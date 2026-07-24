@@ -3,7 +3,7 @@ package org.exodusstudio.frostbite.common.contracts;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 
-public enum PlayerLiteracy implements StringRepresentable {
+public enum Literacy implements StringRepresentable {
     ILLITERATE(0, Component.translatable("contract.player_literacy.illiterate"),
             Component.translatable("contract.player_literacy.illiterate_desc")), // Positive/negative
     BASIC(3, Component.translatable("contract.player_literacy.basic"),
@@ -16,14 +16,14 @@ public enum PlayerLiteracy implements StringRepresentable {
     public final int discoveredNb;
     public final Component title;
     public final Component description;
-    PlayerLiteracy(int discoveredNb, Component title, Component description) {
+    Literacy(int discoveredNb, Component title, Component description) {
         this.discoveredNb = discoveredNb;
         this.title = title;
         this.description = description;
     }
 
-    public static final StringRepresentable.EnumCodec<PlayerLiteracy> CODEC =
-            StringRepresentable.fromEnum(PlayerLiteracy::values);
+    public static final StringRepresentable.EnumCodec<Literacy> CODEC =
+            StringRepresentable.fromEnum(Literacy::values);
 
     @Override
     public String getSerializedName() {
@@ -31,10 +31,10 @@ public enum PlayerLiteracy implements StringRepresentable {
     }
 
     public boolean hasNext() {
-        return this.ordinal() < PlayerLiteracy.values().length - 1;
+        return this.ordinal() < Literacy.values().length - 1;
     }
 
-    public PlayerLiteracy next() {
-        return PlayerLiteracy.values()[this.ordinal() + 1];
+    public Literacy next() {
+        return Literacy.values()[this.ordinal() + 1];
     }
 }

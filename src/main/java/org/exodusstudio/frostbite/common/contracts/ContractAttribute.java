@@ -8,13 +8,17 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.Utf8String;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
-import static org.exodusstudio.frostbite.common.contracts.PlayerLiteracy.*;
+import java.util.Map;
+
+import static org.exodusstudio.frostbite.common.contracts.Literacy.*;
 
 public class ContractAttribute {
     public final String id;
@@ -30,8 +34,8 @@ public class ContractAttribute {
     }
 
     public Component getExtraInfo(Player player, Either<ItemStack, Contract> stack) {
-        PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
-        PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
+        LivingContractInfo info = player.getData(AttachmentRegistry.LIVING_CONTRACT_INFO);
+        Literacy r = LivingContractInfo.hasDiscoveredAttribute(player, this) || player.isCreative() ? LITERATE : info.literacyRank();
         MutableComponent c = Component.literal("    ");
         if (r.ordinal() == PROFICIENT.ordinal()) {
             c.append(Component.translatable("contract.attribute." + id + "_desc"));
@@ -44,8 +48,8 @@ public class ContractAttribute {
     }
 
     public Component getSmallInfo(Player player, Either<ItemStack, Contract> stack) {
-        PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO);
-        PlayerLiteracy r = PlayerContractInfo.hasDiscoveredAttribute(player, this) ? LITERATE : info.literacyRank();
+        LivingContractInfo info = player.getData(AttachmentRegistry.LIVING_CONTRACT_INFO);
+        Literacy r = LivingContractInfo.hasDiscoveredAttribute(player, this) || player.isCreative() ? LITERATE : info.literacyRank();
 
         return Component.literal(getPolarity() == Polarity.POSITIVE ? " + " : " - ")
                 .append(r.ordinal() >= BASIC.ordinal() ? Component.translatable("contract.attribute." + id) : Component.literal("§kaaaa"))
@@ -85,6 +89,32 @@ public class ContractAttribute {
             return a;
         }
         return ScalableContractAttribute.getAttribute(stack);
+    }
+
+    public static void addAttributeModifiers(AttributeMap map, Map<ScalableContractAttribute, Integer> attributes) {
+        for (Map.Entry<ScalableContractAttribute, Integer> entry : attributes.entrySet()) {
+            ScalableContractAttribute attribute = entry.getKey();
+            if (!attribute.hasAttribute()) continue;
+
+            int level = entry.getValue();
+            AttributeInstance attr = map.getInstance(attribute.getAttribute());
+            if (attr != null) {
+                attr.addPermanentModifier(attribute.getAttributeTemplate(level).create(1));
+            }
+        }
+    }
+
+    public static void removeAttributeModifiers(AttributeMap map, Map<ScalableContractAttribute, Integer> attributes) {
+        for (Map.Entry<ScalableContractAttribute, Integer> entry : attributes.entrySet()) {
+            ScalableContractAttribute attribute = entry.getKey();
+            if (!attribute.hasAttribute()) continue;
+
+            int level = entry.getValue();
+            AttributeInstance attr = map.getInstance(attribute.getAttribute());
+            if (attr != null) {
+                attr.removeModifier(attribute.getAttributeTemplate(level).id());
+            }
+        }
     }
 
     public static final Codec<ContractAttribute> CODEC = RecordCodecBuilder.create(instance -> instance.group(

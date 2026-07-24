@@ -12,8 +12,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
-import org.exodusstudio.frostbite.common.contracts.PlayerLiteracy;
+import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
+import org.exodusstudio.frostbite.common.contracts.Literacy;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 
 import java.util.List;
@@ -63,12 +63,12 @@ public class DecipheringScreen extends AbstractRecipeBookScreen<DecipheringMenu>
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ERROR_SPRITE, xo + 52, yo + 30, 28, 21);
         }
 
-        PlayerContractInfo info = player.getData(AttachmentRegistry.PLAYER_CONTRACT_INFO.get());
-        PlayerLiteracy literacy = info.literacyRank();
+        LivingContractInfo info = player.getData(AttachmentRegistry.LIVING_CONTRACT_INFO.get());
+        Literacy literacy = info.literacyRank();
         int discoveredTotal = info.getDiscoveredNb();
         float progress = 1;
-        PlayerLiteracy current = PlayerLiteracy.PROFICIENT;
-        PlayerLiteracy next = PlayerLiteracy.LITERATE;
+        Literacy current = Literacy.PROFICIENT;
+        Literacy next = Literacy.LITERATE;
         if (literacy.hasNext()) {
             progress = (float)discoveredTotal / (float)literacy.next().discoveredNb;
             current = literacy;

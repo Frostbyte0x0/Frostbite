@@ -1,7 +1,14 @@
 package org.exodusstudio.frostbite.common.contracts;
 
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.exodusstudio.frostbite.Frostbite;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ContractAttributes {
     public static final HashMap<String, ContractAttribute> ATTRIBUTES = new HashMap<>();
@@ -88,7 +95,15 @@ public class ContractAttributes {
             List.of(20f, 30f, 40f),
             0,
             Polarity.POSITIVE,
-            ContractTarget.LIVING
+            ContractTarget.LIVING,
+            new ScalableContractAttribute.AttributeTemplateInfo(Attributes.MOVEMENT_SPEED, Map.of(
+                    1, new MobEffect.AttributeTemplate(
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "fast_contract"), 0.2f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    2, new MobEffect.AttributeTemplate(
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "fast_contract"), 0.3f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    3, new MobEffect.AttributeTemplate(
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "fast_contract"), 0.4f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+            ))
     );
     public static final ScalableContractAttribute TANK = of(
             "tank",
@@ -270,14 +285,26 @@ public class ContractAttributes {
 
 
 
-    private static ContractAttribute of(String id, ContractRank rank, Polarity polarity, ContractTarget target) {
+    private static ContractAttribute of(
+            String id,
+            ContractRank rank,
+            Polarity polarity,
+            ContractTarget target
+    ) {
         ContractAttribute attribute = new ContractAttribute(id, rank, polarity, target);
         ATTRIBUTES.put(attribute.id, attribute);
         return attribute;
     }
 
-    private static ScalableContractAttribute of(String id, List<Float> stat, int start, Polarity polarity, ContractTarget target) {
-        ScalableContractAttribute attribute = new ScalableContractAttribute(id, stat, start, polarity, target);
+    private static ScalableContractAttribute of(
+            String id,
+            List<Float> stat,
+            int start,
+            Polarity polarity,
+            ContractTarget target,
+            ScalableContractAttribute.AttributeTemplateInfo... templateInfo
+    ) {
+        ScalableContractAttribute attribute = new ScalableContractAttribute(id, stat, start, polarity, target, templateInfo);
         ATTRIBUTES.put(attribute.id, attribute);
         return attribute;
     }

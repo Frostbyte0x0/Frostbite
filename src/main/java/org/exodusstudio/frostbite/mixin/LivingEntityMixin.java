@@ -1,10 +1,8 @@
 package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.world.entity.LivingEntity;
-import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.util.DataHelper;
 import org.exodusstudio.frostbite.common.util.TE;
-import org.exodusstudio.frostbite.common.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -37,4 +35,12 @@ public class LivingEntityMixin implements TE {
     public LivingEntity instance() {
         return frostbite$entity;
     }
+
+
+//    @Inject(at = @At("TAIL"), method = "getMaxHealth", cancellable = true)
+//    private void getMaxHealth(CallbackInfoReturnable<Float> cir) {
+//        if (LivingContractInfo.hasAppliedAttribute(frostbite$entity, ContractAttributes.TANK)) {
+//            cir.setReturnValue(cir.getReturnValue() + LivingContractInfo.getAppliedAttributeStat(frostbite$entity, ContractAttributes.TANK));
+//        }
+//    }
 }

@@ -8,7 +8,7 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.contracts.PlayerContractInfo;
+import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
@@ -68,10 +68,10 @@ public class AttachmentRegistry {
                     .serialize(Codec.unboundedMap(BlockPos.CODEC, Codec.STRING).fieldOf("bosses_to_add"))
                     .build());
 
-    public static final Supplier<AttachmentType<PlayerContractInfo>> PLAYER_CONTRACT_INFO = ATTACHMENT_TYPES.register(
-            "player_contract_info", () -> AttachmentType.builder(() -> PlayerContractInfo.EMPTY)
-                    .sync(StreamCodec.of(PlayerContractInfo::toBuffer, PlayerContractInfo::fromBuffer))
-                    .serialize(PlayerContractInfo.CODEC.fieldOf("player_contract_info"))
+    public static final Supplier<AttachmentType<LivingContractInfo>> LIVING_CONTRACT_INFO = ATTACHMENT_TYPES.register(
+            "living_contract_info", () -> AttachmentType.builder(() -> LivingContractInfo.EMPTY)
+                    .sync(StreamCodec.of(LivingContractInfo::toBuffer, LivingContractInfo::fromBuffer))
+                    .serialize(LivingContractInfo.CODEC.fieldOf("living_contract_info"))
                     .copyOnDeath().build());
 
     public static final Supplier<AttachmentType<WeatherInfo>> WEATHER_INFO = ATTACHMENT_TYPES.register(
