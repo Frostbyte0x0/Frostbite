@@ -139,18 +139,20 @@ public class CombiningMenu extends ItemCombinerMenu {
     public Pair<String, ItemStack> combineFragments(ItemStack... stacks) {
         List<ContractAttribute> positiveAttributes = new ArrayList<>();
         List<ContractAttribute> negativeAttributes = new ArrayList<>();
-        Map<ScalableContractAttribute, Integer> positiveScalableAttributes = new HashMap<>();
-        Map<ScalableContractAttribute, Integer> negativeScalableAttributes = new HashMap<>();
+        Map<ContractAttribute, Integer> positiveScalableAttributes = new HashMap<>();
+        Map<ContractAttribute, Integer> negativeScalableAttributes = new HashMap<>();
         ContractRank rank = ContractRank.WHITE;
         for (ItemStack stack : stacks) {
             ContractAttribute attribute = ContractAttribute.getAttribute(stack);
-            if (attribute instanceof ScalableContractAttribute scalableAttribute) {
-                int level = ScalableContractAttribute.getLevel(stack, scalableAttribute);
+            if (attribute == null) return Pair.of("container.combining.error.unknown_item", ItemStack.EMPTY);
+
+            if (attribute.isScalable()) {
+                int level = ContractAttribute.getLevel(stack, attribute);
                 rank = ContractRank.fromNum(level);
-                if (scalableAttribute.getPolarity() == Polarity.POSITIVE) {
-                    positiveScalableAttributes.put(scalableAttribute, level);
+                if (attribute.getPolarity() == Polarity.POSITIVE) {
+                    positiveScalableAttributes.put(attribute, level);
                 } else {
-                    negativeScalableAttributes.put(scalableAttribute, level);
+                    negativeScalableAttributes.put(attribute, level);
                 }
             } else {
                 rank = attribute.getRank();
@@ -190,19 +192,20 @@ public class CombiningMenu extends ItemCombinerMenu {
     public Pair<String, ItemStack> combinePartials(ItemStack... stacks) {
         List<ContractAttribute> positiveAttributes = new ArrayList<>();
         List<ContractAttribute> negativeAttributes = new ArrayList<>();
-        Map<ScalableContractAttribute, Integer> positiveScalableAttributes = new HashMap<>();
-        Map<ScalableContractAttribute, Integer> negativeScalableAttributes = new HashMap<>();
+        Map<ContractAttribute, Integer> positiveScalableAttributes = new HashMap<>();
+        Map<ContractAttribute, Integer> negativeScalableAttributes = new HashMap<>();
         ContractRank rank = ContractRank.WHITE;
         for (ItemStack stack : stacks) {
             Contract c = partial(stack);
             rank = c.rank();
+
             for (ContractAttribute attribute : c.allAttributes()) {
-                if (attribute instanceof ScalableContractAttribute scalableAttribute) {
-                    int level = c.allScalableAttributes().get(scalableAttribute);
-                    if (scalableAttribute.getPolarity() == Polarity.POSITIVE) {
-                        positiveScalableAttributes.put(scalableAttribute, level);
+                if (attribute.isScalable()) {
+                    int level = c.allScalableAttributes().get(attribute);
+                    if (attribute.getPolarity() == Polarity.POSITIVE) {
+                        positiveScalableAttributes.put(attribute, level);
                     } else {
-                        negativeScalableAttributes.put(scalableAttribute, level);
+                        negativeScalableAttributes.put(attribute, level);
                     }
                 } else {
                     if (attribute.getPolarity() == Polarity.POSITIVE) {

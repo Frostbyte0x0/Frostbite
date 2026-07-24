@@ -24,8 +24,8 @@ public record Contract(
     public static Contract create(
             List<ContractAttribute> positiveAttributes,
             List<ContractAttribute> negativeAttributes,
-            Map<ScalableContractAttribute, Integer> positiveScalableAttributes,
-            Map<ScalableContractAttribute, Integer> negativeScalableAttributes,
+            Map<ContractAttribute, Integer> positiveScalableAttributes,
+            Map<ContractAttribute, Integer> negativeScalableAttributes,
             ContractRank rank
     ) {
         return new Contract(
@@ -129,11 +129,11 @@ public record Contract(
         return allAttributes.stream().map(Contract::a).collect(Collectors.toList());
     }
 
-    public Map<ScalableContractAttribute, Integer> allScalableAttributes() {
+    public Map<ContractAttribute, Integer> allScalableAttributes() {
         Map<String, Integer> allScalableAttributes = new HashMap<>();
         allScalableAttributes.putAll(positiveScalableAttributes);
         allScalableAttributes.putAll(negativeScalableAttributes);
-        return allScalableAttributes.entrySet().stream().collect(Collectors.toMap(e -> (ScalableContractAttribute) a(e.getKey()), Map.Entry::getValue));
+        return allScalableAttributes.entrySet().stream().collect(Collectors.toMap(e -> a(e.getKey()), Map.Entry::getValue));
     }
 
     @SuppressWarnings("DataFlowIssue")

@@ -25,7 +25,6 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.component.*;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.ContractRank;
-import org.exodusstudio.frostbite.common.contracts.ScalableContractAttribute;
 import org.exodusstudio.frostbite.common.item.*;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
@@ -425,24 +424,24 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final Map<String, DeferredItem<Item>> CONTRACT_FRAGMENTS = ContractAttributes.ATTRIBUTES.values().stream()
             .collect(Collectors.toMap(a -> a.id, a -> {
-                        if (!a.isScalable()) {
-                            return ITEMS.register("contract_fragment_" + a.id, i -> new ContractFragmentItem(new Item.Properties()
+                        if (a.isScalable()) {
+                            return ITEMS.register("contract_fragment_" + a.id, (id) -> new ContractFragmentItem(new Item.Properties()
+                                    .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(ContractRank.fromNum(1).name()), List.of()))
                                     .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a))
                                     .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.GRAY))
-                                    .component(DataComponents.CUSTOM_MODEL_DATA,
-                                            new CustomModelData(List.of(), List.of(), List.of(a.isScalable() ? ContractRank.fromNum(1).name() : a.getRank().name()), List.of()))
+                                    .component(DataComponentTypeRegistry.CHARGE, new ChargeData(1))
                                     .stacksTo(1)
-                                    .setId(ResourceKey.create(Registries.ITEM, i))));
+                                    .setId(ResourceKey.create(Registries.ITEM, id))));
+                        } else {
+                            return ITEMS.register("contract_fragment_" + a.id, (id) -> new ContractFragmentItem(new Item.Properties()
+                                    .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(a.getRank().name()), List.of()))
+                                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.GRAY))
+                                    .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a))
+                                    .stacksTo(1)
+                                    .setId(ResourceKey.create(Registries.ITEM, id))));
                         }
-                        return ITEMS.register("contract_fragment_" + a.id, i -> new ContractFragmentItem(new Item.Properties()
-                                .component(DataComponentTypeRegistry.SCALABLE_CONTRACT_ATTRIBUTE, new ScalableContractAttributeData((ScalableContractAttribute) a, 1))
-                                .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.GRAY))
-                                .component(DataComponents.CUSTOM_MODEL_DATA,
-                                        new CustomModelData(List.of(), List.of(), List.of(a.isScalable() ? ContractRank.fromNum(1).name() : a.getRank().name()), List.of()))
-                                .stacksTo(1)
-                                .setId(ResourceKey.create(Registries.ITEM, i))));
-                    }
-                    ));
+                    }));
+
 //    public static final Map<String, DeferredItem<Item>> SPAWN_EGGS = EntityRegistry.ENTITY_TYPES.getEntries().stream().map(DeferredHolder::value)
 //            .filter(t -> t.create(null, (EntitySpawnReason) null) instanceof LivingEntity)
 //            .collect(Collectors.toMap(t -> t.getClass().descriptorString().toLowerCase(), a ->

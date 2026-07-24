@@ -62,13 +62,13 @@ public record LivingContractInfo(
         return info.contract.allAttributes().stream().anyMatch(a -> a.id.equals(attribute.id));
     }
 
-    public static int getAppliedAttributeLevel(LivingEntity entity, ScalableContractAttribute attribute) {
+    public static int getAppliedAttributeLevel(LivingEntity entity, ContractAttribute attribute) {
         LivingContractInfo info = entity.getData(AttachmentRegistry.LIVING_CONTRACT_INFO);
         return info.contract.allScalableAttributes().get(attribute) != null ? info.contract.allScalableAttributes().get(attribute) : 1;
     }
 
-    public static float getAppliedAttributeStat(LivingEntity entity, ScalableContractAttribute attribute) {
-        return ScalableContractAttribute.getStat(getContract(entity), attribute);
+    public static float getAppliedAttributeStat(LivingEntity entity, ContractAttribute attribute) {
+        return ContractAttribute.getStat(getContract(entity), attribute);
     }
 
     public static void setContract(LivingEntity entity, Contract contract) {

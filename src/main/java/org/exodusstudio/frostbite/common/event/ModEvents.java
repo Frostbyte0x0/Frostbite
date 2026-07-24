@@ -85,12 +85,6 @@ public class ModEvents {
     public static RandomSource random = RandomSource.create();
 
     @SubscribeEvent
-    public static void reset(ServerStoppedEvent event) {
-//        OTFPortal.canSpawn = true;
-//        FTOPortal.canSpawn = true;
-    }
-
-    @SubscribeEvent
     public static void entityDamaged(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof ServerPlayer player) {
             ((PlayerWrapper) player).frostbite$addDamage(event.getNewDamage());

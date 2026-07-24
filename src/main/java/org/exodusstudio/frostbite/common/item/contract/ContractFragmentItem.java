@@ -27,12 +27,12 @@ public class ContractFragmentItem extends Item {
         if ((a = ContractAttribute.getAttribute(stack)) != null && (a.getTarget() == ContractTarget.PLAYER || a.getTarget() == ContractTarget.LIVING)) {
             Contract c;
             if (a.getPolarity() == Polarity.POSITIVE) {
-                if (a instanceof ScalableContractAttribute scalableContractAttribute) {
-                    int l = ScalableContractAttribute.getLevel(stack, scalableContractAttribute);
+                if (a.isScalable()) {
+                    int l = ContractAttribute.getLevel(stack, a);
                     c = Contract.create(
                             List.of(),
                             List.of(),
-                            Map.of(scalableContractAttribute, l),
+                            Map.of(a, l),
                             Map.of(),
                             ContractRank.fromNum(l)
                     );
@@ -46,13 +46,13 @@ public class ContractFragmentItem extends Item {
                     );
                 }
             } else {
-                if (a instanceof ScalableContractAttribute scalableContractAttribute) {
-                    int l = ScalableContractAttribute.getLevel(stack, scalableContractAttribute);
+                if (a.isScalable()) {
+                    int l = ContractAttribute.getLevel(stack, a);
                     c = Contract.create(
                             List.of(),
                             List.of(),
                             Map.of(),
-                            Map.of(scalableContractAttribute, l),
+                            Map.of(a, l),
                             ContractRank.fromNum(l)
                     );
                 } else {
