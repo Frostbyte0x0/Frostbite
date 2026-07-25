@@ -10,27 +10,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class ContractAttributes {
     public static final HashMap<String, ContractAttribute> ATTRIBUTES = new HashMap<>();
 
     // Player positive attributes
-    public static final ContractAttribute CHILLY = of(
+    public static final ContractAttribute CHILLY = of( // TODO
             new ContractAttribute.Builder("chilly", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(1.5f, 3f, 5f))
     );
-    public static final ContractAttribute DEXTEROUS = of(
+    public static final ContractAttribute DEXTEROUS = of( // TODO
             new ContractAttribute.Builder("dexterous", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(3f, 5f, 10f))
     );
-    public static final ContractAttribute ILLUSIONS = of(
+    public static final ContractAttribute ILLUSIONS = of( // TODO
             new ContractAttribute.Builder("illusions", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(2f, 5f, 10f))
     );
-    public static final ContractAttribute REPEL = of(
+    public static final ContractAttribute REPEL = of( // TODO
             new ContractAttribute.Builder("repel", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .rank(ContractRank.GREY)
     );
-    public static final ContractAttribute FROG = of(
+    public static final ContractAttribute FROG = of( // TODO
             new ContractAttribute.Builder("frog", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(1f, 2f, 3f))
     );
@@ -48,11 +49,11 @@ public class ContractAttributes {
             new ContractAttribute.Builder("inexperienced", Polarity.NEGATIVE, ContractTarget.PLAYER)
                 .rank(ContractRank.WHITE)
     );
-    public static final ContractAttribute UNAWARE = of(
+    public static final ContractAttribute UNAWARE = of( // TODO
             new ContractAttribute.Builder("unaware", Polarity.NEGATIVE, ContractTarget.PLAYER)
                 .rank(ContractRank.BLACK)
     );
-    public static final ContractAttribute MISSTEP = of(
+    public static final ContractAttribute MISSTEP = of( // TODO
             new ContractAttribute.Builder("misstep", Polarity.NEGATIVE, ContractTarget.PLAYER)
                 .scalable(List.of(1f, 3f, 5f))
     );
@@ -74,106 +75,114 @@ public class ContractAttributes {
     public static final ContractAttribute TANK = of(
             new ContractAttribute.Builder("tank", Polarity.POSITIVE, ContractTarget.LIVING)
                 .scalable(List.of(2f, 4f, 6f))
+                .templateInfo(Attributes.MAX_HEALTH, Map.of(
+                        1, new MobEffect.AttributeTemplate(
+                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "tank_contract"), 2, AttributeModifier.Operation.ADD_VALUE),
+                        2, new MobEffect.AttributeTemplate(
+                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "tank_contract"), 4, AttributeModifier.Operation.ADD_VALUE),
+                        3, new MobEffect.AttributeTemplate(
+                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "tank_contract"), 6, AttributeModifier.Operation.ADD_VALUE)
+                ))
     );
-    public static final ContractAttribute SUMO = of(
+    public static final ContractAttribute SUMO = of( // TODO
             new ContractAttribute.Builder("sumo", Polarity.POSITIVE, ContractTarget.LIVING)
                 .scalable(List.of(20f, 30f, 40f))
     );
-    public static final ContractAttribute CATLIKE = of(
+    public static final ContractAttribute CATLIKE = of( // TODO
             new ContractAttribute.Builder("catlike", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .rank(ContractRank.BLACK)
     );
-    public static final ContractAttribute COWARDLY = of(
+    public static final ContractAttribute COWARDLY = of( // TODO
             new ContractAttribute.Builder("cowardly", Polarity.POSITIVE, ContractTarget.LIVING)
                 .scalable(List.of(20f, 30f, 40f))
     );
-    public static final ContractAttribute BERSERK = of(
+    public static final ContractAttribute BERSERK = of( // TODO
             new ContractAttribute.Builder("berserk", Polarity.POSITIVE, ContractTarget.LIVING)
                 .scalable(List.of(10f, 20f, 30f))
     );
-    public static final ContractAttribute FLAME = of(
+    public static final ContractAttribute FLAME = of( // TODO
             new ContractAttribute.Builder("flame", Polarity.POSITIVE, ContractTarget.LIVING)
                 .scalable(List.of(2f, 4f, 6f))
     );
-    public static final ContractAttribute SMELLY = of(
+    public static final ContractAttribute SMELLY = of( // TODO
             new ContractAttribute.Builder("smelly", Polarity.POSITIVE, ContractTarget.LIVING)
                     .rank(ContractRank.BLACK)
     );
 
     // Living negative attributes
-    public static final ContractAttribute SLIDY = of(
+    public static final ContractAttribute SLIDY = of( // TODO
             new ContractAttribute.Builder("slidy", Polarity.NEGATIVE, ContractTarget.LIVING)
                 .rank(ContractRank.GREY)
     );
-    public static final ContractAttribute HEAVY = of(
+    public static final ContractAttribute HEAVY = of( // TODO
             new ContractAttribute.Builder("heavy", Polarity.NEGATIVE, ContractTarget.LIVING)
                 .scalable(List.of(20f, 30f, 40f))
     );
-    public static final ContractAttribute CHARGED = of(
+    public static final ContractAttribute CHARGED = of( // TODO
             new ContractAttribute.Builder("charged", Polarity.NEGATIVE, ContractTarget.LIVING)
                 .scalable(List.of(10f, 20f, 30f, 40f))
     );
-    public static final ContractAttribute PALPITATIONS = of(
+    public static final ContractAttribute PALPITATIONS = of( // TODO
             new ContractAttribute.Builder("palpitations", Polarity.NEGATIVE, ContractTarget.LIVING)
                 .scalable(List.of(120f, 90f, 60f))
     );
-    public static final ContractAttribute HYDROPHOBIA = of(
+    public static final ContractAttribute HYDROPHOBIA = of( // TODO
             new ContractAttribute.Builder("hydrophobia", Polarity.NEGATIVE, ContractTarget.LIVING)
                 .rank(ContractRank.WHITE)
     );
-    public static final ContractAttribute TRANSPORT = of(
+    public static final ContractAttribute TRANSPORT = of( // TODO
             new ContractAttribute.Builder("transport", Polarity.NEGATIVE, ContractTarget.LIVING)
                 .scalable(List.of(1f, 2f, 3f))
     );
 
     // Weapon positive attributes
-    public static final ContractAttribute SEQUENCE = of(
+    public static final ContractAttribute SEQUENCE = of( // TODO
                 new ContractAttribute.Builder("sequence", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(15f, 30f, 50f))
             );
-    public static final ContractAttribute CRITICAL = of(
+    public static final ContractAttribute CRITICAL = of( // TODO
                 new ContractAttribute.Builder("critical", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(15f, 30f, 50f))
             );
-    public static final ContractAttribute LEECH = of(
+    public static final ContractAttribute LEECH = of( // TODO
                 new ContractAttribute.Builder("leech", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(1f, 2f, 3f))
             );
-    public static final ContractAttribute MIDAS = of(
+    public static final ContractAttribute MIDAS = of( // TODO
                 new ContractAttribute.Builder("midas", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(1f, 2f, 3f))
             );
-    public static final ContractAttribute SPIN = of(
+    public static final ContractAttribute SPIN = of( // TODO
                 new ContractAttribute.Builder("spin", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(10f, 20f, 30f))
             );
-    public static final ContractAttribute UPPERCUT = of(
+    public static final ContractAttribute UPPERCUT = of( // TODO
                 new ContractAttribute.Builder("uppercut", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(10f, 20f, 30f))
             );
-    public static final ContractAttribute LOCK_IN = of(
+    public static final ContractAttribute LOCK_IN = of( // TODO
                 new ContractAttribute.Builder("lock_in", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(25f, 50f, 75f))
             );
-    public static final ContractAttribute SHARP = of(
+    public static final ContractAttribute SHARP = of( // TODO
             new ContractAttribute.Builder("sharp", Polarity.POSITIVE, ContractTarget.WEAPON)
                 .scalable(List.of(25f, 50f, 75f))
             );
 
     // Weapon negative attributes
-    public static final ContractAttribute CORROSION = of(
+    public static final ContractAttribute CORROSION = of( // TODO
             new ContractAttribute.Builder("corrosion", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .scalable(List.of(120f, 90f, 60f))
             );
-    public static final ContractAttribute SLIPPERY = of(
+    public static final ContractAttribute SLIPPERY = of( // TODO
             new ContractAttribute.Builder("slippery", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .scalable(List.of(1f, 2f, 3f))
             );
-    public static final ContractAttribute DULL = of(
+    public static final ContractAttribute DULL = of( // TODO
             new ContractAttribute.Builder("dull", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .rank(ContractRank.BLACK)
             );
-    public static final ContractAttribute BRITTLE = of(
+    public static final ContractAttribute BRITTLE = of( // TODO
             new ContractAttribute.Builder("brittle", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .scalable(List.of(1f, 2f, 3f))
             );

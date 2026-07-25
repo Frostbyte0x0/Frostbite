@@ -1,39 +1,18 @@
 package org.exodusstudio.frostbite;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
-import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
-import org.exodusstudio.frostbite.common.entity.client.models.*;
-import org.exodusstudio.frostbite.common.entity.client.renderers.*;
-import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
-import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
-import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.HeaterStorage;
-import org.exodusstudio.frostbite.common.util.ModItemProperties;
 import org.slf4j.Logger;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +20,7 @@ import java.util.List;
 public class Frostbite {
     public static final String MOD_ID = "frostbite";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static MinecraftServer SERVER = null;
     public static List<HeaterStorage> heaterStorages = new ArrayList<>();
     public static List<HeaterStorage> heatersToRemove = new ArrayList<>();
     public static final ResourceKey<Level> frostbiteKey =
@@ -66,106 +46,4 @@ public class Frostbite {
         AttributeRegistry.ATTRIBUTES.register(modEventBus);
         AttachmentRegistry.ATTACHMENT_TYPES.register(modEventBus);
     }
-
-    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            EntityRenderers.register(EntityRegistry.SNIPER_BULLET_ENTITY.get(), SniperBulletRenderer::new);
-            EntityRenderers.register(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), RevolverBulletRenderer::new);
-            EntityRenderers.register(EntityRegistry.RAIN_FROG.get(), RainFrogRenderer::new);
-            EntityRenderers.register(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepRenderer::new);
-            EntityRenderers.register(EntityRegistry.WHIRLPOOL.get(), GenericEntityRenderer::new);
-            EntityRenderers.register(EntityRegistry.HAILCOIL.get(), GenericEntityRenderer::new);
-            EntityRenderers.register(EntityRegistry.LAST_STAND.get(), GenericEntityRenderer::new);
-            EntityRenderers.register(EntityRegistry.ICE_BLOCK.get(), FallingBlockRenderer::new);
-            EntityRenderers.register(EntityRegistry.ICE_SPIKE.get(), IceSpikeRenderer::new);
-            EntityRenderers.register(EntityRegistry.EXPLODING_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
-            EntityRenderers.register(EntityRegistry.BLUE_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
-            EntityRenderers.register(EntityRegistry.HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
-            EntityRenderers.register(EntityRegistry.PACKED_HARDENED_SNOWBALL_PROJECTILE_ENTITY.get(), ThrownItemRenderer::new);
-            EntityRenderers.register(EntityRegistry.LEVITATING_JELLYFISH.get(), LevitatingJellyfishRenderer::new);
-            EntityRenderers.register(EntityRegistry.FERAL_WOLF.get(), FeralWolfRenderer::new);
-            EntityRenderers.register(EntityRegistry.FROZEN_REMNANTS.get(), FrozenRemnantsRenderer::new);
-            EntityRenderers.register(EntityRegistry.WIND_CIRCLE.get(), GenericEntityRenderer::new);
-            EntityRenderers.register(EntityRegistry.HEALING_CIRCLE.get(), GenericEntityRenderer::new);
-            EntityRenderers.register(EntityRegistry.BOAR.get(), BoarRenderer::new);
-            EntityRenderers.register(EntityRegistry.ROAMING_BLIZZARD.get(), GenericEntityRenderer::new);
-            EntityRenderers.register(EntityRegistry.ICED_SKELETON.get(), IcedSkeletonRenderer::new);
-            EntityRenderers.register(EntityRegistry.ICED_ZOMBIE.get(), IcedZombieRenderer::new);
-            EntityRenderers.register(EntityRegistry.ICED_CREEPER.get(), IcedCreeperRenderer::new);
-            EntityRenderers.register(EntityRegistry.FROZEN_ARROW.get(), FrozenArrowRenderer::new);
-            EntityRenderers.register(EntityRegistry.SPECTER.get(), SpecterRenderer::new);
-            EntityRenderers.register(EntityRegistry.REVENANT.get(), RevenantRenderer::new);
-            EntityRenderers.register(EntityRegistry.BANDIT.get(), BanditRenderer::new);
-            EntityRenderers.register(EntityRegistry.TORCH.get(), TorchRenderer::new);
-            EntityRenderers.register(EntityRegistry.FIRE_SLICE.get(), FireSliceRenderer::new);
-            EntityRenderers.register(EntityRegistry.TANUKI.get(), TanukiRenderer::new);
-            EntityRenderers.register(EntityRegistry.HEALER_ELF.get(), c -> new ElfRenderer(c, new HealerElfModel(c.bakeLayer(ModModelLayers.HEALER_ELF)), 0.45f, "healer_elf"));
-            EntityRenderers.register(EntityRegistry.CASTER_ELF.get(), c -> new ElfRenderer(c, new CasterElfModel(c.bakeLayer(ModModelLayers.CASTER_ELF)), 0.45f, "caster_elf"));
-            EntityRenderers.register(EntityRegistry.SUMMONER_ELF.get(), c -> new ElfRenderer(c, new SummonerElfModel(c.bakeLayer(ModModelLayers.SUMMONER_ELF)), 0.45f, "summoner_elf"));
-            EntityRenderers.register(EntityRegistry.BOREAL_BEAR.get(), BorealBearRenderer::new);
-            EntityRenderers.register(EntityRegistry.MONK.get(), MonkRenderer::new);
-            EntityRenderers.register(EntityRegistry.BIG_LEVITATING_JELLYFISH.get(), BigLevitatingJellyfishRenderer::new);
-            EntityRenderers.register(EntityRegistry.SHAMAN.get(), ShamanRenderer::new);
-            EntityRenderers.register(EntityRegistry.ETHEREAL_SWORD.get(), EtherealSwordRenderer::new);
-            EntityRenderers.register(EntityRegistry.ETHEREAL_HANDS.get(), EtherealHandsRenderer::new);
-            EntityRenderers.register(EntityRegistry.ETHEREAL_HAMMER.get(), EtherealHammerRenderer::new);
-            EntityRenderers.register(EntityRegistry.GUARD.get(), renderer(GuardModel.class, "guard", ModModelLayers.GUARD));
-            EntityRenderers.register(EntityRegistry.CHIEF_GUARD.get(), renderer(ChiefGuardModel.class, "chief_guard", ModModelLayers.CHIEF_GUARD));
-            EntityRenderers.register(EntityRegistry.HEAVY_GUARD.get(), renderer(HeavyGuardModel.class, "heavy_guard", ModModelLayers.HEAVY_GUARD));
-
-            BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
-            EntityRenderers.register(EntityRegistry.CURSE_BALL.get(), CurseBallRenderer::new);
-            ModItemProperties.addCustomItemProperties();
-        }
-    }
-
-    // Function<EntityRendererProvider.Context, StateMonsterRenderer<?, ? extends HumanoidModel<StateRenderState>>>
-    private static EntityRendererProvider<StateMonsterEntity> renderer(
-            Class<? extends HumanoidModel<? extends StateRenderState>> clazz,
-            String name,
-            ModelLayerLocation modelLayer
-    ) {
-        return c -> {
-            try {
-                return new StateMonsterRenderer<>(c, clazz.getConstructor(ModelPart.class).newInstance(c.bakeLayer(modelLayer)), 0.45f,
-                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/" + name + "/" + name + ".png"));
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
-
-//    private static EntityRendererProvider<StateMonsterEntity> renderer(
-//            Class<? extends HumanoidModel<? extends StateRenderState>> clazz,
-//            String name,
-//            ModelLayerLocation modelLayer,
-//            BiConsumer<StateMonsterEntity, StateRenderState> extractor
-//    ) {
-//        return c -> {
-//            try {
-//                return new StateMonsterRenderer<>(c, clazz.getConstructor(ModelPart.class).newInstance(c.bakeLayer(modelLayer)), 0.45f,
-//                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/" + name + "/" + name + ".png"), extractor);
-//            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-//                throw new RuntimeException(e);
-//            }
-//        };
-//    }
-//
-//    private static <E extends StateMonsterEntity, S extends StateRenderState, M extends HumanoidModel<? extends StateRenderState>> EntityRendererProvider<E> renderer(
-//            Class<M> clazz,
-//            String name,
-//            ModelLayerLocation modelLayer,
-//            BiConsumer<E, S> extractor
-//    ) {
-//        return c -> {
-//            try {
-//                return new StateMonsterRenderer<>(c, clazz.getConstructor(ModelPart.class).newInstance(c.bakeLayer(modelLayer)), 0.45f,
-//                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/" + name + "/" + name + ".png"), extractor);
-//            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-//                throw new RuntimeException(e);
-//            }
-//        };
-//    }
 }

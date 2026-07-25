@@ -1,10 +1,10 @@
 package org.exodusstudio.frostbite.client.codex.tabs;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
+import net.neoforged.neoforge.common.NeoForge;
 import org.exodusstudio.frostbite.client.codex.entries.ListCodexEntry;
 import org.exodusstudio.frostbite.client.codex.entries.SideTile;
+import org.exodusstudio.frostbite.common.event.custom.PlayerHasEntryEvent;
 
 import java.util.Arrays;
 
@@ -68,7 +68,7 @@ public class ListCodexTab extends CodexTab {
 
     public void reloadTiles() {
         this.tiles = Arrays.stream(listEntries)
-                .filter(e -> CodexEntry.playerHasEntry(Minecraft.getInstance().player, e))
+                .filter(e -> NeoForge.EVENT_BUS.post(new PlayerHasEntryEvent(e)).hasEntry)
                 .map(SideTile::new)
                 .toArray(SideTile[]::new);
         this.selectedTile = tiles.length > 0 ? tiles[0] : null;

@@ -242,7 +242,7 @@
   "contract.attribute.dexterous_desc_complete": "When crafting, %s%s chance to get bonus item",
   "contract.attribute.illusions": "Illusions",
   "contract.attribute.illusions_desc": "Chance to get create illusions when hit",
-  "contract.attribute.illusions_desc_complete": "%s%s chance to get create illusions when hit",
+  "contract.attribute.illusions_desc_complete": "Create %s illusions when hit",
   "contract.attribute.repel": "Repel",
   "contract.attribute.repel_desc": "On perfect parry, push away enemies",
   "contract.attribute.repel_desc_complete": "%s%s chance to push away enemies on perfect parry",

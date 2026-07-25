@@ -115,7 +115,7 @@ public abstract class ElfEntity extends StateMonsterEntity implements RangedAtta
         ItemStack itemInHand = getItemInHand(InteractionHand.MAIN_HAND);
         if (itemInHand.getItem() instanceof ModeWeapon staff) {
             staff.attack(level(), this);
-            staff.attack(Minecraft.getInstance().level, (LivingEntity) Minecraft.getInstance().level.getEntity(uuid));
+//            staff.attack(Minecraft.getInstance().level, (LivingEntity) Minecraft.getInstance().level.getEntity(uuid));
         }
 
         setIdle();

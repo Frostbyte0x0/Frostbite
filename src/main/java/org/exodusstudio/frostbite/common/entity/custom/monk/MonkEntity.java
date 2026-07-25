@@ -295,7 +295,8 @@ public class MonkEntity extends Monster implements TargetingEntity {
                     Vec3 mul = new Vec3(num, num * 0.5, num);
                     Vec3 v = calculateDir(this, entity, mul);
                     if (entity instanceof Player) {
-                        Minecraft.getInstance().player.push(v); // no idea why this works, but it does
+//                        Minecraft.getInstance().player.push(v); // no idea why this works, but it does
+                        entity.push(v);
                         continue;
                     }
                     entity.push(v);
@@ -366,17 +367,17 @@ public class MonkEntity extends Monster implements TargetingEntity {
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float p_376610_) {
         if (isIllusion()) {
-            Player player = Minecraft.getInstance().player;
-            assert player != null;
             for (int i = 0; i < 80; i++) {
-                player.level().addAlwaysVisibleParticle(
+                serverLevel.sendParticles(
                         ParticleRegistry.SWIRLING_LEAF_PARTICLE.get(),
                         this.getX() + 0.5f * random.nextDouble() - Math.sin(this.yHeadRot * Math.PI / 180) / 1.5f,
-                        player.getY() + 0.5f * random.nextDouble() + 1.25f,
+                        this.getY() + 0.5f * random.nextDouble() + 1.25f,
                         this.getZ() + 0.5f * random.nextDouble() + Math.cos(this.yHeadRot * Math.PI / 180) / 1.5f,
+                        1,
                         (0.5 - random.nextDouble()) * 0.3,
                         (0.5 - random.nextDouble()) * 0.3,
-                        (0.5 - random.nextDouble()) * 0.3);
+                        (0.5 - random.nextDouble()) * 0.3,
+                        1);
 
             }
             serverLevel.playSound(null, this.getOnPos(), SoundEvents.LAVA_EXTINGUISH, SoundSource.HOSTILE, 1f, serverLevel.getRandom().nextFloat() * 0.1F + 0.9F);

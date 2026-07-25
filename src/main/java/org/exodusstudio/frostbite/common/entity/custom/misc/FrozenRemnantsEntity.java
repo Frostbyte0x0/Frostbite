@@ -39,7 +39,6 @@ public class FrozenRemnantsEntity extends Mob{
     private static final EntityDataAccessor<Boolean> DATA_IS_ON_SCREEN;
     private static final EntityDataAccessor<Float> DATA_HEAD_PITCH;
     private static final EntityDataAccessor<Boolean> DATA_SHOULD_PLAY_SOUND;
-    protected final InterpolationHandler interpolation = new InterpolationHandler(this);
 
     public FrozenRemnantsEntity(EntityType<? extends Mob> ignored, Level level) {
         super(EntityRegistry.FROZEN_REMNANTS.get(), level);
@@ -214,18 +213,17 @@ public class FrozenRemnantsEntity extends Mob{
             return false;
         }
 
-        Player player = Minecraft.getInstance().player;
-        assert player != null;
         for (int i = 0; i < 80; i++) {
-            player.level().addAlwaysVisibleParticle(
+            serverLevel.sendParticles(
                     ParticleTypes.DRIPPING_WATER,
                     this.getX() - random.nextFloat() + 0.5f,
                     this.getY() + 1.5f * random.nextFloat() + 0.5f,
                     this.getZ() - random.nextFloat() + 0.5f,
+                    1,
+                    0,
                     0,
                     0,
                     0);
-
         }
 
         this.level().playSound(null, this.getOnPos(), SoundEvents.LAVA_EXTINGUISH, SoundSource.HOSTILE, 1f, this.level().getRandom().nextFloat() * 0.1F + 0.9F);

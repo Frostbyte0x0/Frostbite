@@ -1,18 +1,10 @@
 package org.exodusstudio.frostbite.common.event;
 
-import net.minecraft.client.KeyMapping;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.monster.creeper.CreeperModel;
-import net.minecraft.client.model.monster.skeleton.SkeletonModel;
-import net.minecraft.client.model.monster.zombie.ZombieModel;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -20,11 +12,6 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
-import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
-import org.exodusstudio.frostbite.common.entity.client.models.*;
-import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
-import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
@@ -41,49 +28,6 @@ import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEventBusEvents {
-    @SubscribeEvent
-    public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ModModelLayers.SNIPER_BULLET, SniperBulletModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.REVOLVER_BULLET, RevolverBulletModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.RAIN_FROG, RainFrogModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.ICE_SPIKE, IceSpikeModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP, WoollySheepModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.CURSE_BALL, CurseBallModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_FUR, WoollySheepFurModel::createFurLayer);
-        event.registerLayerDefinition(ModModelLayers.HEAVY_GUARD, HeavyGuardModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY, () -> WoollySheepModel.createBodyLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
-        event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP_BABY_FUR, () -> WoollySheepFurModel.createFurLayer().apply(WoollySheepModel.BABY_TRANSFORMER));
-        event.registerLayerDefinition(ModModelLayers.GUARD, GuardModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.CHIEF_GUARD, ChiefGuardModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.ETHEREAL_HAMMER, EtherealHammerModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.ETHEREAL_HANDS, EtherealHandsModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.ETHEREAL_SWORD, EtherealSwordModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.LEVITATING_JELLYFISH, LevitatingJellyfishModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.SHAMAN, ShamanModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.BIG_LEVITATING_JELLYFISH, BigLevitatingJellyfishModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.FROZEN_REMNANTS, FrozenRemnantsModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.FERAL_WOLF, FeralWolfModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.BOAR, BoarModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.MONK, MonkModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.BOREAL_BEAR, BorealBearModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.LODESTAR_CAGE, LodestarRenderer::createCageLayer);
-        event.registerLayerDefinition(ModModelLayers.SUMMONER_ELF, SummonerElfModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.CASTER_ELF, CasterElfModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.HEALER_ELF, HealerElfModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.TANUKI, TanukiModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.FIRE_SLICE, FireSliceModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.TORCH, TorchModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.BANDIT, BanditModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.REVENANT, RevenantModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.LODESTAR_EYE, LodestarRenderer::createEyeLayer);
-        event.registerLayerDefinition(ModModelLayers.LODESTAR_SHELL, LodestarRenderer::createShellLayer);
-        event.registerLayerDefinition(ModModelLayers.ICED_CREEPER, () -> CreeperModel.createBodyLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(ModModelLayers.ICED_ZOMBIE,
-                () -> LayerDefinition.create(ZombieModel.createMesh(CubeDeformation.NONE, 0), 64, 64));
-        event.registerLayerDefinition(ModModelLayers.ICED_SKELETON, SkeletonModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.SPECTER, SpecterModel::createBodyLayer);
-    }
-
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityRegistry.RAIN_FROG.get(), RainFrogEntity.createAttributes().build());

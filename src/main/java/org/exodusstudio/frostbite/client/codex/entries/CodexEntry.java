@@ -1,14 +1,13 @@
 package org.exodusstudio.frostbite.client.codex.entries;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.NeoForge;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.Codex;
-import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
+import org.exodusstudio.frostbite.common.event.custom.CodexEntryUnlockedEvent;
 import org.exodusstudio.frostbite.common.util.DataHelper;
-import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Arrays;
 
@@ -25,14 +24,14 @@ public abstract class CodexEntry {
     public static void addEntryToPlayer(Player player, CodexEntry entry) {
         if (!DataHelper.getString(player, "unlocked_entries").contains(entry.id)) {
             DataHelper.setData(player, "unlocked_entries", DataHelper.getString(player, "unlocked_entries") + entry.id + ";");
-            Minecraft.getInstance().gui.toastManager().addToast(new CodexEntryToast(entry));
+            NeoForge.EVENT_BUS.post(new CodexEntryUnlockedEvent(player, entry));
         }
     }
 
     public static void addEntryToPlayer(Player player, String entryId) {
         if (!DataHelper.getString(player, "unlocked_entries").contains(entryId) && Codex.ENTRIES.containsKey(entryId)) {
             DataHelper.setData(player, "unlocked_entries", DataHelper.getString(player, "unlocked_entries") + entryId + ";");
-            Minecraft.getInstance().gui.toastManager().addToast(new CodexEntryToast(Codex.ENTRIES.get(entryId)));
+            NeoForge.EVENT_BUS.post(new CodexEntryUnlockedEvent(player, Codex.ENTRIES.get(entryId)));
         }
     }
 
