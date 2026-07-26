@@ -34,6 +34,11 @@ public class AttachmentRegistry {
                     .sync(MAP_STRING_FLOAT_STREAM_CODEC)
                     .serialize(Codec.unboundedMap(Codec.STRING, Codec.FLOAT).fieldOf("map_string_float")).build());
 
+    public static final Supplier<AttachmentType<Map<String, List<Float>>>> MAP_STRING_LIST_FLOAT = ATTACHMENT_TYPES.register(
+            "map_string_list_float", () -> AttachmentType.builder(() -> (Map<String, List<Float>>) new HashMap<String, List<Float>>())
+                    .sync(MAP_STRING_LIST_FLOAT_STREAM_CODEC)
+                    .serialize(Codec.unboundedMap(Codec.STRING, Codec.FLOAT.listOf()).fieldOf("map_string_list_float")).build());
+
     public static final Supplier<AttachmentType<Map<String, String>>> MAP_STRING_STRING = ATTACHMENT_TYPES.register(
             "map_string_string", () -> AttachmentType.builder(() -> (Map<String, String>) new HashMap<String, String>())
                     .sync(MAP_STRING_STRING_STREAM_CODEC)

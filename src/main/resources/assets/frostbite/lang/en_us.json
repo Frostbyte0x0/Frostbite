@@ -250,7 +250,10 @@
   "contract.attribute.frog_desc": "Extra jumps",
   "contract.attribute.frog_desc_complete": "%s extra jumps",
   "contract.attribute.smelly": "Smelly",
-  "contract.attribute.smelly_desc": "Mobs can't see you when sneaking",
+  "contract.attribute.smelly_desc": "Mobs can't see you until you hit them",
+  "contract.attribute.delay": "Delay",
+  "contract.attribute.delay_desc": "Damage is spread out over time",
+  "contract.attribute.delay_desc_complete": "Damage is spread out over %s seconds",
 
   "contract.attribute.diabetic": "Diabetic",
   "contract.attribute.diabetic_desc": "Can't eat sweet foods",
@@ -272,7 +275,7 @@
   "contract.attribute.tank_desc_complete": "%s extra health",
   "contract.attribute.sumo": "Sumo",
   "contract.attribute.sumo_desc": "Less knockback",
-  "contract.attribute.sumo_desc_complete": "%s less knockback",
+  "contract.attribute.sumo_desc_complete": "%s%s less knockback",
   "contract.attribute.catlike": "Catlike",
   "contract.attribute.catlike_desc": "Take no fall damage",
   "contract.attribute.cowardly": "Cowardly",
@@ -301,6 +304,8 @@
   "contract.attribute.transport": "Transport",
   "contract.attribute.transport_desc": "Chance to teleport to a random location",
   "contract.attribute.transport_desc_complete": "%s%s chance to teleport to a random location every 5 seconds",
+  "contract.attribute.stoic": "Stoic",
+  "contract.attribute.stoic_desc": "You can't hit entities until they have hit you directly",
 
   "contract.attribute.sequence": "Sequence",
   "contract.attribute.sequence_desc": "Combos deal more damage",
@@ -338,6 +343,11 @@
   "contract.attribute.brittle": "Brittle",
   "contract.attribute.brittle_desc": "Item durability depletes faster",
   "contract.attribute.brittle_desc_complete": "Item durability depletes %s faster",
+  "contract.attribute.shadow": "Shadow",
+  "contract.attribute.shadow_desc": "Deals less damage during the day",
+  "contract.attribute.shadow_desc_complete": "Deals %s%s less damage during the day",
+  "contract.attribute.sticky": "Sticky",
+  "contract.attribute.sticky_desc": "When hitting an entity, you come closer to it",
 
 
   "commands.give_fragment_unknown": "Unknown fragment: %s",

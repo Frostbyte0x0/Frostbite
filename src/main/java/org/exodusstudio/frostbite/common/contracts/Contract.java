@@ -122,10 +122,10 @@ public record Contract(
 
     public List<ContractAttribute> allAttributes() {
         List<String> allAttributes = new ArrayList<>();
-        allAttributes.addAll(negativeScalableAttributes.keySet());
-        allAttributes.addAll(negativeAttributes);
-        allAttributes.addAll(positiveScalableAttributes.keySet());
         allAttributes.addAll(positiveAttributes);
+        allAttributes.addAll(positiveScalableAttributes.keySet());
+        allAttributes.addAll(negativeAttributes);
+        allAttributes.addAll(negativeScalableAttributes.keySet());
         return allAttributes.stream().map(Contract::a).collect(Collectors.toList());
     }
 

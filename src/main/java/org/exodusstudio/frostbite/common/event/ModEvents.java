@@ -6,8 +6,11 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,8 +26,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
-import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -56,14 +59,11 @@ import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
 public class ModEvents {
-    @SubscribeEvent
-    public static void serverStarted(ServerStartedEvent event) {
-        Frostbite.SERVER = event.getServer();
-    }
+    static RandomSource random = RandomSource.create();
 
     @SubscribeEvent
-    public static void serverStopping(ServerStoppingEvent event) {
-        Frostbite.SERVER = null;
+    public static void serverStarted(ServerStartingEvent event) {
+        Frostbite.SERVER = event.getServer();
     }
 
     @SubscribeEvent
@@ -214,7 +214,7 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void livingDamagedEvent(LivingDamageEvent.Post event) {
+    public static void spawnFrozenRemnants(LivingDamageEvent.Post event) {
         if (event.getEntity().isDeadOrDying() && event.getEntity() instanceof Player player) {
             if (player.level() instanceof ServerLevel serverLevel && FrozenRemnantsEntity.shouldSpawnFrozenRemnants(serverLevel)) {
                 FrozenRemnantsEntity frozenRemnants = new FrozenRemnantsEntity(EntityRegistry.FROZEN_REMNANTS.get(), serverLevel);
@@ -269,11 +269,15 @@ public class ModEvents {
                 Renderable.removeRenderable(user, renderable);
             }
 
-            level.getEntities().getAll().forEach((entity) -> {
-                if (entity instanceof LivingEntity livingEntity) {
-                    TemperatureManager.updateEntityTemperature(livingEntity);
-                }
-            });
+            Iterable<Entity> entities = level.getEntities().getAll();
+            if (entities.iterator().hasNext()) {
+                entities.forEach((entity) -> {
+                    if (entity instanceof LivingEntity livingEntity) {
+                        TemperatureManager.updateEntityTemperature(livingEntity);
+                    }
+                });
+            }
+
             if (event.getServer().getTickCount() % 20 == 0) {
                 Frostbite.heaterStorages.forEach(heater -> {
                     if (heater.getDimensionName().equals(level.dimension().identifier().toString())) heater.tickBlock(level);
@@ -372,6 +376,123 @@ public class ModEvents {
             if (LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.INEXPERIENCED)) {
                 event.setNewDamage(Math.min(event.getNewDamage(), player.experienceLevel));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void flame(LivingDamageEvent.Post event) {
+        if (event.getSource().getDirectEntity() instanceof LivingEntity entity && event.getEntity() instanceof Player player) {
+            if (LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.FLAME)) {
+                entity.setRemainingFireTicks(entity.getRemainingFireTicks()
+                        + 20 * (int) LivingContractInfo.getStat(player, ContractAttributes.FLAME));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void hitEntity(LivingIncomingDamageEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity victim &&
+                LivingContractInfo.hasAppliedAttribute(attacker, ContractAttributes.STOIC) &&
+                !DataHelper.hasHitEntity(victim, attacker)) {
+            event.setCanceled(true);
+        }
+
+        if (event.getEntity() instanceof LivingEntity victim && event.getSource().getEntity() instanceof LivingEntity attacker) {
+            if (!DataHelper.hasHitEntity(attacker, victim)) {
+                DataHelper.addHitEntity(attacker, victim);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void filterHitEntity(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity entity && entity.tickCount % 200 == 0) {
+            DataHelper.filterHitEntities(entity, entity.level());
+        }
+    }
+
+    @SubscribeEvent
+    public static void catlike(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof Player player && event.getSource().is(DamageTypes.FALL)) {
+            if (LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.CATLIKE)) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void smelly(LivingChangeTargetEvent event) {
+        if (event.getNewAboutToBeSetTarget() instanceof Player player) {
+            if (LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.SMELLY) && !DataHelper.hasHitEntity(player, event.getEntity())) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void charged(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity entity && LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.CHARGED)) {
+            if (entity.tickCount % 1200 == 0 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.CHARGED) / 100) {
+                LightningBolt bolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, entity.level());
+                bolt.setDamage(8);
+                bolt.moveOrInterpolateTo(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
+                entity.level().addFreshEntity(bolt);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void transport(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity entity && LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.TRANSPORT) && entity.level() instanceof ServerLevel) {
+            if (entity.tickCount % 100 == 0 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.TRANSPORT) / 100) {
+                Util.teleportEntityRandomly(entity.level(), 32, entity);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void palpitations(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity entity && LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.PALPITATIONS)) {
+            if (entity.tickCount % (LivingContractInfo.getStat(entity, ContractAttributes.PALPITATIONS) * 20) == 300) {
+                entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 100, 0));
+                entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0));
+                entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 2));
+                entity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 1));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void delayAccumulate(LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof LivingEntity entity &&
+                LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.DELAY) &&
+                !event.getSource().is(DamageTypeRegistry.DELAY)) {
+            List<Float> damageOverTime = DataHelper.getList(entity, "damage_over_time");
+            float over = LivingContractInfo.getStat(entity, ContractAttributes.DELAY);
+            if (damageOverTime.size() < over) {
+                int difference = (int) (over - damageOverTime.size());
+                for (int i = 0; i < difference; i++) {
+                    damageOverTime.add(0.0f);
+                }
+            }
+            damageOverTime.replaceAll(d -> d + event.getAmount() / over);
+            DataHelper.setData(entity, "damage_over_time", damageOverTime);
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void delayApply(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity entity &&
+                LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.DELAY) &&
+                entity.level() instanceof ServerLevel serverLevel) {
+            List<Float> damageOverTime = DataHelper.getList(entity, "damage_over_time");
+            if (damageOverTime.isEmpty() || entity.tickCount % 20 != 0) return;
+
+            entity.hurtServer(serverLevel, serverLevel.damageSources().source(DamageTypeRegistry.DELAY, null, null), damageOverTime.getFirst());
+            damageOverTime.removeFirst();
+            DataHelper.setData(entity, "damage_over_time", damageOverTime);
         }
     }
 

@@ -13,6 +13,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -62,7 +63,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void codexEntryUnlocked(CodexEntryUnlockedEvent event) {
-        if (event.getPlayer() == Minecraft.getInstance().player)
+        if (event.getPlayer().getUUID().equals(Minecraft.getInstance().player.getUUID()))
             Minecraft.getInstance().gui.toastManager().addToast(new CodexEntryToast(event.getEntry()));
     }
 
@@ -87,12 +88,14 @@ public class ClientEvents {
             List<ContractAttribute> attributes = c.allAttributes();
             if (attributes.isEmpty()) return;
 
-            int i = -attributes.size() / 2;
+            int i = attributes.size() / 2;
             for (ContractAttribute a : attributes) {
-                graphics.text(font, a.getExtraInfo(player, Either.right(c)), 0, screenCenter - i * font.lineHeight, 0xFFFFFFFF);
+                graphics.text(font, a.getSmallInfo(player, Either.right(c)), 0, screenCenter + i * font.lineHeight, 0xFFFFFFFF);
                 i++;
-                graphics.text(font, a.getSmallInfo(player, Either.right(c)), 0, screenCenter - i * font.lineHeight, 0xFFFFFFFF);
-                i++;
+                for (FormattedCharSequence line : font.split(a.getExtraInfo(player, Either.right(c), false), 200)) {
+                    graphics.text(font, line, 16, screenCenter + i * font.lineHeight, 0xFFFFFFFF);
+                    i++;
+                }
             }
         }
     }
@@ -158,7 +161,7 @@ public class ClientEvents {
             ContractAttribute a = ContractAttribute.getAttribute(stack);
             if (a == null) return;
             event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, Either.left(stack))));
-            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack))));
+            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack), true)));
             event.getTooltipElements().remove(Either.left(Component.literal("frostbite:contract_fragment_" + a.id).withStyle(ChatFormatting.DARK_GRAY)));
         }
 
@@ -169,7 +172,7 @@ public class ClientEvents {
 
         for (ContractAttribute a : c.allAttributes()) {
             event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, Either.left(stack))));
-            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack))));
+            if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack), true)));
         }
     }
 

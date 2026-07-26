@@ -226,6 +226,29 @@ public class CodecHelper {
                 }
                 return m;
             });
+    public static final StreamCodec<RegistryFriendlyByteBuf, Map<String, List<Float>>> MAP_STRING_LIST_FLOAT_STREAM_CODEC = StreamCodec.of(
+            (b, m) -> {
+                b.writeInt(m.size());
+                m.forEach((k, v) -> {
+                    b.writeUtf(k);
+                    b.writeInt(v.size());
+                    v.forEach(b::writeFloat);
+                });
+            },
+            b -> {
+                Map<String, List<Float>> m = new HashMap<>();
+                int size = b.readInt();
+                for (int i = 0; i < size; i++) {
+                    String key = b.readUtf();
+                    int listSize = b.readInt();
+                    List<Float> list = new ArrayList<>();
+                    for (int j = 0; j < listSize; j++) {
+                        list.add(b.readFloat());
+                    }
+                    m.put(key, list);
+                }
+                return m;
+            });
     public static final StreamCodec<RegistryFriendlyByteBuf, Map<String, List<PseudoEntity>>> MAP_STRING_LIST_PSEUDO_ENTITY_STREAM_CODEC = StreamCodec.of(
             (b, m) -> {
                 b.writeInt(m.size());
@@ -249,7 +272,6 @@ public class CodecHelper {
                 }
                 return m;
             });
-
     public static final StreamCodec<RegistryFriendlyByteBuf, Map<UUID, List<Pair<String, Long>>>> MAP_UUID_LIST_STRING_LONG_PAIR_STREAM_CODEC = StreamCodec.of(
             (b, m) -> {
                 b.writeInt(m.size());

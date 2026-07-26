@@ -87,6 +87,10 @@ public record LivingContractInfo(
         return info.contract();
     }
 
+    public static float getStat(LivingEntity entity, ContractAttribute attribute) {
+        return attribute.getStats().get(getContract(entity).allScalableAttributes().get(attribute) - 1);
+    }
+
     public static void toBuffer(final ByteBuf buffer, LivingContractInfo contract) {
         buffer.writeInt(contract.discoveredAttributes().size());
         for (String attribute : contract.discoveredAttributes()) {

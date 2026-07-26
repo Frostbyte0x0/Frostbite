@@ -10,12 +10,17 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.fox.Fox;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -349,6 +354,45 @@ public class Util {
 
         for (int i = 0; i < text.size(); ++i) {
             gui.text(font, text.get(i), x, y + i * 9, color);
+        }
+    }
+
+    public static void teleportEntityRandomly(Level level, float diameter, LivingEntity user) {
+        boolean teleported = false;
+
+        for (int attempt = 0; attempt < 16; ++attempt) {
+            double xx = user.getX() + (user.getRandom().nextDouble() - 0.5) * diameter;
+            double yy = Mth.clamp(
+                    user.getY() + (user.getRandom().nextDouble() - 0.5) * diameter,
+                    level.getMinY(),
+                    (level.getMinY() + ((ServerLevel)level).getLogicalHeight() - 1));
+            double zz = user.getZ() + (user.getRandom().nextDouble() - 0.5) * diameter;
+            if (user.isPassenger()) {
+                user.stopRiding();
+            }
+
+            Vec3 oldPos = user.position();
+            if (user.randomTeleport(xx, yy, zz, true, ItemStack.EMPTY)) {
+                level.gameEvent(GameEvent.TELEPORT, oldPos, GameEvent.Context.of(user));
+                SoundSource soundSource;
+                SoundEvent soundEvent;
+                if (user instanceof Fox) {
+                    soundEvent = SoundEvents.FOX_TELEPORT;
+                    soundSource = SoundSource.NEUTRAL;
+                } else {
+                    soundEvent = SoundEvents.CHORUS_FRUIT_TELEPORT;
+                    soundSource = SoundSource.PLAYERS;
+                }
+
+                level.playSound(null, user.getX(), user.getY(), user.getZ(), soundEvent, soundSource);
+                user.resetFallDistance();
+                teleported = true;
+                break;
+            }
+        }
+
+        if (teleported) {
+            user.resetCurrentImpulseContext();
         }
     }
 

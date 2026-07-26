@@ -5,6 +5,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
@@ -12,10 +13,7 @@ import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.PseudoEntityTypes;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -129,10 +127,43 @@ public class DataHelper {
         holder.setData(AttachmentRegistry.BOSSES_TO_ADD, new HashMap<>());
     }
 
+    public static void setData(IAttachmentHolder holder, String key, List<Float> data) {
+        Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
+        map = addValueToMap(map, key, new ArrayList<>(data));
+        holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
+    }
+
+    public static void addData(IAttachmentHolder holder, String key, float data) {
+        Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
+        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map.get(key).add(data);
+        holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
+    }
+
+    public static void addDataToAll(IAttachmentHolder holder, String key, float data) {
+        Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
+        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map.get(key).replaceAll(d -> d + data);
+        holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
+    }
+
+    public static List<Float> getList(IAttachmentHolder holder, String key) {
+        Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
+        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        return map.get(key);
+    }
+
+    public static void removeData(IAttachmentHolder holder, String key, float data) {
+        Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
+        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map.get(key).remove(data);
+        holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
+    }
+
     public static void addPseudoEntity(IAttachmentHolder holder, PseudoEntityTypes.PseudoEntityType type, PseudoEntity pseudoEntity) {
         String key = type.id();
         Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
-        if (!map.containsKey(key)) map = addValueToMap(map, key, new ArrayList<>());
+        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
         map.get(key).add(pseudoEntity);
         holder.setData(AttachmentRegistry.PSEUDO_ENTITIES, map);
     }
@@ -156,7 +187,6 @@ public class DataHelper {
 
     public static void removePseudoEntities(IAttachmentHolder holder, List<PseudoEntity> pseudoEntities) {
         for (PseudoEntity pseudoEntity : pseudoEntities) {
-            // Find the key for this pseudoEntity and remove it
             for (Map.Entry<String, List<PseudoEntity>> entry : getAllPseudoEntities(holder).entrySet()) {
                 if (entry.getValue().contains(pseudoEntity)) {
                     removePseudoEntity(holder, entry.getKey(), pseudoEntity);
@@ -164,6 +194,45 @@ public class DataHelper {
                 }
             }
         }
+    }
+
+    public static void addHitEntity(IAttachmentHolder holder, LivingEntity e) {
+        String hitEntities = getString(holder, "hit_entities");
+        hitEntities += e.getStringUUID() + ";";
+        setData(holder, "hit_entities", hitEntities);
+    }
+
+    public static boolean hasHitEntity(IAttachmentHolder holder, LivingEntity victim) {
+        String hitEntities = getString(holder, "hit_entities");
+        if (hitEntities == null || hitEntities.isEmpty()) return false;
+
+        for (String uuid : hitEntities.split(";")) {
+            if (uuid.equals(victim.getStringUUID())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void removeHitEntity(IAttachmentHolder holder, Entity entity) {
+        String hitEntities = getString(holder, "hit_entities");
+        String uuid = entity.getStringUUID();
+        hitEntities = hitEntities.replace(uuid + ";", "");
+        setData(holder, "hit_entities", hitEntities);
+    }
+
+    public static void filterHitEntities(IAttachmentHolder holder, Level level) {
+        String hitEntities = getString(holder, "hit_entities");
+
+        if (hitEntities == null || hitEntities.isEmpty()) return;
+
+        for (String uuid : hitEntities.split(";")) {
+            if (level.getEntity(UUID.fromString(uuid)) == null) {
+                hitEntities = hitEntities.replace(uuid + ";", "");
+            }
+        }
+
+        setData(holder, "hit_entities", hitEntities);
     }
 
     public static <K, V> Map<K, V> addValueToMap(Map<K, V> map, K key, V value) {

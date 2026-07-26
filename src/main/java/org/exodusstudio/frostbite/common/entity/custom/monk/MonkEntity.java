@@ -377,7 +377,7 @@ public class MonkEntity extends Monster implements TargetingEntity {
                         (0.5 - random.nextDouble()) * 0.3,
                         (0.5 - random.nextDouble()) * 0.3,
                         (0.5 - random.nextDouble()) * 0.3,
-                        1);
+                        0.1);
 
             }
             serverLevel.playSound(null, this.getOnPos(), SoundEvents.LAVA_EXTINGUISH, SoundSource.HOSTILE, 1f, serverLevel.getRandom().nextFloat() * 0.1F + 0.9F);

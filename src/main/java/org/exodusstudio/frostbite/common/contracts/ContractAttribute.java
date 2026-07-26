@@ -57,18 +57,18 @@ public class ContractAttribute {
         this.templateInfo = templateInfo;
     }
 
-    public Component getExtraInfo(Player player, Either<ItemStack, Contract> stack) {
+    public Component getExtraInfo(Player player, Either<ItemStack, Contract> stack, boolean withSpace) {
         if (isScalable) {
-            return getExtraInfoScalable(player, stack);
+            return getExtraInfoScalable(player, stack, withSpace);
         } else {
-            return getExtraInfoFixed(player, stack);
+            return getExtraInfoFixed(player, withSpace);
         }
     }
 
-    public Component getExtraInfoFixed(Player player, Either<ItemStack, Contract> stack) {
+    public Component getExtraInfoFixed(Player player, boolean withSpace) {
         LivingContractInfo info = player.getData(AttachmentRegistry.LIVING_CONTRACT_INFO);
         Literacy r = LivingContractInfo.hasDiscoveredAttribute(player, this) || player.isCreative() ? LITERATE : info.literacyRank();
-        MutableComponent c = Component.literal("    ");
+        MutableComponent c = Component.literal(withSpace ? "    " : "");
         if (r.ordinal() == PROFICIENT.ordinal()) {
             c.append(Component.translatable("contract.attribute." + id + "_desc"));
         } else if (r.ordinal() == LITERATE.ordinal()) {
@@ -79,10 +79,10 @@ public class ContractAttribute {
         return c.withStyle(getPolarity() == Polarity.POSITIVE ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
     }
 
-    public Component getExtraInfoScalable(Player player, Either<ItemStack, Contract> stack) {
+    public Component getExtraInfoScalable(Player player, Either<ItemStack, Contract> stack, boolean withSpace) {
         LivingContractInfo info = player.getData(AttachmentRegistry.LIVING_CONTRACT_INFO);
         Literacy r = LivingContractInfo.hasDiscoveredAttribute(player, this) || player.isCreative() ? LITERATE : info.literacyRank();
-        MutableComponent c = Component.literal("    ");
+        MutableComponent c = Component.literal(withSpace ? "    " : "");
         if (r.ordinal() == PROFICIENT.ordinal()) {
             c.append(Component.translatable("contract.attribute." + id + "_desc"));
         } else if (r.ordinal() == LITERATE.ordinal()) {
@@ -144,6 +144,10 @@ public class ContractAttribute {
 
     public static float getStat(Contract c, ContractAttribute attribute) {
         return attribute.stats.get(c.allScalableAttributes().get(attribute) - 1);
+    }
+
+    public List<Float> getStats() {
+        return stats;
     }
 
     public String getNumeral(Either<ItemStack, Contract> stack) {
