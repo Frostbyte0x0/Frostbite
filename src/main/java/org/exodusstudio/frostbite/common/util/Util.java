@@ -396,7 +396,24 @@ public class Util {
         }
     }
 
-    public static boolean isSweet(ItemStack itemStack) {
+    public static Item randomValuable() {
+        if (random.nextFloat() < 0.25) {
+            return Items.COPPER_INGOT;
+        } else if (random.nextFloat() < 0.25) {
+            return Items.GOLD_INGOT;
+        } else if (random.nextFloat() < 0.25) {
+            return ItemRegistry.BOTTLE_OF_WARMTH.asItem();
+        } else if (random.nextFloat() < 0.25) {
+            return Items.EXPERIENCE_BOTTLE;
+        } else if (random.nextFloat() < 0.25) {
+            return ItemRegistry.BOTTLE_OF_HEAT.asItem();
+        } else if (random.nextFloat() < 0.25) {
+            return Items.EMERALD;
+        }
+        return Items.DIAMOND;
+    }
+
+    public static boolean isSweet(ItemStack itemStack) { // TODO: Replace with tags
         return itemStack.is(Items.APPLE) ||
                itemStack.is(Items.GOLDEN_APPLE) ||
                itemStack.is(Items.ENCHANTED_GOLDEN_APPLE) ||
@@ -410,7 +427,7 @@ public class Util {
                itemStack.is(Items.CHORUS_FRUIT);
     }
 
-    public static boolean isMeat(ItemStack itemStack) {
+    public static boolean isMeat(ItemStack itemStack) { // TODO: Replace with tags
         return itemStack.is(Items.BEEF) ||
                itemStack.is(Items.CHICKEN) ||
                itemStack.is(Items.PORKCHOP) ||

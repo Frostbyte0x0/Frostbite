@@ -7,11 +7,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -25,6 +27,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -414,9 +417,27 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void catlike(LivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof Player player && event.getSource().is(DamageTypes.FALL)) {
-            if (LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.CATLIKE)) {
+        if (event.getEntity() instanceof LivingEntity living && event.getSource().is(DamageTypes.FALL)) {
+            if (LivingContractInfo.hasAppliedAttribute(living, ContractAttributes.CATLIKE)) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void cowardly(LivingDamageEvent.Pre event) {
+        if (event.getEntity() instanceof LivingEntity living) {
+            if (LivingContractInfo.hasAppliedAttribute(living, ContractAttributes.COWARDLY) && living.getHealth() < (living.getMaxHealth() * 0.5)) {
+                event.setNewDamage(event.getNewDamage() * (1 - LivingContractInfo.getStat(living, ContractAttributes.COWARDLY) / 100));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void berserk(LivingDamageEvent.Pre event) {
+        if (event.getSource().getEntity() instanceof LivingEntity living) {
+            if (LivingContractInfo.hasAppliedAttribute(living, ContractAttributes.BERSERK) && living.getHealth() < (living.getMaxHealth() * 0.5)) {
+                event.setNewDamage(event.getNewDamage() * (1 + LivingContractInfo.getStat(living, ContractAttributes.BERSERK) / 100));
             }
         }
     }
@@ -493,6 +514,120 @@ public class ModEvents {
             entity.hurtServer(serverLevel, serverLevel.damageSources().source(DamageTypeRegistry.DELAY, null, null), damageOverTime.getFirst());
             damageOverTime.removeFirst();
             DataHelper.setData(entity, "damage_over_time", damageOverTime);
+        }
+    }
+
+    @SubscribeEvent
+    public static void midas(LivingDeathEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity entity &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(entity, ContractAttributes.MIDAS) &&
+                entity.level() instanceof ServerLevel serverLevel) {
+            if (random.nextFloat() >= LivingContractInfo.getStatOnWeapon(entity, ContractAttributes.MIDAS) / 100) return;
+            ItemEntity itemEntity = new ItemEntity(serverLevel,
+                    event.getEntity().getX(),
+                    event.getEntity().getY(),
+                    event.getEntity().getZ(),
+                    new ItemStack(Util.randomValuable(), 1));
+            serverLevel.addFreshEntity(itemEntity);
+        }
+    }
+
+    @SubscribeEvent
+    public static void leech(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity target &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.LEECH)) {
+            ((TE) attacker).increaseTemperature(LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.LEECH), false);
+            ((TE) target).decreaseTemperature(LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.LEECH), false);
+        }
+    }
+
+    @SubscribeEvent
+    public static void spin(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity target &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.SPIN)) {
+            if (random.nextFloat() >= LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.SPIN) / 100) return;
+            target.setYHeadRot(target.getYHeadRot() + 180);
+            target.setYRot(target.getYRot() + 180);
+        }
+    }
+
+    @SubscribeEvent
+    public static void uppercut(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity target &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.UPPERCUT)) {
+            if (random.nextFloat() >= LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.UPPERCUT) / 100) return;
+            target.setXRot(-90);
+        }
+    }
+
+    @SubscribeEvent
+    public static void shadow(LivingDamageEvent.Pre event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.SHADOW)) {
+            if (attacker.level().isDarkOutside()) return;
+            event.setNewDamage(event.getNewDamage() * (1 - LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.SHADOW) / 100));
+        }
+    }
+
+    @SubscribeEvent
+    public static void sticky(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity target &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.STICKY)) {
+            Vec3 delta = target.position().subtract(attacker.position()).normalize().scale(LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.STICKY) / 100);
+//            Minecraft.getInstance().player.addDeltaMovement(delta);
+//            target.setDeltaMovement(delta);
+            if (attacker instanceof Player player) player.setDeltaMovement(delta);
+            attacker.setDeltaMovement(delta);
+//            attacker.knockback(1, delta.x, delta.z, attacker.damageSources().source(DamageTypes.GENERIC, null, null), 0);
+        }
+    }
+
+    @SubscribeEvent
+    public static void critical(CriticalHitEvent event) {
+        if (LivingContractInfo.hasAppliedAttributeOnWeapon(event.getEntity(), ContractAttributes.CRITICAL)) {
+            event.setDamageMultiplier(event.getDamageMultiplier() + LivingContractInfo.getStatOnWeapon(event.getEntity(), ContractAttributes.CRITICAL) / 100);
+        }
+    }
+
+    @SubscribeEvent
+    public static void slippery(LivingEntityUseItemEvent.Start event) {
+        if (LivingContractInfo.hasAppliedAttributeOnWeapon(event.getEntity(), ContractAttributes.SLIPPERY) &&
+                event.getEntity() instanceof LivingEntity attacker &&
+                attacker.level() instanceof ServerLevel serverLevel) {
+            if (random.nextFloat() >= LivingContractInfo.getStatOnWeapon(event.getEntity(), ContractAttributes.SLIPPERY) / 100) return;
+            ItemEntity itemEntity = new ItemEntity(serverLevel,
+                    attacker.getX(),
+                    attacker.getEyeY(),
+                    attacker.getZ(),
+                    attacker.getItemInHand(InteractionHand.MAIN_HAND).copy());
+            itemEntity.setDefaultPickUpDelay();
+            itemEntity.setDeltaMovement(attacker.getDeltaMovement().add(attacker.getViewVector(1.0F)).normalize().scale(0.25));
+            serverLevel.addFreshEntity(itemEntity);
+            attacker.getItemInHand(InteractionHand.MAIN_HAND).setCount(0);
+        }
+    }
+
+    @SubscribeEvent
+    public static void slippery(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.SLIPPERY) &&
+                attacker.level() instanceof ServerLevel serverLevel) {
+            if (random.nextFloat() >= LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.SLIPPERY) / 100) return;
+            ItemEntity itemEntity = new ItemEntity(serverLevel,
+                    attacker.getX(),
+                    attacker.getEyeY(),
+                    attacker.getZ(),
+                    attacker.getItemInHand(InteractionHand.MAIN_HAND).copy());
+            itemEntity.setDefaultPickUpDelay();
+            itemEntity.setDeltaMovement(attacker.getDeltaMovement().add(attacker.getViewVector(1.0F)).normalize().scale(0.25));
+            serverLevel.addFreshEntity(itemEntity);
+            attacker.getItemInHand(InteractionHand.MAIN_HAND).setCount(0);
         }
     }
 

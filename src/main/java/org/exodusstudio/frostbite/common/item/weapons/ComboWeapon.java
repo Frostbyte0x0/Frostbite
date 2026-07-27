@@ -18,6 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.exodusstudio.frostbite.common.component.ChargeData;
+import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
+import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.util.DataHelper;
@@ -94,13 +97,19 @@ public abstract class ComboWeapon extends Item {
 
     public float getAttackDamageBonus(Entity victim, float ignoredDamage, DamageSource damageSource) {
         if (damageSource.getEntity() instanceof LivingEntity attacker) {
-            if (attacker.getItemInHand(attacker.getUsedItemHand()).getItem() instanceof ComboWeapon comboWeapon) {
+            ItemStack stack = attacker.getItemInHand(attacker.getUsedItemHand());
+            if (stack.getItem() instanceof ComboWeapon comboWeapon) {
                 ComboStep currentStep = comboWeapon.getComboStep(attacker);
                 if (currentStep != null) {
                     float ret = 0;
                     float t = Math.abs(0.5f - getStepProgress(attacker));
-                    if (t < currentStep.critTolerance) ret = currentStep.extraDamage * 2;
-                    if (t < currentStep.tolerance) ret = currentStep.extraDamage;
+
+                    float add = 1;
+                    if (Contract.getContract(stack) != null && Contract.getContract(stack).hasAttribute(ContractAttributes.SEQUENCE))
+                        add += Contract.getContract(stack).allScalableAttributes().get(ContractAttributes.SEQUENCE) / 100f;
+
+                    if (t < currentStep.critTolerance) ret = currentStep.extraDamage * 2 * add;
+                    if (t < currentStep.tolerance) ret = currentStep.extraDamage * add;
                     attacks(attacker);
                     return ret;
                 }
@@ -218,6 +227,10 @@ public abstract class ComboWeapon extends Item {
     }
 
     public void increaseCharge(ItemStack stack, int charge) {
+        if (Contract.getContract(stack) != null && Contract.getContract(stack).hasAttribute(ContractAttributes.SHARP)) {
+            setCharge(stack, getCharge(stack) + charge * (1 + Contract.getContract(stack).allScalableAttributes().get(ContractAttributes.SHARP) / 100));
+            return;
+        }
         setCharge(stack, getCharge(stack) + charge);
     }
 

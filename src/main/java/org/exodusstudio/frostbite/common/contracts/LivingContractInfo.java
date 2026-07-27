@@ -6,7 +6,9 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.Utf8String;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,13 @@ public record LivingContractInfo(
         return info.contract.allAttributes().stream().anyMatch(a -> a.id.equals(attribute.id));
     }
 
+    public static boolean hasAppliedAttributeOnWeapon(LivingEntity entity, ContractAttribute attribute) {
+        if (entity instanceof ServerPlayer player && player.connection == null) return false;
+        ItemStack weapon = entity.getMainHandItem();
+        if (weapon.isEmpty() || !weapon.has(DataComponentTypeRegistry.CONTRACT)) return false;
+        return weapon.get(DataComponentTypeRegistry.CONTRACT).contract().allAttributes().stream().anyMatch(a -> a.id.equals(attribute.id));
+    }
+
     public static int getAppliedAttributeLevel(LivingEntity entity, ContractAttribute attribute) {
         LivingContractInfo info = entity.getData(AttachmentRegistry.LIVING_CONTRACT_INFO);
         return info.contract.allScalableAttributes().get(attribute) != null ? info.contract.allScalableAttributes().get(attribute) : 1;
@@ -89,6 +98,12 @@ public record LivingContractInfo(
 
     public static float getStat(LivingEntity entity, ContractAttribute attribute) {
         return attribute.getStats().get(getContract(entity).allScalableAttributes().get(attribute) - 1);
+    }
+
+    public static float getStatOnWeapon(LivingEntity entity, ContractAttribute attribute) {
+        ItemStack weapon = entity.getMainHandItem();
+        if (weapon.isEmpty() || !weapon.has(DataComponentTypeRegistry.CONTRACT)) return 0;
+        return attribute.getStats().get(weapon.get(DataComponentTypeRegistry.CONTRACT).contract().allScalableAttributes().get(attribute) - 1);
     }
 
     public static void toBuffer(final ByteBuf buffer, LivingContractInfo contract) {

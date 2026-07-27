@@ -170,7 +170,7 @@ public class ClientEvents {
         List<ContractAttribute> attributes = c.allAttributes();
         if (attributes.isEmpty()) return;
 
-        for (ContractAttribute a : c.allAttributes()) {
+        for (ContractAttribute a : c.allAttributes().reversed()) {
             event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, Either.left(stack))));
             if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack), true)));
         }

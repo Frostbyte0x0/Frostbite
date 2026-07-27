@@ -36,8 +36,13 @@ public class BoarRenderer extends MobRenderer<BoarEntity, LivingEntityRenderStat
     public void submit(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/environement/celestial/space_blue.png")),
                 (pose, buffer) -> {
-                    RenderToolkit.renderSphere(pose, buffer, 5, 32);
+                    RenderToolkit.renderSphere(pose, buffer, 5f, 32);
                 });
+
+//        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/environement/celestial/space_red.png")),
+//                (pose, buffer) -> {
+//                    RenderToolkit.renderSphere(pose, buffer, 5, 32);
+//                });
 
         poseStack.pushPose();
         poseStack.mulPose(camera.orientation);

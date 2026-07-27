@@ -18,6 +18,9 @@ public class DataComponentTypeRegistry {
     public static final Supplier<DataComponentType<ChargeData>> CHARGE = DATA_COMPONENT_TYPES.registerComponentType("charge",
             builder -> builder.persistent(ChargeData.CODEC).networkSynchronized(ChargeData.STREAM_CODEC));
 
+    public static final Supplier<DataComponentType<CorrosionStartData>> CORROSION_START = DATA_COMPONENT_TYPES.registerComponentType("corrosion_start",
+            builder -> builder.persistent(CorrosionStartData.CODEC).networkSynchronized(CorrosionStartData.STREAM_CODEC));
+
     public static final Supplier<DataComponentType<ContractData>> CONTRACT = DATA_COMPONENT_TYPES.registerComponentType("contract",
             builder -> builder.persistent(ContractData.CODEC).networkSynchronized(ContractData.STREAM_CODEC));
 

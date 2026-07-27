@@ -86,7 +86,7 @@ public class ContractAttribute {
         if (r.ordinal() == PROFICIENT.ordinal()) {
             c.append(Component.translatable("contract.attribute." + id + "_desc"));
         } else if (r.ordinal() == LITERATE.ordinal()) {
-            if (stack.left().isPresent() && stack.left().get().has(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE)) {
+            if (stack.left().isPresent() && (stack.left().get().has(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE) || stack.left().get().has(DataComponentTypeRegistry.CONTRACT))) {
                 c.append(Component.translatable("contract.attribute." + id + "_desc_complete", ("" + getStat(stack.left().get(), this)).replace(".0", ""), "%"));
             } else if (stack.right().isPresent()) {
                 c.append(Component.translatable("contract.attribute." + id + "_desc_complete", ("" + getStat(stack.right().get(), this)).replace(".0", ""), "%"));

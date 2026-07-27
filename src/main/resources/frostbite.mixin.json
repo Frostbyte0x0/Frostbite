@@ -11,6 +11,7 @@
     "IBlockExtensionMixin",
     "InventoryMenuMixin",
     "InventoryMixin",
+    "ItemStackMixin",
     "LivingEntityMixin",
     "PlayerMixin",
     "PrimaryLevelDataMixin",
