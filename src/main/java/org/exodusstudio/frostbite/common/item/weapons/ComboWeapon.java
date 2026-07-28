@@ -9,7 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
@@ -17,16 +16,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import org.exodusstudio.frostbite.common.component.ChargeData;
+import org.exodusstudio.frostbite.common.component.MapStringIntData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
-import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
-import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
-import org.exodusstudio.frostbite.common.util.DataHelper;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class ComboWeapon extends Item {
     private final ComboStep[] steps;
@@ -35,7 +32,15 @@ public abstract class ComboWeapon extends Item {
     // TODO: Animations + smoothing
 
     public ComboWeapon(Properties properties, int chargeRequired, ComboStep... steps) {
-        properties.component(DataComponentTypeRegistry.CHARGE, new ChargeData(0));
+        properties.component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("charge", 0)));
+        super(properties);
+        this.chargeRequired = chargeRequired;
+        this.steps = steps;
+    }
+
+    public ComboWeapon(Properties properties, int chargeRequired, Map<String, Integer> map, ComboStep... steps) {
+        DataHelper.safelyAddValueToMap(map, "charge", 0);
+        properties.component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(map));
         super(properties);
         this.chargeRequired = chargeRequired;
         this.steps = steps;
@@ -95,7 +100,7 @@ public abstract class ComboWeapon extends Item {
         );
     }
 
-    public float getAttackDamageBonus(Entity victim, float ignoredDamage, DamageSource damageSource) {
+    public static float getDamageBonus(DamageSource damageSource) {
         if (damageSource.getEntity() instanceof LivingEntity attacker) {
             ItemStack stack = attacker.getItemInHand(attacker.getUsedItemHand());
             if (stack.getItem() instanceof ComboWeapon comboWeapon) {
@@ -104,12 +109,8 @@ public abstract class ComboWeapon extends Item {
                     float ret = 0;
                     float t = Math.abs(0.5f - getStepProgress(attacker));
 
-                    float add = 1;
-                    if (Contract.getContract(stack) != null && Contract.getContract(stack).hasAttribute(ContractAttributes.SEQUENCE))
-                        add += Contract.getContract(stack).allScalableAttributes().get(ContractAttributes.SEQUENCE) / 100f;
-
-                    if (t < currentStep.critTolerance) ret = currentStep.extraDamage * 2 * add;
-                    if (t < currentStep.tolerance) ret = currentStep.extraDamage * add;
+                    if (t < currentStep.critTolerance) ret = currentStep.extraDamage * 2;
+                    if (t < currentStep.tolerance) ret = currentStep.extraDamage;
                     attacks(attacker);
                     return ret;
                 }
@@ -118,7 +119,7 @@ public abstract class ComboWeapon extends Item {
         return 0;
     }
 
-    public void attacks(LivingEntity entity) {
+    public static void attacks(LivingEntity entity) {
         ItemStack stack = entity.getItemInHand(entity.getUsedItemHand());
         if (stack.getItem() instanceof ComboWeapon comboWeapon) {
             float timeSinceLastHit = getTimeSinceLastHit(entity);
@@ -213,22 +214,19 @@ public abstract class ComboWeapon extends Item {
         return steps.length;
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    public int getCharge(ItemStack stack) {
-        if (stack.get(DataComponentTypeRegistry.CHARGE) != null) {
-            return stack.get(DataComponentTypeRegistry.CHARGE).charge();
-        }
-        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(0));
-        return 0;
+    public static int getCharge(ItemStack stack) {
+        return DataHelper.getInt(stack, "charge");
     }
 
-    public void setCharge(ItemStack stack, int charge) {
-        stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(Math.clamp(charge, 0, chargeRequired)));
+    public static void setCharge(ItemStack stack, int charge) {
+        if (stack.getItem() instanceof ComboWeapon c)
+            DataHelper.setData(stack, "charge", Math.clamp(charge, 0, c.chargeRequired));
     }
 
-    public void increaseCharge(ItemStack stack, int charge) {
-        if (Contract.getContract(stack) != null && Contract.getContract(stack).hasAttribute(ContractAttributes.SHARP)) {
-            setCharge(stack, getCharge(stack) + charge * (1 + Contract.getContract(stack).allScalableAttributes().get(ContractAttributes.SHARP) / 100));
+    public static void increaseCharge(ItemStack stack, int charge) {
+        Contract c = Contract.getContract(stack);
+        if (c != null && c.hasAttribute(ContractAttributes.SHARP)) {
+            setCharge(stack, getCharge(stack) + charge * (1 + c.allScalableAttributes().get(ContractAttributes.SHARP) / 100));
             return;
         }
         setCharge(stack, getCharge(stack) + charge);

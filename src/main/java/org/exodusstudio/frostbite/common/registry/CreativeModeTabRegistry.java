@@ -95,7 +95,7 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.BLUE_HARDENED_SNOWBALL);
 
                     output.accept(ItemRegistry.STUNNING_BELL);
-                    output.accept(ItemRegistry.ICE_HAMMER);
+//                    output.accept(ItemRegistry.ICE_HAMMER);
 
                     output.accept(ItemRegistry.SNIPER);
                     output.accept(ItemRegistry.SNIPER_BULLET);

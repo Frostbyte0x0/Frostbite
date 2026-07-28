@@ -182,14 +182,14 @@ public class ItemRegistry {
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
-    public static final DeferredItem<Item> ICE_HAMMER =
-            ITEMS.register("ice_hammer", (id) -> new IceHammerItem(new Item.Properties()
-                    .stacksTo(1)
-                    .attributes(IceHammerItem.createAttributes())
-                    .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
-                    .component(DataComponentTypeRegistry.CHARGE, new ChargeData(0))
-                    .durability(500)
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
+//    public static final DeferredItem<Item> ICE_HAMMER =
+//            ITEMS.register("ice_hammer", (id) -> new IceHammerItem(new Item.Properties()
+//                    .stacksTo(1)
+//                    .attributes(IceHammerItem.createAttributes())
+//                    .component(DataComponents.TOOL, IceHammerItem.createToolProperties())
+//                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("charge", 0)))
+//                    .durability(500)
+//                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
 
     public static final DeferredItem<Item> SNIPER_BULLET =
@@ -310,7 +310,7 @@ public class ItemRegistry {
     public static final DeferredItem<Item> HUNTERS_CATALYST =
             ITEMS.register("hunters_catalyst", (id) -> new HuntersCatalyst(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
-                    .component(DataComponentTypeRegistry.HUNTERS_CATALYST, new HuntersCatalystData(100))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT, new MapStringIntData(Map.of("ticks_remaining", 100)))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
@@ -330,7 +330,7 @@ public class ItemRegistry {
     public static final DeferredItem<Item> GALE_FAN =
             ITEMS.register("gale_fan", (id) -> new GaleFanItem(new Item.Properties()
                     .component(DataComponentTypeRegistry.MODE, new ModeData("firstAttack"))
-                    .component(DataComponentTypeRegistry.CHARGE, new ChargeData(0))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("ticks_since_start", 0)))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> FROSTBITTEN_GEM =
@@ -388,19 +388,19 @@ public class ItemRegistry {
             ITEMS.register("spicy_vegetable_stew", (id) -> new SpicyStewItem(new Item.Properties()
                     .food(FoodRegistry.SPICY_VEGETABLE_STEW)
                     .stacksTo(1)
-                    .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("spicyness", 3)))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SPICY_FISH_SOUP =
             ITEMS.register("spicy_fish_soup", (id) -> new SpicyStewItem(new Item.Properties()
                     .food(FoodRegistry.SPICY_FISH_SOUP)
                     .stacksTo(1)
-                    .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("spicyness", 3)))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SPICY_MEAT_STEW =
             ITEMS.register("spicy_meat_stew", (id) -> new SpicyStewItem(new Item.Properties()
                     .food(FoodRegistry.SPICY_MEAT_STEW)
                     .stacksTo(1)
-                    .component(DataComponentTypeRegistry.CHARGE.get(), new ChargeData(3))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("spicyness", 3)))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SHAMAN_STAFF =
             ITEMS.register("shaman_staff", (id) -> new ShamanStaffItem(new Item.Properties()
@@ -429,7 +429,7 @@ public class ItemRegistry {
                                     .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(ContractRank.fromNum(1).name()), List.of()))
                                     .component(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a))
                                     .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.contract_fragment").withStyle(ChatFormatting.GRAY))
-                                    .component(DataComponentTypeRegistry.CHARGE, new ChargeData(1))
+                                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("level", 1)))
                                     .stacksTo(1)
                                     .setId(ResourceKey.create(Registries.ITEM, id))));
                         } else {

@@ -27,10 +27,9 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.overlays.FlashbangOverlay;
-import org.exodusstudio.frostbite.common.component.HuntersCatalystData;
 import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Renderable;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Quaternionf;
@@ -48,7 +47,7 @@ public class HuntersCatalyst extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
-        setData(player.getUseItem(), new HuntersCatalystData(DURATION));
+        setData(player.getUseItem(), DURATION);
         Renderable.addRenderable(player, "hunters_catalyst_charge_attack");
         return InteractionResult.PASS;
     }
@@ -59,7 +58,7 @@ public class HuntersCatalyst extends Item {
 //        impactPellet();
 //        flashPellet();
 
-        setData(itemStack, new HuntersCatalystData(ticksRemaining));
+        setData(itemStack, ticksRemaining);
         if (ticksRemaining <= 0) {
             releaseUsing(itemStack, level, livingEntity, ticksRemaining);
         }
@@ -149,15 +148,12 @@ public class HuntersCatalyst extends Item {
         return false;
     }
 
-    private static HuntersCatalystData getData(ItemStack itemStack) {
-        return itemStack.getOrDefault(
-                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
-                new HuntersCatalystData(DURATION)
-        );
+    private static int getTicksRemaining(ItemStack itemStack) {
+        return DataHelper.getInt(itemStack, "ticks_remaining");
     }
 
-    private static void setData(ItemStack itemStack, HuntersCatalystData data) {
-        itemStack.set(DataComponentTypeRegistry.HUNTERS_CATALYST.get(), data);
+    private static void setData(ItemStack itemStack, int ticksRemaining) {
+        DataHelper.setData(itemStack, "ticks_remaining", ticksRemaining);
     }
 
     public static boolean shouldStopRendering(Renderable.RenderableContext context) {
@@ -165,10 +161,7 @@ public class HuntersCatalyst extends Item {
 
         if (stack.getItem() != ItemRegistry.HUNTERS_CATALYST.get()) return true;
 
-        int ticks = stack.getOrDefault(
-                DataComponentTypeRegistry.HUNTERS_CATALYST.get(),
-                new HuntersCatalystData(DURATION)
-        ).ticksRemaining();
+        int ticks = getTicksRemaining(stack);
 
         return ticks <= 1;
     }
@@ -197,7 +190,7 @@ public class HuntersCatalyst extends Item {
         stack.translate(beamPos.x, beamPos.y, beamPos.z);
         stack.mulPose(rotation);
 
-        int ticks = DURATION - getData(context.user().getUseItem()).ticksRemaining();
+        int ticks = DURATION - getTicksRemaining(context.user().getUseItem());
         float progress = (ticks + partialTicks) / DURATION;
         float radius = progress < 0.95f ? 0.5f * (1 - progress) : (float) (150 * Math.pow(progress - 0.95, 2) + 0.025);
         int r = (int) Mth.lerp(progress, 242, 240);

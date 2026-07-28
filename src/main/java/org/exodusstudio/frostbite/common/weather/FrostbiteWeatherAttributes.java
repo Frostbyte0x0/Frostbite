@@ -11,8 +11,7 @@ import net.minecraft.world.attribute.modifier.FloatModifier;
 import net.minecraft.world.attribute.modifier.FloatWithAlpha;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.timeline.Timelines;
-import org.exodusstudio.frostbite.common.util.DataHelper;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.Set;
 

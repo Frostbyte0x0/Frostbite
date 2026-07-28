@@ -22,6 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -33,13 +34,16 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
 import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
-import org.exodusstudio.frostbite.common.component.CooldownData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
+import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 import org.exodusstudio.frostbite.common.event.custom.CodexEntryUnlockedEvent;
+import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.event.custom.PlayerHasEntryEvent;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
+import org.exodusstudio.frostbite.common.item.contract.ContractItem;
+import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
@@ -49,7 +53,8 @@ import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
-import org.exodusstudio.frostbite.common.util.DataHelper;
+import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.joml.Vector3f;
 
@@ -70,6 +75,12 @@ public class ClientEvents {
     @SubscribeEvent
     public static void playerHasEntry(PlayerHasEntryEvent event) {
         event.hasEntry = CodexEntry.playerHasEntry(Minecraft.getInstance().player, event.getEntry());
+    }
+
+    @SubscribeEvent
+    public static void movePlayer(MovePlayerEvent event) {
+        if (Minecraft.getInstance().player.getUUID().equals(event.getPlayer()))
+            Minecraft.getInstance().player.addDeltaMovement(event.getSpeed());
     }
 
     @SubscribeEvent
@@ -135,7 +146,7 @@ public class ClientEvents {
 
                 if (!(comboWeapon instanceof SeriousAttackWeapon seriousAttackWeapon)) continue;
 
-                int cooldown = (int) Math.min(seriousAttackWeapon.getCooldown(), CooldownData.secondsSinceLastUsed(stack, level.getGameTime()));
+                int cooldown = (int) Math.min(seriousAttackWeapon.getCooldown(), SeriousAttackWeapon.secondsSinceLastUsed(stack, level.getGameTime()));
                 float cooldownProgress = cooldown / seriousAttackWeapon.getCooldown();
                 graphics.verticalLine(x + 14, startY, endY , 0xFFFFFFFF);
                 graphics.verticalLine(x + 14, startY, (int) Mth.lerp(cooldownProgress, startY, endY), 0xFF3898f2);
@@ -153,10 +164,43 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public static void frog(InputEvent.Key event) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return;
+
+        if (Minecraft.getInstance().options.keyJump.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent())) &&
+                LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.FROG) &&
+                !player.isCreative()) {
+            if (DataHelper.getInt(player, "jump_count") == -1) {
+                DataHelper.setData(player, "jump_count", 0);
+                return;
+            }
+            Frostbite.LOGGER.debug("" + LivingContractInfo.getStat(player, ContractAttributes.FROG));
+            Frostbite.LOGGER.debug("" + DataHelper.getInt(player, "jump_count"));
+            DataHelper.setData(player, "jump_count", DataHelper.getInt(player, "jump_count") + 1);
+            if (DataHelper.getInt(player, "jump_count") > LivingContractInfo.getStat(player, ContractAttributes.FROG) * 2) return;
+            while (Minecraft.getInstance().options.keyJump.consumeClick()) {
+                Vec3 d = player.getDeltaMovement();
+                player.setDeltaMovement(d.x, 0, d.z);
+                player.jumpFromGround();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void frog(PlayerTickEvent.Pre event) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return;
+        if (player.onGround()) DataHelper.setData(player, "jump_count", -1);
+    }
+
+    @SubscribeEvent
     public static void contractTooltips(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
         Player player = Minecraft.getInstance().player;
-        if (player == null) return;
+        Level level = Minecraft.getInstance().level;
+        if (player == null || level == null) return;
+
         if (stack.getItem() instanceof ContractFragmentItem) {
             ContractAttribute a = ContractAttribute.getAttribute(stack);
             if (a == null) return;
@@ -174,6 +218,14 @@ public class ClientEvents {
             event.getTooltipElements().add(1, Either.left(a.getSmallInfo(player, Either.left(stack))));
             if (Minecraft.getInstance().hasShiftDown()) event.getTooltipElements().add(2, Either.left(a.getExtraInfo(player, Either.left(stack), true)));
         }
+
+        if (stack.getItem() instanceof ContractItem || stack.getItem() instanceof PartialContractItem) return;
+        if (!c.hasAttribute(ContractAttributes.CORROSION)) return;
+
+        int ticksSinceStart = Math.toIntExact(level.getGameTime() - DataHelper.getInt(stack, "corrosion_start"));
+        float halfEvery = ContractAttribute.getStat(c, ContractAttributes.CORROSION) * 60;
+        event.getTooltipElements().add(Minecraft.getInstance().hasShiftDown() ? 17 : 9, Either.left(Component.translatable("contract.corrosion.reduction", Math.round(100f *
+                Util.getLog2Reduction(ticksSinceStart, halfEvery)), "%").withStyle(ChatFormatting.YELLOW)));
     }
 
     @SubscribeEvent

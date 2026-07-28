@@ -1,12 +1,14 @@
-package org.exodusstudio.frostbite.common.util;
+package org.exodusstudio.frostbite.common.util.helpers;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.Utf8String;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
@@ -178,11 +180,11 @@ public class CodecHelper {
                 }
                 return m;
             });
-    public static final StreamCodec<RegistryFriendlyByteBuf, Map<String, Integer>> MAP_STRING_INT_STREAM_CODEC = StreamCodec.of(
+    public static final StreamCodec<ByteBuf, Map<String, Integer>> MAP_STRING_INT_STREAM_CODEC = StreamCodec.of(
             (b, m) -> {
                 b.writeInt(m.size());
                 m.forEach((k, v) -> {
-                    b.writeUtf(k);
+                    Utf8String.write(b, k, 32767);
                     b.writeInt(v);
                 });
             },
@@ -190,7 +192,7 @@ public class CodecHelper {
                 Map<String, Integer> m = new HashMap<>();
                 int size = b.readInt();
                 for (int i = 0; i < size; i++) {
-                    m.put(b.readUtf(), b.readInt());
+                    m.put(Utf8String.read(b, 32767), b.readInt());
                 }
                 return m;
             });

@@ -14,12 +14,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.ModeData;
 import org.exodusstudio.frostbite.common.entity.custom.misc.WindCircleEntity;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -131,16 +131,14 @@ public class GaleFanItem extends Item {
     }
 
     public int getTicksSinceFirstAttack(ItemStack stack) {
-        return stack.get(DataComponentTypeRegistry.CHARGE).charge();
+        return DataHelper.getInt(stack, "ticks_since_start");
     }
 
     public void setTicksSinceFirstAttack(ItemStack stack, int ticks) {
-        ChargeData chargeData = new ChargeData(ticks);
-        stack.set(DataComponentTypeRegistry.CHARGE.get(), chargeData);
+        DataHelper.setData(stack, "ticks_since_start", ticks);
     }
 
     public void increaseTicksSinceFirstAttack(ItemStack stack) {
-        ChargeData chargeData = new ChargeData(getTicksSinceFirstAttack(stack) + 1);
-        stack.set(DataComponentTypeRegistry.CHARGE.get(), chargeData);
+        DataHelper.setData(stack, "ticks_since_start", getTicksSinceFirstAttack(stack) + 1);
     }
 }

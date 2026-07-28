@@ -1,4 +1,4 @@
-package org.exodusstudio.frostbite.common.util;
+package org.exodusstudio.frostbite.common.util.helpers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -8,15 +8,18 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import net.neoforged.neoforge.common.MutableDataComponentHolder;
+import org.exodusstudio.frostbite.common.component.MapStringIntData;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.PseudoEntityTypes;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "DataFlowIssue"})
 public class DataHelper {
     public static void setWeatherInfo(Level level, WeatherInfo weatherInfo) {
         level.setData(AttachmentRegistry.WEATHER_INFO, weatherInfo);
@@ -32,69 +35,83 @@ public class DataHelper {
         }
     }
 
+    public static void setData(MutableDataComponentHolder holder, String key, int value) {
+        if (!holder.has(DataComponentTypeRegistry.MAP_STRING_INT)) holder.set(DataComponentTypeRegistry.MAP_STRING_INT, MapStringIntData.EMPTY);
+        Map<String, Integer> map = holder.get(DataComponentTypeRegistry.MAP_STRING_INT).map();
+        map = safelyAddValueToMap(map, key, value);
+        holder.set(DataComponentTypeRegistry.MAP_STRING_INT, new MapStringIntData(map));
+    }
+
+    public static int getInt(MutableDataComponentHolder holder, String key) {
+        if (!holder.has(DataComponentTypeRegistry.MAP_STRING_INT)) holder.set(DataComponentTypeRegistry.MAP_STRING_INT, MapStringIntData.EMPTY);
+        Map<String, Integer> map = holder.get(DataComponentTypeRegistry.MAP_STRING_INT).map();
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, 0);
+        return map.get(key);
+    }
+
     public static void setData(IAttachmentHolder holder, String key, int value) {
         Map<String, Integer> map = holder.getData(AttachmentRegistry.MAP_STRING_INT);
-        map = addValueToMap(map, key, value);
+        map = safelyAddValueToMap(map, key, value);
         holder.setData(AttachmentRegistry.MAP_STRING_INT, map);
     }
 
     public static int getInt(IAttachmentHolder holder, String key) {
         Map<String, Integer> map = holder.getData(AttachmentRegistry.MAP_STRING_INT);
-        if (!map.containsKey(key)) map = addValueToMap(map, key, 0);
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, 0);
         return map.get(key);
     }
 
     public static void setData(IAttachmentHolder holder, String key, float value) {
         Map<String, Float> map = holder.getData(AttachmentRegistry.MAP_STRING_FLOAT);
-        map = addValueToMap(map, key, value);
+        map = safelyAddValueToMap(map, key, value);
         holder.setData(AttachmentRegistry.MAP_STRING_FLOAT, map);
     }
 
     public static float getFloat(IAttachmentHolder holder, String key) {
         Map<String, Float> map = holder.getData(AttachmentRegistry.MAP_STRING_FLOAT);
-        if (!map.containsKey(key)) map = addValueToMap(map, key, 0.0f);
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, 0.0f);
         return map.get(key);
     }
 
     public static void setData(IAttachmentHolder holder, String key, String value) {
         Map<String, String> map = holder.getData(AttachmentRegistry.MAP_STRING_STRING);
-        map = addValueToMap(map, key, value);
+        map = safelyAddValueToMap(map, key, value);
         holder.setData(AttachmentRegistry.MAP_STRING_STRING, map);
     }
 
     public static String getString(IAttachmentHolder holder, String key) {
         Map<String, String> map = holder.getData(AttachmentRegistry.MAP_STRING_STRING);
-        if (!map.containsKey(key)) map = addValueToMap(map, key, "");
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, "");
         return map.get(key);
     }
 
     public static void setData(IAttachmentHolder holder, String key, BlockPos value) {
         Map<String, BlockPos> map = holder.getData(AttachmentRegistry.MAP_STRING_BLOCK_POS);
-        map = addValueToMap(map, key, value);
+        map = safelyAddValueToMap(map, key, value);
         holder.setData(AttachmentRegistry.MAP_STRING_BLOCK_POS, map);
     }
 
     public static BlockPos getBlockPos(IAttachmentHolder holder, String key) {
         Map<String, BlockPos> map = holder.getData(AttachmentRegistry.MAP_STRING_BLOCK_POS);
-        if (!map.containsKey(key)) map = addValueToMap(map, key, BlockPos.ZERO);
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, BlockPos.ZERO);
         return map.get(key);
     }
 
     public static void setData(IAttachmentHolder holder, String key, boolean value) {
         Map<String, Boolean> map = holder.getData(AttachmentRegistry.MAP_STRING_BOOLEAN);
-        map = addValueToMap(map, key, value);
+        map = safelyAddValueToMap(map, key, value);
         holder.setData(AttachmentRegistry.MAP_STRING_BOOLEAN, map);
     }
 
     public static boolean getBoolean(IAttachmentHolder holder, String key) {
         Map<String, Boolean> map = holder.getData(AttachmentRegistry.MAP_STRING_BOOLEAN);
-        if (!map.containsKey(key)) map = addValueToMap(map, key, true);
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, true);
         return map.get(key);
     }
 
     public static <E extends Entity> void addBossToAdd(IAttachmentHolder holder, BlockPos key, EntityType<E> value) {
         Map<BlockPos, EntityType<?>> map = getBossesToAdd(holder);
-        map = addValueToMap(map, key, value);
+        map = safelyAddValueToMap(map, key, value);
         Map<BlockPos, String> stringMap = map.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> BuiltInRegistries.ENTITY_TYPE.getKey(e.getValue()).toString()));
         holder.setData(AttachmentRegistry.BOSSES_TO_ADD, stringMap);
@@ -129,33 +146,33 @@ public class DataHelper {
 
     public static void setData(IAttachmentHolder holder, String key, List<Float> data) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = addValueToMap(map, key, new ArrayList<>(data));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(data));
         holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
     }
 
     public static void addData(IAttachmentHolder holder, String key, float data) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
         map.get(key).add(data);
         holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
     }
 
     public static void addDataToAll(IAttachmentHolder holder, String key, float data) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
         map.get(key).replaceAll(d -> d + data);
         holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
     }
 
     public static List<Float> getList(IAttachmentHolder holder, String key) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
         return map.get(key);
     }
 
     public static void removeData(IAttachmentHolder holder, String key, float data) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
         map.get(key).remove(data);
         holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
     }
@@ -163,14 +180,14 @@ public class DataHelper {
     public static void addPseudoEntity(IAttachmentHolder holder, PseudoEntityTypes.PseudoEntityType type, PseudoEntity pseudoEntity) {
         String key = type.id();
         Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
-        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
         map.get(key).add(pseudoEntity);
         holder.setData(AttachmentRegistry.PSEUDO_ENTITIES, map);
     }
 
     public static List<PseudoEntity> getPseudoEntities(IAttachmentHolder holder, String key) {
         Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
-        if (!map.containsKey(key)) map = addValueToMap(map, key, new ArrayList<>());
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, new ArrayList<>());
         return map.get(key);
     }
 
@@ -180,7 +197,7 @@ public class DataHelper {
 
     public static void removePseudoEntity(IAttachmentHolder holder, String key, PseudoEntity pseudoEntity) {
         Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
-        map = addValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
         map.get(key).remove(pseudoEntity);
         holder.setData(AttachmentRegistry.PSEUDO_ENTITIES, map);
     }
@@ -235,7 +252,7 @@ public class DataHelper {
         setData(holder, "hit_entities", hitEntities);
     }
 
-    public static <K, V> Map<K, V> addValueToMap(Map<K, V> map, K key, V value) {
+    public static <K, V> Map<K, V> safelyAddValueToMap(Map<K, V> map, K key, V value) {
         try {
             map.put(key, value);
         } catch (UnsupportedOperationException e) {

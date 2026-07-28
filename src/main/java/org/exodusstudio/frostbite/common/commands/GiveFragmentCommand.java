@@ -13,13 +13,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomModelData;
-import org.exodusstudio.frostbite.common.component.ChargeData;
 import org.exodusstudio.frostbite.common.component.ContractAttributeData;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.ContractRank;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.Collection;
 import java.util.List;
@@ -64,7 +64,7 @@ public class GiveFragmentCommand {
         ContractAttribute a = ContractAttributes.ATTRIBUTES.get(fragment);
         stack.set(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE, new ContractAttributeData(a));
         if (a.isScalable()) {
-            stack.set(DataComponentTypeRegistry.CHARGE, new ChargeData(level));
+            DataHelper.setData(stack, "level", level);
             stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(ContractRank.fromNum(level).name()), List.of()));
         } else {
             stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(a.getRank().name()), List.of()));

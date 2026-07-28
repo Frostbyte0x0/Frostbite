@@ -9,11 +9,13 @@ import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.exodusstudio.frostbite.common.component.ContractData;
-import org.exodusstudio.frostbite.common.component.CorrosionStartData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
+import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
+import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 public class ApplyingMenu extends ItemCombinerMenu {
     public ApplyingMenu(int containerId, Inventory playerInventory) {
@@ -53,7 +55,8 @@ public class ApplyingMenu extends ItemCombinerMenu {
 
             ItemStack result = stack.copy();
             result.set(DataComponentTypeRegistry.CONTRACT, new ContractData(c));
-            result.set(DataComponentTypeRegistry.CORROSION_START, new CorrosionStartData(player.level().getGameTime()));
+            if (c.hasAttribute(ContractAttributes.DULL)) Util.setEnchantmentsLevelOne(result);
+            if (c.hasAttribute(ContractAttributes.CORROSION)) DataHelper.setData(result, "corrosion_start", Math.toIntExact(player.level().getGameTime()));
             resultSlots.setItem(0, result);
         } else {
             resultSlots.setItem(0, ItemStack.EMPTY);

@@ -245,7 +245,6 @@
   "contract.attribute.illusions_desc_complete": "Create %s illusions when hit",
   "contract.attribute.repel": "Repel",
   "contract.attribute.repel_desc": "On perfect parry, push away enemies",
-  "contract.attribute.repel_desc_complete": "%s%s chance to push away enemies on perfect parry",
   "contract.attribute.frog": "Frog",
   "contract.attribute.frog_desc": "Extra jumps",
   "contract.attribute.frog_desc_complete": "%s extra jumps",
@@ -334,7 +333,7 @@
 
   "contract.attribute.corrosion": "Corrosion",
   "contract.attribute.corrosion_desc": "Deals less damage over time",
-  "contract.attribute.corrosion_desc_complete": "Deals %s%s less damage every 20 mins",
+  "contract.attribute.corrosion_desc_complete": "Deals half the damage every %s mins",
   "contract.attribute.slippery": "Slippery",
   "contract.attribute.slippery_desc": "Chance to drop when used",
   "contract.attribute.slippery_desc_complete": "%s%s chance to drop when used",
@@ -350,6 +349,7 @@
   "contract.attribute.sticky_desc": "When hitting an entity, you come closer to it",
   "contract.attribute.sticky_desc_complete": "When hitting an entity, you come %s%s closer to it",
 
+  "contract.corrosion.reduction": "Corrosion damage reduction: %s%s",
 
   "commands.give_fragment_unknown": "Unknown fragment: %s",
   "commands.give_fragment_invalid_level": "Level has to be between 1 and 3",

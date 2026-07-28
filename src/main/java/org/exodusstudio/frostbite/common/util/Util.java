@@ -6,6 +6,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -26,6 +28,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -34,15 +40,13 @@ import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.joml.Quaternionf;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Util {
-    static RandomSource random = RandomSource.create();
+    public static final RandomSource random = RandomSource.create();
+
     static Item[] liningItems = new Item[] {
             ItemRegistry.WOOLLY_WOOL.asItem(),
             ItemRegistry.FROZEN_FUR.asItem(),
@@ -447,5 +451,68 @@ public class Util {
 
     public static Level getLevel(ResourceKey<Level> level) {
         return Minecraft.getInstance().getSingleplayerServer().getLevel(level);
+    }
+
+    public static float getLog2Reduction(int ticksSinceStart, float halfEvery) {
+        return 1 - (Math.round(Math.pow(2, -ticksSinceStart / (20f * halfEvery)) * 100f)) / 100f;
+    }
+
+    public static void setEnchantmentsLevelOne(ItemStack stack) {
+        ItemEnchantments enchantments = stack.getTagEnchantments();
+        if (enchantments != ItemEnchantments.EMPTY) {
+            EnchantmentHelper.updateEnchantments(stack, (e) -> {
+                for (Holder<Enchantment> h: e.keySet()) {
+                    e.set(h, 1);
+                }
+            });
+        }
+    }
+
+    public static boolean isLoopableRecipe(ServerLevel level, ItemStack stack, CraftingRecipe craftingRecipe) {
+        Set<Item> craftItems = new HashSet<>();
+        if (craftingRecipe instanceof ShapedRecipe r) {
+            r.pattern.ingredients().stream()
+                    .filter(Optional::isPresent)
+                    .map(i -> i.get().getValues())
+                    .forEach(holder -> holder.forEach(i -> craftItems.add(i.value())));
+        } else if (craftingRecipe instanceof ShapelessRecipe r) {
+            r.ingredients.stream()
+                    .map(Ingredient::getValues)
+                    .forEach(holder -> holder.forEach(i -> craftItems.add(i.value())));
+        } else return false;
+
+        List<ItemStack> stacks = new ArrayList<>(NonNullList.withSize(9, ItemStack.EMPTY));
+        if (stack.count() == 1) {
+            stacks.set(0, stack);
+        } else if (stack.count() == 3) {
+            stacks.set(0, stack);
+            stacks.set(1, stack);
+            stacks.set(2, stack);
+        } else if (stack.count() == 4) {
+            stacks.set(0, stack);
+            stacks.set(1, stack);
+            stacks.set(3, stack);
+            stacks.set(4, stack);
+        } else if (stack.count() == 9) {
+            stacks = new ArrayList<>(NonNullList.withSize(9, stack));
+        } else return false;
+
+        CraftingInput input = CraftingInput.ofPositioned(3, 3, stacks).input();
+        Optional<RecipeHolder<CraftingRecipe>> maybeRecipe =
+                level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, level);
+
+        if (maybeRecipe.isEmpty()) return false;
+
+        CraftingRecipe resultRecipe = maybeRecipe.get().value();
+
+        if (resultRecipe instanceof ShapedRecipe r) {
+            return craftItems.contains(r.assemble(input).getItem());
+//            return r.pattern.ingredients().stream()
+//                    .anyMatch(s -> s.isPresent() && s.get().items().anyMatch(i -> craftItems.contains(i.value())));
+        } else if (resultRecipe instanceof ShapelessRecipe r) {
+            return craftItems.contains(r.result().item().value());
+        }
+
+        return false;
     }
 }

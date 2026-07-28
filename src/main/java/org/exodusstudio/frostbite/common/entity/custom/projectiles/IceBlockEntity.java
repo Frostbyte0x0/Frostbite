@@ -97,33 +97,33 @@ public class IceBlockEntity extends FallingBlockEntity {
         this.setDeltaMovement(this.getDeltaMovement().scale(0.98));
     }
 
-    @Override
-    public final boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float damage) {
-        if (damageSource.getEntity() instanceof Player player &&
-                (player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.ICE_HAMMER) ||
-                        player.getItemInHand(InteractionHand.OFF_HAND).is(ItemRegistry.ICE_HAMMER))) {
-            level().playSound(null, player.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS);
-            float x = player.getXRot();
-            float y = player.getYRot();
-            float z = 0f;
-            float velocity = 1f;
-            float inaccuracy = 2f;
-
-            float f = -Mth.sin(y * ((float)Math.PI / 180F)) * Mth.cos(x * ((float)Math.PI / 180F));
-            float f1 = -Mth.sin((x + z) * ((float)Math.PI / 180F));
-            float f2 = Mth.cos(y * ((float)Math.PI / 180F)) * Mth.cos(x * ((float)Math.PI / 180F));
-
-            Vec3 vec3 = player.getKnownMovement();
-            Vec3 vec31 = (new Vec3(f, f1, f2)).normalize().add(
-                    random.triangle(0.0F, 0.0172275 * inaccuracy),
-                    random.triangle(0.0F, 0.0172275 * inaccuracy),
-                    random.triangle(0.0F, 0.0172275 * inaccuracy)).scale(velocity);
-            Vec3 vec32 = vec31.add(vec3);
-
-            this.setDeltaMovement(this.getDeltaMovement().add(vec32));
-        }
-        markHurt();
-
-        return true;
-    }
+//    @Override
+//    public final boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float damage) {
+//        if (damageSource.getEntity() instanceof Player player &&
+//                (player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.ICE_HAMMER) ||
+//                        player.getItemInHand(InteractionHand.OFF_HAND).is(ItemRegistry.ICE_HAMMER))) {
+//            level().playSound(null, player.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS);
+//            float x = player.getXRot();
+//            float y = player.getYRot();
+//            float z = 0f;
+//            float velocity = 1f;
+//            float inaccuracy = 2f;
+//
+//            float f = -Mth.sin(y * ((float)Math.PI / 180F)) * Mth.cos(x * ((float)Math.PI / 180F));
+//            float f1 = -Mth.sin((x + z) * ((float)Math.PI / 180F));
+//            float f2 = Mth.cos(y * ((float)Math.PI / 180F)) * Mth.cos(x * ((float)Math.PI / 180F));
+//
+//            Vec3 vec3 = player.getKnownMovement();
+//            Vec3 vec31 = (new Vec3(f, f1, f2)).normalize().add(
+//                    random.triangle(0.0F, 0.0172275 * inaccuracy),
+//                    random.triangle(0.0F, 0.0172275 * inaccuracy),
+//                    random.triangle(0.0F, 0.0172275 * inaccuracy)).scale(velocity);
+//            Vec3 vec32 = vec31.add(vec3);
+//
+//            this.setDeltaMovement(this.getDeltaMovement().add(vec32));
+//        }
+//        markHurt();
+//
+//        return true;
+//    }
 }

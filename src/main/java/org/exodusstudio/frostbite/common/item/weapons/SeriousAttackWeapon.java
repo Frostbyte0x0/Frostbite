@@ -6,9 +6,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.exodusstudio.frostbite.common.component.CooldownData;
-import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Renderable;
+
+import java.util.Map;
 
 public abstract class SeriousAttackWeapon extends ComboWeapon {
     public final String seriousAttack;
@@ -21,8 +22,7 @@ public abstract class SeriousAttackWeapon extends ComboWeapon {
             float chargeAttackCooldown,
             ComboWeapon.ComboStep... comboSteps
     ) {
-        properties.component(DataComponentTypeRegistry.COOLDOWN, new CooldownData(-1));
-        super(properties, chargeRequired, comboSteps);
+        super(properties, chargeRequired, Map.of("last_used", -1), comboSteps);
         this.seriousAttack = seriousAttack.getName();
         this.cooldown = chargeAttackCooldown;
     }
@@ -30,9 +30,9 @@ public abstract class SeriousAttackWeapon extends ComboWeapon {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        if (CooldownData.canUse(player.getItemInHand(usedHand), level.getGameTime(), cooldown)) {
+        if (canUse(player.getItemInHand(usedHand), level.getGameTime(), cooldown)) {
             doCooldownAttack(level, player, usedHand);
-            CooldownData.setLastUsed(player.getItemInHand(usedHand));
+            DataHelper.setData(stack, "last_used", Math.toIntExact(player.level().getGameTime()));
             return InteractionResult.SUCCESS;
         }
         if (getCharge(stack) >= chargeRequired && player.isShiftKeyDown()) {
@@ -41,6 +41,14 @@ public abstract class SeriousAttackWeapon extends ComboWeapon {
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    public static boolean canUse(ItemStack stack, long currentTime, float cooldownSeconds) {
+        return secondsSinceLastUsed(stack, currentTime) >= cooldownSeconds;
+    }
+
+    public static int secondsSinceLastUsed(ItemStack stack, long currentTime) {
+        return Math.toIntExact((currentTime - DataHelper.getInt(stack, "last_used")) / 20);
     }
 
     public abstract void doCooldownAttack(Level level, LivingEntity user, InteractionHand usedHand);

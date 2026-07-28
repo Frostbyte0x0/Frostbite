@@ -7,7 +7,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.Codex;
 import org.exodusstudio.frostbite.common.event.custom.CodexEntryUnlockedEvent;
-import org.exodusstudio.frostbite.common.util.DataHelper;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.Arrays;
 

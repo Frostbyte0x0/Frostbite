@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.HashMap;
 import java.util.List;

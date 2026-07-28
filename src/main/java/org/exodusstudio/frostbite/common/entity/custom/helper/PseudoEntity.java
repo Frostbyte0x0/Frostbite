@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.util.CodecHelper;
+import org.exodusstudio.frostbite.common.util.helpers.CodecHelper;
 
 import java.util.UUID;
 

@@ -39,7 +39,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.util.DataHelper;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.Optional;
 

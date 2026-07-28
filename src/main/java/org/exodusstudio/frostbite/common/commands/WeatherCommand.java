@@ -7,8 +7,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.TimeArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.permissions.Permissions;
-import org.exodusstudio.frostbite.common.util.DataHelper;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 public class WeatherCommand {

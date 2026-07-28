@@ -14,7 +14,7 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.PseudoEntityTypes;
-import org.exodusstudio.frostbite.common.util.DataHelper;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.joml.Vector3f;
 

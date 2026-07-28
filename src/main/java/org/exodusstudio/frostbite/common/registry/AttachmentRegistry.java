@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import static org.exodusstudio.frostbite.common.util.CodecHelper.*;
+import static org.exodusstudio.frostbite.common.util.helpers.CodecHelper.*;
 
 public class AttachmentRegistry {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =

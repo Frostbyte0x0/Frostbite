@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.registry.AttachmentRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -172,8 +173,8 @@ public class ContractAttribute {
 
     @SuppressWarnings("DataFlowIssue")
     public static int getLevel(ItemStack stack, ContractAttribute attribute) {
-        if (stack.has(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE) && stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).attribute().equals(attribute) && stack.has(DataComponentTypeRegistry.CHARGE)) {
-            return stack.get(DataComponentTypeRegistry.CHARGE).charge();
+        if (stack.has(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE) && stack.get(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE).attribute().equals(attribute)) {
+            return DataHelper.getInt(stack, "level");
         }
         if (stack.has(DataComponentTypeRegistry.CONTRACT) && stack.get(DataComponentTypeRegistry.CONTRACT).contract() != null) {
             return stack.get(DataComponentTypeRegistry.CONTRACT).contract().allScalableAttributes().getOrDefault(attribute, 1);

@@ -6,6 +6,7 @@
   "mixins": [
     "ArgumentTypeRegistryMixin",
     "ArmorSlotMixin",
+    "CraftingMenuMixin",
     "EntityMixin",
     "EnvironmentAttributeSystemMixin",
     "IBlockExtensionMixin",

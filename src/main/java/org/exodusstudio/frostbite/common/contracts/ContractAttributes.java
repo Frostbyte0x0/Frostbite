@@ -19,9 +19,9 @@ public class ContractAttributes {
             new ContractAttribute.Builder("chilly", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(1.5f, 3f, 5f))
     );
-    public static final ContractAttribute DEXTEROUS = of( // TODO
+    public static final ContractAttribute DEXTEROUS = of(
             new ContractAttribute.Builder("dexterous", Polarity.POSITIVE, ContractTarget.PLAYER)
-                .scalable(List.of(3f, 5f, 10f))
+                .scalable(List.of(3f, 6f, 9f))
     );
     public static final ContractAttribute ILLUSIONS = of( // TODO
             new ContractAttribute.Builder("illusions", Polarity.POSITIVE, ContractTarget.PLAYER)
@@ -29,9 +29,9 @@ public class ContractAttributes {
     );
     public static final ContractAttribute REPEL = of( // TODO
             new ContractAttribute.Builder("repel", Polarity.POSITIVE, ContractTarget.PLAYER)
-                .rank(ContractRank.GREY)
+                    .scalable(List.of(1f, 2f, 3f))
     );
-    public static final ContractAttribute FROG = of( // TODO
+    public static final ContractAttribute FROG = of(
             new ContractAttribute.Builder("frog", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(1f, 2f, 3f))
     );
@@ -53,10 +53,10 @@ public class ContractAttributes {
             new ContractAttribute.Builder("unaware", Polarity.NEGATIVE, ContractTarget.PLAYER)
                 .rank(ContractRank.BLACK)
     );
-    public static final ContractAttribute MISSTEP = of( // TODO
-            new ContractAttribute.Builder("misstep", Polarity.NEGATIVE, ContractTarget.PLAYER)
-                .scalable(List.of(1f, 3f, 5f))
-    );
+//    public static final ContractAttribute MISSTEP = of( // TODO
+//            new ContractAttribute.Builder("misstep", Polarity.NEGATIVE, ContractTarget.PLAYER)
+//                .scalable(List.of(1f, 3f, 5f))
+//    );
 
 
     // Living positive attributes
@@ -194,15 +194,15 @@ public class ContractAttributes {
             );
 
     // Weapon negative attributes
-    public static final ContractAttribute CORROSION = of( // TODO
+    public static final ContractAttribute CORROSION = of(
             new ContractAttribute.Builder("corrosion", Polarity.NEGATIVE, ContractTarget.WEAPON)
-                .scalable(List.of(120f, 90f, 60f))
+                .scalable(List.of(240f, 180f, 120f))
             );
     public static final ContractAttribute SLIPPERY = of(
             new ContractAttribute.Builder("slippery", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .scalable(List.of(1f, 2f, 3f))
             );
-    public static final ContractAttribute DULL = of( // TODO
+    public static final ContractAttribute DULL = of(
             new ContractAttribute.Builder("dull", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .rank(ContractRank.BLACK)
             );
@@ -214,7 +214,7 @@ public class ContractAttributes {
             new ContractAttribute.Builder("shadow", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .scalable(List.of(10f, 20f, 30f))
             );
-    public static final ContractAttribute STICKY = of( // TODO
+    public static final ContractAttribute STICKY = of(
             new ContractAttribute.Builder("sticky", Polarity.NEGATIVE, ContractTarget.WEAPON)
                 .scalable(List.of(15f, 30f, 50f))
             );

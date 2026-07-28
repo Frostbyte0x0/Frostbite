@@ -24,10 +24,12 @@ import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -52,8 +54,11 @@ import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
+import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
+import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.*;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.*;
@@ -172,7 +177,6 @@ public class ModEvents {
         }
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @SubscribeEvent
     public static void spicyStew(LivingEntityUseItemEvent.Tick event) {
         if (
@@ -181,7 +185,7 @@ public class ModEvents {
                 event.getItem().is(ItemRegistry.SPICY_MEAT_STEW)) &&
                 event.getDuration() == 1) {
             event.getEntity().addEffect(new MobEffectInstance(EffectRegistry.SATIATED, 4800,
-                    event.getItem().get(DataComponentTypeRegistry.CHARGE.get()).charge()));
+                    DataHelper.getInt(event.getItem(), "spicyness")));
         }
     }
 
@@ -425,24 +429,6 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void cowardly(LivingDamageEvent.Pre event) {
-        if (event.getEntity() instanceof LivingEntity living) {
-            if (LivingContractInfo.hasAppliedAttribute(living, ContractAttributes.COWARDLY) && living.getHealth() < (living.getMaxHealth() * 0.5)) {
-                event.setNewDamage(event.getNewDamage() * (1 - LivingContractInfo.getStat(living, ContractAttributes.COWARDLY) / 100));
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void berserk(LivingDamageEvent.Pre event) {
-        if (event.getSource().getEntity() instanceof LivingEntity living) {
-            if (LivingContractInfo.hasAppliedAttribute(living, ContractAttributes.BERSERK) && living.getHealth() < (living.getMaxHealth() * 0.5)) {
-                event.setNewDamage(event.getNewDamage() * (1 + LivingContractInfo.getStat(living, ContractAttributes.BERSERK) / 100));
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void smelly(LivingChangeTargetEvent event) {
         if (event.getNewAboutToBeSetTarget() instanceof Player player) {
             if (LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.SMELLY) && !DataHelper.hasHitEntity(player, event.getEntity())) {
@@ -518,6 +504,16 @@ public class ModEvents {
     }
 
     @SubscribeEvent
+    public static void dull(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof LivingEntity entity &&
+                LivingContractInfo.hasAppliedAttributeOnWeapon(entity, ContractAttributes.DULL) &&
+                entity.tickCount % 20 == 0) {
+            ItemStack stack = entity.getItemInHand(InteractionHand.MAIN_HAND);
+            Util.setEnchantmentsLevelOne(stack);
+        }
+    }
+
+    @SubscribeEvent
     public static void midas(LivingDeathEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity entity &&
                 LivingContractInfo.hasAppliedAttributeOnWeapon(entity, ContractAttributes.MIDAS) &&
@@ -564,12 +560,40 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void shadow(LivingDamageEvent.Pre event) {
+    public static void tempReset(PlayerEvent.PlayerRespawnEvent event) {
+        ((TE) event.getEntity()).setInnerTemp(20);
+        ((TE) event.getEntity()).setOuterTemp(20);
+    }
+
+    @SubscribeEvent
+    public static void contractDamage(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker &&
-                event.getEntity() instanceof LivingEntity &&
-                LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.SHADOW)) {
-            if (attacker.level().isDarkOutside()) return;
-            event.setNewDamage(event.getNewDamage() * (1 - LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.SHADOW) / 100));
+                event.getEntity() instanceof LivingEntity) {
+            float add = 0;
+            if (LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.SHADOW) && attacker.level().isDarkOutside())
+                add += - LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.SHADOW) / 100;
+            if (LivingContractInfo.hasAppliedAttribute(attacker, ContractAttributes.BERSERK) && attacker.getHealth() < (attacker.getMaxHealth() * 0.5))
+                add += LivingContractInfo.getStat(attacker, ContractAttributes.BERSERK) / 100;
+            if (LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.CORROSION)) {
+                int ticksSinceStart = Math.toIntExact(attacker.level().getGameTime() - DataHelper.getInt(attacker.getItemInHand(InteractionHand.MAIN_HAND), "corrosion_start"));
+                float halfEvery = LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.CORROSION) * 60;
+                add -= Util.getLog2Reduction(ticksSinceStart, halfEvery);
+            }
+
+            float comboAdd = ComboWeapon.getDamageBonus(event.getSource());
+            float comboAddBonus = 0;
+            if (LivingContractInfo.hasAppliedAttribute(attacker, ContractAttributes.SEQUENCE))
+                comboAddBonus = comboAdd * LivingContractInfo.getStat(attacker, ContractAttributes.SEQUENCE) / 100f;
+            event.setNewDamage((event.getNewDamage() + comboAdd) * (1 + add) + comboAddBonus);
+        }
+    }
+
+    @SubscribeEvent
+    public static void cowardly(LivingDamageEvent.Pre event) {
+        if (event.getEntity() instanceof LivingEntity living) {
+            if (LivingContractInfo.hasAppliedAttribute(living, ContractAttributes.COWARDLY) && living.getHealth() < (living.getMaxHealth() * 0.5)) {
+                event.setNewDamage(event.getNewDamage() * (1 - LivingContractInfo.getStat(living, ContractAttributes.COWARDLY) / 100));
+            }
         }
     }
 
@@ -579,11 +603,9 @@ public class ModEvents {
                 event.getEntity() instanceof LivingEntity target &&
                 LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.STICKY)) {
             Vec3 delta = target.position().subtract(attacker.position()).normalize().scale(LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.STICKY) / 100);
-//            Minecraft.getInstance().player.addDeltaMovement(delta);
-//            target.setDeltaMovement(delta);
-            if (attacker instanceof Player player) player.setDeltaMovement(delta);
-            attacker.setDeltaMovement(delta);
-//            attacker.knockback(1, delta.x, delta.z, attacker.damageSources().source(DamageTypes.GENERIC, null, null), 0);
+            if (attacker instanceof Player player) {
+                NeoForge.EVENT_BUS.post(new MovePlayerEvent(delta, player.getUUID()));
+            } else attacker.setDeltaMovement(delta);
         }
     }
 
