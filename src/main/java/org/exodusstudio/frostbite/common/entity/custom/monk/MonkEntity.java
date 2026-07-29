@@ -39,6 +39,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
+import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
@@ -294,9 +296,8 @@ public class MonkEntity extends Monster implements TargetingEntity {
                     float num = 10f / (distanceTo(entity) + 3f);
                     Vec3 mul = new Vec3(num, num * 0.5, num);
                     Vec3 v = calculateDir(this, entity, mul);
-                    if (entity instanceof Player) {
-//                        Minecraft.getInstance().player.push(v); // no idea why this works, but it does
-                        entity.push(v);
+                    if (entity instanceof Player p) {
+                        NeoForge.EVENT_BUS.post(new MovePlayerEvent(v, p.getUUID()));
                         continue;
                     }
                     entity.push(v);

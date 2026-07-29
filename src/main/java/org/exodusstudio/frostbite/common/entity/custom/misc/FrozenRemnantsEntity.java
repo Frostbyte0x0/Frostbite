@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.entity.custom.misc;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -32,7 +30,7 @@ import java.util.UUID;
 
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
-public class FrozenRemnantsEntity extends Mob{
+public class FrozenRemnantsEntity extends Mob {
     protected NonNullList<ItemStack> items;
     private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> DATA_OWNER_UUID;
     private static final EntityDataAccessor<Integer> DATA_OWNER_ID;

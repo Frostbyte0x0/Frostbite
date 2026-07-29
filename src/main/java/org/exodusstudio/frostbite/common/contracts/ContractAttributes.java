@@ -23,10 +23,10 @@ public class ContractAttributes {
             new ContractAttribute.Builder("dexterous", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(3f, 6f, 9f))
     );
-    public static final ContractAttribute ILLUSIONS = of( // TODO
-            new ContractAttribute.Builder("illusions", Polarity.POSITIVE, ContractTarget.PLAYER)
-                .scalable(List.of(2f, 5f, 10f))
-    );
+//    public static final ContractAttribute ILLUSIONS = of( // TODO
+//            new ContractAttribute.Builder("illusions", Polarity.POSITIVE, ContractTarget.PLAYER)
+//                .scalable(List.of(2f, 5f, 10f))
+//    );
     public static final ContractAttribute REPEL = of( // TODO
             new ContractAttribute.Builder("repel", Polarity.POSITIVE, ContractTarget.PLAYER)
                     .scalable(List.of(1f, 2f, 3f))
@@ -190,6 +190,14 @@ public class ContractAttributes {
             );
     public static final ContractAttribute SHARP = of(
             new ContractAttribute.Builder("sharp", Polarity.POSITIVE, ContractTarget.WEAPON)
+                .scalable(List.of(25f, 50f, 75f))
+            );
+    public static final ContractAttribute PIERCING = of( // TODO
+            new ContractAttribute.Builder("piercing", Polarity.POSITIVE, ContractTarget.WEAPON)
+                .scalable(List.of(20f, 30f, 40f))
+            );
+    public static final ContractAttribute WEBBING = of( // TODO
+            new ContractAttribute.Builder("webbing", Polarity.POSITIVE, ContractTarget.WEAPON)
                 .scalable(List.of(25f, 50f, 75f))
             );
 

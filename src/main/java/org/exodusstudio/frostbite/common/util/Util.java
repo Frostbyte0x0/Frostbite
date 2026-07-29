@@ -33,6 +33,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -361,7 +362,7 @@ public class Util {
         }
     }
 
-    public static void teleportEntityRandomly(Level level, float diameter, LivingEntity user) {
+    public static void teleportEntityRandomly(ServerLevel level, float diameter, LivingEntity user) {
         boolean teleported = false;
 
         for (int attempt = 0; attempt < 16; ++attempt) {
@@ -369,7 +370,7 @@ public class Util {
             double yy = Mth.clamp(
                     user.getY() + (user.getRandom().nextDouble() - 0.5) * diameter,
                     level.getMinY(),
-                    (level.getMinY() + ((ServerLevel)level).getLogicalHeight() - 1));
+                    (level.getMinY() + level.getLogicalHeight() - 1));
             double zz = user.getZ() + (user.getRandom().nextDouble() - 0.5) * diameter;
             if (user.isPassenger()) {
                 user.stopRiding();
@@ -397,6 +398,42 @@ public class Util {
 
         if (teleported) {
             user.resetCurrentImpulseContext();
+        }
+    }
+
+    public static void teleportEntityRandomly(ServerLevel level, float diameter, Entity entity) {
+        Vec3 pos = entity.position();
+
+        for (int attempt = 0; attempt < 16; ++attempt) {
+            double x = (level.getRandom().nextDouble() - 0.5) * diameter;
+            double y = (level.getRandom().nextDouble() - 0.5) * diameter;
+            double z = (level.getRandom().nextDouble() - 0.5) * diameter;
+
+            double xx = pos.x + x;
+            double yy = Mth.clamp(
+                    pos.y + y,
+                    level.getMinY(),
+                    (level.getMinY() + level.getLogicalHeight() - 1));
+            double zz = pos.z + z;
+
+            BlockPos toPos = BlockPos.containing(xx, yy, zz);
+
+            boolean landed = false;
+            while(!landed && toPos.getY() > level.getMinY()) {
+                BlockPos below = toPos.below();
+                BlockState state = level.getBlockState(below);
+                if (state.blocksMotion()) {
+                    landed = true;
+                } else {
+                    --y;
+                    toPos = below;
+                }
+            }
+
+            if (level.hasChunkAt(toPos) && landed && level.noCollision(entity) && !level.containsAnyLiquid(entity.getBoundingBox())) {
+                entity.moveOrInterpolateTo(new Vec3(toPos.above()));
+                break;
+            }
         }
     }
 

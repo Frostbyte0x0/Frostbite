@@ -194,6 +194,48 @@ public class ClientEvents {
         if (player.onGround()) DataHelper.setData(player, "jump_count", -1);
     }
 
+//    @SubscribeEvent
+//    public static void illusionsStart(RenderPlayerEvent.Pre event) {
+//        Entity e = Minecraft.getInstance().level.getEntity(((UUIDState) event.getRenderState()).frostbite$getUUID());
+//        if (e instanceof Player player &&
+//                LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.ILLUSIONS) &&
+//                event.getRenderState() instanceof AvatarRenderState) {
+//            if (DataHelper.getBoolean(player, "is_rendering_illusions")) {
+//                event.setCanceled(true);
+//            } else {
+//                DataHelper.setData(player, "is_rendering_illusions", true);
+//            }
+//        }
+//    }
+
+//    @SubscribeEvent
+//    public static void illusionsRender(RenderPlayerEvent.Post event) {
+//        Entity e = Minecraft.getInstance().level.getEntity(((UUIDState) event.getRenderState()).frostbite$getUUID());
+//        if (e instanceof Player player &&
+//                LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.ILLUSIONS) &&
+//                event.getRenderState() instanceof AvatarRenderState a) {
+//            List<String> uuids = new ArrayList<>(List.of(DataHelper.getString(player, "illusion_UUIDs").split(";")));
+//            List<String> toRemove = new ArrayList<>();
+//            for (String stringUUID : uuids) {
+//                Entity illusionMaybe = Minecraft.getInstance().level.getEntity(UUID.fromString(stringUUID));
+//                if (illusionMaybe instanceof PlayerIllusionEntity illusion) {
+//                    PoseStack s = event.getPoseStack();
+//                    s.pushPose();
+//                    s.translate(player.getPosition(event.getPartialTick()).subtract(illusion.getPosition(event.getPartialTick())));
+//                    event.getRenderer().submit(a, s, event.getSubmitNodeCollector(), Minecraft.getInstance().levelRenderer.levelRenderState.cameraRenderState);
+//                    s.popPose();
+//                } else {
+//                    toRemove.add(stringUUID);
+//                }
+//            }
+//            uuids.removeAll(toRemove);
+//            StringBuilder remaining = new StringBuilder();
+//            uuids.forEach(s -> remaining.append(s).append(";"));
+//            DataHelper.setData(player, "illusion_UUIDs", remaining.toString());
+//            DataHelper.setData(player, "is_rendering_illusions", false);
+//        }
+//    }
+
     @SubscribeEvent
     public static void contractTooltips(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();

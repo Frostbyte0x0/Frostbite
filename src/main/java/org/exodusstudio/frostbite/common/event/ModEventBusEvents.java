@@ -56,6 +56,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.CHIEF_GUARD.get(), ChiefGuardEntity.createAttributes().build());
         event.put(EntityRegistry.GUARD.get(), GuardEntity.createAttributes().build());
         event.put(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardEntity.createAttributes().build());
+        event.put(EntityRegistry.PLAYER_ILLUSION.get(), HeavyGuardEntity.createAttributes().build());
     }
 
     @SubscribeEvent

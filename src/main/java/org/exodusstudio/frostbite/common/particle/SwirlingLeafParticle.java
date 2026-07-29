@@ -37,6 +37,11 @@ public class SwirlingLeafParticle extends SingleQuadParticle {
 
     @Override
     public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
+        if (age + partialTicks > lifetime) {
+            remove();
+            return;
+        }
+
         if (age >= 40 && alpha > 0.01f) {
             this.alpha = 1f - ((age + partialTicks) - 40) / 20;
         }

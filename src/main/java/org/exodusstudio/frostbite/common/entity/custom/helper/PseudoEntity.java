@@ -5,8 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.Utf8String;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.util.helpers.CodecHelper;
@@ -60,5 +60,5 @@ public class PseudoEntity {
         return new PseudoEntity(speed, aabb, owner, startTick);
     }
 
-    public record PseudoEntityContext(PseudoEntity pseudoEntity, Level level, Entity owner, long ticksAlive) {}
+    public record PseudoEntityContext(PseudoEntity pseudoEntity, ServerLevel level, Entity owner, long ticksAlive) {}
 }

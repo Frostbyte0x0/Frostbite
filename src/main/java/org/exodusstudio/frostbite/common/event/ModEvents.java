@@ -53,6 +53,7 @@ import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.PlayerIllusionEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
@@ -326,6 +327,7 @@ public class ModEvents {
 
                     if (type == null) {
                         Frostbite.LOGGER.error("PseudoEntityType {} not found", key);
+                        pseudoEntitiesToRemove.addAll(pseudoEntities);
                         return;
                     }
                     if (type.shouldRemove().apply(context)) {
@@ -451,9 +453,11 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void transport(EntityTickEvent.Post event) {
-        if (event.getEntity() instanceof LivingEntity entity && LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.TRANSPORT) && entity.level() instanceof ServerLevel) {
+        if (event.getEntity() instanceof LivingEntity entity &&
+                LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.TRANSPORT) &&
+                entity.level() instanceof ServerLevel serverLevel) {
             if (entity.tickCount % 100 == 0 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.TRANSPORT) / 100) {
-                Util.teleportEntityRandomly(entity.level(), 32, entity);
+                Util.teleportEntityRandomly(serverLevel, 32, entity);
             }
         }
     }
@@ -537,6 +541,23 @@ public class ModEvents {
             ((TE) target).decreaseTemperature(LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.LEECH), false);
         }
     }
+
+//    @SubscribeEvent
+//    public static void illusions(LivingDamageEvent.Post event) {
+//        if (event.getSource().getEntity() instanceof LivingEntity &&
+//                event.getEntity() instanceof Player player &&
+//                event.getEntity().level() instanceof ServerLevel level &&
+//                LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.ILLUSIONS)) {
+//            for (int i = 0; i < LivingContractInfo.getStat(player, ContractAttributes.ILLUSIONS); i++) {
+//                PlayerIllusionEntity illusion = new PlayerIllusionEntity(null, level);
+//                illusion.moveOrInterpolateTo(player.position(), 0, 0);
+//                Util.teleportEntityRandomly(level, 16, illusion);
+//                level.addFreshEntity(illusion);
+//                illusion.setOwnerUUID(player.getUUID());
+//                DataHelper.setData(player, "illusion_UUIDs", DataHelper.getString(player, "illusion_UUIDs") + illusion.getStringUUID() + ";");
+//            }
+//        }
+//    }
 
     @SubscribeEvent
     public static void spin(LivingDamageEvent.Post event) {

@@ -152,27 +152,27 @@ public class DataHelper {
 
     public static void addData(IAttachmentHolder holder, String key, float data) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key) == null ? List.of() : map.get(key)));
         map.get(key).add(data);
         holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
     }
 
     public static void addDataToAll(IAttachmentHolder holder, String key, float data) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key) == null ? List.of() : map.get(key)));
         map.get(key).replaceAll(d -> d + data);
         holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
     }
 
     public static List<Float> getList(IAttachmentHolder holder, String key) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key) == null ? List.of() : map.get(key)));
         return map.get(key);
     }
 
     public static void removeData(IAttachmentHolder holder, String key, float data) {
         Map<String, List<Float>> map = new HashMap<>(holder.getData(AttachmentRegistry.MAP_STRING_LIST_FLOAT));
-        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key) == null ? List.of() : map.get(key)));
         map.get(key).remove(data);
         holder.setData(AttachmentRegistry.MAP_STRING_LIST_FLOAT, map);
     }
@@ -180,7 +180,7 @@ public class DataHelper {
     public static void addPseudoEntity(IAttachmentHolder holder, PseudoEntityTypes.PseudoEntityType type, PseudoEntity pseudoEntity) {
         String key = type.id();
         Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
-        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key) == null ? List.of() : map.get(key)));
         map.get(key).add(pseudoEntity);
         holder.setData(AttachmentRegistry.PSEUDO_ENTITIES, map);
     }
@@ -197,7 +197,7 @@ public class DataHelper {
 
     public static void removePseudoEntity(IAttachmentHolder holder, String key, PseudoEntity pseudoEntity) {
         Map<String, List<PseudoEntity>> map = new HashMap<>(holder.getData(AttachmentRegistry.PSEUDO_ENTITIES));
-        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key)));
+        map = safelyAddValueToMap(map, key, new ArrayList<>(map.get(key) == null ? List.of() : map.get(key)));
         map.get(key).remove(pseudoEntity);
         holder.setData(AttachmentRegistry.PSEUDO_ENTITIES, map);
     }

@@ -94,6 +94,7 @@ public class ClientBusEvents {
         EntityRenderers.register(EntityRegistry.GUARD.get(), renderer(GuardModel.class, "guard", ModModelLayers.GUARD));
         EntityRenderers.register(EntityRegistry.CHIEF_GUARD.get(), renderer(ChiefGuardModel.class, "chief_guard", ModModelLayers.CHIEF_GUARD));
         EntityRenderers.register(EntityRegistry.HEAVY_GUARD.get(), renderer(HeavyGuardModel.class, "heavy_guard", ModModelLayers.HEAVY_GUARD));
+        EntityRenderers.register(EntityRegistry.PLAYER_ILLUSION.get(), PlayerIllusionRenderer::new);
 
         BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
         EntityRenderers.register(EntityRegistry.CURSE_BALL.get(), CurseBallRenderer::new);

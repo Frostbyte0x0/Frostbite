@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.entity.custom.misc.PlayerIllusionEntity;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
@@ -335,6 +336,13 @@ public class EntityRegistry {
                     .sized(1.2f, 1.2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "curse_ball"))));
+
+    public static final Supplier<EntityType<PlayerIllusionEntity>> PLAYER_ILLUSION =
+            ENTITY_TYPES.register("player_illusion", () -> EntityType.Builder
+                    .of(PlayerIllusionEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.8F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "player_illusion"))));
 
     // Entity Sensors
     public static final DeferredRegister<SensorType<?>> SENSOR =
