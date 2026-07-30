@@ -8,10 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public record Contract(
@@ -148,7 +145,8 @@ public record Contract(
     }
 
     public static ContractAttribute a(String id) {
-        return ContractAttributes.ATTRIBUTES.get(id);
+        ContractAttribute a = ContractAttributes.ATTRIBUTES.get(id);
+        return a == null ? ContractAttributes.BERSERK : a;
     }
 
     public static void toBuffer(final ByteBuf buffer, Contract contract) {

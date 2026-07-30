@@ -236,7 +236,7 @@
 
   "contract.attribute.chilly": "Chilly",
   "contract.attribute.chilly_desc": "Deal more damage when colder",
-  "contract.attribute.chilly_desc_complete": "Deal %s%s more damage for every degree below 10°C inner temperature",
+  "contract.attribute.chilly_desc_complete": "Deal %s%s more damage for every two degrees below 0°C inner temperature",
   "contract.attribute.dexterous": "Dexterous",
   "contract.attribute.dexterous_desc": "When crafting, chance to get bonus item",
   "contract.attribute.dexterous_desc_complete": "When crafting, %s%s chance to get bonus item",
@@ -330,6 +330,11 @@
   "contract.attribute.sharp": "Sharp",
   "contract.attribute.sharp_desc": "Charges up faster",
   "contract.attribute.sharp_desc_complete": "Charges up %s%s faster",
+  "contract.attribute.piercing": "Piercing",
+  "contract.attribute.piercing_desc": "Ignore part of armour protection",
+  "contract.attribute.piercing_desc_complete": "Ignore %s%s of armour protection",
+  "contract.attribute.webbing": "Webbing",
+  "contract.attribute.webbing_desc": "Accumulate webs around opponent to slow them down",
 
   "contract.attribute.corrosion": "Corrosion",
   "contract.attribute.corrosion_desc": "Deals less damage over time",

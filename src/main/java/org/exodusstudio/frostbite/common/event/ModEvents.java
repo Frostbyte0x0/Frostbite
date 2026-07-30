@@ -9,10 +9,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +55,6 @@ import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
-import org.exodusstudio.frostbite.common.entity.custom.misc.PlayerIllusionEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
@@ -279,11 +280,15 @@ public class ModEvents {
 
             Iterable<Entity> entities = level.getEntities().getAll();
             if (entities.iterator().hasNext()) {
-                entities.forEach((entity) -> {
-                    if (entity instanceof LivingEntity livingEntity) {
-                        TemperatureManager.updateEntityTemperature(livingEntity);
-                    }
-                });
+                try {
+                    entities.forEach((entity) -> {
+                        if (entity instanceof LivingEntity livingEntity) {
+                            TemperatureManager.updateEntityTemperature(livingEntity);
+                        }
+                    });
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Frostbite.LOGGER.error("Couldn't loop over entities: {}", Arrays.toString(e.getStackTrace()));
+                }
             }
 
             if (event.getServer().getTickCount() % 20 == 0) {
@@ -442,9 +447,9 @@ public class ModEvents {
     @SubscribeEvent
     public static void charged(EntityTickEvent.Post event) {
         if (event.getEntity() instanceof LivingEntity entity && LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.CHARGED)) {
-            if (entity.tickCount % 1200 == 0 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.CHARGED) / 100) {
+            if (entity.tickCount % 1200 == 500 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.CHARGED) / 100) {
                 LightningBolt bolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, entity.level());
-                bolt.setDamage(8);
+                bolt.setDamage(3);
                 bolt.moveOrInterpolateTo(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
                 entity.level().addFreshEntity(bolt);
             }
@@ -456,7 +461,7 @@ public class ModEvents {
         if (event.getEntity() instanceof LivingEntity entity &&
                 LivingContractInfo.hasAppliedAttribute(entity, ContractAttributes.TRANSPORT) &&
                 entity.level() instanceof ServerLevel serverLevel) {
-            if (entity.tickCount % 100 == 0 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.TRANSPORT) / 100) {
+            if (entity.tickCount % 100 == 40 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.TRANSPORT) / 100) {
                 Util.teleportEntityRandomly(serverLevel, 32, entity);
             }
         }
@@ -589,7 +594,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void contractDamage(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker &&
-                event.getEntity() instanceof LivingEntity) {
+                event.getEntity() instanceof LivingEntity victim) {
             float add = 0;
             if (LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.SHADOW) && attacker.level().isDarkOutside())
                 add += - LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.SHADOW) / 100;
@@ -599,6 +604,16 @@ public class ModEvents {
                 int ticksSinceStart = Math.toIntExact(attacker.level().getGameTime() - DataHelper.getInt(attacker.getItemInHand(InteractionHand.MAIN_HAND), "corrosion_start"));
                 float halfEvery = LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.CORROSION) * 60;
                 add -= Util.getLog2Reduction(ticksSinceStart, halfEvery);
+            }
+            float inner = ((TE) attacker).getInnerTemp();
+            if (LivingContractInfo.hasAppliedAttribute(attacker, ContractAttributes.CHILLY) && inner < 0) {
+                add += LivingContractInfo.getStat(attacker, ContractAttributes.CHILLY) * inner / -200;
+            }
+            if (LivingContractInfo.hasAppliedAttributeOnWeapon(attacker, ContractAttributes.PIERCING)) {
+                float damage = event.getOriginalDamage();
+                float reducedDamage = CombatRules.getDamageAfterAbsorb(victim, damage, event.getSource(),
+                        victim.getArmorValue(), (float) victim.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
+                add += LivingContractInfo.getStat(attacker, ContractAttributes.PIERCING) * ((damage - reducedDamage) / damage) / 100;
             }
 
             float comboAdd = ComboWeapon.getDamageBonus(event.getSource());

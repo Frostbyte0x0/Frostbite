@@ -15,15 +15,15 @@ public class ContractAttributes {
     public static final HashMap<String, ContractAttribute> ATTRIBUTES = new HashMap<>();
 
     // Player positive attributes
-    public static final ContractAttribute CHILLY = of( // TODO
+    public static final ContractAttribute CHILLY = of(
             new ContractAttribute.Builder("chilly", Polarity.POSITIVE, ContractTarget.PLAYER)
-                .scalable(List.of(1.5f, 3f, 5f))
+                .scalable(List.of(1f, 2f, 3f))
     );
     public static final ContractAttribute DEXTEROUS = of(
             new ContractAttribute.Builder("dexterous", Polarity.POSITIVE, ContractTarget.PLAYER)
                 .scalable(List.of(3f, 6f, 9f))
     );
-//    public static final ContractAttribute ILLUSIONS = of( // TODO
+//    public static final ContractAttribute ILLUSIONS = of( // SCRAPPED
 //            new ContractAttribute.Builder("illusions", Polarity.POSITIVE, ContractTarget.PLAYER)
 //                .scalable(List.of(2f, 5f, 10f))
 //    );
@@ -53,7 +53,7 @@ public class ContractAttributes {
             new ContractAttribute.Builder("unaware", Polarity.NEGATIVE, ContractTarget.PLAYER)
                 .rank(ContractRank.BLACK)
     );
-//    public static final ContractAttribute MISSTEP = of( // TODO
+//    public static final ContractAttribute MISSTEP = of( // SCRAPPED
 //            new ContractAttribute.Builder("misstep", Polarity.NEGATIVE, ContractTarget.PLAYER)
 //                .scalable(List.of(1f, 3f, 5f))
 //    );
@@ -186,13 +186,13 @@ public class ContractAttributes {
             );
     public static final ContractAttribute LOCK_IN = of( // TODO
                 new ContractAttribute.Builder("lock_in", Polarity.POSITIVE, ContractTarget.WEAPON)
-                    .scalable(List.of(0.5f, 1f, 1.5f))
+                    .scalable(List.of(1f, 1.5f, 2f))
             );
     public static final ContractAttribute SHARP = of(
             new ContractAttribute.Builder("sharp", Polarity.POSITIVE, ContractTarget.WEAPON)
                 .scalable(List.of(25f, 50f, 75f))
             );
-    public static final ContractAttribute PIERCING = of( // TODO
+    public static final ContractAttribute PIERCING = of(
             new ContractAttribute.Builder("piercing", Polarity.POSITIVE, ContractTarget.WEAPON)
                 .scalable(List.of(20f, 30f, 40f))
             );

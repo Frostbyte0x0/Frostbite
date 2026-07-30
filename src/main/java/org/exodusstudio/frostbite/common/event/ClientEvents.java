@@ -58,7 +58,9 @@ import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.joml.Vector3f;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
@@ -99,14 +101,16 @@ public class ClientEvents {
             List<ContractAttribute> attributes = c.allAttributes();
             if (attributes.isEmpty()) return;
 
-            int i = attributes.size() / 2;
+            Map<FormattedCharSequence, Boolean> lines = new LinkedHashMap<>();
             for (ContractAttribute a : attributes) {
-                graphics.text(font, a.getSmallInfo(player, Either.right(c)), 0, screenCenter + i * font.lineHeight, 0xFFFFFFFF);
+                lines.put(a.getSmallInfo(player, Either.right(c)).getVisualOrderText(), false);
+                for (FormattedCharSequence s : font.split(a.getExtraInfo(player, Either.right(c), false), 150))
+                    lines.put(s, true);
+            }
+            int i = -lines.size() / 2;
+            for (FormattedCharSequence line : lines.keySet()) {
+                graphics.text(font, line, lines.get(line) ? 16 : 0, screenCenter + i * font.lineHeight, 0xFFFFFFFF);
                 i++;
-                for (FormattedCharSequence line : font.split(a.getExtraInfo(player, Either.right(c), false), 200)) {
-                    graphics.text(font, line, 16, screenCenter + i * font.lineHeight, 0xFFFFFFFF);
-                    i++;
-                }
             }
         }
     }
@@ -175,8 +179,6 @@ public class ClientEvents {
                 DataHelper.setData(player, "jump_count", 0);
                 return;
             }
-            Frostbite.LOGGER.debug("" + LivingContractInfo.getStat(player, ContractAttributes.FROG));
-            Frostbite.LOGGER.debug("" + DataHelper.getInt(player, "jump_count"));
             DataHelper.setData(player, "jump_count", DataHelper.getInt(player, "jump_count") + 1);
             if (DataHelper.getInt(player, "jump_count") > LivingContractInfo.getStat(player, ContractAttributes.FROG) * 2) return;
             while (Minecraft.getInstance().options.keyJump.consumeClick()) {
