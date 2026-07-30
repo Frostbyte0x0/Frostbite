@@ -35,13 +35,15 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.exodusstudio.frostbite.common.util.TemperatureEntity;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class WoollySheepEntity extends Animal {
+public class WoollySheepEntity extends Animal implements TemperatureEntity {
     private static final int EAT_ANIMATION_TICKS = 40;
     private static final EntityDataAccessor<Byte> DATA_WOOL_ID;
     private static final Map<DyeColor, Integer> COLOR_BY_DYE;
@@ -233,7 +235,7 @@ public class WoollySheepEntity extends Animal {
         }
     }
 
-    @javax.annotation.Nullable
+    @Nullable
     public WoollySheepEntity getBreedOffspring(ServerLevel p_149044_, AgeableMob p_149045_) {
         WoollySheepEntity sheep = EntityRegistry.WOOLLY_SHEEP.get().create(p_149044_, EntitySpawnReason.BREEDING);
         if (sheep != null) {
@@ -254,14 +256,29 @@ public class WoollySheepEntity extends Animal {
 
     }
 
-    @javax.annotation.Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_29835_, DifficultyInstance p_29836_, EntitySpawnReason p_360585_, @javax.annotation.Nullable SpawnGroupData p_29838_) {
-        this.setColor(getRandomSheepColor(p_29835_.getRandom()));
-        return super.finalizeSpawn(p_29835_, p_29836_, p_360585_, p_29838_);
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance instance, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
+        this.setColor(getRandomSheepColor(accessor.getRandom()));
+        return super.finalizeSpawn(accessor, instance, reason, data);
     }
 
     static {
         DATA_WOOL_ID = SynchedEntityData.defineId(WoollySheepEntity.class, EntityDataSerializers.BYTE);
         COLOR_BY_DYE = Maps.newEnumMap(Arrays.stream(DyeColor.values()).collect(Collectors.toMap(Function.identity(), WoollySheepEntity::createSheepColor)));
+    }
+
+    @Override
+    public LivingEntity getInstance() {
+        return this;
+    }
+
+    @Override
+    public boolean scalesWithCold() {
+        return false;
+    }
+
+    @Override
+    public int getBaseOuterTempIncrease() {
+        return 3;
     }
 }

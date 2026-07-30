@@ -6,10 +6,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
@@ -34,12 +34,6 @@ public class TemperatureManager {
         tempsPerBlock.put("furnace", 1.5f);
         tempsPerBlock.put("blast_furnace", 1.5f);
         tempsPerBlock.put("smoker", 1.5f);
-    }
-
-    public static void updateEntityTemperatures(List<LivingEntity> entities) {
-        for (LivingEntity entity : entities) {
-            updateEntityTemperature(entity);
-        }
     }
 
     public static void updateEntityTemperature(LivingEntity entity) {
@@ -126,7 +120,8 @@ public class TemperatureManager {
 
     public static void affectEntity(ServerLevel serverLevel, LivingEntity entity, float innerTemperature) {
         if (innerTemperature < -10 && entity.canFreeze()) {
-            entity.hurtServer(serverLevel, entity.damageSources().freeze(), Mth.clamp(-innerTemperature / 10, 1, 3));
+            entity.hurtServer(serverLevel, entity.damageSources().source(DamageTypeRegistry.FREEZING),
+                    Mth.clamp(-innerTemperature / 10, 1, 3));
         }
     }
 }

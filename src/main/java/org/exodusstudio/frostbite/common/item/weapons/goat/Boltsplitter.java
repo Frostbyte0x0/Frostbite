@@ -22,9 +22,9 @@ import org.exodusstudio.frostbite.common.registry.Renderables;
 import org.exodusstudio.frostbite.common.rendering.RenderToolkit;
 import org.exodusstudio.frostbite.common.util.Renderable;
 
-public class BlueJadeKatanaItem extends SeriousAttackWeapon {
-    public BlueJadeKatanaItem(Properties pProperties) {
-        super(pProperties, 100, Renderables.BLUE_JADE_KATANA_CHARGE_ATTACK, 10,
+public class Boltsplitter extends SeriousAttackWeapon {
+    public Boltsplitter(Properties pProperties) {
+        super(pProperties, 100, Renderables.BOLTSPLITTER_CHARGE_ATTACK, 10,
                 new ComboStep(2, 0.75f, 0.15f, 0.025f),
                 new ComboStep(3, 0.65f, 0.15f, 0.025f),
                 new ComboStep(4, 0.85f, 0.15f, 0.025f));

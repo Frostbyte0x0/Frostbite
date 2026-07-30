@@ -191,6 +191,12 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.SPICY_VEGETABLE_STEW);
                     output.accept(ItemRegistry.SPICY_FISH_SOUP);
                     output.accept(ItemRegistry.SPICY_MEAT_STEW);
+                    output.accept(ItemRegistry.HIDE);
+                    output.accept(ItemRegistry.HIDE_SHEET);
+                    output.accept(ItemRegistry.HELMET_CUTOUT);
+                    output.accept(ItemRegistry.CHESTPLATE_CUTOUT);
+                    output.accept(ItemRegistry.LEGGINGS_CUTOUT);
+                    output.accept(ItemRegistry.BOOTS_CUTOUT);
                     output.accept(ItemRegistry.JELLY);
                     output.accept(ItemRegistry.INSULATING_JELLY);
                     output.accept(ItemRegistry.EMBERS);
@@ -201,7 +207,7 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.GALE_FAN);
                     output.accept(ItemRegistry.DAGGERS);
                     output.accept(ItemRegistry.NAGINATA);
-                    output.accept(ItemRegistry.BLUE_JADE_KATANA);
+                    output.accept(ItemRegistry.BOLTSPLITTER);
 
                     output.accept(ItemRegistry.HUNTERS_CATALYST);
 

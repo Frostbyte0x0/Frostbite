@@ -53,7 +53,6 @@ public class ClientBusEvents {
     public static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(EntityRegistry.SNIPER_BULLET_ENTITY.get(), SniperBulletRenderer::new);
         EntityRenderers.register(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), RevolverBulletRenderer::new);
-        EntityRenderers.register(EntityRegistry.RAIN_FROG.get(), RainFrogRenderer::new);
         EntityRenderers.register(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepRenderer::new);
         EntityRenderers.register(EntityRegistry.WHIRLPOOL.get(), GenericEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.HAILCOIL.get(), GenericEntityRenderer::new);
@@ -120,7 +119,6 @@ public class ClientBusEvents {
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.SNIPER_BULLET, SniperBulletModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.REVOLVER_BULLET, RevolverBulletModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.RAIN_FROG, RainFrogModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.ICE_SPIKE, IceSpikeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP, WoollySheepModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.CURSE_BALL, CurseBallModel::createBodyLayer);

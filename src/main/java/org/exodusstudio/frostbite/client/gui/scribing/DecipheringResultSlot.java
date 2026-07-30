@@ -1,5 +1,7 @@
 package org.exodusstudio.frostbite.client.gui.scribing;
 
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -24,6 +26,10 @@ public class DecipheringResultSlot extends Slot {
     public void onTake(Player player, ItemStack carried) {
         ContractAttribute a = ContractAttribute.getAttribute(carried);
         if (a != null) LivingContractInfo.addDiscoveredAttribute(player, a);
+        player.level().playLocalSound(
+                player.getX(), player.getY(), player.getZ(), SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS,
+                1.0F, 0.8F + 0.4F * player.getRandom().nextFloat(), false
+        );
         super.onTake(player, carried);
     }
 }

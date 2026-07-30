@@ -1,7 +1,17 @@
 package org.exodusstudio.frostbite.common.event;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.BlockAndLightGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -23,6 +33,7 @@ import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
+import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 
@@ -30,7 +41,6 @@ import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
 public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(EntityRegistry.RAIN_FROG.get(), RainFrogEntity.createAttributes().build());
         event.put(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepEntity.createAttributes().build());
         event.put(EntityRegistry.LEVITATING_JELLYFISH.get(), LevitatingJellyfishEntity.createAttributes().build());
         event.put(EntityRegistry.BIG_LEVITATING_JELLYFISH.get(), BigLevitatingJellyfishEntity.createAttributes().build());
@@ -109,5 +119,67 @@ public class ModEventBusEvents {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.LEVITATING_JELLYFISH.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.BIG_LEVITATING_JELLYFISH.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.SPECTER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.TORCH.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(
+                EntityRegistry.BANDIT.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ModEventBusEvents::checkAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.BOAR.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ModEventBusEvents::checkAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(
+                EntityRegistry.WOOLLY_SHEEP.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ModEventBusEvents::checkAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+    }
+
+    public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
+        boolean brightEnoughToSpawn = EntitySpawnReason.ignoresLightRequirements(spawnReason) || isBrightEnoughToSpawn(level, pos);
+        BlockState below = level.getBlockState(pos.below());
+        return (below.is(BlockTags.ANIMALS_SPAWNABLE_ON)
+                || below.is(BlockRegistry.MARBLE)
+                || below.is(Blocks.SNOW_BLOCK)
+                || below.is(Blocks.ICE)
+                || below.is(Blocks.PACKED_ICE)
+                || below.is(BlockRegistry.MISTY_GRASS)
+                || below.is(BlockRegistry.SNOWY_MISTY_GRASS)
+                || below.is(Blocks.PACKED_ICE)
+                || below.is(Blocks.BLUE_ICE)
+                || below.is(Blocks.SNOW)) && brightEnoughToSpawn;
+    }
+
+    protected static boolean isBrightEnoughToSpawn(BlockAndLightGetter level, BlockPos pos) {
+        return level.getRawBrightness(pos, 0) > 8;
     }
 }

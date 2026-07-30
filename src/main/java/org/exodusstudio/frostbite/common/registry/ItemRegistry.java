@@ -35,7 +35,7 @@ import org.exodusstudio.frostbite.common.item.weapons.*;
 import org.exodusstudio.frostbite.common.item.weapons.elf.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.SummoningStaffItem;
-import org.exodusstudio.frostbite.common.item.weapons.goat.BlueJadeKatanaItem;
+import org.exodusstudio.frostbite.common.item.weapons.goat.Boltsplitter;
 import org.exodusstudio.frostbite.common.item.weapons.goat.DaggersItem;
 import org.exodusstudio.frostbite.common.item.weapons.goat.NaginataItem;
 import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
@@ -285,10 +285,10 @@ public class ItemRegistry {
                     .attributes(NaginataItem.createAttributes())
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> BLUE_JADE_KATANA =
-            ITEMS.register("blue_jade_katana", (id) -> new BlueJadeKatanaItem(new Item.Properties()
+    public static final DeferredItem<Item> BOLTSPLITTER =
+            ITEMS.register("boltsplitter", (id) -> new Boltsplitter(new Item.Properties()
                     .component(DataComponents.MINIMUM_ATTACK_CHARGE, 0f)
-                    .attributes(BlueJadeKatanaItem.createAttributes())
+                    .attributes(Boltsplitter.createAttributes())
                     .component(
                             DataComponents.TOOL,
                             new Tool(
@@ -379,11 +379,29 @@ public class ItemRegistry {
             ITEMS.register("cooked_boar_meat", (id) -> new Item(new Item.Properties()
                     .food(FoodRegistry.COOKED_BOAR)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HIDE =
+            ITEMS.register("hide", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HIDE_SHEET =
+            ITEMS.register("hide_sheet", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HELMET_CUTOUT =
+            ITEMS.register("helmet_cutout", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CHESTPLATE_CUTOUT =
+            ITEMS.register("chestplate_cutout", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> LEGGINGS_CUTOUT =
+            ITEMS.register("leggings_cutout", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BOOTS_CUTOUT =
+            ITEMS.register("boots_cutout", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
     public static final DeferredItem<Item> CHILLI_PEPPER =
             ITEMS.register("chilli_pepper", (id) -> new Item(new Item.Properties()
                     .food(FoodRegistry.CHILLI, ConsumableRegistry.CHILLI)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-
     public static final DeferredItem<Item> SPICY_VEGETABLE_STEW =
             ITEMS.register("spicy_vegetable_stew", (id) -> new SpicyStewItem(new Item.Properties()
                     .food(FoodRegistry.SPICY_VEGETABLE_STEW)

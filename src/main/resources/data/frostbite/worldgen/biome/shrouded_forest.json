@@ -104,14 +104,45 @@
       }
     ],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "frostbite:boar",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 50
+      },
+      {
+        "type": "frostbite:bandit",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 50
+      },
+      {
+        "type": "frostbite:woolly_sheep",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 50
+      }
+    ],
     "misc": [],
     "monster": [
+      {
+        "type": "frostbite:levitating_jellyfish",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
+      {
+        "type": "frostbite:big_levitating_jellyfish",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 100
+      },
       {
         "type": "frostbite:iced_zombie",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 95
+        "weight": 100
       },
       {
         "type": "frostbite:iced_skeleton",
@@ -120,40 +151,16 @@
         "weight": 100
       },
       {
+        "type": "frostbite:revenant",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 100
+      },
+      {
         "type": "frostbite:iced_creeper",
         "maxCount": 4,
         "minCount": 4,
         "weight": 100
-      }
-    ],
-    "underground_water_creature": [
-      {
-        "type": "minecraft:glow_squid",
-        "maxCount": 6,
-        "minCount": 4,
-        "weight": 10
-      }
-    ],
-    "water_ambient": [
-      {
-        "type": "minecraft:cod",
-        "maxCount": 6,
-        "minCount": 3,
-        "weight": 10
-      }
-    ],
-    "water_creature": [
-      {
-        "type": "minecraft:squid",
-        "maxCount": 4,
-        "minCount": 1,
-        "weight": 1
-      },
-      {
-        "type": "minecraft:dolphin",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
       }
     ]
   },

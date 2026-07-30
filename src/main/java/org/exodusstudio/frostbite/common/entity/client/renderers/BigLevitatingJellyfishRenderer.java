@@ -31,6 +31,7 @@ public class BigLevitatingJellyfishRenderer extends MobRenderer<BigLevitatingJel
     public void extractRenderState(BigLevitatingJellyfishEntity entity, LevitatingJellyfishRenderState state, float p_361157_) {
         super.extractRenderState(entity, state, p_361157_);
         state.idleAnimationState.copyFrom(entity.idleAnimationState);
+        state.lightCoords = 15728880;
     }
 
     @Override

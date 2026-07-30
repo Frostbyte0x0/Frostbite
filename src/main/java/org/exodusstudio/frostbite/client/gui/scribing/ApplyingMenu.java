@@ -1,5 +1,7 @@
 package org.exodusstudio.frostbite.client.gui.scribing;
 
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +47,10 @@ public class ApplyingMenu extends ItemCombinerMenu {
         resultSlots.setItem(0, ItemStack.EMPTY);
         inputSlots.getItem(0).shrink(1);
         inputSlots.getItem(1).shrink(1);
+        player.level().playLocalSound(
+                player.getX(), player.getY(), player.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS,
+                1.0F, 0.8F + 0.4F * player.getRandom().nextFloat(), false
+        );
     }
 
     public void createResult() {

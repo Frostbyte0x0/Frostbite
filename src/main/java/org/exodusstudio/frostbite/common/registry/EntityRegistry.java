@@ -108,13 +108,6 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ice_spike"))));
 
-    public static final Supplier<EntityType<RainFrogEntity>> RAIN_FROG =
-            ENTITY_TYPES.register("rain_frog", () -> EntityType.Builder
-                    .of(RainFrogEntity::new, MobCategory.AMBIENT)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "rain_frog"))));
-
     public static final Supplier<EntityType<WoollySheepEntity>> WOOLLY_SHEEP =
             ENTITY_TYPES.register("woolly_sheep", () -> EntityType.Builder
                     .of(WoollySheepEntity::new, MobCategory.AMBIENT)
@@ -245,14 +238,12 @@ public class EntityRegistry {
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "healer_elf"))));
-
     public static final Supplier<EntityType<CasterElfEntity>> CASTER_ELF =
             ENTITY_TYPES.register("caster_elf", () -> EntityType.Builder
                     .of(CasterElfEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "caster_elf"))));
-
     public static final Supplier<EntityType<SummonerElfEntity>> SUMMONER_ELF =
             ENTITY_TYPES.register("summoner_elf", () -> EntityType.Builder
                     .of(SummonerElfEntity::new, MobCategory.MONSTER)

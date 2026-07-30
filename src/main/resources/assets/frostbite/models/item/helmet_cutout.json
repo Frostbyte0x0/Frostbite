@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "frostbite:item/blue_jade_katana"
+    "layer0": "frostbite:item/helmet_cutout"
   }
 }

@@ -4,6 +4,8 @@ import com.ibm.icu.impl.Pair;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -60,6 +62,10 @@ public class CombiningMenu extends ItemCombinerMenu {
         inputSlots.getItem(1).shrink(1);
         inputSlots.getItem(2).shrink(1);
         inputSlots.getItem(3).shrink(1);
+        player.level().playLocalSound(
+                player.getX(), player.getY(), player.getZ(), SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS,
+                1.0F, 0.8F + 0.4F * player.getRandom().nextFloat(), false
+        );
     }
 
     // Fragment + Fragment = Partial^1

@@ -135,20 +135,27 @@
   "item.frostbite.bottle_of_heat": "Bottle of Heat",
   "item.frostbite.raw_boar_meat": "Raw Boar",
   "item.frostbite.cooked_boar_meat": "Cooked Boar",
+  "item.frostbite.hide": "Hide",
+  "item.frostbite.hide_sheet": "Hide Sheet",
+  "item.frostbite.helmet_cutout": "Helmet Cutout",
+  "item.frostbite.chestplate_cutout": "Chestplate Cutout",
+  "item.frostbite.leggings_cutout": "Leggings Cutout",
+  "item.frostbite.boots_cutout": "Boots Cutout",
+
   "item.frostbite.chilli_pepper": "Chilli Pepper",
-  "item.frostbite.spicy_vegetable_stew": "Spicy vegetable stew",
-  "item.frostbite.spicy_fish_soup": "Spicy fish soup",
-  "item.frostbite.spicy_meat_stew": "Spicy meat stew",
+  "item.frostbite.spicy_vegetable_stew": "Spicy Vegetable Stew",
+  "item.frostbite.spicy_fish_soup": "Spicy Fish Soup",
+  "item.frostbite.spicy_meat_stew": "Spicy Meat Stew",
 
 
-  "item.frostbite.woolly_wool": "Woolly wool",
-  "item.frostbite.frozen_fur": "Frozen fur",
-  "item.frostbite.insulated_cloth": "Insulated cloth",
-  "item.frostbite.heated_coating": "Heated coating",
-  "item.frostbite.frozen_plating": "Frozen plating",
+  "item.frostbite.woolly_wool": "Woolly Wool",
+  "item.frostbite.frozen_fur": "Frozen Fur",
+  "item.frostbite.insulated_cloth": "Insulated Cloth",
+  "item.frostbite.heated_coating": "Heated Coating",
+  "item.frostbite.frozen_plating": "Frozen Plating",
 
   "item.frostbite.daggers": "Daggers",
-  "item.frostbite.blue_jade_katana": "Blue jade katana",
+  "item.frostbite.boltsplitter": "Boltsplitter",
   "item.frostbite.hunters_catalyst": "Hunter's catalyst",
 
   "item.frostbite.casting_staff": "Casting staff",
@@ -387,6 +394,11 @@
   "codex.list_entry.temperature.description": "Each entity has a temperature, which can be affected by the environment and the items they wear. If your temperature drops too low, you will start to take damage over time.",
   "codex.list_entry.temperature.tips": "Wear lining to protect yourself from lower temperatures \nYou can also use the bottle of warmth to increase your temperature",
 
+  "death.attack.freezing": "%s was taken by the cold",
+  "death.attack.delay": "%s couldn't handle the delay",
+  "death.attack.hunters_catalyst": "%s got their hunter catalysted",
+
+  "sounds.frostbite.snow_wind_ambience": "Snow and wind",
 
   "sounds.frostbite.sniper_ping": "Sniper pings",
   "sounds.frostbite.sniper_reload": "Sniper reloads",

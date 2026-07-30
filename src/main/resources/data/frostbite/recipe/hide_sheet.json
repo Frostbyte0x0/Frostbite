@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": "frostbite:hide",
+    "L": "minecraft:leather"
+  },
+  "pattern": [
+    " H ",
+    "HLH",
+    " H "
+  ],
+  "result": {
+    "count": 4,
+    "id": "frostbite:hide_sheet"
+  }
+}

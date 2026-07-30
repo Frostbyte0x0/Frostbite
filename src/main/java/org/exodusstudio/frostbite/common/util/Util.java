@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -47,67 +46,6 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public class Util {
     public static final RandomSource random = RandomSource.create();
-
-    static Item[] liningItems = new Item[] {
-            ItemRegistry.WOOLLY_WOOL.asItem(),
-            ItemRegistry.FROZEN_FUR.asItem(),
-            ItemRegistry.INSULATED_CLOTH.asItem(),
-            ItemRegistry.HEATED_COATING.asItem(),
-            ItemRegistry.FROZEN_PLATING.asItem(),
-    };
-    static Item[] weavingPatterns = new Item[] {
-            ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),
-            ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(),
-            ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),
-            ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),
-    };
-
-    public static HashMap<Item, HashMap<Item, Item>> linings = new HashMap<>() {{
-        put(Items.WOOL.white().asItem(), new HashMap<>() {{
-            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.WOOL_LINING_HELMET.asItem());
-            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.WOOL_LINING_CHESTPLATE.asItem());
-            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.WOOL_LINING_LEGGINGS.asItem());
-            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.WOOL_LINING_BOOTS.asItem());
-        }});
-        put(ItemRegistry.WOOLLY_WOOL.asItem(), new HashMap<>() {{
-            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.WOOLLY_WOOL_LINING_HELMET.asItem());
-            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.WOOLLY_WOOL_LINING_CHESTPLATE.asItem());
-            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.WOOLLY_WOOL_LINING_LEGGINGS.asItem());
-            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.WOOLLY_WOOL_LINING_BOOTS.asItem());
-        }});
-        put(ItemRegistry.FROZEN_FUR.asItem(), new HashMap<>() {{
-            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.FROZEN_FUR_LINING_HELMET.asItem());
-            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.FROZEN_FUR_LINING_CHESTPLATE.asItem());
-            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.FROZEN_FUR_LINING_LEGGINGS.asItem());
-            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.FROZEN_FUR_LINING_BOOTS.asItem());
-        }});
-        put(ItemRegistry.INSULATED_CLOTH.asItem(), new HashMap<>() {{
-            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.INSULATED_CLOTH_LINING_HELMET.asItem());
-            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.INSULATED_CLOTH_LINING_CHESTPLATE.asItem());
-            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.INSULATED_CLOTH_LINING_LEGGINGS.asItem());
-            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.INSULATED_CLOTH_LINING_BOOTS.asItem());
-        }});
-        put(ItemRegistry.HEATED_COATING.asItem(), new HashMap<>() {{
-            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.HEATED_COATING_LINING_HELMET.asItem());
-            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.HEATED_COATING_LINING_CHESTPLATE.asItem());
-            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.HEATED_COATING_LINING_LEGGINGS.asItem());
-            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.HEATED_COATING_LINING_BOOTS.asItem());
-        }});
-        put(ItemRegistry.FROZEN_PLATING.asItem(), new HashMap<>() {{
-            put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.FROZEN_PLATING_LINING_HELMET.asItem());
-            put(ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), ItemRegistry.FROZEN_PLATING_LINING_CHESTPLATE.asItem());
-            put(ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),   ItemRegistry.FROZEN_PLATING_LINING_LEGGINGS.asItem());
-            put(ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),      ItemRegistry.FROZEN_PLATING_LINING_BOOTS.asItem());
-        }});
-    }};
-
-    public static boolean isLiningMaterial(ItemStack item) {
-        return Arrays.asList(liningItems).contains(item.getItem()) || item.is(ItemTags.WOOL);
-    }
-
-    public static boolean isWeavingPattern(Item item) {
-        return Arrays.asList(weavingPatterns).contains(item);
-    }
 
     public static Vec3 calculateDir(Entity e1, Entity e2, Vec3 multiplier) {
         double theta = 0;

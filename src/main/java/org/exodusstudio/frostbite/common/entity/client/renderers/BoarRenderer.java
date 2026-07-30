@@ -36,7 +36,7 @@ public class BoarRenderer extends MobRenderer<BoarEntity, LivingEntityRenderStat
     public void submit(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/environement/celestial/space_blue.png")),
                 (pose, buffer) -> {
-                    RenderToolkit.renderSphere(pose, buffer, 5f, 32);
+//                    RenderToolkit.renderSphere(pose, buffer, 5f, 32);
                 });
 
 //        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityTranslucent(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/environement/celestial/space_red.png")),
@@ -49,9 +49,9 @@ public class BoarRenderer extends MobRenderer<BoarEntity, LivingEntityRenderStat
         poseStack.scale(0.1f, -0.1f, 0.1f);
 
 //        SubmitNodeStorage collector = new SubmitNodeStorage();
-        submitNodeCollector.submitText(poseStack, -22, -18, Component.literal("this.text").getVisualOrderText(), false,
-                Font.DisplayMode.POLYGON_OFFSET, 15728880,
-                ARGB.colorFromFloat(1, 1, 1, 1), 0x00000000, 0x00000000);
+//        submitNodeCollector.submitText(poseStack, -22, -18, Component.literal("this.text").getVisualOrderText(), false,
+//                Font.DisplayMode.POLYGON_OFFSET, 15728880,
+//                ARGB.colorFromFloat(1, 1, 1, 1), 0x00000000, 0x00000000);
 
 //        Minecraft.getInstance().gameRenderer.featureRenderDispatcher().renderAllFeatures(collector);
         poseStack.popPose();
