@@ -90,7 +90,9 @@ public class OTFPortal extends Structure {
 
     @Override
     public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer pieces) {
-        DataHelper.setData(Util.getLevel(Level.OVERWORLD), "can_spawn_otf", false);
+        Optional<Level> l = Util.getLevel(Level.OVERWORLD);
+        if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
+        DataHelper.setData(l.get(), "can_spawn_otf", false);
         super.afterPlace(level, structureManager, chunkGenerator, random, boundingBox, chunkPos, pieces);
         DataHelper.setData(level.getLevel(), "overworld_spawn_point", pieces.calculateBoundingBox().getCenter());
     }
@@ -118,8 +120,10 @@ public class OTFPortal extends Structure {
                 p.setOrientation(Direction.EAST);
                 p.move(0, -4, 0);
             });
-            DataHelper.setData(Util.getLevel(level), "overworld_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
-            DataHelper.setData(Util.getLevel(level), "can_spawn_otf", false);
+            Optional<Level> l = Util.getLevel(Level.OVERWORLD);
+            if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
+            DataHelper.setData(l.get(), "overworld_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
+            DataHelper.setData(l.get(), "can_spawn_otf", false);
             return structureStart;
         }
         return StructureStart.INVALID_START;

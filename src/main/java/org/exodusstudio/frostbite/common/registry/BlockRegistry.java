@@ -129,6 +129,9 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> MISTY_LEAVES = registerBlock("misty_leaves",
             () -> new RangedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_leaves")))));
+    public static final DeferredBlock<Block> MISTY_BERRY_LEAVES = registerBlock("misty_berry_leaves",
+            () -> new MistyBerryLeaves(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_berry_leaves")))));
     public static final DeferredBlock<Block> MISTY_SAPLING = registerBlock("misty_sapling",
             () -> new MistySaplingBlock(TreeGrowers.MISTY, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "misty_sapling")))));

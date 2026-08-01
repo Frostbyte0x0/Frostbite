@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "snowy=false": [
+      {
+        "model": "frostbite:block/misty_berry_leaves"
+      },
+      {
+        "model": "frostbite:block/misty_berry_leaves",
+        "y": 90
+      },
+      {
+        "model": "frostbite:block/misty_berry_leaves",
+        "y": 180
+      },
+      {
+        "model": "frostbite:block/misty_berry_leaves",
+        "y": 270
+      }
+    ],
+    "snowy=true": {
+      "model": "frostbite:block/misty_berry_leaves_snow"
+    }
+  }
+}

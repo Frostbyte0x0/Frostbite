@@ -29,10 +29,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
-import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
+import net.neoforged.neoforge.event.entity.player.*;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
@@ -72,7 +70,7 @@ public class ModEvents {
     static RandomSource random = RandomSource.create();
 
     @SubscribeEvent
-    public static void serverStarted(ServerStartingEvent event) {
+    public static void serverStarted(ServerAboutToStartEvent event) {
         Frostbite.SERVER = event.getServer();
     }
 
@@ -156,7 +154,7 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void spicyStew(FinalizeSpawnEvent event) {
+    public static void spawnEntity(FinalizeSpawnEvent event) {
         if (event.getEntity() instanceof TemperatureEntity temperatureEntity) {
             ((TE) temperatureEntity).setInnerTemp(temperatureEntity.getSpawnTemperature());
             ((TE) temperatureEntity).setOuterTemp(temperatureEntity.getSpawnTemperature());
@@ -164,6 +162,12 @@ public class ModEvents {
             ((TE) event.getEntity()).setInnerTemp(20);
             ((TE) event.getEntity()).setOuterTemp(20);
         }
+    }
+
+    @SubscribeEvent
+    public static void playerSpawn(PlayerRespawnPositionEvent event) {
+        ((TE) event.getEntity()).setOuterTemp(TemperatureManager.MAX_TEMP);
+        ((TE) event.getEntity()).setInnerTemp(TemperatureManager.MAX_TEMP);
     }
 
     @SubscribeEvent
@@ -583,12 +587,6 @@ public class ModEvents {
             if (random.nextFloat() >= LivingContractInfo.getStatOnWeapon(attacker, ContractAttributes.UPPERCUT) / 100) return;
             target.setXRot(-90);
         }
-    }
-
-    @SubscribeEvent
-    public static void tempReset(PlayerEvent.PlayerRespawnEvent event) {
-        ((TE) event.getEntity()).setInnerTemp(20);
-        ((TE) event.getEntity()).setOuterTemp(20);
     }
 
     @SubscribeEvent

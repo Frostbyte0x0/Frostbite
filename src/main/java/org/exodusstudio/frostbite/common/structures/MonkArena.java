@@ -28,6 +28,7 @@ import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
@@ -98,8 +99,10 @@ public class MonkArena extends Structure {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
         randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
 
+        Optional<Level> l = Util.getLevel(Frostbite.frostbiteKey);
+        if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
         if (structureStart != StructureStart.INVALID_START) {
-            DataHelper.addBossToAdd(Util.getLevel(level), structureStart.getBoundingBox().getCenter(), EntityRegistry.MONK.get());
+            DataHelper.addBossToAdd(l.get(), structureStart.getBoundingBox().getCenter(), EntityRegistry.MONK.get());
         }
 
         return structureStart;

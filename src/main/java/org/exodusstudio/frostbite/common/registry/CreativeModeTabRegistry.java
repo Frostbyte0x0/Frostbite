@@ -110,6 +110,7 @@ public class CreativeModeTabRegistry {
                     output.accept(BlockRegistry.STRIPPED_MISTY_WOOD);
                     output.accept(BlockRegistry.MISTY_PLANKS);
                     output.accept(BlockRegistry.MISTY_LEAVES);
+                    output.accept(BlockRegistry.MISTY_BERRY_LEAVES);
                     output.accept(BlockRegistry.MISTY_SAPLING);
                     output.accept(BlockRegistry.MISTY_GRASS);
                     output.accept(BlockRegistry.SNOWY_MISTY_GRASS);
@@ -186,6 +187,7 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.BOTTLE_OF_WARMTH);
                     output.accept(ItemRegistry.BOTTLE_OF_HEAT);
                     output.accept(ItemRegistry.CHILLI_PEPPER);
+                    output.accept(ItemRegistry.MIST_BERRY);
                     output.accept(ItemRegistry.RAW_BOAR_MEAT);
                     output.accept(ItemRegistry.COOKED_BOAR_MEAT);
                     output.accept(ItemRegistry.SPICY_VEGETABLE_STEW);

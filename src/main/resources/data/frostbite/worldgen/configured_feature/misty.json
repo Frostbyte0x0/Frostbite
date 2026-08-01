@@ -4,14 +4,14 @@
     "below_trunk_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:dirt"
+        "Name": "frostbite:misty_grass"
       }
     },
     "decorators": [],
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:dirt"
+        "Name": "frostbite:misty_grass"
       }
     },
     "foliage_placer": {
@@ -33,15 +33,31 @@
       }
     },
     "foliage_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "frostbite:misty_leaves",
-        "Properties": {
-          "distance": "7",
-          "persistent": "false",
-          "waterlogged": "false"
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 1,
+          "data": {
+            "Name": "frostbite:misty_berry_leaves",
+            "Properties": {
+              "distance": "7",
+              "persistent": "false",
+              "waterlogged": "false"
+            }
+          }
+        },
+        {
+          "weight": 8,
+          "data": {
+            "Name": "frostbite:misty_leaves",
+            "Properties": {
+              "distance": "7",
+              "persistent": "false",
+              "waterlogged": "false"
+            }
+          }
         }
-      }
+      ]
     },
     "force_dirt": false,
     "ignore_vines": false,

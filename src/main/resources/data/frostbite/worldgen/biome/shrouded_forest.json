@@ -130,39 +130,39 @@
         "type": "frostbite:levitating_jellyfish",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 100
+        "weight": 30
       },
       {
         "type": "frostbite:big_levitating_jellyfish",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 100
+        "weight": 30
       },
       {
         "type": "frostbite:iced_zombie",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 100
+        "weight": 30
       },
       {
         "type": "frostbite:iced_skeleton",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 100
+        "weight": 30
       },
       {
         "type": "frostbite:revenant",
         "maxCount": 4,
         "minCount": 2,
-        "weight": 100
+        "weight": 30
       },
       {
         "type": "frostbite:iced_creeper",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 100
+        "weight": 30
       }
     ]
   },
-  "temperature": 0
+  "temperature": -0.5
 }

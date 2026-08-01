@@ -103,13 +103,13 @@
         "type": "frostbite:boar",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 50
+        "weight": 30
       },
       {
         "type": "frostbite:woolly_sheep",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 50
+        "weight": 30
       }
     ],
     "misc": [],
@@ -118,19 +118,19 @@
         "type": "frostbite:iced_zombie",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 95
+        "weight": 30
       },
       {
         "type": "frostbite:iced_skeleton",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 100
+        "weight": 30
       },
       {
         "type": "frostbite:iced_creeper",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 100
+        "weight": 30
       }
     ]
   },

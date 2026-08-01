@@ -424,8 +424,8 @@ public class Util {
                itemStack.is(Items.ROTTEN_FLESH);
     }
 
-    public static Level getLevel(ResourceKey<Level> level) {
-        return Minecraft.getInstance().getSingleplayerServer().getLevel(level);
+    public static Optional<Level> getLevel(ResourceKey<Level> level) {
+        return Optional.of(Minecraft.getInstance().getSingleplayerServer().getLevel(level));
     }
 
     public static float getLog2Reduction(int ticksSinceStart, float halfEvery) {

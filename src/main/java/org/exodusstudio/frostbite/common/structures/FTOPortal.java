@@ -105,14 +105,16 @@ public class FTOPortal extends Structure {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
                 randomState, structureTemplateManager, seed, new ChunkPos(0, 0), references, heightAccessor, validBiome);
 
-        if (!DataHelper.getBoolean(Util.getLevel(level), "can_spawn_fto")) {
+        Optional<Level> l = Util.getLevel(Frostbite.frostbiteKey);
+        if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
+        if (!DataHelper.getBoolean(l.get(), "can_spawn_fto")) {
             return StructureStart.INVALID_START;
         }
 
         if (!structureStart.equals(StructureStart.INVALID_START)) {
             structureStart.getPieces().forEach(p -> p.setOrientation(Direction.NORTH));
-            DataHelper.setData(Util.getLevel(level), "frostbite_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
-            DataHelper.setData(Util.getLevel(level), "can_spawn_fto", false);
+            DataHelper.setData(l.get(), "frostbite_spawn_point", structureStart.getPieces().getFirst().getLocatorPosition());
+            DataHelper.setData(l.get(), "can_spawn_fto", false);
         }
 
         return structureStart;
@@ -120,7 +122,9 @@ public class FTOPortal extends Structure {
 
     @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
-        if (!DataHelper.getBoolean(Util.getLevel(Frostbite.frostbiteKey), "can_spawn_fto")) {
+        Optional<Level> l = Util.getLevel(Frostbite.frostbiteKey);
+        if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
+        if (!DataHelper.getBoolean(l.get(), "can_spawn_fto")) {
             return Optional.empty();
         }
 

@@ -2,12 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "J": "frostbite:jelly"
+    "J": "frostbite:jelly",
+    "B": "frostbite:mist_berry"
   },
   "pattern": [
-    "JJ ",
-    "JJ ",
-    "   "
+    "BJB",
+    "JBJ",
+    "BJB"
   ],
   "result": {
     "count": 1,
