@@ -11,7 +11,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class ButterflyParticle extends SingleQuadParticle {
-    int atlasSize;
+    final int atlasSize;
     private float angleFacing;
     private final float angleTilting;
     private final float flapSpeed;

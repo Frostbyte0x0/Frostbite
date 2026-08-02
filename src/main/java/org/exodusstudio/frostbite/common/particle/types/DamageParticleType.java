@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.particle.types;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;

@@ -1,21 +1,17 @@
 package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.BoarModel;
 import org.exodusstudio.frostbite.common.entity.custom.animals.BoarEntity;
-import org.exodusstudio.frostbite.common.rendering.RenderToolkit;
 
 public class BoarRenderer extends MobRenderer<BoarEntity, LivingEntityRenderState, BoarModel> {
     public BoarRenderer(EntityRendererProvider.Context context) {

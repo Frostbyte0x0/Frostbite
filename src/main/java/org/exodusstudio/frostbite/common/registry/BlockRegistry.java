@@ -337,6 +337,14 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> GIANT_REED = registerBlock("giant_reed",
             () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH).noCollision()
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "giant_reed")))));
+    public static final DeferredBlock<Block> CHILLI_PEPPER_PLANT = registerBlock("chilli_pepper_plant",
+            () -> new ChilliPepperPlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SWEET_BERRY_BUSH)
+                    .randomTicks()
+                    .noCollision()
+                    .sound(SoundType.SWEET_BERRY_BUSH)
+                    .pushReaction(PushReaction.DESTROY)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chilli_pepper_plant")))));
+
 
     public static final DeferredBlock<Block> MISTY_TALL_GRASS = registerBlock("misty_tall_grass",
             () -> new FrostbiteTallGrassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)

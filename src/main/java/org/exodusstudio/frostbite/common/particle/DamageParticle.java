@@ -31,11 +31,6 @@ public class DamageParticle extends SingleQuadParticle {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
     public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
         if (age + partialTicks >= lifetime) {
             this.remove();

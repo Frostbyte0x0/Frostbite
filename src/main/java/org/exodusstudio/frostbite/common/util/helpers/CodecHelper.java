@@ -18,7 +18,7 @@ import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import java.util.*;
 
 public class CodecHelper {
-    public static Codec<AABB> AABB_CODEC = new Codec<>() {
+    public static final Codec<AABB> AABB_CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<AABB, T>> decode(DynamicOps<T> ops, T input) {
             return ops.getStringValue(input).flatMap(s -> {
@@ -47,7 +47,7 @@ public class CodecHelper {
         }
     };
 
-    public static Codec<UUID> UUID_CODEC = new Codec<>() {
+    public static final Codec<UUID> UUID_CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<UUID, T>> decode(DynamicOps<T> ops, T input) {
             return ops.getStringValue(input).flatMap(s -> {
@@ -65,7 +65,7 @@ public class CodecHelper {
         }
     };
 
-    public static Codec<Pair<String, Long>> LONG_STRING_PAIR_CODEC = new Codec<>() {
+    public static final Codec<Pair<String, Long>> LONG_STRING_PAIR_CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<Pair<String, Long>, T>> decode(DynamicOps<T> ops, T input) {
             return ops.getStringValue(input).flatMap(s -> {

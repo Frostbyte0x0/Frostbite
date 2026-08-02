@@ -5,6 +5,8 @@ import net.minecraft.world.food.FoodProperties;
 public class FoodRegistry {
     public static final FoodProperties WARMING_BOTTLE =
             (new FoodProperties.Builder()).nutrition(0).saturationModifier(0).alwaysEdible().build();
+    public static final FoodProperties MIST_BERRY =
+            (new FoodProperties.Builder()).nutrition(2).saturationModifier(0.1F).build();
     public static final FoodProperties RAW_BOAR =
             (new FoodProperties.Builder()).nutrition(4).saturationModifier(0.4f).build();
     public static final FoodProperties COOKED_BOAR =

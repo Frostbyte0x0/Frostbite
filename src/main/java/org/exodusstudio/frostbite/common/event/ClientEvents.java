@@ -66,7 +66,7 @@ import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
-    public static RandomSource random = RandomSource.create();
+    public static final RandomSource random = RandomSource.create();
 
     @SubscribeEvent
     public static void codexEntryUnlocked(CodexEntryUnlockedEvent event) {
@@ -143,7 +143,7 @@ public class ClientEvents {
 
                 if (!(stack.getItem() instanceof ComboWeapon comboWeapon)) continue;
 
-                int charge = comboWeapon.getCharge(stack);
+                int charge = ComboWeapon.getCharge(stack);
                 float chargeProgress = charge / (float) comboWeapon.chargeRequired();
                 graphics.verticalLine(x, startY, endY, 0xFFFFFFFF);
                 graphics.verticalLine(x, startY, (int) Mth.lerp(chargeProgress, startY, endY), 0xFF00FF00);

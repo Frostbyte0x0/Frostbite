@@ -7,7 +7,7 @@ import net.minecraft.network.codec.StreamCodec;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 
 public record ContractData(Contract contract) {
-    public static ContractData EMPTY = new ContractData(Contract.EMPTY);
+    public static final ContractData EMPTY = new ContractData(Contract.EMPTY);
 
     public static final Codec<ContractData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(Contract.CODEC.fieldOf("contract").forGetter(ContractData::contract)).apply(instance, ContractData::new));

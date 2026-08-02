@@ -37,7 +37,6 @@ public class TreeCodexTab extends CodexTab {
 
         for (TargetCodexEntry entry : targetEntries) {
             CodexWidget widget = new CodexWidget(entry);
-            widget.setTab(this);
             widget.parent = this.widgets.get(entry.parent);
             widget.codexFormation = entry.formation;
             widget.codexFormation.addWidget(widget);

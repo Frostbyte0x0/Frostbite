@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.entity.custom.elves;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

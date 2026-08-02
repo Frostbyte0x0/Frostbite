@@ -29,7 +29,6 @@ public class CodexWidget {
     private static final Identifier TITLE_BOX_SPRITE = Identifier.withDefaultNamespace("advancements/title_box");
     private static final Identifier UNDISCOVERED_ENTRY = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/codex/entries/undiscovered_entry.png");
     private static final int[] TEST_SPLIT_OFFSETS = new int[]{0, 10, -10, 25, -25};
-    private CodexTab tab;
     public final TargetCodexEntry codexEntry;
     private final List<FormattedCharSequence> titleLines;
     private final int width;
@@ -124,10 +123,6 @@ public class CodexWidget {
         return this.width;
     }
 
-    public void setTab(CodexTab tabs) {
-        this.tab = tabs;
-    }
-
     public void drawHover(GuiGraphicsExtractor gui, int scrollX, int scrollY, int width, float zoom) {
         int i = 9 * this.titleLines.size() + 5;
         int l = this.description.size() * 9;
@@ -155,12 +150,11 @@ public class CodexWidget {
         int y0 = (int) (y + (4 + getY()) * zoom);
         int y1 = (int) (y0 + 24 * zoom);
 
-        if (false) {
-            gui.verticalLine(x0, y0, y1, -1);
-            gui.verticalLine(x1, y0, y1, -1);
-            gui.horizontalLine(x0, x1, y0, -1);
-            gui.horizontalLine(x0, x1, y1, -1);
-        }
+//            gui.verticalLine(x0, y0, y1, -1);
+//            gui.verticalLine(x1, y0, y1, -1);
+//            gui.horizontalLine(x0, x1, y0, -1);
+//            gui.horizontalLine(x0, x1, y1, -1);
+
 
         return mouseX >= x0 && mouseX <= x1 && mouseY >= y0 && mouseY <= y1;
     }

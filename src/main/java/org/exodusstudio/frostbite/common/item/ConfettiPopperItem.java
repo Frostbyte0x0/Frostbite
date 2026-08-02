@@ -18,7 +18,7 @@ import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import java.util.Arrays;
 
 public class ConfettiPopperItem extends Item {
-    private static RandomSource random = RandomSource.create();
+    private static final RandomSource random = RandomSource.create();
 
     public ConfettiPopperItem(Properties properties) {
         super(properties);

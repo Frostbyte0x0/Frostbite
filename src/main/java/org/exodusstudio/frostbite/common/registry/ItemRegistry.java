@@ -373,6 +373,7 @@ public class ItemRegistry {
 
     public static final DeferredItem<Item> MIST_BERRY =
             ITEMS.register("mist_berry", (id) -> new Item(new Item.Properties()
+                    .food(FoodRegistry.MIST_BERRY)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> RAW_BOAR_MEAT =
             ITEMS.register("raw_boar_meat", (id) -> new Item(new Item.Properties()

@@ -20,7 +20,6 @@ public class GunOverlay {
     private static float scopeScale;
     private static final Identifier SNIPER_SCOPE_LOCATION =
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/overlays/sniper_overlay.png");
-    private static boolean isAiming = true;
 
     public static void render(GuiGraphicsExtractor GuiGraphicsExtractor, DeltaTracker deltaTracker) {
         Minecraft mc = Minecraft.getInstance();
@@ -77,9 +76,5 @@ public class GunOverlay {
                 GuiGraphicsExtractor.guiHeight(),
                 i
         );
-    }
-
-    public void setAiming(boolean aiming) {
-        isAiming = aiming;
     }
 }

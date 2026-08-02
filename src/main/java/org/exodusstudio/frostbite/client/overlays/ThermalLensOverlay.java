@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.item.ThermalLensItem;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class ThermalLensOverlay {
     private static float scopeScale;

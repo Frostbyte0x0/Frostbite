@@ -121,17 +121,19 @@ public class Codex {
         return entry;
     }
 
-    public static String TRACKED_LIST_ENTRIES = "";
+    public static String TRACKED_LIST_ENTRIES;
 
     static {
+        StringBuilder builder = new StringBuilder();
         for (CodexTab tab : TABS) {
             if (tab instanceof ListCodexTab listTab) {
                 for (CodexEntry entry : listTab.entries) {
                     if (entry instanceof ListCodexEntry listEntry) {
-                        TRACKED_LIST_ENTRIES += listEntry.id + ";";
+                        builder.append(listEntry.id).append(";");
                     }
                 }
             }
         }
+        TRACKED_LIST_ENTRIES = builder.toString();
     }
 }

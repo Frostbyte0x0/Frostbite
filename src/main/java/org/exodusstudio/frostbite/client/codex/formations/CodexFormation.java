@@ -2,14 +2,12 @@ package org.exodusstudio.frostbite.client.codex.formations;
 
 import org.exodusstudio.frostbite.client.codex.entries.CodexWidget;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public abstract class CodexFormation {
     protected final LinkedHashMap<CodexWidget, int[]> widgetPlacements = new LinkedHashMap<>();
-    protected int centerX;
-    protected int centerY;
+    protected final int centerX;
+    protected final int centerY;
 
     public CodexFormation(int centerX, int centerY) {
         this.centerX = centerX;

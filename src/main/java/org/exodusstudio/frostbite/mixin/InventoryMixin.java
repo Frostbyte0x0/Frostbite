@@ -42,8 +42,8 @@ public class InventoryMixin implements InventoryWrapper {
     }
 
     @Inject(at = @At("HEAD"), method = "removeItem(II)Lnet/minecraft/world/item/ItemStack;", cancellable = true)
-    public void removeItem(int index, int count, CallbackInfoReturnable<ItemStack> cir) {
-        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(index);
+    public void removeItem(int slot, int count, CallbackInfoReturnable<ItemStack> cir) {
+        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(slot);
         if (equipmentslot != null) {
             ItemStack itemstack = frostbite$lining.get(equipmentslot);
             if (!itemstack.isEmpty()) {
@@ -53,10 +53,10 @@ public class InventoryMixin implements InventoryWrapper {
     }
 
     @Inject(at = @At("HEAD"), method = "removeItem(Lnet/minecraft/world/item/ItemStack;)V", cancellable = true)
-    public void removeItem(ItemStack stack, CallbackInfo ci) {
+    public void removeItem(ItemStack itemStack, CallbackInfo ci) {
         for (EquipmentSlot equipmentslot : EQUIPMENT_SLOT_MAPPING.values()) {
             ItemStack itemstack = frostbite$lining.get(equipmentslot);
-            if (itemstack == stack) {
+            if (itemstack == itemStack) {
                 frostbite$lining.set(equipmentslot, ItemStack.EMPTY);
                 ci.cancel();
             }
@@ -64,18 +64,18 @@ public class InventoryMixin implements InventoryWrapper {
     }
 
     @Inject(at = @At("HEAD"), method = "removeItemNoUpdate", cancellable = true)
-    public void removeItemNoUpdate(int index, CallbackInfoReturnable<ItemStack> cir) {
-        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(index);
+    public void removeItemNoUpdate(int slot, CallbackInfoReturnable<ItemStack> cir) {
+        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(slot);
         if (equipmentslot != null) {
             cir.setReturnValue(frostbite$lining.set(equipmentslot, ItemStack.EMPTY));
         }
     }
 
     @Inject(at = @At("HEAD"), method = "setItem")
-    public void setItem(int index, ItemStack stack, CallbackInfo ci) {
-        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(index);
+    public void setItem(int slot, ItemStack itemStack, CallbackInfo ci) {
+        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(slot);
         if (equipmentslot != null) {
-            frostbite$lining.set(equipmentslot, stack);
+            frostbite$lining.set(equipmentslot, itemStack);
         }
     }
 
@@ -89,8 +89,8 @@ public class InventoryMixin implements InventoryWrapper {
     }
 
     @Inject(at = @At("HEAD"), method = "getItem", cancellable = true)
-    public void getItem(int index, CallbackInfoReturnable<ItemStack> cir) {
-        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(index);
+    public void getItem(int slot, CallbackInfoReturnable<ItemStack> cir) {
+        EquipmentSlot equipmentslot = EQUIPMENT_SLOT_MAPPING.get(slot);
         if (equipmentslot != null) {
             cir.setReturnValue(frostbite$lining.get(equipmentslot));
         }

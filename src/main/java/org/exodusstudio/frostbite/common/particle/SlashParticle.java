@@ -1,12 +1,9 @@
 package org.exodusstudio.frostbite.common.particle;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
-import org.joml.Quaternionf;
 
 public class SlashParticle extends SingleQuadParticle {
     private final SpriteSet sprites;

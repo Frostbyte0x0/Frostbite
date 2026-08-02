@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.entity.custom.misc.PlayerIllusionEntity;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;

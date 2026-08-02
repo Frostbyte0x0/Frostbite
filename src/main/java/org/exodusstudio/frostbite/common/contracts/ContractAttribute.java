@@ -303,7 +303,7 @@ public class ContractAttribute {
             rank = Optional.of(ContractRank.valueOf(Utf8String.read(buffer, 32767).toUpperCase()));
         }
 
-        ContractAttribute a = new ContractAttribute(
+        return new ContractAttribute(
                 Utf8String.read(buffer, 32767),
                 rank,
                 Polarity.valueOf(Utf8String.read(buffer, 32767).toUpperCase()),
@@ -313,8 +313,6 @@ public class ContractAttribute {
                 buffer.readInt(),
                 templateInfo
         );
-
-        return a;
     }
 
     @Override
@@ -327,12 +325,6 @@ public class ContractAttribute {
             String attribute,
             Map<Integer, String> attributeTemplates
     ) {
-        public static final Codec<MobEffect.AttributeTemplate> ATTRIBUTE_TEMPLATE_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Identifier.CODEC.fieldOf("id").forGetter(MobEffect.AttributeTemplate::id),
-                Codec.DOUBLE.fieldOf("amount").forGetter(MobEffect.AttributeTemplate::amount),
-                AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(MobEffect.AttributeTemplate::operation)
-        ).apply(instance, MobEffect.AttributeTemplate::new));
-
         public static final Codec<AttributeTemplateInfo> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.fieldOf("ai_attribute").forGetter(AttributeTemplateInfo::attribute),
                 Codec.unboundedMap(Codec.INT, Codec.STRING).fieldOf("attribute_templates").forGetter(AttributeTemplateInfo::attributeTemplates)

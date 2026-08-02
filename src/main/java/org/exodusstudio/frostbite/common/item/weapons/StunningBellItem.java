@@ -16,7 +16,7 @@ import java.util.List;
 import static org.exodusstudio.frostbite.common.util.Util.calculateDir;
 
 public class StunningBellItem extends Item {
-    private final int range = 10;
+    private static final int RANGE = 10;
     private boolean used = false;
 
     public StunningBellItem(Properties properties) {
@@ -28,8 +28,8 @@ public class StunningBellItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (used) {
             List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
-                    new AABB(new Vec3(player.getBlockX() - range, player.getBlockY() - range, player.getBlockZ() - range),
-                            new Vec3(player.getBlockX() + range, player.getBlockY() + range, player.getBlockZ() + range)));
+                    new AABB(new Vec3(player.getBlockX() - RANGE, player.getBlockY() - RANGE, player.getBlockZ() - RANGE),
+                            new Vec3(player.getBlockX() + RANGE, player.getBlockY() + RANGE, player.getBlockZ() + RANGE)));
 
             if (!entities.isEmpty()) {
                 for (LivingEntity entity : entities) {
