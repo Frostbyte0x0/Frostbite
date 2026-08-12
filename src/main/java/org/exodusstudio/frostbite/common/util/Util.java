@@ -245,6 +245,15 @@ public class Util {
         return quaternion;
     }
 
+    public static Vec3 rotateFirstAroundSecond(Vec3 target, Vec3 around, double angle) {
+        around = around.normalize();
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        double dot = around.dot(target);
+        Vec3 cross = around.cross(target);
+        return target.scale(cos).add(cross.scale(sin)).add(around.scale(dot).scale(1 - cos));
+    }
+
     public static Quaternionf getRotationQuaternionAroundVector(float angle, Vec3 vec32) {
         float playerYAngle = (float) (Math.atan2(vec32.z, vec32.x) + Math.PI / 4);
         float playerXAngle = (float) -Math.atan2(vec32.y, vec32.x);

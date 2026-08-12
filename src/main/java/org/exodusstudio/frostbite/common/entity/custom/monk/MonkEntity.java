@@ -56,7 +56,7 @@ import java.util.List;
 import static net.minecraft.world.level.block.EnchantingTableBlock.BOOKSHELF_OFFSETS;
 import static org.exodusstudio.frostbite.common.util.Util.calculateDir;
 
-public class MonkEntity extends Monster implements TargetingEntity {
+public class MonkEntity extends Monster implements TargetingEntity { // TODO: change monk to firework monk, add details and particles to his attacks, like fireworks
     private static final EntityDataAccessor<Boolean> DATA_CLAPPING =
             SynchedEntityData.defineId(MonkEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_ILLUSION =

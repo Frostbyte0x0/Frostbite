@@ -33,6 +33,7 @@ public class CreativeModeTabRegistry {
                     output.accept(BlockRegistry.POLISHED_SLATED_ICE);
                     output.accept(BlockRegistry.SLATED_ICE_BRICKS);
                     output.accept(BlockRegistry.SLATED_ICE_TILES);
+                    output.accept(BlockRegistry.SLATED_SNOW);
 
                     output.accept(BlockRegistry.MARBLE);
                     output.accept(BlockRegistry.MARBLE_BRICKS);
@@ -202,6 +203,8 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.JELLY);
                     output.accept(ItemRegistry.INSULATING_JELLY);
                     output.accept(ItemRegistry.EMBERS);
+                    output.accept(ItemRegistry.ICE_SHARD);
+                    output.accept(BlockRegistry.ICE_CORE);
 
                     output.accept(ItemRegistry.CASTING_STAFF);
                     output.accept(ItemRegistry.HEALING_STAFF);

@@ -432,6 +432,10 @@ public class ItemRegistry {
             ITEMS.register("fire", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
+    public static final DeferredItem<Item> ICE_SHARD =
+            ITEMS.register("ice_shard", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
     public static final DeferredItem<Item> PARTIAL_CONTRACT =
             ITEMS.register("partial_contract", (id) -> new PartialContractItem(new Item.Properties()
                     .component(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of("white"), List.of()))

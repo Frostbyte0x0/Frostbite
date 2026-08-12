@@ -1,0 +1,49 @@
+{
+  "type": "frostbite:ice_core_spikes",
+  "config": {
+    "core_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "frostbite:ice_core"
+      }
+    },
+    "spike_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "minecraft:snow_block"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "frostbite:marble"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "minecraft:blue_ice"
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "frostbite:slated_ice"
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "Name": "frostbite:slated_snow"
+          },
+          "weight": 10
+        }
+      ]
+    },
+    "both_up_and_down": false,
+    "length": 15,
+    "base_spike_radius": 5
+  }
+}

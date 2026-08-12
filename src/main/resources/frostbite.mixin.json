@@ -10,6 +10,7 @@
     "CraftingMenuMixin",
     "EntityMixin",
     "EnvironmentAttributeSystemMixin",
+    "FeatureMixin",
     "IBlockExtensionMixin",
     "InventoryMenuMixin",
     "InventoryMixin",
