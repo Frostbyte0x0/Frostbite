@@ -27,12 +27,25 @@ public class CreativeModeTabRegistry {
 
                     output.accept(BlockRegistry.PERMAFROZEN_DIRT);
                     output.accept(BlockRegistry.SLATED_ICE);
-                    output.accept(BlockRegistry.CHISELED_SLATED_ICE);
                     output.accept(BlockRegistry.COBBLED_SLATED_ICE);
-                    output.accept(BlockRegistry.CRACKED_SLATED_ICE_TILES);
+                    output.accept(BlockRegistry.COBBLED_SLATED_ICE_STAIRS);
+                    output.accept(BlockRegistry.COBBLED_SLATED_ICE_SLAB);
+                    output.accept(BlockRegistry.COBBLED_SLATED_ICE_WALL);
                     output.accept(BlockRegistry.POLISHED_SLATED_ICE);
+                    output.accept(BlockRegistry.POLISHED_SLATED_ICE_STAIRS);
+                    output.accept(BlockRegistry.POLISHED_SLATED_ICE_SLAB);
+                    output.accept(BlockRegistry.POLISHED_SLATED_ICE_WALL);
                     output.accept(BlockRegistry.SLATED_ICE_BRICKS);
+                    output.accept(BlockRegistry.SLATED_ICE_BRICK_STAIRS);
+                    output.accept(BlockRegistry.SLATED_ICE_BRICK_SLAB);
+                    output.accept(BlockRegistry.SLATED_ICE_BRICK_WALL);
                     output.accept(BlockRegistry.SLATED_ICE_TILES);
+                    output.accept(BlockRegistry.SLATED_ICE_TILE_STAIRS);
+                    output.accept(BlockRegistry.SLATED_ICE_TILE_SLAB);
+                    output.accept(BlockRegistry.SLATED_ICE_TILE_WALL);
+                    output.accept(BlockRegistry.CHISELED_SLATED_ICE);
+                    output.accept(BlockRegistry.ORNATE_SLATED_ICE);
+                    output.accept(BlockRegistry.SLATED_ICE_PILLAR);
                     output.accept(BlockRegistry.SLATED_SNOW);
 
                     output.accept(BlockRegistry.MARBLE);

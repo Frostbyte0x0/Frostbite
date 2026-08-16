@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "frostbite:block/slated_ice_tile",
+    "side": "frostbite:block/slated_ice_tile",
+    "top": "frostbite:block/slated_ice_tile"
+  }
+}

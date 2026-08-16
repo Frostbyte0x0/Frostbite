@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.joml.Quaternionf;
@@ -434,7 +435,7 @@ public class Util {
     }
 
     public static Optional<Level> getLevel(ResourceKey<Level> level) {
-        return Optional.of(Minecraft.getInstance().getSingleplayerServer().getLevel(level));
+        return Optional.ofNullable(Frostbite.SERVER.getLevel(level));
     }
 
     public static float getLog2Reduction(int ticksSinceStart, float halfEvery) {

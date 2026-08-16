@@ -53,24 +53,69 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> SLATED_ICE = registerBlock("slated_ice",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice")))));
-    public static final DeferredBlock<Block> CHISELED_SLATED_ICE = registerBlock("chiseled_slated_ice",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_DEEPSLATE)
-                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chiseled_slated_ice")))));
+
     public static final DeferredBlock<Block> COBBLED_SLATED_ICE = registerBlock("cobbled_slated_ice",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_ice")))));
-    public static final DeferredBlock<Block> CRACKED_SLATED_ICE_TILES = registerBlock("cracked_slated_ice_tiles",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CRACKED_DEEPSLATE_TILES)
-                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cracked_slated_ice_tiles")))));
+    public static final DeferredBlock<Block> COBBLED_SLATED_ICE_STAIRS = registerBlock("cobbled_slated_ice_stairs",
+            () -> new SnowableStairBlock(COBBLED_SLATED_ICE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_ice_stairs")))));
+    public static final DeferredBlock<Block> COBBLED_SLATED_ICE_SLAB = registerBlock("cobbled_slated_ice_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_ice_slab")))));
+    public static final DeferredBlock<Block> COBBLED_SLATED_ICE_WALL = registerBlock("cobbled_slated_ice_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_ice_wall")))));
+
     public static final DeferredBlock<Block> POLISHED_SLATED_ICE = registerBlock("polished_slated_ice",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_ice")))));
+    public static final DeferredBlock<Block> POLISHED_SLATED_ICE_STAIRS = registerBlock("polished_slated_ice_stairs",
+            () -> new SnowableStairBlock(POLISHED_SLATED_ICE.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_ice_stairs")))));
+    public static final DeferredBlock<Block> POLISHED_SLATED_ICE_SLAB = registerBlock("polished_slated_ice_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_ice_slab")))));
+    public static final DeferredBlock<Block> POLISHED_SLATED_ICE_WALL = registerBlock("polished_slated_ice_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_ice_wall")))));
+
     public static final DeferredBlock<Block> SLATED_ICE_BRICKS = registerBlock("slated_ice_bricks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_bricks")))));
+    public static final DeferredBlock<Block> SLATED_ICE_BRICK_STAIRS = registerBlock("slated_ice_brick_stairs",
+            () -> new SnowableStairBlock(SLATED_ICE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_brick_stairs")))));
+    public static final DeferredBlock<Block> SLATED_ICE_BRICK_SLAB = registerBlock("slated_ice_brick_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_brick_slab")))));
+    public static final DeferredBlock<Block> SLATED_ICE_BRICK_WALL = registerBlock("slated_ice_brick_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_brick_wall")))));
+
     public static final DeferredBlock<Block> SLATED_ICE_TILES = registerBlock("slated_ice_tiles",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_TILES)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_tiles")))));
+    public static final DeferredBlock<Block> SLATED_ICE_TILE_STAIRS = registerBlock("slated_ice_tile_stairs",
+            () -> new SnowableStairBlock(SLATED_ICE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_tile_stairs")))));
+    public static final DeferredBlock<Block> SLATED_ICE_TILE_SLAB = registerBlock("slated_ice_tile_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_TILE_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_tile_slab")))));
+    public static final DeferredBlock<Block> SLATED_ICE_TILE_WALL = registerBlock("slated_ice_tile_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_tile_wall")))));
+
+    public static final DeferredBlock<Block> CHISELED_SLATED_ICE = registerBlock("chiseled_slated_ice",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_DEEPSLATE)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chiseled_slated_ice")))));
+    public static final DeferredBlock<Block> ORNATE_SLATED_ICE = registerBlock("ornate_slated_ice",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_DEEPSLATE)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ornate_slated_ice")))));
+    public static final DeferredBlock<Block> SLATED_ICE_PILLAR = registerBlock("slated_ice_pillar",
+            () -> new PillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_DEEPSLATE).forceSolidOn()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice_pillar")))));
+
     public static final DeferredBlock<Block> SLATED_SNOW = registerBlock("slated_snow",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow")))));

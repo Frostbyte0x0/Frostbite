@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "frostbite:block/polished_slated_ice",
+    "side": "frostbite:block/polished_slated_ice",
+    "top": "frostbite:block/polished_slated_ice"
+  }
+}

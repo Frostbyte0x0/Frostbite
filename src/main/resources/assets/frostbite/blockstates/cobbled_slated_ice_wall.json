@@ -1,0 +1,203 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_post"
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side",
+        "uvlock": true
+      },
+      "when": {
+        "north": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side_tall",
+        "uvlock": true
+      },
+      "when": {
+        "north": "tall"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side_tall",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "tall"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side_tall",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "tall"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/cobbled_slated_ice_wall_side_tall",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "tall"
+      }
+    },
+
+
+
+    {
+      "apply": {
+        "model": "frostbite:block/snow_post_layer"
+      },
+      "when": {
+        "bottom": "false",
+        "up": "true",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_layer",
+        "uvlock": true
+      },
+      "when": {
+        "north": "low",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_layer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "low",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_layer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "low",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_layer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "low",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_tall_layer",
+        "uvlock": true
+      },
+      "when": {
+        "bottom": "false",
+        "north": "tall",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_tall_layer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "bottom": "false",
+        "east": "tall",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_tall_layer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "bottom": "false",
+        "south": "tall",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_side_tall_layer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "bottom": "false",
+        "west": "tall",
+        "snowy": "true"
+      }
+    },
+
+    {
+      "apply": {
+        "model": "frostbite:block/snow_layer"
+      },
+      "when": {
+        "attached": "true",
+        "snowy": "true"
+      }
+    }
+  ]
+}

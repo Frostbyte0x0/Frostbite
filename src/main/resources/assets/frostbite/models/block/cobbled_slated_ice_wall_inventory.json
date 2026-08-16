@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "frostbite:block/cobbled_slated_ice"
+  }
+}

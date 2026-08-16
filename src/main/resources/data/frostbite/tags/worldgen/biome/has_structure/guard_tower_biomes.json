@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#frostbite:is_frostbite",
+    {
+      "id": "#frostbite:is_frostbite",
+      "required": false
+    }
+  ]
+}
