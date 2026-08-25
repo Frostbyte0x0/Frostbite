@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.goals.BorealBearAttackGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 
 public class BorealBearEntity extends Monster implements TemperatureEntity {
     private static final EntityDataAccessor<Boolean> DATA_IS_ATTACKING =

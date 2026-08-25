@@ -19,7 +19,7 @@
     },
     {
       "apply": {
-        "model": "frostbite:block/cobbled_slated_ices"
+        "model": "frostbite:block/cobbled_slated_ice"
       },
       "when": {
         "type": "double"

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "frostbite:block/rune/guarding_rune_stone_top",
+    "side": "frostbite:block/rune/guarding_rune_stone_side"
+  }
+}

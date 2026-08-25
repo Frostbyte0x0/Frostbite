@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "frostbite:block/slated_snow_brick",
+    "side": "frostbite:block/slated_snow_brick",
+    "top": "frostbite:block/slated_snow_brick"
+  }
+}

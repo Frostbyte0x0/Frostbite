@@ -1,7 +1,10 @@
 {
   "variants": {
     "": {
-      "model": "frostbite:block/slated_snow"
+      "model": "frostbite:block/slated_snow",
+      "uvlock": true,
+      "x": 90,
+      "y": 180
     }
   }
 }

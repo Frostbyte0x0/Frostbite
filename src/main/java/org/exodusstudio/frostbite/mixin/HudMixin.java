@@ -11,7 +11,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
-import org.exodusstudio.frostbite.common.util.PlayerWrapper;
+import org.exodusstudio.frostbite.common.mixinterfaces.PlayerWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

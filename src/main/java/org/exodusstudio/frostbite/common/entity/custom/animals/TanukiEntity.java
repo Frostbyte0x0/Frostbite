@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.goals.TanukiDigGoal;
 import org.exodusstudio.frostbite.common.entity.goals.TanukiSitGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class TanukiEntity extends Animal implements TemperatureEntity {

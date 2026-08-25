@@ -15,7 +15,6 @@
   "item.frostbite.embers": "Embers",
 
   "item.frostbite.black_block": "Black Block",
-  "item.frostbite.permafrozen_dirt": "Permafrozen Dirt",
 
   "item.frostbite.slated_ice": "Slated Ice",
   "item.frostbite.cobbled_slated_ice": "Cobbled Slated Ice",
@@ -42,10 +41,34 @@
   "item.frostbite.cracked_slated_ice_tiles": "Cracked Slated Ice Tiles",
 
   "item.frostbite.slated_snow": "Slated Snow",
+  "item.frostbite.cobbled_slated_snow": "Cobbled Slated Snow",
+  "item.frostbite.cobbled_slated_snow_stairs": "Cobbled Slated Snow Stairs",
+  "item.frostbite.cobbled_slated_snow_slab": "Cobbled Slated Snow Slab",
+  "item.frostbite.cobbled_slated_snow_wall": "Cobbled Slated Snow Wall",
+  "item.frostbite.polished_slated_snow": "Polished Slated Snow",
+  "item.frostbite.polished_slated_snow_stairs": "Polished Slated Snow Stairs",
+  "item.frostbite.polished_slated_snow_slab": "Polished Slated Snow Slab",
+  "item.frostbite.polished_slated_snow_wall": "Polished Slated Snow Wall",
+  "item.frostbite.slated_snow_bricks": "Slated Snow Bricks",
+  "item.frostbite.slated_snow_brick_stairs": "Slated Snow Brick Stairs",
+  "item.frostbite.slated_snow_brick_slab": "Slated Snow Brick Slab",
+  "item.frostbite.slated_snow_brick_wall": "Slated Snow Brick Wall",
+  "item.frostbite.slated_snow_tiles": "Slated Snow Tiles",
+  "item.frostbite.slated_snow_tile_stairs": "Slated Snow Tile Stairs",
+  "item.frostbite.slated_snow_tile_slab": "Slated Snow Tile Slab",
+  "item.frostbite.slated_snow_tile_wall": "Slated Snow Tile Wall",
+
+  "item.frostbite.chiseled_slated_snow": "Chiseled Slated Snow",
+  "item.frostbite.ornate_slated_snow": "Ornate Slated Snow",
+  "item.frostbite.slated_snow_pillar": "Slated Snow Pillar",
+
   "item.frostbite.marble": "Marble",
   "item.frostbite.chiseled_marble": "Chiseled Marble",
   "item.frostbite.marble_bricks": "Marble Bricks",
   "item.frostbite.marble_pillar": "Marble Pillar",
+
+  "item.frostbite.brazier": "Brazier",
+  "item.frostbite.soul_brazier": "Soul Brazier",
 
   "item.frostbite.misty_log": "Misty Log",
   "item.frostbite.frozen_misty_log": "Frozen Misty Log",
@@ -111,6 +134,8 @@
 
   "item.frostbite.ice_shard": "Ice Shard",
   "item.frostbite.ice_core": "Ice Core",
+  "item.frostbite.guarding_rune": "Guarding Rune",
+  "item.frostbite.challenge_rune": "Challenge Rune",
 
 
   "item.frostbite.advanced_clock": "Advanced Clock",
@@ -392,6 +417,9 @@
 
 
   "general.frostbite.outer_temp": "Outer Temperature",
+
+  "rune.render.allies_left": "Defenders left: %s",
+  "rune.render.health": "Health: %s/%s",
 
 
   "key.codex": "Open Codex",

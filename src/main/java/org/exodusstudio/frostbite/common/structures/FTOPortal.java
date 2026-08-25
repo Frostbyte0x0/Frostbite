@@ -105,7 +105,7 @@ public class FTOPortal extends Structure {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
                 randomState, structureTemplateManager, seed, new ChunkPos(0, 0), references, heightAccessor, validBiome);
 
-        Optional<Level> l = Util.getLevel(Frostbite.frostbiteKey);
+        Optional<Level> l = Util.getFrostbiteLevel();
         if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
         if (!DataHelper.getBoolean(l.get(), "can_spawn_fto")) {
             return StructureStart.INVALID_START;
@@ -122,7 +122,7 @@ public class FTOPortal extends Structure {
 
     @Override
     public Optional<Structure.GenerationStub> findGenerationPoint(Structure.GenerationContext context) {
-        Optional<Level> l = Util.getLevel(Frostbite.frostbiteKey);
+        Optional<Level> l = Util.getFrostbiteLevel();
         if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
         if (!DataHelper.getBoolean(l.get(), "can_spawn_fto")) {
             return Optional.empty();

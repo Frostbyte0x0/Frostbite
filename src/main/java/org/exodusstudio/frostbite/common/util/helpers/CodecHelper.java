@@ -162,6 +162,35 @@ public class CodecHelper {
                 }
                 return m;
             });
+    public static final StreamCodec<RegistryFriendlyByteBuf, Map<BlockPos, Map<String, Float>>> MAP_BLOCK_POS_MAP_STRING_FLOAT_STREAM_CODEC = StreamCodec.of(
+            (b, m) -> {
+                b.writeInt(m.size());
+                m.forEach((k, v) -> {
+                    b.writeInt(v.size());
+                    v.forEach((sk, sv) -> {
+                        b.writeUtf(sk);
+                        b.writeFloat(sv);
+                    });
+
+                    b.writeInt(k.getX());
+                    b.writeInt(k.getY());
+                    b.writeInt(k.getZ());
+                });
+            },
+            b -> {
+                Map<BlockPos, Map<String, Float>> m = new HashMap<>();
+                int size = b.readInt();
+                for (int i = 0; i < size; i++) {
+                    Map<String, Float> v = new HashMap<>();
+                    int size1 = b.readInt();
+                    for (int j = 0; j < size1; j++) {
+                        v.put(b.readUtf(), b.readFloat());
+                    }
+
+                    m.put(new BlockPos(b.readInt(), b.readInt(), b.readInt()), v);
+                }
+                return m;
+            });
     public static final StreamCodec<RegistryFriendlyByteBuf, Map<String, BlockPos>> MAP_STRING_BLOCK_POS_STREAM_CODEC = StreamCodec.of(
             (b, m) -> {
                 b.writeInt(m.size());

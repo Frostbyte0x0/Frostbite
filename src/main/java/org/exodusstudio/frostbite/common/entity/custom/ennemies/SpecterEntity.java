@@ -4,6 +4,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -95,11 +96,11 @@ public class SpecterEntity extends Monster {
     }
 
     @Override
-    public boolean hurtServer(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_) {
-        if (isTransparent()) {
+    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float damage) {
+        if (isTransparent() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
         }
-        return super.hurtServer(p_376221_, p_376460_, p_376610_);
+        return super.hurtServer(level, damageSource, damage);
     }
 
     public boolean isTransparent() {

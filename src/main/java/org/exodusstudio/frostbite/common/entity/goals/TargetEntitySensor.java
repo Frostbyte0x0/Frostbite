@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.NearestLivingEntitySensor;
-import org.exodusstudio.frostbite.common.util.TargetingEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TargetingEntity;
 
 import java.util.Collection;
 import java.util.List;

@@ -20,7 +20,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.entity.goals.FeralWolfBiteGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 
 public class FeralWolfEntity extends Monster {
     private static final EntityDataAccessor<Boolean> DATA_IS_FROZEN =

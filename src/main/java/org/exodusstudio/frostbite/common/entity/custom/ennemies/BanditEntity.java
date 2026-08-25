@@ -21,7 +21,7 @@ import org.exodusstudio.frostbite.common.entity.goals.BanditFleeGoal;
 import org.exodusstudio.frostbite.common.entity.goals.BanditStealGoal;
 import org.exodusstudio.frostbite.common.entity.goals.ActionStrollGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class BanditEntity extends Animal implements TemperatureEntity {

@@ -49,6 +49,10 @@ public abstract class ComboWeapon extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
+        if (player.isCreative()) {
+            doChargeAttack(level, player, usedHand);
+            return InteractionResult.SUCCESS;
+        }
         if (getCharge(stack) >= chargeRequired) {
             doChargeAttack(level, player, usedHand);
             setCharge(stack, 0);

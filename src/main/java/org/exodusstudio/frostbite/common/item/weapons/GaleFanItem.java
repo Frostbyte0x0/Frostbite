@@ -19,8 +19,9 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.WindCircleEntity;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -68,7 +69,7 @@ public class GaleFanItem extends Item {
                 Vec3 vec33 = vec3.add(vec32.scale(i));
                 for (int j = 0; j < 30; j++) {
                     Vector3f add = vec32.toVector3f()
-                            .rotate(Util.getRotationQuaternionAroundLookVector(j, 30, player, vec32)).mul(2);
+                            .rotate(Vec3Helper.getRotationQuaternionAroundLookVector(j, 30, player, vec32)).mul(2);
 
                     Vec3 vec34 = vec33.add(
                             add.x + random.nextFloat() * 2,

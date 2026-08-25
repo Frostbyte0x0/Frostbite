@@ -1,0 +1,1020 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "straight"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "facing": "east",
+        "half": "top",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "half": "top",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "facing": "east",
+        "half": "top",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "half": "top",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "facing": "east",
+        "half": "top",
+        "shape": "straight"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "straight"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "top",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "top",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "top",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "top",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "top",
+        "shape": "straight"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner"
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer"
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "straight"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "top",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "half": "top",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "top",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "half": "top",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "top",
+        "shape": "straight"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "straight"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "top",
+        "shape": "inner_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_inner",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "half": "top",
+        "shape": "inner_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "top",
+        "shape": "outer_left"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs_outer",
+        "uvlock": true,
+        "x": 180,
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "half": "top",
+        "shape": "outer_right"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/polished_slated_snow_stairs",
+        "uvlock": true,
+        "x": 180,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "top",
+        "shape": "straight"
+      }
+    },
+
+
+
+
+
+
+
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big"
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small"
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_big",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top_corner_small",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_top",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true",
+        "bottom": "false"
+      }
+    },
+
+
+
+
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom"
+      },
+      "when": {
+        "facing": "east",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small"
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big"
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "south",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "inner_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_small",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "inner_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "outer_left",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom_corner_big",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "outer_right",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_stair_layer_bottom",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "facing": "west",
+        "half": "bottom",
+        "shape": "straight",
+        "snowy": "true"
+      }
+    }
+  ]
+}

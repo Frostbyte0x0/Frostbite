@@ -99,10 +99,10 @@ public class GuardTower extends Structure {
         StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
         randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
 
-        Optional<Level> l = Util.getLevel(Frostbite.frostbiteKey);
+        Optional<Level> l = Util.getFrostbiteLevel();
         if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");
         if (structureStart != StructureStart.INVALID_START) {
-            DataHelper.addBossToAdd(l.get(), structureStart.getBoundingBox().getCenter(), EntityRegistry.MONK.get());
+            DataHelper.addBossToAdd(l.get(), structureStart.getBoundingBox().getCenter().offset(0, 8, 0), EntityRegistry.CHIEF_GUARD.get());
         }
 
         return structureStart;

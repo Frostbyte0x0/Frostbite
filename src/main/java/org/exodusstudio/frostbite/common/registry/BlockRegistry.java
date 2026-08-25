@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -21,13 +22,6 @@ import java.util.function.Supplier;
 public class BlockRegistry {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(Frostbite.MOD_ID);
-
-
-    public static final DeferredBlock<Block> BLACK_BLOCK = registerBlock("black_block",
-            () -> new Block(BlockBehaviour.Properties.of().strength(10f)
-                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "black_block")))));
-
-
 
     public static final DeferredBlock<Block> REINFORCED_BLACK_ICE = registerBlock("reinforced_black_ice",
             () -> new Block(BlockBehaviour.Properties.of().strength(-1f)
@@ -44,11 +38,6 @@ public class BlockRegistry {
                     .lightLevel(_ -> 11)
                     .pushReaction(PushReaction.BLOCK)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite_portal")))));
-
-
-    public static final DeferredBlock<Block> PERMAFROZEN_DIRT = registerBlock("permafrozen_dirt",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).strength(1f)
-                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "permafrozen_dirt")))));
 
     public static final DeferredBlock<Block> SLATED_ICE = registerBlock("slated_ice",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)
@@ -119,6 +108,69 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> SLATED_SNOW = registerBlock("slated_snow",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow")))));
+
+    public static final DeferredBlock<Block> COBBLED_SLATED_SNOW = registerBlock("cobbled_slated_snow",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_snow")))));
+    public static final DeferredBlock<Block> COBBLED_SLATED_SNOW_STAIRS = registerBlock("cobbled_slated_snow_stairs",
+            () -> new SnowableStairBlock(COBBLED_SLATED_SNOW.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_snow_stairs")))));
+    public static final DeferredBlock<Block> COBBLED_SLATED_SNOW_SLAB = registerBlock("cobbled_slated_snow_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_snow_slab")))));
+    public static final DeferredBlock<Block> COBBLED_SLATED_SNOW_WALL = registerBlock("cobbled_slated_snow_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLED_DEEPSLATE_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "cobbled_slated_snow_wall")))));
+
+    public static final DeferredBlock<Block> POLISHED_SLATED_SNOW = registerBlock("polished_slated_snow",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_snow")))));
+    public static final DeferredBlock<Block> POLISHED_SLATED_SNOW_STAIRS = registerBlock("polished_slated_snow_stairs",
+            () -> new SnowableStairBlock(POLISHED_SLATED_SNOW.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_snow_stairs")))));
+    public static final DeferredBlock<Block> POLISHED_SLATED_SNOW_SLAB = registerBlock("polished_slated_snow_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_snow_slab")))));
+    public static final DeferredBlock<Block> POLISHED_SLATED_SNOW_WALL = registerBlock("polished_slated_snow_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "polished_slated_snow_wall")))));
+
+    public static final DeferredBlock<Block> SLATED_SNOW_BRICKS = registerBlock("slated_snow_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_bricks")))));
+    public static final DeferredBlock<Block> SLATED_SNOW_BRICK_STAIRS = registerBlock("slated_snow_brick_stairs",
+            () -> new SnowableStairBlock(SLATED_SNOW_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_brick_stairs")))));
+    public static final DeferredBlock<Block> SLATED_SNOW_BRICK_SLAB = registerBlock("slated_snow_brick_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_brick_slab")))));
+    public static final DeferredBlock<Block> SLATED_SNOW_BRICK_WALL = registerBlock("slated_snow_brick_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_brick_wall")))));
+
+    public static final DeferredBlock<Block> SLATED_SNOW_TILES = registerBlock("slated_snow_tiles",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_TILES)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_tiles")))));
+    public static final DeferredBlock<Block> SLATED_SNOW_TILE_STAIRS = registerBlock("slated_snow_tile_stairs",
+            () -> new SnowableStairBlock(SLATED_SNOW_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_STAIRS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_tile_stairs")))));
+    public static final DeferredBlock<Block> SLATED_SNOW_TILE_SLAB = registerBlock("slated_snow_tile_slab",
+            () -> new SnowableSlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_TILE_SLAB)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_tile_slab")))));
+    public static final DeferredBlock<Block> SLATED_SNOW_TILE_WALL = registerBlock("slated_snow_tile_wall",
+            () -> new SnowableWallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_WALL)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_tile_wall")))));
+
+    public static final DeferredBlock<Block> CHISELED_SLATED_SNOW = registerBlock("chiseled_slated_snow",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_DEEPSLATE)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chiseled_slated_snow")))));
+    public static final DeferredBlock<Block> ORNATE_SLATED_SNOW = registerBlock("ornate_slated_snow",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_DEEPSLATE)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ornate_slated_snow")))));
+    public static final DeferredBlock<Block> SLATED_SNOW_PILLAR = registerBlock("slated_snow_pillar",
+            () -> new PillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_DEEPSLATE).forceSolidOn()
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_snow_pillar")))));
+
 
     public static final DeferredBlock<Block> MARBLE = registerBlock("marble",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK)
@@ -410,6 +462,24 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> ICE_CORE = registerBlock("ice_core",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ice_core")))));
+
+    public static final DeferredBlock<Block> GUARDING_RUNE = registerBlock("guarding_rune",
+            () -> new GuardingRuneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
+                    .strength(-1)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "guarding_rune")))));
+    public static final DeferredBlock<Block> CHALLENGE_RUNE = registerBlock("challenge_rune",
+            () -> new ChallengeRuneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
+                    .strength(-1)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "challenge_rune")))));
+
+    public static final DeferredBlock<Block> BRAZIER = registerBlock("brazier",
+            () -> new BrazierBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN)
+                    .lightLevel((b) -> b.getValue(BlockStateProperties.LIT) ? 15 : 0)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "brazier"))), 3));
+    public static final DeferredBlock<Block> SOUL_BRAZIER = registerBlock("soul_brazier",
+            () -> new BrazierBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN)
+                    .lightLevel((b) -> b.getValue(BlockStateProperties.LIT) ? 15 : 0)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "soul_brazier"))), 3));
 
     public static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);

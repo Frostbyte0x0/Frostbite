@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 
 public class StateMonsterEntity extends Monster implements TemperatureEntity {
     protected static final EntityDataAccessor<String> DATA_LAST_STATE =

@@ -30,8 +30,9 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealSwordEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealWeaponEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
-import org.exodusstudio.frostbite.common.util.TargetingEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 
 import java.util.Map;
 
@@ -126,7 +127,7 @@ public class ShamanEntity extends StateBossMonster<ShamanEntity> implements Targ
         }
 
         weapon.setPos(target.position().add(0, 1, 0));
-        float[] angles = Util.getXYRot(v);
+        float[] angles = Vec3Helper.getXYRot(v);
         weapon.setXRot(angles[0]);
         weapon.setYRot(angles[1]);
         serverLevel.addFreshEntity(weapon);

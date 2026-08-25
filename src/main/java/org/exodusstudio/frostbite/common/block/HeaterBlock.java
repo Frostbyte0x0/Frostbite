@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 
 public class HeaterBlock extends Block {
     private final int range;

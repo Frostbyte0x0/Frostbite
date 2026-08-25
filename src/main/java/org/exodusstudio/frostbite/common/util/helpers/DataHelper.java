@@ -109,6 +109,38 @@ public class DataHelper {
         return map.get(key);
     }
 
+    public static void setBlockData(IAttachmentHolder holder, BlockPos pos, String key, float value) {
+        Map<BlockPos, Map<String, Float>> map = holder.getData(AttachmentRegistry.MAP_BLOCK_POS_MAP_STRING_FLOAT);
+        Map<String, Float> blockMap = getBlockData(holder, pos);
+        blockMap = safelyAddValueToMap(blockMap, key, value);
+        map = safelyAddValueToMap(map, pos, blockMap);
+        holder.setData(AttachmentRegistry.MAP_BLOCK_POS_MAP_STRING_FLOAT, map);
+    }
+
+    public static void setBlockData(IAttachmentHolder holder, BlockPos key, Map<String, Float> value) {
+        Map<BlockPos, Map<String, Float>> map = holder.getData(AttachmentRegistry.MAP_BLOCK_POS_MAP_STRING_FLOAT);
+        map = safelyAddValueToMap(map, key, value);
+        holder.setData(AttachmentRegistry.MAP_BLOCK_POS_MAP_STRING_FLOAT, map);
+    }
+
+    public static Map<String, Float> getBlockData(IAttachmentHolder holder, BlockPos pos) {
+        Map<BlockPos, Map<String, Float>> map = holder.getData(AttachmentRegistry.MAP_BLOCK_POS_MAP_STRING_FLOAT);
+        if (!map.containsKey(pos)) map = safelyAddValueToMap(map, pos, new HashMap<>());
+        return map.get(pos);
+    }
+
+    public static float getBlockData(IAttachmentHolder holder, BlockPos pos, String key) {
+        Map<String, Float> map = getBlockData(holder, pos);
+        if (!map.containsKey(key)) map = safelyAddValueToMap(map, key, 0f);
+        return map.get(key);
+    }
+
+    public static void removeBlockData(IAttachmentHolder holder, BlockPos pos) {
+        Map<BlockPos, Map<String, Float>> map = holder.getData(AttachmentRegistry.MAP_BLOCK_POS_MAP_STRING_FLOAT);
+        map.remove(pos);
+        holder.setData(AttachmentRegistry.MAP_BLOCK_POS_MAP_STRING_FLOAT, map);
+    }
+
     public static <E extends Entity> void addBossToAdd(IAttachmentHolder holder, BlockPos key, EntityType<E> value) {
         Map<BlockPos, EntityType<?>> map = getBossesToAdd(holder);
         map = safelyAddValueToMap(map, key, value);

@@ -4,7 +4,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
-import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 
 import java.util.HashMap;
 import java.util.Map;

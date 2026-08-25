@@ -26,7 +26,7 @@ import org.exodusstudio.frostbite.common.entity.custom.helper.StateBossMonster;
 import org.exodusstudio.frostbite.common.entity.goals.GuardBodyRotationControl;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
-import org.exodusstudio.frostbite.common.util.TargetingEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TargetingEntity;
 import org.exodusstudio.frostbite.common.util.Util;
 
 import java.util.Map;

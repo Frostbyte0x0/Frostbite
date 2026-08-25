@@ -6,6 +6,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import org.exodusstudio.frostbite.common.mixinterfaces.PlayerWrapper;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
@@ -30,6 +33,8 @@ public class TemperatureManager {
         tempsPerBlock.put("soul_lantern", 1f);
         tempsPerBlock.put("campfire", 5f);
         tempsPerBlock.put("soul_campfire", 5f);
+        tempsPerBlock.put("brazier", 5f);
+        tempsPerBlock.put("soul_brazier", 5f);
         tempsPerBlock.put("fire", 2f);
         tempsPerBlock.put("furnace", 1.5f);
         tempsPerBlock.put("blast_furnace", 1.5f);
@@ -101,9 +106,12 @@ public class TemperatureManager {
 
         AABB aabb = Util.squareAABB(entity.position(), 3f);
         for (BlockPos pos : Util.getBlockPositionsInAABB(aabb)) {
-            String blockname = entity.level().getBlockState(pos).getBlock().toString().replace("Block{minecraft:", "").replace("}", "");
-            if (tempsPerBlock.containsKey(blockname)) {
-                temp[0] += (float) (tempsPerBlock.get(blockname) / (0.5 + entity.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)));
+            String blockName = entity.level().getBlockState(pos).getBlock().toString().replace("Block{minecraft:", "").replace("}", "");
+            String blockNameFrostbite = entity.level().getBlockState(pos).getBlock().toString().replace("Block{frostbite:", "").replace("}", "");
+            if (tempsPerBlock.containsKey(blockName)) {
+                temp[0] += (float) (tempsPerBlock.get(blockName) / (0.5 + entity.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)));
+            } else if (tempsPerBlock.containsKey(blockNameFrostbite)) {
+                temp[0] += (float) (tempsPerBlock.get(blockNameFrostbite) / (0.5 + entity.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)));
             }
         }
 

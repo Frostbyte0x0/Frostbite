@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "loot_level=wood": {
+      "model": "frostbite:block/guarding_rune_wood"
+    },
+    "loot_level=stone": {
+      "model": "frostbite:block/guarding_rune_stone"
+    },
+    "loot_level=iron": {
+      "model": "frostbite:block/guarding_rune_iron"
+    },
+    "loot_level=gold": {
+      "model": "frostbite:block/guarding_rune_gold"
+    },
+    "loot_level=diamond": {
+      "model": "frostbite:block/guarding_rune_diamond"
+    }
+  }
+}

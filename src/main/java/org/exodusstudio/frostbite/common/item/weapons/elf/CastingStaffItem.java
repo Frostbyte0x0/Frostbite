@@ -14,8 +14,9 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.PseudoEntityTypes;
-import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.joml.Vector3f;
 
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class CastingStaffItem extends ModeWeapon {
                         Vec3 vec33 = vec3.add(vec32.scale(i / 10f + 0.3f));
                         for (int j = 0; j < particleCount; j++) {
                             Vector3f add = vec32.scale(i / 3f - 0.3f).toVector3f()
-                                    .rotate(Util.getRotationQuaternionAroundLookVector(j, particleCount, owner, vec32));
+                                    .rotate(Vec3Helper.getRotationQuaternionAroundLookVector(j, particleCount, owner, vec32));
 
                             Vec3 vec34 = vec33.add(
                                     add.x * 0.1,
@@ -80,7 +81,7 @@ public class CastingStaffItem extends ModeWeapon {
 
                     for (int i = 0; i < 6; i++) {
                         Vector3f add = vec32.toVector3f()
-                                .rotate(Util.getRotationQuaternionAroundLookVector(i, 6, owner, vec32));
+                                .rotate(Vec3Helper.getRotationQuaternionAroundLookVector(i, 6, owner, vec32));
 
                         Vec3 vec33 = vec3.add(vec32.scale(i / 10f + 0.3f));
                         Vec3 vec34 = vec33.add(

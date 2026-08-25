@@ -29,9 +29,9 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.overlays.FlashbangOverlay;
 import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Renderable;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -98,7 +98,7 @@ public class HuntersCatalyst extends Item {
                     Vec3 center = livingEntity.position().add(look.scale(distance));
 
                     for (int i = 0; i < points; i++) {
-                        Quaternionf q = Util.getRotationQuaternionAroundLookVector(i, points, livingEntity, look);
+                        Quaternionf q = Vec3Helper.getRotationQuaternionAroundLookVector(i, points, livingEntity, look);
 
                         Vec3 base = new Vec3(0, radius, 0);
                         Vector3f rotated = base.toVector3f();

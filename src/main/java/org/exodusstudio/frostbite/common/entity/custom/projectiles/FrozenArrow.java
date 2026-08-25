@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 
 import javax.annotation.Nullable;
 

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "frostbite:slated_ice",
+  "result": {
+    "id": "frostbite:polished_slated_ice_wall"
+  }
+}

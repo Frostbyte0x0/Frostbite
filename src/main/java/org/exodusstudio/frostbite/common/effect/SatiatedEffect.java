@@ -4,7 +4,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 
 public class SatiatedEffect extends MobEffect {
     public SatiatedEffect(MobEffectCategory category, int color) {

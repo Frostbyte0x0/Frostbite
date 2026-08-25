@@ -19,8 +19,8 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity
 import org.exodusstudio.frostbite.common.entity.custom.misc.LastStandEntity;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.InventoryWrapper;
-import org.exodusstudio.frostbite.common.util.PlayerWrapper;
+import org.exodusstudio.frostbite.common.mixinterfaces.InventoryWrapper;
+import org.exodusstudio.frostbite.common.mixinterfaces.PlayerWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

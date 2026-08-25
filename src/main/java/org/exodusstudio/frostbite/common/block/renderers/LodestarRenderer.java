@@ -78,7 +78,7 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
     public void extractRenderState(LodestarBlockEntity entity, LodestarRenderState state, float partialTick, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         BlockEntityRenderState.extractBase(entity, state, breakProgress);
         state.activeRotation = entity.getActiveRotation(partialTick);
-        state.animTime = (float)entity.tickCount + partialTick;
+        state.animTime = entity.tickCount + partialTick;
         state.animationPhase = entity.tickCount / 66 % 3;
     }
 

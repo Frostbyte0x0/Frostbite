@@ -1,0 +1,37 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "frostbite:block/slated_snow_brick_slab"
+      },
+      "when": {
+        "type": "bottom"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/snow_layer_middle"
+      },
+      "when": {
+        "type": "bottom",
+        "snowy": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/slated_snow_brick"
+      },
+      "when": {
+        "type": "double"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/slated_snow_brick_slab_top"
+      },
+      "when": {
+        "type": "top"
+      }
+    }
+  ]
+}

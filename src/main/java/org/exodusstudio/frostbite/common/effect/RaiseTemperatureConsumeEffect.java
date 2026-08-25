@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.registry.ConsumeEffectRegistry;
-import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 
 import java.util.List;
 

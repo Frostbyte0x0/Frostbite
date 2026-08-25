@@ -5,11 +5,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.entity.custom.misc.*;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHammerEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealHandsEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealSwordEntity;
+import org.exodusstudio.frostbite.common.entity.custom.misc.EtherealWeaponEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.WhirlpoolEntity;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 
 public class ShamanStaffItem extends ModeWeapon {
     public ShamanStaffItem(Properties properties) {
@@ -33,7 +36,7 @@ public class ShamanStaffItem extends ModeWeapon {
                     }
 
                     weapon.setPos(owner.position().add(v.scale(3)).add(0, 1.5, 0));
-                    float[] angles = Util.getXYRot(v);
+                    float[] angles = Vec3Helper.getXYRot(v);
                     weapon.setXRot(angles[0]);
                     weapon.setYRot(angles[1]);
                     serverLevel.addFreshEntity(weapon);

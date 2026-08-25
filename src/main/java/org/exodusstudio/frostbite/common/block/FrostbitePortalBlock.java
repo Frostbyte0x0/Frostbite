@@ -39,6 +39,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.Optional;
@@ -85,7 +86,7 @@ public class FrostbitePortalBlock extends Block implements Portal {
 
     @Override
     public TeleportTransition getPortalDestination(ServerLevel originLevel, Entity entity, BlockPos pos) {
-        ResourceKey<Level> resourcekey = originLevel.dimension() == Frostbite.frostbiteKey ? Level.OVERWORLD : Frostbite.frostbiteKey;
+        ResourceKey<Level> resourcekey = originLevel.dimension() == Util.FROSTBITE_KEY ? Level.OVERWORLD : Util.FROSTBITE_KEY;
         ServerLevel destinationLevel = originLevel.getServer().getLevel(resourcekey);
 
         if (destinationLevel == null) {

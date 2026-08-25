@@ -13,8 +13,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.TE;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 
 public class IcedCreeperEntity extends Creeper implements TemperatureEntity {
     protected final int explosionRadius = 4;

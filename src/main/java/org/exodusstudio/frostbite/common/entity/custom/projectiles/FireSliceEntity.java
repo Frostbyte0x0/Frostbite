@@ -15,7 +15,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.TorchEntity;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.joml.Vector3fc;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class FireSliceEntity extends Projectile {
     public FireSliceEntity(Level level, Vec3 shootDirection) {
         super(EntityRegistry.FIRE_SLICE.get(), level);
         setShootDirection(shootDirection);
-        float[] angles = Util.getXYRot(shootDirection);
+        float[] angles = Vec3Helper.getXYRot(shootDirection);
         setXRot(angles[0]);
         setYRot(angles[1]);
     }

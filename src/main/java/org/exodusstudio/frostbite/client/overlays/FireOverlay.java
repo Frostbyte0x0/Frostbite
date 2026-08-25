@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.util.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 import org.exodusstudio.frostbite.common.util.Util;
 
 import static org.exodusstudio.frostbite.common.util.TemperatureManager.MAX_TEMP;

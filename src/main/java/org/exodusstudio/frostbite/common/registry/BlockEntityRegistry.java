@@ -7,6 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.block_entities.DecipheringTableBlockEntity;
 import org.exodusstudio.frostbite.common.block.block_entities.LodestarBlockEntity;
+import org.exodusstudio.frostbite.common.block.block_entities.RuneBlockEntity;
 
 import java.util.Set;
 
@@ -21,4 +22,8 @@ public class BlockEntityRegistry {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DecipheringTableBlockEntity>> DECIPHERING_TABLE =
             BLOCK_ENTITY_TYPES.register("deciphering_table", () -> new BlockEntityType<>
                             (DecipheringTableBlockEntity::new, Set.of(BlockRegistry.DECIPHERING_TABLE.get())));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RuneBlockEntity>> RUNE =
+            BLOCK_ENTITY_TYPES.register("rune", () -> new BlockEntityType<>
+                            (RuneBlockEntity::new, Set.of(BlockRegistry.CHALLENGE_RUNE.get(), BlockRegistry.GUARDING_RUNE.get())));
 }

@@ -22,9 +22,9 @@ import org.exodusstudio.frostbite.common.entity.goals.OwnerHurtByTargetGoal;
 import org.exodusstudio.frostbite.common.entity.goals.OwnerHurtTargetGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.util.Ownable;
-import org.exodusstudio.frostbite.common.util.TE;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.Ownable;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 
 import javax.annotation.Nullable;
 

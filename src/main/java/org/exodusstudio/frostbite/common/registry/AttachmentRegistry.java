@@ -56,6 +56,12 @@ public class AttachmentRegistry {
                     .serialize(Codec.unboundedMap(Codec.STRING, Codec.BOOL).fieldOf("map_string_boolean"))
                     .build());
 
+    public static final Supplier<AttachmentType<Map<BlockPos, Map<String, Float>>>> MAP_BLOCK_POS_MAP_STRING_FLOAT = ATTACHMENT_TYPES.register(
+            "map_block_pos_map_string_string", () -> AttachmentType.builder(() -> (Map<BlockPos, Map<String, Float>>) new HashMap<BlockPos, Map<String, Float>>())
+                    .sync(MAP_BLOCK_POS_MAP_STRING_FLOAT_STREAM_CODEC)
+                    .serialize(Codec.unboundedMap(BlockPos.CODEC, Codec.unboundedMap(Codec.STRING, Codec.FLOAT)).fieldOf("map_block_pos_map_string_string"))
+                    .build());
+
     public static final Supplier<AttachmentType<Map<String, List<PseudoEntity>>>> PSEUDO_ENTITIES = ATTACHMENT_TYPES.register(
             "pseudo_entities", () -> AttachmentType.builder(() -> (Map<String, List<PseudoEntity>>) new HashMap<String, List<PseudoEntity>>())
                     .sync(MAP_STRING_LIST_PSEUDO_ENTITY_STREAM_CODEC)

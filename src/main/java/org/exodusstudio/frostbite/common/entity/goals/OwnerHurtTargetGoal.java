@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
-import org.exodusstudio.frostbite.common.util.Ownable;
+import org.exodusstudio.frostbite.common.mixinterfaces.Ownable;
 
 public class OwnerHurtTargetGoal extends TargetGoal {
     private final Monster monster;

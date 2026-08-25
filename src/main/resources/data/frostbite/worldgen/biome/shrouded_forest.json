@@ -89,7 +89,7 @@
       "minecraft:kelp_cold"
     ],
     [
-      "minecraft:freeze_top_layer"
+      "frostbite:frostbite_snow_and_freeze"
     ]
   ],
   "has_precipitation": false,

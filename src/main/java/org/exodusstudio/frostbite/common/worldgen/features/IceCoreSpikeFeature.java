@@ -8,6 +8,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 
 public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguration> {
     public static final RandomSource random = RandomSource.create();
@@ -32,9 +33,8 @@ public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguratio
         for (int i = 1; i < radius; i++) {
             for (float j = 0; j < 6 * i; j += 0.5f) {
                 Vec3 d = normal.scale(i);
-                double lengthXZ = Util.distanceBetween(d.x, d.z);
-                Vec3 perpNormal = new Vec3(-d.x * d.y / lengthXZ, lengthXZ, -d.z * d.y / lengthXZ);
-                Vec3 add = Util.rotateFirstAroundSecond(perpNormal, normal, 2 * Math.PI * j / (6f * i));
+                Vec3 perpNormal = Vec3Helper.perpendicularY(d);
+                Vec3 add = Vec3Helper.rotateFirstAroundSecond(perpNormal, normal, 2 * Math.PI * j / (6f * i));
 
                 Vec3 pos = origin.add(
                         add.x,
@@ -69,7 +69,7 @@ public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguratio
                     -anchor.x * anchor.y / lengthXZ,
                     lengthXZ,
                     -anchor.z * anchor.y / lengthXZ);
-            Vec3 add = Util.rotateFirstAroundSecond(perpAnchor, anchor, 2 * Math.PI * i / n).normalize()
+            Vec3 add = Vec3Helper.rotateFirstAroundSecond(perpAnchor, anchor, 2 * Math.PI * i / n).normalize()
                     .add(0, 0.5, 0).normalize();
             add = new Vec3(add.x, Math.abs(add.y), add.z);
 

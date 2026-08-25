@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -37,9 +37,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.mixinterfaces.Ownable;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.joml.Quaternionf;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -47,6 +46,8 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public class Util {
     public static final RandomSource random = RandomSource.create();
+    public static final ResourceKey<Level> FROSTBITE_KEY =
+            ResourceKey.create(Registries.DIMENSION, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite"));
 
     public static Vec3 calculateDir(Entity e1, Entity e2, Vec3 multiplier) {
         double theta = 0;
@@ -76,19 +77,6 @@ public class Util {
         return random.nextBoolean() ? 1 : -1;
     }
 
-    public static void spawnParticleRandomly(Entity entity, SimpleParticleType particleType, double positionVariation, double speedVariation) {
-        double d0 = entity.getX() + (0.5D - entity.getRandom().nextDouble()) * positionVariation;
-        double d1 = entity.getY() + (0.5D - entity.getRandom().nextDouble()) * positionVariation;
-        double d2 = entity.getZ() + (0.5D - entity.getRandom().nextDouble()) * positionVariation;
-
-        entity.level().addAlwaysVisibleParticle(
-                particleType,
-                d0, d1, d2,
-                (0.5 - entity.getRandom().nextDouble()) * speedVariation,
-                (0.5 - entity.getRandom().nextDouble()) * speedVariation,
-                (0.5 - entity.getRandom().nextDouble()) * speedVariation);
-    }
-
     public static AABB squareAABB(AABB aabb, double inflation) {
         double sizeX = aabb.maxX - aabb.minX;
         double sizeY = aabb.maxY - aabb.minY;
@@ -109,16 +97,17 @@ public class Util {
     public static List<BlockPos> getBlockPositionsInAABB(AABB aabb) {
         List<BlockPos> positions = new ArrayList<>();
 
-        int sizeX = Math.toIntExact(Math.round(aabb.maxX) - Math.round(aabb.minX));
-        int sizeY = Math.toIntExact(Math.round(aabb.maxY) - Math.round(aabb.minY));
-        int sizeZ = Math.toIntExact(Math.round(aabb.maxZ) - Math.round(aabb.minZ));
+        int sizeX = (int) Math.ceil(Math.ceil(aabb.maxX) - Math.floor(aabb.minX));
+        int sizeY = (int) Math.ceil(Math.ceil(aabb.maxY) - Math.floor(aabb.minY));
+        int sizeZ = (int) Math.ceil(Math.ceil(aabb.maxZ) - Math.floor(aabb.minZ));
 
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 for (int k = 0; k < sizeZ; k++) {
-                    positions.add(new BlockPos(Math.round((float) aabb.minX) + i,
-                                               Math.round((float) aabb.minY) + j,
-                                               Math.round((float) aabb.minZ) + k));
+                    positions.add(new BlockPos(
+                            (int) Math.floor(aabb.minX) + i,
+                            (int) Math.floor(aabb.minY) + j,
+                            (int) Math.floor(aabb.minZ) + k));
                 }
             }
         }
@@ -147,10 +136,9 @@ public class Util {
         if (serverLevel.getBlockState(blockpos.below()).isAir()) return;
 
         T monster = monsterSupplier.get();
+        monster.setPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
 
-        if (getBlockPositionsInAABB(monster.getBoundingBox()).stream().allMatch(
-                pos -> serverLevel.getBlockState(pos).isAir())) {
-            monster.setPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+        if (serverLevel.noCollision(monster.getBoundingBox())) {
             if (monster instanceof Ownable && e instanceof Player player) {
                 ((Ownable) monster).setOwner(player);
             }
@@ -160,135 +148,31 @@ public class Util {
         }
     }
 
-    public static void spawnParticlesFromAABB(Level level, AABB aabb, int count) {
-        int[] xyz = new int[]{1, 0, 0};
+    public static <T extends Monster> void spawnMonsterRandomlyAroundBlockPos(Supplier<T> monsterSupplier, ServerLevel serverLevel, BlockPos p, int minDist, int maxDist) {
+        BlockPos blockpos = p.offset(
+                random.nextIntBetweenInclusive(minDist, maxDist) * plusOrMinus(),
+                random.nextIntBetweenInclusive(0, 4) * plusOrMinus(),
+                random.nextIntBetweenInclusive(minDist, maxDist) * plusOrMinus());
 
-        for (int j = 0; j < 3; j++) {
-            for (float i = 0; i <= count; i++) {
-                double x = Mth.lerp(xyz[0] * i / count, aabb.minX, aabb.maxX);
-                double y = Mth.lerp(xyz[1] * i / count, aabb.minY, aabb.maxY);
-                double z = Mth.lerp(xyz[2] * i / count, aabb.minZ, aabb.maxZ);
+        if (serverLevel.getBlockState(blockpos.below()).isAir()) return;
 
-                level.addAlwaysVisibleParticle(
-                        ParticleRegistry.DEBUG_PARTICLE.get(),
-                        x,
-                        y,
-                        z,
-                        0,
-                        0,
-                        0);
-            }
-            rotateArrayByOneRight(xyz);
+        T monster = monsterSupplier.get();
+        monster.setPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+
+        if (serverLevel.noCollision(monster.getBoundingBox())) {
+            serverLevel.addFreshEntityWithPassengers(monster);
         }
-
-        for (int j = 0; j < 3; j++) {
-            for (float i = 0; i <= count; i++) {
-                double x = Mth.lerp(xyz[0] * i / count, aabb.maxX, aabb.minX);
-                double y = Mth.lerp(xyz[1] * i / count, aabb.maxY, aabb.minY);
-                double z = Mth.lerp(xyz[2] * i / count, aabb.maxZ, aabb.minZ);
-
-                level.addAlwaysVisibleParticle(
-                        ParticleRegistry.DEBUG_PARTICLE.get(),
-                        x,
-                        y,
-                        z,
-                        0,
-                        0,
-                        0);
-            }
-            rotateArrayByOneRight(xyz);
-        }
-    }
-
-    public static void spawnParticlesFromVector(Level level, Vec3 origin, Vec3 vector, int count) {
-        Vec3 pos = origin;
-        for (int i = 0; i <= count; i++) {
-            pos = Mth.lerp((double) i / count, pos, origin.add(vector));
-            level.addAlwaysVisibleParticle(
-                    ParticleRegistry.DEBUG_PARTICLE.get(),
-                    pos.x,
-                    pos.y,
-                    pos.z,
-                    0,
-                    0,
-                    0);
-        }
-    }
-
-    public static void rotateArrayByOneRight(int[] arr) {
-        if (arr == null || arr.length <= 1) return;
-
-        int lastElement = arr[arr.length - 1];
-        for (int i = arr.length - 1; i > 0; i--) {
-            arr[i] = arr[i - 1];
-        }
-
-        arr[0] = lastElement;
-    }
-
-    public static Quaternionf getRotationQuaternionAroundLookVector(int j, int count, Entity owner, Vec3 vec32) {
-        float angle = (float) (j * 2 * Math.PI / count);
-        float playerYAngle = (float) ((90 - owner.getYRot()) * Math.PI / 180);
-        float playerXAngle = (float) (owner.getXRot() * Math.PI / 180);
-        Quaternionf quaternion;
-        if (Math.abs(vec32.x) < 0.5f) {
-            quaternion = new Quaternionf()
-                    .rotateLocalX(angle)
-                    .rotateLocalZ(playerXAngle)
-                    .rotateLocalY(playerYAngle);
-        } else {
-            quaternion = new Quaternionf()
-                    .rotateLocalZ(angle)
-                    .rotateLocalX(-playerXAngle)
-                    .rotateLocalY((float) (playerYAngle + Math.PI / 2));
-        }
-
-        return quaternion;
-    }
-
-    public static Vec3 rotateFirstAroundSecond(Vec3 target, Vec3 around, double angle) {
-        around = around.normalize();
-        double cos = Math.cos(angle);
-        double sin = Math.sin(angle);
-        double dot = around.dot(target);
-        Vec3 cross = around.cross(target);
-        return target.scale(cos).add(cross.scale(sin)).add(around.scale(dot).scale(1 - cos));
-    }
-
-    public static Quaternionf getRotationQuaternionAroundVector(float angle, Vec3 vec32) {
-        float playerYAngle = (float) (Math.atan2(vec32.z, vec32.x) + Math.PI / 4);
-        float playerXAngle = (float) -Math.atan2(vec32.y, vec32.x);
-        Quaternionf quaternion;
-        if (Math.abs(vec32.x) < 0.5f) {
-            quaternion = new Quaternionf()
-                    .rotateLocalX(angle)
-                    .rotateLocalZ(playerXAngle)
-                    .rotateLocalY(playerYAngle);
-        } else {
-            quaternion = new Quaternionf()
-                    .rotateLocalZ(angle)
-                    .rotateLocalX(-playerXAngle)
-                    .rotateLocalY((float) (playerYAngle + Math.PI / 2));
-        }
-
-        return quaternion;
-    }
-
-    public static float[] getXYRot(Vec3 dir) {
-        float xRot = (float) Math.toDegrees(Math.asin(-dir.y));
-        float yRot = (float) -Math.toDegrees(Math.atan2(dir.x, dir.z));
-        return new float[]{xRot, yRot};
     }
 
     public static void blendAnimations(
-            int ticksSinceLastChange,
-            int blendTicks,
-            float partialTick,
-            float ageInTicks,
-            KeyframeAnimation lastAnimation,
-            AnimationState lastAnimationState,
-            KeyframeAnimation newAnimation,
-            AnimationState newAnimationState
+        int ticksSinceLastChange,
+        int blendTicks,
+        float partialTick,
+        float ageInTicks,
+        KeyframeAnimation lastAnimation,
+        AnimationState lastAnimationState,
+        KeyframeAnimation newAnimation,
+        AnimationState newAnimationState
     ) {
         if (ticksSinceLastChange < blendTicks) {
             float blendProgress = Mth.clamp((ticksSinceLastChange + partialTick) / blendTicks, 0f, 1f);
@@ -436,6 +320,10 @@ public class Util {
 
     public static Optional<Level> getLevel(ResourceKey<Level> level) {
         return Optional.ofNullable(Frostbite.SERVER.getLevel(level));
+    }
+
+    public static Optional<Level> getFrostbiteLevel() {
+        return Optional.ofNullable(Frostbite.SERVER.getLevel(FROSTBITE_KEY));
     }
 
     public static float getLog2Reduction(int ticksSinceStart, float halfEvery) {

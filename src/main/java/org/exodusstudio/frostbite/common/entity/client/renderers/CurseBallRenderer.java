@@ -15,7 +15,7 @@ import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.CurseBallModel;
 import org.exodusstudio.frostbite.common.entity.client.states.CurseBallRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 
 public class CurseBallRenderer extends EntityRenderer<CurseBallEntity, CurseBallRenderState> {
     private final CurseBallModel model;
@@ -40,7 +40,7 @@ public class CurseBallRenderer extends EntityRenderer<CurseBallEntity, CurseBall
             reusedState.xRot = entity.getXRot() * ((float)Math.PI / 180F);
             reusedState.yRot = entity.getYRot() * ((float)Math.PI / 180F);
         } else {
-            float[] angles = Util.getXYRot(entity.getCursedEntity().getPosition(partialTick).subtract(entity.getPosition(partialTick)).add(0, 1, 0));
+            float[] angles = Vec3Helper.getXYRot(entity.getCursedEntity().getPosition(partialTick).subtract(entity.getPosition(partialTick)).add(0, 1, 0));
             reusedState.xRot = angles[0] * ((float)Math.PI / 180F);
             reusedState.yRot = angles[1] * ((float)Math.PI / 180F);
             entity.setXRot(reusedState.xRot / ((float)Math.PI / 180F));

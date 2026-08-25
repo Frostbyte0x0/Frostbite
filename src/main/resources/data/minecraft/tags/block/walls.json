@@ -3,6 +3,10 @@
     "frostbite:polished_slated_ice_wall",
     "frostbite:cobbled_slated_ice_wall",
     "frostbite:slated_ice_tile_wall",
-    "frostbite:slated_ice_brick_wall"
+    "frostbite:slated_ice_brick_wall",
+    "frostbite:polished_slated_snow_wall",
+    "frostbite:cobbled_slated_snow_wall",
+    "frostbite:slated_snow_tile_wall",
+    "frostbite:slated_snow_brick_wall"
   ]
 }

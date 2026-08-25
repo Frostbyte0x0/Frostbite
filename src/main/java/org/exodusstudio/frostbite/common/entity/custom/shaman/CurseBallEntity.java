@@ -16,13 +16,16 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.TE;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class CurseBallEntity extends Entity {
     private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> DATA_OWNER_UUID =
@@ -105,7 +108,7 @@ public class CurseBallEntity extends Entity {
 
         if (this.tickCount == LAUNCH_DELAY && getCursedEntity() == null) {
             this.setDeltaMovement(this.getLaunchDirection().normalize().scale(SPEED));
-            float[] angles = Util.getXYRot(getLaunchDirection());
+            float[] angles = Vec3Helper.getXYRot(getLaunchDirection());
             setXRot(angles[0]);
             setYRot(angles[1]);
             if (level().getRandom().nextFloat() < 0.333f) {

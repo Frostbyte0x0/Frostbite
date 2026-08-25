@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "frostbite:block/brazier_off"
+    },
+    "lit=true": {
+      "model": "frostbite:block/brazier"
+    }
+  }
+}

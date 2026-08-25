@@ -31,10 +31,9 @@ import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
-import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -85,7 +84,7 @@ public class OTFPortal extends Structure {
     private static boolean extraSpawningChecks(Structure.GenerationContext context) {
         float dist = Mth.sqrt((float) context.chunkPos().getWorldPosition().distToCenterSqr(0, 0, 0));
 //        return false;
-        return DataHelper.getBoolean(Frostbite.SERVER.getLevel(Level.OVERWORLD), "can_spawn_otf") && dist > 1000;
+        return DataHelper.getBoolean(Util.getLevel(Level.OVERWORLD).orElseThrow(), "can_spawn_otf") && dist > 1000;
     }
 
     @Override

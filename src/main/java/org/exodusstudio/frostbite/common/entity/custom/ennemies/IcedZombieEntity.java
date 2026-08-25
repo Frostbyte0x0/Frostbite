@@ -12,8 +12,8 @@ import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.registry.EffectRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.TE;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 
 public class IcedZombieEntity extends Zombie implements TemperatureEntity {
     public IcedZombieEntity(EntityType<? extends Zombie> ignored, Level level) {

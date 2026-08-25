@@ -29,6 +29,7 @@ import org.exodusstudio.frostbite.client.gui.scribing.CombiningScreen;
 import org.exodusstudio.frostbite.client.gui.scribing.DecipheringScreen;
 import org.exodusstudio.frostbite.client.overlays.*;
 import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
+import org.exodusstudio.frostbite.common.block.renderers.RuneRenderer;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.*;
 import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
@@ -96,6 +97,7 @@ public class ClientBusEvents {
         EntityRenderers.register(EntityRegistry.PLAYER_ILLUSION.get(), PlayerIllusionRenderer::new);
 
         BlockEntityRenderers.register(BlockEntityRegistry.LODESTAR.get(), LodestarRenderer::new);
+        BlockEntityRenderers.register(BlockEntityRegistry.RUNE.get(), RuneRenderer::new);
         EntityRenderers.register(EntityRegistry.CURSE_BALL.get(), CurseBallRenderer::new);
         ModItemProperties.addCustomItemProperties();
     }

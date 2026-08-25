@@ -16,8 +16,8 @@
     "InventoryMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
+    "LootTableMixin",
     "PlayerMixin",
-    "PrimaryLevelDataMixin",
     "ServerPlayerGameModeMixin",
     "ServerPlayerMixin"
   ],

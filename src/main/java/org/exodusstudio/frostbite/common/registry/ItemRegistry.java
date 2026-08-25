@@ -51,14 +51,6 @@ import java.util.stream.Collectors;
 public class ItemRegistry {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Frostbite.MOD_ID);
 
-    public static final DeferredItem<Item> METAL_COG =
-            ITEMS.register("metal_cog", (id) -> new Item(new Item.Properties()
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-
-    public static final DeferredItem<Item> ADVANCED_CLOCK =
-            ITEMS.register("advanced_clock", (id) -> new AdvancedClockItem(new Item.Properties()
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
-
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
             (id) -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, id))));

@@ -1,7 +1,7 @@
 package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import org.exodusstudio.frostbite.common.util.UUIDState;
+import org.exodusstudio.frostbite.common.mixinterfaces.UUIDState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

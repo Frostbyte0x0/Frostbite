@@ -20,7 +20,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
@@ -31,8 +33,8 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent;
-import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
@@ -46,7 +48,10 @@ import org.exodusstudio.frostbite.client.codex.entries.ListCodexEntry;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
-import org.exodusstudio.frostbite.common.block.HeaterBlock;
+import org.exodusstudio.frostbite.common.block.BrazierBlock;
+import org.exodusstudio.frostbite.common.block.RuneBlock;
+import org.exodusstudio.frostbite.common.block.RuneLootLevel;
+import org.exodusstudio.frostbite.common.block.block_entities.RuneBlockEntity;
 import org.exodusstudio.frostbite.common.commands.GiveFragmentCommand;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
 import org.exodusstudio.frostbite.common.commands.WeatherCommand;
@@ -58,6 +63,10 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
+import org.exodusstudio.frostbite.common.mixinterfaces.InventoryWrapper;
+import org.exodusstudio.frostbite.common.mixinterfaces.PlayerWrapper;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.*;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
@@ -297,13 +306,6 @@ public class ModEvents {
                 }
             }
 
-            if (event.getServer().getTickCount() % 20 == 0) {
-                Frostbite.heaterStorages.forEach(heater -> {
-                    if (heater.getDimensionName().equals(level.dimension().identifier().toString())) heater.tickBlock(level);
-                });
-                Frostbite.heaterStorages.removeAll(Frostbite.heatersToRemove);
-                Frostbite.heatersToRemove.clear();
-            }
             if (isFrostbite(level)) {
                 Map<BlockPos, EntityType<?>> bossesToAdd = DataHelper.getBossesToAdd(level);
                 Map<BlockPos, EntityType<?>> addedBosses = DataHelper.getAddedBosses(level);
@@ -354,20 +356,42 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void heater(UseItemOnBlockEvent event) {
-        assert event.getPlayer() != null;
-        BlockState state = event.getLevel().getBlockState(event.getPos());
-        ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
+    public static void blockInteract(PlayerInteractEvent.RightClickBlock event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = level.getBlockState(pos);
+        BlockEntity entity = level.getBlockEntity(pos);
+        Player player = event.getEntity();
+        ItemStack stack = player.getItemInHand(event.getHand());
 
         if (stack.is(Items.FLINT_AND_STEEL) &&
-                event.getLevel() instanceof ServerLevel serverLevel &&
-                state.getBlock() instanceof HeaterBlock block &&
-                Frostbite.heaterStorages.stream().noneMatch(heater ->
-                        heater.getPos().equals(event.getPos()) &&
-                                heater.getDimensionName().equals(serverLevel.dimension().identifier().toString()))) {
-            Frostbite.heaterStorages.add(new HeaterStorage(event.getPos(), block, serverLevel.dimension().identifier().toString()));
-            event.cancelWithResult(InteractionResult.FAIL);
+                state.getBlock() instanceof BrazierBlock) {
+            level.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 2);
+
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.FAIL);
         }
+
+        if (player.isShiftKeyDown() &&
+                player.isCreative() &&
+                state.getBlock() instanceof RuneBlock &&
+                entity instanceof RuneBlockEntity) {
+            RuneLootLevel next = state.getValue(RuneBlock.LOOT_LEVEL).next();
+            level.setBlock(pos, state
+                    .setValue(RuneBlock.LOOT_LEVEL, next)
+                    .setValue(RuneBlock.OPENED, false), 2);
+            DataHelper.setBlockData(level.getChunkAt(pos), pos, "health", next.getMaxHealth());
+            DataHelper.setBlockData(level.getChunkAt(pos), pos, "max_health", next.getMaxHealth());
+
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.FAIL);
+        }
+
+//        ParticleHelper.ring(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(1, 0, 0), 10, 2, 0.1);
+//        ParticleHelper.ring(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(0, 1, 0), 10, 2, 0.1);
+//        ParticleHelper.ring(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(0, 0, 1), 10, 2, 0.1);
+//        ParticleHelper.sphere(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(0, 0, 1), 10, 10, 2, 0.1);
+//        ParticleHelper.completeSphere(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1.3, 0), Vec3.Y_AXIS, 10, 10, 0.01, 0.2);
     }
 
     @SubscribeEvent

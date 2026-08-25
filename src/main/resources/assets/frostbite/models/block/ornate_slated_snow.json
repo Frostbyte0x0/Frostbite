@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "frostbite:block/polished_slated_snow",
+    "side": "frostbite:block/ornate_slated_snow"
+  }
+}

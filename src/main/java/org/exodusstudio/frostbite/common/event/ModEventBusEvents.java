@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.event;
 
+import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -17,11 +18,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.datagen.ModModelProvider;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
@@ -67,6 +70,11 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.GUARD.get(), GuardEntity.createAttributes().build());
         event.put(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardEntity.createAttributes().build());
         event.put(EntityRegistry.PLAYER_ILLUSION.get(), HeavyGuardEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void gatherData(GatherDataEvent.Client event) {
+        event.createProvider(ModModelProvider::new);
     }
 
     @SubscribeEvent

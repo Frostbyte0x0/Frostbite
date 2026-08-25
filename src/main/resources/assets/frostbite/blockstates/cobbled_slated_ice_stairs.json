@@ -83,8 +83,7 @@
       "apply": {
         "model": "frostbite:block/cobbled_slated_ice_stairs_outer",
         "uvlock": true,
-        "x": 180,
-        "y": 270
+        "x": 180
       },
       "when": {
         "facing": "east",
@@ -109,7 +108,7 @@
       "apply": {
         "model": "frostbite:block/cobbled_slated_ice_stairs",
         "uvlock": true,
-        "x": 270
+        "x": 180
       },
       "when": {
         "facing": "east",
@@ -327,7 +326,7 @@
         "model": "frostbite:block/cobbled_slated_ice_stairs_outer",
         "uvlock": true,
         "x": 180,
-        "y": 180
+        "y": 90
       },
       "when": {
         "facing": "south",

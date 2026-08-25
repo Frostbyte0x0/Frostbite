@@ -45,8 +45,8 @@ import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
-import org.exodusstudio.frostbite.common.util.TargetingEntity;
-import org.exodusstudio.frostbite.common.util.Util;
+import org.exodusstudio.frostbite.common.mixinterfaces.TargetingEntity;
+import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -322,7 +322,7 @@ public class MonkEntity extends Monster implements TargetingEntity { // TODO: ch
         Vec3 vec33 = vec3.add(vec32.scale(getSwirlLength()));
 
         Vector3f add = vec32.toVector3f()
-                .rotate(Util.getRotationQuaternionAroundVector(getSwirlLength() * 2, vec32)).mul(0.75f);
+                .rotate(Vec3Helper.getRotationQuaternionAroundVector(getSwirlLength() * 2, vec32)).mul(0.75f);
 
         Vec3 vec34 = vec33.add(
                 add.x,

@@ -16,16 +16,13 @@ public class CreativeModeTabRegistry {
                 .title(Component.translatable("itemGroup.frostbite.frostbite_tab"))
                 .icon(() -> new ItemStack(ItemRegistry.FROSTBITTEN_GEM.get()))
                 .displayItems(((_, output) -> {
-                    output.accept(ItemRegistry.ADVANCED_CLOCK);
                     output.accept(ItemRegistry.LAST_STAND);
-                    output.accept(ItemRegistry.METAL_COG);
 
                     output.accept(BlockRegistry.REINFORCED_BLACK_ICE);
                     output.accept(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE);
                     output.accept(ItemRegistry.FROSTBITTEN_GEM);
                     output.accept(ItemRegistry.STARSEEKING_COMPASS);
 
-                    output.accept(BlockRegistry.PERMAFROZEN_DIRT);
                     output.accept(BlockRegistry.SLATED_ICE);
                     output.accept(BlockRegistry.COBBLED_SLATED_ICE);
                     output.accept(BlockRegistry.COBBLED_SLATED_ICE_STAIRS);
@@ -46,7 +43,27 @@ public class CreativeModeTabRegistry {
                     output.accept(BlockRegistry.CHISELED_SLATED_ICE);
                     output.accept(BlockRegistry.ORNATE_SLATED_ICE);
                     output.accept(BlockRegistry.SLATED_ICE_PILLAR);
+
                     output.accept(BlockRegistry.SLATED_SNOW);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW_STAIRS);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW_SLAB);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW_WALL);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW_STAIRS);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW_SLAB);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW_WALL);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICKS);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICK_STAIRS);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICK_SLAB);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICK_WALL);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILES);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILE_STAIRS);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILE_SLAB);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILE_WALL);
+                    output.accept(BlockRegistry.CHISELED_SLATED_SNOW);
+                    output.accept(BlockRegistry.ORNATE_SLATED_SNOW);
+                    output.accept(BlockRegistry.SLATED_SNOW_PILLAR);
 
                     output.accept(BlockRegistry.MARBLE);
                     output.accept(BlockRegistry.MARBLE_BRICKS);
@@ -238,6 +255,12 @@ public class CreativeModeTabRegistry {
                     output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
                     output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);
                     output.accept(BlockRegistry.BIG_HEATER_BLOCK);
+
+                    output.accept(BlockRegistry.GUARDING_RUNE);
+                    output.accept(BlockRegistry.CHALLENGE_RUNE);
+
+                    output.accept(BlockRegistry.BRAZIER);
+                    output.accept(BlockRegistry.SOUL_BRAZIER);
 
                     ItemRegistry.CONTRACT_FRAGMENTS.values().forEach(output::accept);
                 })).build());

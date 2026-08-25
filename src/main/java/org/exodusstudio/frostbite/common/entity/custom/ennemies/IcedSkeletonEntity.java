@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.util.TemperatureEntity;
+import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 
 import java.util.function.Predicate;
 

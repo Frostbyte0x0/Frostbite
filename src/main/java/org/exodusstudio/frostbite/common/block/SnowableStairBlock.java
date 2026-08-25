@@ -46,10 +46,6 @@ public class SnowableStairBlock extends StairBlock {
     protected BlockState updateShape(BlockState state, LevelReader reader, ScheduledTickAccess access, BlockPos pos, Direction dir, BlockPos pos1, BlockState state1, RandomSource source) {
         BlockState s = getState(reader, pos);
 
-        if (reader.getBlockState(pos.above()).is(Blocks.SNOW) && reader instanceof Level level && s.getValue(HALF).equals(Half.BOTTOM)) {
-            s = s.setValue(SNOWY, true);
-            level.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), 2);
-        }
         return super.updateShape(state, reader, access, pos, dir, pos1, state1, source)
                 .setValue(SNOWY, s.getValue(SNOWY))
                 .setValue(BOTTOM, s.getValue(BOTTOM));
@@ -68,6 +64,12 @@ public class SnowableStairBlock extends StairBlock {
 
     public BlockState getState(LevelReader reader, BlockPos pos) {
         BlockState state = reader.getBlockState(pos).is(this) ? reader.getBlockState(pos) : defaultBlockState();
+
+        if (reader.getBlockState(pos.above()).is(Blocks.SNOW) && reader instanceof Level level && state.getValue(HALF).equals(Half.BOTTOM)) {
+            state = state.setValue(SNOWY, true);
+            level.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), 2);
+        }
+
         return state
                 .setValue(SNOWY, reader.getBlockState(pos).getValueOrElse(SNOWY, false))
                 .setValue(BOTTOM, !reader.getBlockState(pos.above()).isAir());

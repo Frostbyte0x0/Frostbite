@@ -15,11 +15,10 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.entity.goals.*;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.util.Ownable;
+import org.exodusstudio.frostbite.common.mixinterfaces.Ownable;
+import org.exodusstudio.frostbite.common.util.helpers.ParticleHelper;
 
 import javax.annotation.Nullable;
-
-import static org.exodusstudio.frostbite.common.util.Util.spawnParticleRandomly;
 
 public class HailcoilEntity extends Monster implements Ownable {
     private boolean hasLimitedLife;
@@ -141,7 +140,7 @@ public class HailcoilEntity extends Monster implements Ownable {
         }
 
         if (this.getRandom().nextBoolean()) {
-            spawnParticleRandomly(this, ParticleTypes.SOUL, 0.2, 0.055);
+            ParticleHelper.spawnParticleRandomly(this, ParticleTypes.SOUL, 0.2, 0.055);
         } else {
             double d0 = this.getX() + (0.5D - this.getRandom().nextDouble()) * 0.2;
             double d1 = this.getY() + (0.5D - this.getRandom().nextDouble()) * 0.2;
@@ -156,7 +155,7 @@ public class HailcoilEntity extends Monster implements Ownable {
         }
 
         if (this.tickCount % 10 == 0) {
-            spawnParticleRandomly(this, ParticleTypes.FALLING_HONEY, 0.5, 0);
+            ParticleHelper.spawnParticleRandomly(this, ParticleTypes.FALLING_OBSIDIAN_TEAR, 0.5, 0);
         }
     }
 }

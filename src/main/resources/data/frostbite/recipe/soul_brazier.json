@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:iron",
+    "C": "minecraft:soul_campfire"
+  },
+  "pattern": [
+    "ICI",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:soul_brazier"
+  }
+}
