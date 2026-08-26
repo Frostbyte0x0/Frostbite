@@ -47,7 +47,7 @@ public class AttachmentRegistry {
     public static final Supplier<AttachmentType<Map<String, BlockPos>>> MAP_STRING_BLOCK_POS = ATTACHMENT_TYPES.register(
             "map_string_block_pos", () -> AttachmentType.builder(() -> (Map<String, BlockPos>) new HashMap<String, BlockPos>())
                     .sync(MAP_STRING_BLOCK_POS_STREAM_CODEC)
-                    .serialize(Codec.unboundedMap(Codec.STRING, BlockPos.CODEC).fieldOf("map_string_block_pos"))
+                    .serialize(Codec.unboundedMap(Codec.STRING, BLOCK_POS_CODEC).fieldOf("map_string_block_pos"))
                     .build());
 
     public static final Supplier<AttachmentType<Map<String, Boolean>>> MAP_STRING_BOOLEAN = ATTACHMENT_TYPES.register(
@@ -59,7 +59,7 @@ public class AttachmentRegistry {
     public static final Supplier<AttachmentType<Map<BlockPos, Map<String, Float>>>> MAP_BLOCK_POS_MAP_STRING_FLOAT = ATTACHMENT_TYPES.register(
             "map_block_pos_map_string_string", () -> AttachmentType.builder(() -> (Map<BlockPos, Map<String, Float>>) new HashMap<BlockPos, Map<String, Float>>())
                     .sync(MAP_BLOCK_POS_MAP_STRING_FLOAT_STREAM_CODEC)
-                    .serialize(Codec.unboundedMap(BlockPos.CODEC, Codec.unboundedMap(Codec.STRING, Codec.FLOAT)).fieldOf("map_block_pos_map_string_string"))
+                    .serialize(Codec.unboundedMap(BLOCK_POS_CODEC, Codec.unboundedMap(Codec.STRING, Codec.FLOAT)).fieldOf("map_block_pos_map_string_string"))
                     .build());
 
     public static final Supplier<AttachmentType<Map<String, List<PseudoEntity>>>> PSEUDO_ENTITIES = ATTACHMENT_TYPES.register(
@@ -71,12 +71,12 @@ public class AttachmentRegistry {
     public static final Supplier<AttachmentType<Map<BlockPos, String>>> ADDED_BOSSES = ATTACHMENT_TYPES.register(
             "added_bosses", () -> AttachmentType.builder(() -> (Map<BlockPos, String>) new HashMap<BlockPos, String>())
                     .sync(MAP_BLOCK_POS_STRING_STREAM_CODEC)
-                    .serialize(Codec.unboundedMap(BlockPos.CODEC, Codec.STRING).fieldOf("added_bosses"))
+                    .serialize(Codec.unboundedMap(BLOCK_POS_CODEC, Codec.STRING).fieldOf("added_bosses"))
                     .build());
     public static final Supplier<AttachmentType<Map<BlockPos, String>>> BOSSES_TO_ADD = ATTACHMENT_TYPES.register(
             "bosses_to_add", () -> AttachmentType.builder(() -> (Map<BlockPos, String>) new HashMap<BlockPos, String>())
                     .sync(MAP_BLOCK_POS_STRING_STREAM_CODEC)
-                    .serialize(Codec.unboundedMap(BlockPos.CODEC, Codec.STRING).fieldOf("bosses_to_add"))
+                    .serialize(Codec.unboundedMap(BLOCK_POS_CODEC, Codec.STRING).fieldOf("bosses_to_add"))
                     .build());
 
     public static final Supplier<AttachmentType<LivingContractInfo>> LIVING_CONTRACT_INFO = ATTACHMENT_TYPES.register(

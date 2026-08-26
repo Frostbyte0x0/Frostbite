@@ -65,6 +65,29 @@ public class CodecHelper {
         }
     };
 
+    public static final Codec<BlockPos> BLOCK_POS_CODEC = new Codec<>() {
+        @Override
+        public <T> DataResult<Pair<BlockPos, T>> decode(DynamicOps<T> ops, T input) {
+            return ops.getStringValue(input).flatMap(s -> {
+                try {
+                    List<Integer> ints = new ArrayList<>(Arrays.stream(s.split(",")).map(Integer::parseInt).toList());
+                    return DataResult.success(Pair.of(new BlockPos(ints.getFirst(), ints.get(1), ints.get(2)), input));
+                } catch (IllegalArgumentException e) {
+                    return DataResult.error(() -> "Invalid BlockPos string: " + s);
+                }
+            });
+        }
+
+        @Override
+        public <T> DataResult<T> encode(BlockPos pos, DynamicOps<T> ops, T prefix) {
+            return ops.mergeToPrimitive(prefix, ops.createString(
+                    pos.getX() + "," +
+                    pos.getY() + "," +
+                    pos.getZ()
+            ));
+        }
+    };
+
     public static final Codec<Pair<String, Long>> LONG_STRING_PAIR_CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<Pair<String, Long>, T>> decode(DynamicOps<T> ops, T input) {

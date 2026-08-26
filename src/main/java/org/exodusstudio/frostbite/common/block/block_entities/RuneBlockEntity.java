@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class RuneBlockEntity extends BlockEntity {
     private static final RandomSource random = RandomSource.create();
-    private static final int WIDTH = 10;
+    private static final int RADIUS = 30;
     private static final int HEIGHT = 5;
     private static final Set<EntityType<? extends Monster>> ALLIES = new HashSet<>(){{
         add(EntityRegistry.ICED_ZOMBIE.get());
@@ -54,11 +54,8 @@ public class RuneBlockEntity extends BlockEntity {
     public int maxHealth;
     public Set<Vec3> allyPositions = new HashSet<>();
 
-//    public final boolean isGuardingRune;
-
     public RuneBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.RUNE.get(), pos, blockState);
-//        this.isGuardingRune = isGuardingRune;
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, RuneBlockEntity blockEntity) {
@@ -90,18 +87,18 @@ public class RuneBlockEntity extends BlockEntity {
 
         Vec3 c = Vec3.atCenterOf(pos);
         AABB aabb = new AABB(
-                c.x - WIDTH / 2f,
+                c.x - RADIUS,
                 c.y - HEIGHT / 2f,
-                c.z - WIDTH / 2f,
-                c.x + WIDTH / 2f,
+                c.z - RADIUS,
+                c.x + RADIUS,
                 c.y + HEIGHT / 2f,
-                c.z + WIDTH / 2f
+                c.z + RADIUS
         );
         blockEntity.allyPositions = level.getEntities((Entity) null, aabb, e -> blockEntity.getAllies().contains(e.typeHolder().value()))
                 .stream().map(Entity::position).collect(Collectors.toSet());
         DataHelper.setBlockData(level.getChunkAt(pos), pos, "allies_left", blockEntity.allyPositions.size());
 
-        if (blockEntity.allyPositions.isEmpty() && !blockEntity.isGuardingRune() && !blockEntity.isVulnerable) {
+        if (blockEntity.allyPositions.isEmpty() && !level.getBlockState(pos).is(BlockRegistry.GUARDING_RUNE) && !blockEntity.isVulnerable) {
             blockEntity.vulnerableStart = blockEntity.tickCount;
             blockEntity.isVulnerable = true;
         }
@@ -135,25 +132,13 @@ public class RuneBlockEntity extends BlockEntity {
     }
 
     public Set<EntityType<? extends Monster>> getAllies() {
-        return isGuardingRune() ? GUARDS : ALLIES;
-    }
-
-    public boolean isGuardingRune() {
-        Map<String, Float> m = DataHelper.getBlockData(level.getChunkAt(worldPosition), worldPosition);
-        return DataHelper.getBlockData(level.getChunkAt(worldPosition), worldPosition, "is_guarding_rune") == 1;
+        return level.getBlockState(worldPosition).is(BlockRegistry.GUARDING_RUNE) ? GUARDS : ALLIES;
     }
 
     @Override
     public void setLevel(Level level) {
         super.setLevel(level);
-        DataHelper.setBlockData(level.getChunkAt(worldPosition), worldPosition, "is_guarding_rune",
-                level.getBlockState(worldPosition).is(BlockRegistry.GUARDING_RUNE) ? 1 : 0);
-//        if (isGuardingRune || isGuardingRune()) {
-//            DataHelper.setBlockData(level.getChunkAt(worldPosition), worldPosition, "is_guarding_rune", 1);
-//        }
+//        DataHelper.setBlockData(level.getChunkAt(worldPosition), worldPosition, "is_guarding_rune",
+//                level.getBlockState(worldPosition).is(BlockRegistry.GUARDING_RUNE) ? 1 : 0);
     }
-
-    // Detect entities in set radius
-    // If none detected, become vulnerable
-    //     If Challenge: start timer and summon entities and the end and stop vulnerable
 }
