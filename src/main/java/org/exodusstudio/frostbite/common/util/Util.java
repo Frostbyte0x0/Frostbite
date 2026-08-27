@@ -318,6 +318,12 @@ public class Util {
                itemStack.is(Items.ROTTEN_FLESH);
     }
 
+    public static boolean isSnowy(Item item) {
+        return item.equals(Items.SNOW) ||
+                item.equals(Items.SNOWBALL) ||
+                item.equals(Items.SNOW_BLOCK);
+    }
+
     public static Optional<Level> getLevel(ResourceKey<Level> level) {
         return Optional.ofNullable(Frostbite.SERVER.getLevel(level));
     }

@@ -76,7 +76,7 @@ public class GuardEntity extends StateMonsterEntity {
         super.readAdditionalSaveData(input);
         boolean isAwake = input.getBooleanOr("isAwake", false);
         if (isAwake) {
-            this.entityData.set(DATA_STATE, "idle");
+            setIdle();
         }
     }
 

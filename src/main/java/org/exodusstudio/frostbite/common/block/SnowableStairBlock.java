@@ -51,17 +51,6 @@ public class SnowableStairBlock extends StairBlock {
                 .setValue(BOTTOM, s.getValue(BOTTOM));
     }
 
-    @Override
-    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (isSnowy(itemStack.getItem()) && state.getValue(HALF).equals(Half.BOTTOM)) {
-            state = state.setValue(SNOWY, true);
-            itemStack.consume(1, player);
-        }
-        level.setBlock(pos, state, 2);
-        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
-        return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);
-    }
-
     public BlockState getState(LevelReader reader, BlockPos pos) {
         BlockState state = reader.getBlockState(pos).is(this) ? reader.getBlockState(pos) : defaultBlockState();
 

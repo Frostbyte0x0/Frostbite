@@ -23,6 +23,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
@@ -48,9 +50,7 @@ import org.exodusstudio.frostbite.client.codex.entries.ListCodexEntry;
 import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
-import org.exodusstudio.frostbite.common.block.BrazierBlock;
-import org.exodusstudio.frostbite.common.block.RuneBlock;
-import org.exodusstudio.frostbite.common.block.RuneLootLevel;
+import org.exodusstudio.frostbite.common.block.*;
 import org.exodusstudio.frostbite.common.block.block_entities.RuneBlockEntity;
 import org.exodusstudio.frostbite.common.commands.GiveFragmentCommand;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
@@ -74,6 +74,7 @@ import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
 import java.util.*;
 
+import static net.minecraft.world.level.block.SnowyBlock.SNOWY;
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
 @EventBusSubscriber(modid = Frostbite.MOD_ID)
@@ -368,6 +369,21 @@ public class ModEvents {
                 state.getBlock() instanceof BrazierBlock) {
             level.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 2);
 
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.FAIL);
+        }
+
+        if (Util.isSnowy(stack.getItem()) &&
+                (state.getBlock() instanceof SnowableSlabBlock &&
+                state.getValue(SnowableSlabBlock.TYPE).equals(SlabType.BOTTOM)) ||
+                (state.getBlock() instanceof SnowableStairBlock &&
+                state.getValue(SnowableStairBlock.HALF).equals(Half.BOTTOM)) ||
+                state.getBlock() instanceof SnowableWallBlock
+        ) {
+            state = state.setValue(SNOWY, true);
+            stack.consume(1, player);
+            level.setBlock(pos, state, 2);
+            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.FAIL);
         }

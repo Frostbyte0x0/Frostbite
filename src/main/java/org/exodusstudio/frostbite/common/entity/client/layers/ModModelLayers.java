@@ -24,6 +24,8 @@ public class ModModelLayers {
 
     public static final ModelLayerLocation LEVITATING_JELLYFISH = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "levitating_jellyfish"), "main");
+    public static final ModelLayerLocation BIG_LEVITATING_JELLYFISH = new ModelLayerLocation(
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "big_levitating_jellyfish"), "main");
 
     public static final ModelLayerLocation FERAL_WOLF = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "feral_wolf"), "main");
@@ -83,29 +85,24 @@ public class ModModelLayers {
     public static final ModelLayerLocation MONK = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "monk"), "main");
 
-    public static final ModelLayerLocation BIG_LEVITATING_JELLYFISH = new ModelLayerLocation(
-            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "big_levitating_jellyfish"), "main");
-
     public static final ModelLayerLocation SHAMAN = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "shaman"), "main");
 
     public static final ModelLayerLocation ETHEREAL_SWORD = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_sword"), "main");
-
     public static final ModelLayerLocation ETHEREAL_HANDS = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hands"), "main");
-
     public static final ModelLayerLocation ETHEREAL_HAMMER = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hammer"), "main");
 
     public static final ModelLayerLocation GUARD = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "guard"), "main");
-
     public static final ModelLayerLocation CHIEF_GUARD = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chief_guard"), "main");
-
     public static final ModelLayerLocation HEAVY_GUARD = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "heavy_guard"), "main");
+    public static final ModelLayerLocation RANGED_GUARD = new ModelLayerLocation(
+            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ranged_guard"), "main");
 
     public static final ModelLayerLocation CURSE_BALL = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "curse_ball"), "main");

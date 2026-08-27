@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class RuneBlockEntity extends BlockEntity {
     private static final RandomSource random = RandomSource.create();
-    private static final int RADIUS = 30;
+    private static final int RADIUS = 15;
     private static final int HEIGHT = 5;
     private static final Set<EntityType<? extends Monster>> ALLIES = new HashSet<>(){{
         add(EntityRegistry.ICED_ZOMBIE.get());
@@ -43,6 +43,7 @@ public class RuneBlockEntity extends BlockEntity {
         add(EntityRegistry.GUARD.get());
         add(EntityRegistry.CHIEF_GUARD.get());
         add(EntityRegistry.HEAVY_GUARD.get());
+        add(EntityRegistry.RANGED_GUARD.get());
     }};
 
     public int tickCount;
@@ -53,6 +54,7 @@ public class RuneBlockEntity extends BlockEntity {
     public boolean isVulnerable;
     public int maxHealth;
     public Set<Vec3> allyPositions = new HashSet<>();
+
 
     public RuneBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.RUNE.get(), pos, blockState);
@@ -95,7 +97,7 @@ public class RuneBlockEntity extends BlockEntity {
                 c.z + RADIUS
         );
         blockEntity.allyPositions = level.getEntities((Entity) null, aabb, e -> blockEntity.getAllies().contains(e.typeHolder().value()))
-                .stream().map(Entity::position).collect(Collectors.toSet());
+                .stream().map(Entity::position).filter(e -> e.distanceTo(c) < RADIUS).collect(Collectors.toSet());
         DataHelper.setBlockData(level.getChunkAt(pos), pos, "allies_left", blockEntity.allyPositions.size());
 
         if (blockEntity.allyPositions.isEmpty() && !level.getBlockState(pos).is(BlockRegistry.GUARDING_RUNE) && !blockEntity.isVulnerable) {
@@ -132,13 +134,6 @@ public class RuneBlockEntity extends BlockEntity {
     }
 
     public Set<EntityType<? extends Monster>> getAllies() {
-        return level.getBlockState(worldPosition).is(BlockRegistry.GUARDING_RUNE) ? GUARDS : ALLIES;
-    }
-
-    @Override
-    public void setLevel(Level level) {
-        super.setLevel(level);
-//        DataHelper.setBlockData(level.getChunkAt(worldPosition), worldPosition, "is_guarding_rune",
-//                level.getBlockState(worldPosition).is(BlockRegistry.GUARDING_RUNE) ? 1 : 0);
+        return getLevel().getBlockState(worldPosition).is(BlockRegistry.GUARDING_RUNE) ? GUARDS : ALLIES;
     }
 }

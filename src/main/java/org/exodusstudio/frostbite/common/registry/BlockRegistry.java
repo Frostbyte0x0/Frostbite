@@ -465,11 +465,11 @@ public class BlockRegistry {
 
     public static final DeferredBlock<Block> GUARDING_RUNE = registerBlock("guarding_rune",
             () -> new GuardingRuneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
-                    .strength(-1)
+                    .strength(-1, 1200)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "guarding_rune")))));
     public static final DeferredBlock<Block> CHALLENGE_RUNE = registerBlock("challenge_rune",
             () -> new ChallengeRuneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
-                    .strength(-1)
+                    .strength(-1, 1200)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "challenge_rune")))));
 
     public static final DeferredBlock<Block> BRAZIER = registerBlock("brazier",

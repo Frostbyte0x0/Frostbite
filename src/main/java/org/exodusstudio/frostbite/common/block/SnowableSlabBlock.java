@@ -44,17 +44,6 @@ public class SnowableSlabBlock extends SlabBlock {
                 .setValue(SNOWY, s.getValue(SNOWY));
     }
 
-    @Override
-    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (isSnowy(itemStack.getItem()) && state.getValue(TYPE).equals(SlabType.BOTTOM)) {
-            state = state.setValue(SNOWY, true);
-            itemStack.consume(1, player);
-        }
-        level.setBlock(pos, state, 2);
-        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
-        return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);
-    }
-
     public BlockState getState(LevelReader reader, BlockPos pos) {
         BlockState state = reader.getBlockState(pos).is(this) ? reader.getBlockState(pos) : defaultBlockState();
 
@@ -71,11 +60,5 @@ public class SnowableSlabBlock extends SlabBlock {
         BlockState s = getState(context.getLevel(), context.getClickedPos());
         return super.getStateForPlacement(context)
                 .setValue(SNOWY, s.getValue(SNOWY));
-    }
-
-    public static boolean isSnowy(Item item) {
-        return item.equals(Items.SNOW) ||
-                item.equals(Items.SNOWBALL) ||
-                item.equals(Items.SNOW_BLOCK);
     }
 }

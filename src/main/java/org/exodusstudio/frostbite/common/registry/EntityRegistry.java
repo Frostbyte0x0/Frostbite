@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
+import org.exodusstudio.frostbite.common.entity.custom.guards.RangedGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
@@ -319,6 +320,12 @@ public class EntityRegistry {
                     .sized(0.75F, 2.34F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "heavy_guard"))));
+    public static final Supplier<EntityType<RangedGuardEntity>> RANGED_GUARD =
+            ENTITY_TYPES.register("ranged_guard", () -> EntityType.Builder
+                    .of(RangedGuardEntity::new, MobCategory.AMBIENT)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ranged_guard"))));
 
     public static final Supplier<EntityType<CurseBallEntity>> CURSE_BALL =
             ENTITY_TYPES.register("curse_ball", () -> EntityType.Builder

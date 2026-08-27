@@ -31,6 +31,7 @@ import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
 import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.guards.HeavyGuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.RangedGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
@@ -69,6 +70,7 @@ public class ModEventBusEvents {
         event.put(EntityRegistry.CHIEF_GUARD.get(), ChiefGuardEntity.createAttributes().build());
         event.put(EntityRegistry.GUARD.get(), GuardEntity.createAttributes().build());
         event.put(EntityRegistry.HEAVY_GUARD.get(), HeavyGuardEntity.createAttributes().build());
+        event.put(EntityRegistry.RANGED_GUARD.get(), RangedGuardEntity.createAttributes().build());
         event.put(EntityRegistry.PLAYER_ILLUSION.get(), HeavyGuardEntity.createAttributes().build());
     }
 
