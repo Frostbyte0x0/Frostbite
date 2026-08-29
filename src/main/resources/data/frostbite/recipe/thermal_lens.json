@@ -2,15 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": "frostbite:metal_cog"
+    "I": "frostbite:ice_shard",
+    "S": "minecraft:spyglass"
   },
   "pattern": [
-    "MMM",
-    "MMM",
-    "MMM"
+    "III",
+    "ISI",
+    "III"
   ],
   "result": {
     "count": 1,
-    "id": "frostbite:black_block"
+    "id": "frostbite:thermal_lens"
   }
 }

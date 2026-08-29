@@ -9,7 +9,7 @@
     {
       "conditions": [
         {
-          "block": "minecraft:chilli_pepper_plant",
+          "block": "frostbite:chilli_pepper_plant",
           "condition": "minecraft:block_state_property",
           "properties": {
             "age": "3"
@@ -19,7 +19,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:chilli_pepper"
+          "name": "frostbite:chilli_pepper"
         }
       ],
       "functions": [
@@ -45,7 +45,7 @@
     {
       "conditions": [
         {
-          "block": "minecraft:chilli_pepper_plant",
+          "block": "frostbite:chilli_pepper_plant",
           "condition": "minecraft:block_state_property",
           "properties": {
             "age": "2"
@@ -55,7 +55,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:chilli_pepper"
+          "name": "frostbite:chilli_pepper"
         }
       ],
       "functions": [

@@ -109,19 +109,19 @@
         "type": "frostbite:boar",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 50
+        "weight": 10
       },
       {
         "type": "frostbite:bandit",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 50
+        "weight": 10
       },
       {
         "type": "frostbite:woolly_sheep",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 50
+        "weight": 10
       }
     ],
     "misc": [],

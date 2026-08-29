@@ -4,6 +4,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -56,11 +58,11 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0F)
+                .add(Attributes.MAX_HEALTH, 30)
                 .add(Attributes.MOVEMENT_SPEED, 0.3F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.6F)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.0F)
-                .add(Attributes.ATTACK_DAMAGE, 5.0F);
+                .add(Attributes.ATTACK_KNOCKBACK, 1)
+                .add(Attributes.ATTACK_DAMAGE, 2);
     }
 
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -124,8 +126,7 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
 
     @Override
     public boolean doHurtTarget(ServerLevel serverLevel, Entity entity) {
-        entity.hurtServer(serverLevel, this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        entity.push(entity.getX() - this.getX(), (entity.getY() - this.getY()) * 0.2f, entity.getZ() - this.getZ());
+
         return true;
     }
 
@@ -173,26 +174,23 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
                 boar.getNavigation().moveTo(target, 1.0D);
                 chargeCooldown--;
 
-                if (boar.distanceToSqr(target) < 6.0D
+                if (boar.distanceToSqr(target) < 6 && boar.distanceToSqr(target) > 2
                         && boar.getSensing().hasLineOfSight(target) && chargeCooldown <= 0) {
                     isCharging = true;
                     chargeCooldown = 20;
                     chargeOrigin = boar.position();
-                    boar.push((target.getX() - boar.getX()) * 0.8f, (target.getY() - boar.getY()) * 0.2f, (target.getZ() - boar.getZ()) * 0.8f);
+                    boar.push(
+                            (target.getX() - boar.getX()) * 0.4f,
+                            (target.getY() - boar.getY()) * 0.2f,
+                            (target.getZ() - boar.getZ()) * 0.4f);
+                    target.hurtServer(getServerLevel(boar), boar.damageSources().mobAttack(boar), (float) boar.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    target.push(
+                            (target.getX() - boar.getX()) * 0.4f,
+                            (target.getY() - boar.getY()) * 0.2f,
+                            (target.getZ() - boar.getZ()) * 0.4f);
+                    getServerLevel(boar).playSound(null, boar, SoundEvents.CAMEL_DASH,
+                            SoundSource.HOSTILE, 1, 0.8f + boar.random.nextFloat() * 0.2f);
                 }
-
-
-
-//                if (isCharging) {
-//                    if (boar.isWithinMeleeAttackRange((LivingEntity) target)) {
-//                        boar.doHurtTarget((ServerLevel) boar.level(), target);
-//                        isCharging = false;
-//                    } else {
-//                        if (boar.tickCount % 20 == 0) {
-//                            boar.getNavigation().moveTo(target, 2D);
-//                        }
-//                    }
-//                }
 
                 if (isCharging) {
                     if (boar.isWithinMeleeAttackRange((LivingEntity) target)) {

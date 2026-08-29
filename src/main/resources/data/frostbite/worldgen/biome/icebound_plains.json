@@ -102,13 +102,13 @@
         "type": "frostbite:boar",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 30
+        "weight": 10
       },
       {
         "type": "frostbite:woolly_sheep",
         "maxCount": 4,
         "minCount": 4,
-        "weight": 30
+        "weight": 10
       }
     ],
     "misc": [],
@@ -139,5 +139,5 @@
       }
     ]
   },
-  "temperature": 0.4
+  "temperature": -0.5
 }

@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "frostbite:black_block"
+          "name": "frostbite:ice_shard"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "frostbite:blocks/black_block"
+  "random_sequence": "frostbite:blocks/ice_core"
 }
