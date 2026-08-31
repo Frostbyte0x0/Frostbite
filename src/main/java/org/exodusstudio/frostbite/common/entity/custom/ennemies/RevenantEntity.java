@@ -4,16 +4,15 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -23,7 +22,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
+import org.jetbrains.annotations.Nullable;
 
 public class RevenantEntity extends Monster {
     private static final EntityDataAccessor<Boolean> DATA_IS_RECOVERING =
@@ -44,6 +43,9 @@ public class RevenantEntity extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.2, true) {
+            public boolean canUse() {return super.canUse() && mob instanceof RevenantEntity r && !r.isRecovering();}
+        });
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -62,10 +64,10 @@ public class RevenantEntity extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 35)
+                .add(Attributes.MAX_HEALTH, 40)
                 .add(Attributes.FOLLOW_RANGE, 10)
-                .add(Attributes.ATTACK_DAMAGE, 6)
-                .add(Attributes.MOVEMENT_SPEED, 0.2);
+                .add(Attributes.ATTACK_DAMAGE, 10)
+                .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -83,12 +85,19 @@ public class RevenantEntity extends Monster {
     }
 
     @Override
+    public void aiStep() {
+//        if (!isRecovering() && !isRising()) {
+            super.aiStep();
+//        }
+    }
+
+    @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-        if (amount < 3.4E38) {
-            if (this.isRecovering() && !isAttackedWithSilverStake(source)) {
+        if (amount < 3.4E38 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            if (this.isRecovering() && !isDamageableAttack(source)) {
                 return false;
             }
-            if (amount > getHealth() && !isAttackedWithSilverStake(source)) {
+            if (amount > getHealth() && !isDamageableAttack(source)) {
                 setHealth(1);
                 return false;
             }
@@ -98,7 +107,7 @@ public class RevenantEntity extends Monster {
 
     @Override
     public boolean hurtClient(DamageSource damageSource) {
-        if (this.isRecovering() && !isAttackedWithSilverStake(damageSource)) {
+        if (this.isRecovering() && !isDamageableAttack(damageSource)) {
             return false;
         }
         return super.hurtClient(damageSource);
@@ -107,6 +116,10 @@ public class RevenantEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
+
+        if (!isRecovering() && !isRising()) {
+            setDeltaMovement(0, getDeltaMovement().y, 0);
+        }
 
         if (getHealth() <= 1) {
             setRecovering(true);
@@ -140,10 +153,26 @@ public class RevenantEntity extends Monster {
             }
             setRecoveringTicks(0);
         }
+    }
 
-        if (dead) {
-            this.discard();
-        }
+    @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return SoundEvents.ZOMBIE_AMBIENT;
+    }
+
+    @Override
+    protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ZOMBIE_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ZOMBIE_DEATH;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return random.nextFloat() * 0.4f + 0.6f;
     }
 
     public boolean isRecovering() {
@@ -188,8 +217,7 @@ public class RevenantEntity extends Monster {
         return false;
     }
 
-    private boolean isAttackedWithSilverStake(DamageSource source) {
-        Entity entity = source.getEntity();
-        return entity != null && entity.getWeaponItem() != null && entity.getWeaponItem().is(ItemRegistry.SILVER_STAKE);
+    private boolean isDamageableAttack(DamageSource source) {
+        return source.is(DamageTypeTags.IS_FIRE);
     }
 }

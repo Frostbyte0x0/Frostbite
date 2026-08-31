@@ -46,7 +46,7 @@ public class SpecterRenderer extends MobRenderer<SpecterEntity, SpecterRenderSta
     @Override
     public void extractRenderState(SpecterEntity specter, SpecterRenderState state, float partialTick) {
         super.extractRenderState(specter, state, partialTick);
-        state.isTransparent = specter.isTransparent();
+        state.isTransparent = !specter.getState().equals("attacking");
     }
 
     @Override

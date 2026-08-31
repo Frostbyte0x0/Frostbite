@@ -4,11 +4,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -47,7 +49,6 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(4, new ChargeTowardsTargetGoal(this));
-        //this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0F, true));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0F));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
@@ -75,6 +76,26 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         this.addPersistentAngerSaveData(output);
+    }
+
+    @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return SoundEvents.PIGLIN_AMBIENT;
+    }
+
+
+    @Override
+    protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.PIGLIN_BRUTE_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.PIGLIN_BRUTE_DEATH;
+    }
+    @Override
+    public float getVoicePitch() {
+        return random.nextFloat() * 0.4f + 0.6f;
     }
 
     @Override

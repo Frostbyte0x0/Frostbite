@@ -4,6 +4,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,18 +22,15 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.exodusstudio.frostbite.common.entity.goals.FlyingMoveControl;
 import org.exodusstudio.frostbite.common.entity.goals.FlyingRandomMoveGoal;
-import org.exodusstudio.frostbite.common.entity.goals.SpecterDashAttackGoal;
+import org.exodusstudio.frostbite.common.entity.goals.SpecterBackAwayAndDashAttackGoal;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
+import org.jetbrains.annotations.Nullable;
 
 public class SpecterEntity extends Monster {
-    private static final EntityDataAccessor<Boolean> DATA_IS_TRANSPARENT =
-            SynchedEntityData.defineId(SpecterEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_IS_ATTACKING =
-            SynchedEntityData.defineId(SpecterEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<String> DATA_STATE =
+            SynchedEntityData.defineId(SpecterEntity.class, EntityDataSerializers.STRING);
 
     public SpecterEntity(EntityType<? extends Monster> ignored, Level level) {
         super(EntityRegistry.SPECTER.get(), level);
@@ -41,7 +40,7 @@ public class SpecterEntity extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(4, new SpecterDashAttackGoal(this, 0.1f));
+        this.goalSelector.addGoal(4, new SpecterBackAwayAndDashAttackGoal(this, 0.1f));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new FlyingRandomMoveGoal(this, 0.15f));
@@ -52,6 +51,7 @@ public class SpecterEntity extends Monster {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 30)
+                .add(Attributes.ATTACK_DAMAGE, 3)
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.MOVEMENT_SPEED, 0.15);
     }
@@ -59,20 +59,7 @@ public class SpecterEntity extends Monster {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_IS_TRANSPARENT, false);
-        builder.define(DATA_IS_ATTACKING, false);
-    }
-
-    @Override
-    protected void readAdditionalSaveData(ValueInput input) {
-        super.readAdditionalSaveData(input);
-        setTransparent(input.getBooleanOr("isTransparent", false));
-    }
-
-    @Override
-    protected void addAdditionalSaveData(ValueOutput output) {
-        super.addAdditionalSaveData(output);
-        output.putBoolean("isTransparent", isTransparent());
+        builder.define(DATA_STATE, "idle");
     }
 
     @Override
@@ -86,37 +73,48 @@ public class SpecterEntity extends Monster {
             setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y + 0.03, getDeltaMovement().z);
         }
 
-        setTransparent(!isAttacking());
+        setDeltaMovement(getDeltaMovement().x * 0.92, getDeltaMovement().y * 0.92, getDeltaMovement().z * 0.92);
 
-        //this.setPos(this.getX() + getDeltaMovement().x, this.getY() + getDeltaMovement().y, this.getZ() + getDeltaMovement().z);
-//
-//        if (tickCount % 20 == 0) {
-//            setTransparent(!isTransparent());
+//        if (getTarget() != null && distanceTo(getTarget()) < 3 && isTransparent() && !isBackingAway()) {
+//            setBackingAway(true);
 //        }
     }
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource damageSource, float damage) {
-        if (isTransparent() && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (!getState().equals("attacking") && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
         }
+        setState("backing");
         return super.hurtServer(level, damageSource, damage);
     }
 
-    public boolean isTransparent() {
-        return this.entityData.get(DATA_IS_TRANSPARENT);
+    @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return SoundEvents.BOGGED_AMBIENT;
     }
 
-    public void setTransparent(boolean transparent) {
-        this.entityData.set(DATA_IS_TRANSPARENT, transparent);
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.BOGGED_HURT;
     }
 
-    public boolean isAttacking() {
-        return this.entityData.get(DATA_IS_ATTACKING);
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.BOGGED_DEATH;
     }
 
-    public void setAttacking(boolean attacking) {
-        this.entityData.set(DATA_IS_ATTACKING, attacking);
+    @Override
+    public float getVoicePitch() {
+        return random.nextFloat() * 0.3f + 0.25f;
+    }
+
+    public String getState() {
+        return this.entityData.get(DATA_STATE);
+    }
+
+    public void setState(String state) {
+        this.entityData.set(DATA_STATE, state);
     }
 
     @Override

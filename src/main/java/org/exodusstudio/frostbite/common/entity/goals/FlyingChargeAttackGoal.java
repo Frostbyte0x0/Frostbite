@@ -23,7 +23,7 @@ public class FlyingChargeAttackGoal<T extends Monster> extends Goal {
                 livingentity.isAlive() &&
                 !monster.getMoveControl().hasWanted() &&
                 monster.getRandom().nextInt(reducedTickDelay(7)) == 0 &&
-                monster.distanceToSqr(livingentity) > (double) 4.0F;
+                monster.distanceToSqr(livingentity) > 4;
     }
 
     public boolean canContinueToUse() {
