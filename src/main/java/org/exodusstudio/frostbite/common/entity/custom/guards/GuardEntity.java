@@ -4,8 +4,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -42,8 +47,10 @@ public class GuardEntity extends StateMonsterEntity {
     public GuardEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level, BLEND_TICKS);
         currentAnimationState.startIfStopped(tickCount - 2 * BLEND_TICKS);
-        setCurrentState("asleep");
-        setLastState("asleep");
+        if (!level.isClientSide()) {
+            setCurrentState("asleep");
+            setLastState("asleep");
+        }
     }
 
     @Override
@@ -54,7 +61,7 @@ public class GuardEntity extends StateMonsterEntity {
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this, GuardEntity.class, RangedGuardEntity.class, HeavyGuardEntity.class, ChiefGuardEntity.class));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
@@ -180,6 +187,33 @@ public class GuardEntity extends StateMonsterEntity {
     @Override
     public boolean isPushable() {
         return isAwake();
+    }
+
+//    @Override
+//    protected SoundEvent getAmbientSound() {
+//        return SoundEvents.PILLAGER_AMBIENT;
+//    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.IRON_GOLEM_DEATH;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.LANTERN_STEP;
+    }
+
+    @Override
+    protected void playHurtSound(DamageSource source) {
+        super.playHurtSound(source);
+        this.makeSound(this.getHurtSound(source));
+        this.makeSound(this.getHurtSound(source));
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return random.nextFloat() * 0.4f + 0.8f;
     }
 
     public boolean isAwake() {

@@ -237,7 +237,17 @@
   "item.frostbite.frozen_plating_lining_leggings": "Frozen plating lining leggings",
   "item.frostbite.frozen_plating_lining_boots": "Frozen plating lining boots",
 
-  "item.frostbite.mode_weapon.mode" : "Current mode: ",
+  "frostbite.modes.icy_breath" : "Icy Breath",
+  "frostbite.modes.spikes" : "Spikes",
+  "frostbite.modes.roaming_blizzard" : "Roaming Blizzard",
+  "frostbite.modes.hailcoil" : "Hailcoil",
+  "frostbite.modes.heal" : "Heal",
+  "frostbite.modes.blessing" : "Blessing",
+  "frostbite.modes.curse" : "Curse",
+  "frostbite.modes.ethereal" : "Ethereal",
+  "frostbite.modes.whirlpool" : "Whirlpool",
+  "frostbite.modes.left_click" : "Left click to cast",
+  "frostbite.modes.right_click" : "Right click to cycle",
 
   "effect.frostbite.twitching": "Twitching",
   "effect.frostbite.fatigue": "Fatigue",

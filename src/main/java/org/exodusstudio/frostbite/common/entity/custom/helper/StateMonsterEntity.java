@@ -21,8 +21,8 @@ public class StateMonsterEntity extends Monster implements TemperatureEntity {
     public final AnimationState lastAnimationState = new AnimationState();
     public final int BLEND_TICKS;
 
-    protected StateMonsterEntity(EntityType<? extends Monster> p_21368_, Level p_21369_, int blendTicks) {
-        super(p_21368_, p_21369_);
+    protected StateMonsterEntity(EntityType<? extends Monster> type, Level level, int blendTicks) {
+        super(type, level);
         this.BLEND_TICKS = blendTicks;
     }
 
@@ -63,8 +63,8 @@ public class StateMonsterEntity extends Monster implements TemperatureEntity {
     }
 
     public void setIdle() {
-        this.getEntityData().set(DATA_LAST_STATE, getCurrentState());
-        this.getEntityData().set(DATA_STATE, "idle");
+        this.entityData.set(DATA_LAST_STATE, getCurrentState());
+        this.entityData.set(DATA_STATE, "idle");
     }
 
     public String getCurrentState() {

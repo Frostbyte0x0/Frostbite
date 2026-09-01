@@ -2,15 +2,18 @@ package org.exodusstudio.frostbite.common.entity.client.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.monster.piglin.PiglinArmPose;
 import org.exodusstudio.frostbite.common.entity.client.animations.GuardAnimations;
-import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
+import org.exodusstudio.frostbite.common.entity.client.states.RangedGuardRenderState;
 
 import java.util.Map;
 
-public class RangedGuardModel extends StateHumanoidModel<StateRenderState> {
+public class RangedGuardModel extends StateHumanoidModel<RangedGuardRenderState> {
     private final ModelPart head;
     private final ModelPart headwear;
     private final ModelPart body;
@@ -53,7 +56,7 @@ public class RangedGuardModel extends StateHumanoidModel<StateRenderState> {
     }
 
     @Override
-    public void setupAnim(StateRenderState state) {
+    public void setupAnim(RangedGuardRenderState state) {
         super.setupAnim(state);
 
         if (state.currentState.equals("attacking") || state.currentState.equals("guarding") || state.currentState.equals("asleep")) {
@@ -68,6 +71,14 @@ public class RangedGuardModel extends StateHumanoidModel<StateRenderState> {
         this.head.xRot = state.xRot * ((float)Math.PI / 180F);
         this.head.yRot = state.yRot * ((float)Math.PI / 180F);
 
+        PiglinArmPose pose = state.armPose;
+        if (pose == PiglinArmPose.CROSSBOW_HOLD) {
+            AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, state.mainArm == HumanoidArm.RIGHT);
+        } else if (pose == PiglinArmPose.CROSSBOW_CHARGE) {
+            AnimationUtils.animateCrossbowCharge(
+                    this.rightArm, this.leftArm, state.maxCrossbowChargeDuration, state.ticksUsingItem, state.mainArm == HumanoidArm.RIGHT
+            );
+        }
         applyAnimation(state);
     }
 

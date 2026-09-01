@@ -10,7 +10,6 @@ public class ServerPayloadHandler {
         LivingEntity owner = (LivingEntity) context.player().level().getEntity(data.staffInfo().uuid());
         if (owner != null) {
             ModeWeapon staff = ((ModeWeapon) owner.getItemInHand(InteractionHand.MAIN_HAND).getItem());
-            staff.mode = data.staffInfo().mode();
             staff.attack(owner.level(), owner);
         }
     }

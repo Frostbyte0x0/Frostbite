@@ -88,9 +88,9 @@ public abstract class ElfEntity extends StateMonsterEntity implements RangedAtta
 
         if (getTarget() != null && getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof ModeWeapon staff) {
             if (getTarget().distanceTo(this) < 5) {
-                staff.setFirstMode();
+                staff.setMode(getItemInHand(InteractionHand.MAIN_HAND), 0);
             } else {
-                staff.setSecondMode();
+                staff.setMode(getItemInHand(InteractionHand.MAIN_HAND), 1);
             }
         }
 

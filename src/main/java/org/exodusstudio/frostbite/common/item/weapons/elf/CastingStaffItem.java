@@ -3,6 +3,7 @@ package org.exodusstudio.frostbite.common.item.weapons.elf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -14,7 +15,6 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
 import org.exodusstudio.frostbite.common.particle.options.Vec3ParticleOption;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.PseudoEntityTypes;
-import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.joml.Vector3f;
@@ -22,8 +22,10 @@ import org.joml.Vector3f;
 import java.util.Optional;
 
 public class CastingStaffItem extends ModeWeapon {
+    public static final String[] MODES = new String[]{"icy_breath", "spikes"};
+
     public CastingStaffItem(Properties properties) {
-        super(properties, new String[]{"Icy Breath", "Spikes"}, ChatFormatting.RED, ChatFormatting.DARK_RED);
+        super(properties);
     }
 
     @Override
@@ -32,8 +34,8 @@ public class CastingStaffItem extends ModeWeapon {
         Vec3 vec31 = owner.getLookAngle();
         Vec3 vec32 = vec31.normalize();
 
-        switch (this.mode) {
-            case "Icy Breath":
+        switch (getMode(owner.getItemInHand(InteractionHand.MAIN_HAND))) {
+            case "icy_breath":
                 if (level.isClientSide()) {
                     int particleCount = 30;
                     for (int i = 1; i < 4; i++) {
@@ -74,7 +76,7 @@ public class CastingStaffItem extends ModeWeapon {
                             new AABB(vec3.add(0.75), vec3.subtract(0.75)), owner.getUUID(), level.getGameTime()));
                 }
                 break;
-            case "Spikes":
+            case "spikes":
                 if (!level.isClientSide()) {
                     Vec3 look = owner.getLookAngle().normalize();
                     Vec3 spawnPos = owner.position().add(0, owner.getEyeHeight(), 0).add(look.scale(1.5));
@@ -129,5 +131,20 @@ public class CastingStaffItem extends ModeWeapon {
                 }
                 break;
         }
+    }
+
+    @Override
+    public String[] getModes() {
+        return MODES;
+    }
+
+    @Override
+    public ChatFormatting regularColour() {
+        return ChatFormatting.RED;
+    }
+
+    @Override
+    public ChatFormatting selectedColour() {
+        return ChatFormatting.DARK_RED;
     }
 }

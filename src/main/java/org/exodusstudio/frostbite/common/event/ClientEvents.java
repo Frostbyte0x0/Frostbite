@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.FormattedCharSequence;
@@ -46,13 +47,11 @@ import org.exodusstudio.frostbite.common.item.contract.ContractItem;
 import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
+import org.exodusstudio.frostbite.common.item.weapons.SpellTooltipable;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
-import org.exodusstudio.frostbite.common.registry.ItemRegistry;
-import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
-import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
-import org.exodusstudio.frostbite.common.registry.SoundRegistry;
+import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
@@ -273,6 +272,28 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public static void spellTooltipable(RenderTooltipEvent.GatherComponents event) {
+        ItemStack stack = event.getItemStack();
+        Player player = Minecraft.getInstance().player;
+        Level level = Minecraft.getInstance().level;
+        if (player == null || level == null) return;
+
+        if (stack.getItem() instanceof SpellTooltipable s && stack.has(DataComponentTypeRegistry.MODE)) {
+            int i = 1;
+            for (String str : s.getModes()) {
+                String mode = stack.get(DataComponentTypeRegistry.MODE).mode();
+                MutableComponent c = Component.translatable("frostbite.modes." + str);
+                if (mode.equals(str)) c = c.withStyle(ChatFormatting.BOLD).withStyle(s.selectedColour());
+                else c = c.withStyle(s.regularColour());
+                event.getTooltipElements().add(i, Either.left(c));
+                i++;
+            }
+            event.getTooltipElements().add(i, Either.left(Component.translatable("frostbite.modes.left_click").withStyle(ChatFormatting.GRAY)));
+            event.getTooltipElements().add(i, Either.left(Component.translatable("frostbite.modes.right_click").withStyle(ChatFormatting.GRAY)));
+        }
+    }
+
+    @SubscribeEvent
     public static void staffControl(InputEvent.MouseButton.Pre event) {
         if (event.getButton() == 1) {
             Player player = Minecraft.getInstance().player;
@@ -282,7 +303,7 @@ public class ClientEvents {
                     staff.attack(player.level(), player);
                     player.getCooldowns().addCooldown(itemInHand, 20);
                     event.setCanceled(true);
-                    ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(staff.mode, player.getUUID())));
+                    ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID())));
                 }
             }
         }
