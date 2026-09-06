@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.event;
 
-import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -177,6 +176,13 @@ public class ModEventBusEvents {
     public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
         boolean brightEnoughToSpawn = EntitySpawnReason.ignoresLightRequirements(spawnReason) || isBrightEnoughToSpawn(level, pos);
         BlockState below = level.getBlockState(pos.below());
+
+//        ServerLevel serverLevel = level.getServer().getLevel(Util.FROSTBITE_KEY);
+//        int entityCount = DataHelper.getInt(serverLevel, type.getDescriptionId() + "Count");
+//        if (Arrays.stream(DataHelper.getString(serverLevel, "tracked_entity_types").split(";")).noneMatch(s -> s.equals(type.getDescriptionId())))
+//            DataHelper.setData(serverLevel, "tracked_entity_types", DataHelper.getString(serverLevel, "tracked_entity_types") + type.getDescriptionId() + ";");
+//        if (entityCount >= serverLevel.getGameRules().get(GameRuleRegistry.MAX_FROSTBITE_ANIMAL_NATURAL_SPAWN_COUNT.get()) && random.nextFloat() < 0.1) return false;
+
         return (below.is(BlockTags.ANIMALS_SPAWNABLE_ON)
                 || below.is(BlockRegistry.MARBLE)
                 || below.is(Blocks.SNOW_BLOCK)

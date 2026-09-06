@@ -12,12 +12,116 @@ public class CreativeModeTabRegistry {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Frostbite.MOD_ID);
 
     static {
+        CREATIVE_MODE_TABS.register("frostbite_combat_tab", () -> CreativeModeTab.builder()
+                .title(Component.translatable("itemGroup.frostbite.frostbite_combat_tab"))
+                .icon(() -> new ItemStack(ItemRegistry.CASTING_STAFF.get()))
+                .displayItems(((_, output) -> {
+                    output.accept(ItemRegistry.LAST_STAND);
+
+                    output.accept(ItemRegistry.CASTING_STAFF);
+                    output.accept(ItemRegistry.HEALING_STAFF);
+                    output.accept(ItemRegistry.SUMMONING_STAFF);
+                    output.accept(ItemRegistry.GALE_FAN);
+                    output.accept(ItemRegistry.DAGGERS);
+                    output.accept(ItemRegistry.NAGINATA);
+                    output.accept(ItemRegistry.BOLTSPLITTER);
+
+                    output.accept(ItemRegistry.HUNTERS_CATALYST);
+
+                    output.accept(ItemRegistry.SHAMAN_STAFF);
+
+                    output.accept(ItemRegistry.EXPLODING_SNOWBALL);
+                    output.accept(ItemRegistry.HARDENED_SNOWBALL);
+                    output.accept(ItemRegistry.PACKED_HARDENED_SNOWBALL);
+                    output.accept(ItemRegistry.BLUE_HARDENED_SNOWBALL);
+
+
+                    output.accept(ItemRegistry.HELMET_CUTOUT);
+                    output.accept(ItemRegistry.CHESTPLATE_CUTOUT);
+                    output.accept(ItemRegistry.LEGGINGS_CUTOUT);
+                    output.accept(ItemRegistry.BOOTS_CUTOUT);
+
+                    output.accept(ItemRegistry.HELMET_WEAVING_PATTERN);
+                    output.accept(ItemRegistry.CHESTPLATE_WEAVING_PATTERN);
+                    output.accept(ItemRegistry.LEGGINGS_WEAVING_PATTERN);
+                    output.accept(ItemRegistry.BOOTS_WEAVING_PATTERN);
+
+                    output.accept(ItemRegistry.WOOLLY_WOOL);
+                    output.accept(ItemRegistry.FROZEN_FUR);
+                    output.accept(ItemRegistry.INSULATED_CLOTH);
+                    output.accept(ItemRegistry.HEATED_COATING);
+                    output.accept(ItemRegistry.FROZEN_PLATING);
+
+                    output.accept(ItemRegistry.CURSED_HELMET);
+                    output.accept(ItemRegistry.CURSED_CHESTPLATE);
+                    output.accept(ItemRegistry.CURSED_LEGGINGS);
+                    output.accept(ItemRegistry.CURSED_BOOTS);
+
+                    output.accept(ItemRegistry.TOXIC_HELMET);
+                    output.accept(ItemRegistry.TOXIC_CHESTPLATE);
+                    output.accept(ItemRegistry.TOXIC_LEGGINGS);
+                    output.accept(ItemRegistry.TOXIC_BOOTS);
+
+                    output.accept(ItemRegistry.BEAR_HELMET);
+                    output.accept(ItemRegistry.BEAR_CHESTPLATE);
+                    output.accept(ItemRegistry.BEAR_LEGGINGS);
+                    output.accept(ItemRegistry.BEAR_BOOTS);
+
+                    output.accept(ItemRegistry.REBOUND_HELMET);
+                    output.accept(ItemRegistry.REBOUND_CHESTPLATE);
+                    output.accept(ItemRegistry.REBOUND_LEGGINGS);
+                    output.accept(ItemRegistry.REBOUND_BOOTS);
+
+                    output.accept(ItemRegistry.MAGE_HELMET);
+                    output.accept(ItemRegistry.MAGE_CHESTPLATE);
+                    output.accept(ItemRegistry.MAGE_LEGGINGS);
+                    output.accept(ItemRegistry.MAGE_BOOTS);
+
+                    output.accept(ItemRegistry.BLACK_ICE_HELMET);
+                    output.accept(ItemRegistry.BLACK_ICE_CHESTPLATE);
+                    output.accept(ItemRegistry.BLACK_ICE_LEGGINGS);
+                    output.accept(ItemRegistry.BLACK_ICE_BOOTS);
+
+                    output.accept(ItemRegistry.FROSTBITTEN_HELMET);
+                    output.accept(ItemRegistry.FROSTBITTEN_CHESTPLATE);
+                    output.accept(ItemRegistry.FROSTBITTEN_LEGGINGS);
+                    output.accept(ItemRegistry.FROSTBITTEN_BOOTS);
+
+                    output.accept(ItemRegistry.WOOL_LINING_HELMET);
+                    output.accept(ItemRegistry.WOOL_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.WOOL_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.WOOL_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_HELMET);
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_HELMET);
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_HELMET);
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_HELMET);
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_HELMET);
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_BOOTS);
+                })).build());
+
         CREATIVE_MODE_TABS.register("frostbite_tab", () -> CreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.frostbite.frostbite_tab"))
                 .icon(() -> new ItemStack(ItemRegistry.FROSTBITTEN_GEM.get()))
                 .displayItems(((_, output) -> {
-                    output.accept(ItemRegistry.LAST_STAND);
-
                     output.accept(BlockRegistry.REINFORCED_BLACK_ICE);
                     output.accept(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE);
                     output.accept(ItemRegistry.FROSTBITTEN_GEM);
@@ -73,65 +177,6 @@ public class CreativeModeTabRegistry {
                     output.accept(BlockRegistry.LODESTAR);
                     output.accept(BlockRegistry.STONE_LANTERN);
                     output.accept(BlockRegistry.FROZEN_STONE_LANTERN);
-
-                    output.accept(ItemRegistry.BLACK_ICE_HELMET);
-                    output.accept(ItemRegistry.BLACK_ICE_CHESTPLATE);
-                    output.accept(ItemRegistry.BLACK_ICE_LEGGINGS);
-                    output.accept(ItemRegistry.BLACK_ICE_BOOTS);
-
-                    output.accept(ItemRegistry.FROSTBITTEN_HELMET);
-                    output.accept(ItemRegistry.FROSTBITTEN_CHESTPLATE);
-                    output.accept(ItemRegistry.FROSTBITTEN_LEGGINGS);
-                    output.accept(ItemRegistry.FROSTBITTEN_BOOTS);
-
-                    output.accept(ItemRegistry.WOOL_LINING_HELMET);
-                    output.accept(ItemRegistry.WOOL_LINING_CHESTPLATE);
-                    output.accept(ItemRegistry.WOOL_LINING_LEGGINGS);
-                    output.accept(ItemRegistry.WOOL_LINING_BOOTS);
-
-                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_HELMET);
-                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_CHESTPLATE);
-                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_LEGGINGS);
-                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_BOOTS);
-
-                    output.accept(ItemRegistry.FROZEN_FUR_LINING_HELMET);
-                    output.accept(ItemRegistry.FROZEN_FUR_LINING_CHESTPLATE);
-                    output.accept(ItemRegistry.FROZEN_FUR_LINING_LEGGINGS);
-                    output.accept(ItemRegistry.FROZEN_FUR_LINING_BOOTS);
-
-                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_HELMET);
-                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_CHESTPLATE);
-                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_LEGGINGS);
-                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_BOOTS);
-
-                    output.accept(ItemRegistry.HEATED_COATING_LINING_HELMET);
-                    output.accept(ItemRegistry.HEATED_COATING_LINING_CHESTPLATE);
-                    output.accept(ItemRegistry.HEATED_COATING_LINING_LEGGINGS);
-                    output.accept(ItemRegistry.HEATED_COATING_LINING_BOOTS);
-
-                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_HELMET);
-                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_CHESTPLATE);
-                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_LEGGINGS);
-                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_BOOTS);
-
-                    output.accept(ItemRegistry.WOOLLY_WOOL);
-                    output.accept(ItemRegistry.FROZEN_FUR);
-                    output.accept(ItemRegistry.INSULATED_CLOTH);
-                    output.accept(ItemRegistry.HEATED_COATING);
-                    output.accept(ItemRegistry.FROZEN_PLATING);
-
-                    output.accept(ItemRegistry.EXPLODING_SNOWBALL);
-                    output.accept(ItemRegistry.HARDENED_SNOWBALL);
-                    output.accept(ItemRegistry.PACKED_HARDENED_SNOWBALL);
-                    output.accept(ItemRegistry.BLUE_HARDENED_SNOWBALL);
-
-                    output.accept(ItemRegistry.STUNNING_BELL);
-//                    output.accept(ItemRegistry.ICE_HAMMER);
-
-                    output.accept(ItemRegistry.SNIPER);
-                    output.accept(ItemRegistry.SNIPER_BULLET);
-                    output.accept(ItemRegistry.REVOLVER);
-                    output.accept(ItemRegistry.REVOLVER_BULLET);
 
                     // MISTY WOOD
                     output.accept(BlockRegistry.MISTY_LOG);
@@ -208,10 +253,6 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.CONFETTI_POPPER);
                     output.accept(ItemRegistry.THERMAL_LENS);
                     output.accept(ItemRegistry.ADVANCED_THERMAL_LENS);
-                    output.accept(ItemRegistry.HELMET_WEAVING_PATTERN);
-                    output.accept(ItemRegistry.CHESTPLATE_WEAVING_PATTERN);
-                    output.accept(ItemRegistry.LEGGINGS_WEAVING_PATTERN);
-                    output.accept(ItemRegistry.BOOTS_WEAVING_PATTERN);
 
                     output.accept(ItemRegistry.BOTTLE_OF_WARMTH);
                     output.accept(ItemRegistry.BOTTLE_OF_HEAT);
@@ -224,27 +265,21 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.SPICY_MEAT_STEW);
                     output.accept(ItemRegistry.HIDE);
                     output.accept(ItemRegistry.HIDE_SHEET);
-                    output.accept(ItemRegistry.HELMET_CUTOUT);
-                    output.accept(ItemRegistry.CHESTPLATE_CUTOUT);
-                    output.accept(ItemRegistry.LEGGINGS_CUTOUT);
-                    output.accept(ItemRegistry.BOOTS_CUTOUT);
                     output.accept(ItemRegistry.JELLY);
                     output.accept(ItemRegistry.INSULATING_JELLY);
+                    output.accept(ItemRegistry.POISONOUS_STRING);
+                    output.accept(ItemRegistry.TOXIC_JELLY);
+                    output.accept(ItemRegistry.REBOUND_INGOT);
+                    output.accept(ItemRegistry.STRENGTHENED_BEAR_FUR);
+                    output.accept(ItemRegistry.BEAR_FUR);
                     output.accept(ItemRegistry.EMBERS);
+                    output.accept(ItemRegistry.MAGIC_DUST);
+                    output.accept(ItemRegistry.CLOAK);
+                    output.accept(ItemRegistry.CASTING_STAFF_ORB);
+                    output.accept(ItemRegistry.HEALING_STAFF_ORB);
+                    output.accept(ItemRegistry.SUMMONING_STAFF_ORB);
                     output.accept(ItemRegistry.ICE_SHARD);
                     output.accept(BlockRegistry.ICE_CORE);
-
-                    output.accept(ItemRegistry.CASTING_STAFF);
-                    output.accept(ItemRegistry.HEALING_STAFF);
-                    output.accept(ItemRegistry.SUMMONING_STAFF);
-                    output.accept(ItemRegistry.GALE_FAN);
-                    output.accept(ItemRegistry.DAGGERS);
-                    output.accept(ItemRegistry.NAGINATA);
-                    output.accept(ItemRegistry.BOLTSPLITTER);
-
-                    output.accept(ItemRegistry.HUNTERS_CATALYST);
-
-                    output.accept(ItemRegistry.SHAMAN_STAFF);
 
                     output.accept(BlockRegistry.WEAVING_TABLE);
                     output.accept(BlockRegistry.DECIPHERING_TABLE);

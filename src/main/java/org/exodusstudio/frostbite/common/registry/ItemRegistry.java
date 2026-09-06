@@ -16,6 +16,7 @@ import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
+import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,23 +27,22 @@ import org.exodusstudio.frostbite.common.component.*;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.ContractRank;
 import org.exodusstudio.frostbite.common.item.*;
+import org.exodusstudio.frostbite.common.item.armour.ArmourSets;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
 import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningItem;
 import org.exodusstudio.frostbite.common.item.lining.LiningMaterials;
-import org.exodusstudio.frostbite.common.item.weapons.*;
+import org.exodusstudio.frostbite.common.item.weapons.GaleFanItem;
+import org.exodusstudio.frostbite.common.item.weapons.HuntersCatalyst;
+import org.exodusstudio.frostbite.common.item.weapons.ShamanStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.CastingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.HealingStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.elf.SummoningStaffItem;
 import org.exodusstudio.frostbite.common.item.weapons.goat.Boltsplitter;
 import org.exodusstudio.frostbite.common.item.weapons.goat.DaggersItem;
 import org.exodusstudio.frostbite.common.item.weapons.goat.NaginataItem;
-import org.exodusstudio.frostbite.common.item.weapons.gun.RevolverItem;
-import org.exodusstudio.frostbite.common.item.weapons.gun.SniperItem;
-import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.RevolverBulletItem;
-import org.exodusstudio.frostbite.common.item.weapons.gun.bullet.SniperBulletItem;
-import org.exodusstudio.frostbite.common.util.ArmorMaterials;
+import org.exodusstudio.frostbite.common.util.CustomArmorMaterials;
 
 import java.util.List;
 import java.util.Map;
@@ -63,32 +63,6 @@ public class ItemRegistry {
     public static final DeferredItem<Item> BLUE_HARDENED_SNOWBALL = ITEMS.register("blue_hardened_snowball",
             (id) -> new BlueHardenedSnowballItem(new Item.Properties().stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-
-    public static final DeferredItem<Item> BLACK_ICE_HELMET = ITEMS.register("black_ice_helmet",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.HELMET)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> BLACK_ICE_CHESTPLATE = ITEMS.register("black_ice_chestplate",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.CHESTPLATE)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> BLACK_ICE_LEGGINGS = ITEMS.register("black_ice_leggings",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.LEGGINGS)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> BLACK_ICE_BOOTS = ITEMS.register("black_ice_boots",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.BLACK_ICE, ArmorType.BOOTS)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
-
-    public static final DeferredItem<Item> FROSTBITTEN_HELMET = ITEMS.register("frostbitten_helmet",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.HELMET)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> FROSTBITTEN_CHESTPLATE = ITEMS.register("frostbitten_chestplate",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.CHESTPLATE)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> FROSTBITTEN_LEGGINGS = ITEMS.register("frostbitten_leggings",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.LEGGINGS)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> FROSTBITTEN_BOOTS = ITEMS.register("frostbitten_boots",
-            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.FROSTBITTEN, ArmorType.BOOTS)
-                            .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> WOOL_LINING_HELMET = ITEMS.register("wool_lining_helmet",
             (id) -> new LiningItem(LiningMaterials.WOOL, ArmorType.HELMET,
@@ -169,10 +143,10 @@ public class ItemRegistry {
                     new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 
 
-    public static final DeferredItem<Item> STUNNING_BELL =
-            ITEMS.register("stunning_bell", (id) -> new StunningBellItem(new Item.Properties()
-                    .stacksTo(1)
-                    .setId(ResourceKey.create(Registries.ITEM, id))));
+//    public static final DeferredItem<Item> STUNNING_BELL =
+//            ITEMS.register("stunning_bell", (id) -> new StunningBellItem(new Item.Properties()
+//                    .stacksTo(1)
+//                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
 //    public static final DeferredItem<Item> ICE_HAMMER =
 //            ITEMS.register("ice_hammer", (id) -> new IceHammerItem(new Item.Properties()
@@ -184,19 +158,20 @@ public class ItemRegistry {
 //                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
 
-    public static final DeferredItem<Item> SNIPER_BULLET =
-            ITEMS.register("sniper_bullet", (id) -> new SniperBulletItem(new Item.Properties()
+    public static final DeferredItem<Item> MAGIC_DUST =
+            ITEMS.register("magic_dust", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> SNIPER =
-            ITEMS.register("sniper", (id) -> new SniperItem(new Item.Properties().stacksTo(1)
-                            .component(DataComponentTypeRegistry.GUN, GunData.EMPTY)
+    public static final DeferredItem<Item> CLOAK =
+            ITEMS.register("cloak", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> REVOLVER_BULLET =
-            ITEMS.register("revolver_bullet", (id) -> new RevolverBulletItem(new Item.Properties()
+    public static final DeferredItem<Item> CASTING_STAFF_ORB =
+            ITEMS.register("casting_staff_orb", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
-    public static final DeferredItem<Item> REVOLVER =
-            ITEMS.register("revolver", (id) -> new RevolverItem(new Item.Properties().stacksTo(1)
-                            .component(DataComponentTypeRegistry.GUN, GunData.EMPTY)
+    public static final DeferredItem<Item> SUMMONING_STAFF_ORB =
+            ITEMS.register("summoning_staff_orb", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> HEALING_STAFF_ORB =
+            ITEMS.register("healing_staff_orb", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> LAST_STAND =
@@ -247,6 +222,23 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> INSULATING_JELLY =
             ITEMS.register("insulating_jelly", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> POISONOUS_STRING =
+            ITEMS.register("poisonous_string", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> TOXIC_JELLY =
+            ITEMS.register("toxic_jelly", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> REBOUND_INGOT =
+            ITEMS.register("rebound_ingot", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> BEAR_FUR =
+            ITEMS.register("bear_fur", (id) -> new Item(new Item.Properties()
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> STRENGTHENED_BEAR_FUR =
+            ITEMS.register("strengthened_bear_fur", (id) -> new Item(new Item.Properties()
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> BOTTLE_OF_WARMTH =
@@ -456,6 +448,141 @@ public class ItemRegistry {
                                     .setId(ResourceKey.create(Registries.ITEM, id))));
                         }
                     }));
+
+    public static final DeferredItem<Item> CURSED_HELMET = ITEMS.register("cursed_helmet",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.HELMET)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.cursed_helmet").withStyle(ChatFormatting.LIGHT_PURPLE))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.CURSED))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CURSED_CHESTPLATE = ITEMS.register("cursed_chestplate",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.CHESTPLATE)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.cursed_chestplate").withStyle(ChatFormatting.LIGHT_PURPLE))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.CURSED))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CURSED_LEGGINGS = ITEMS.register("cursed_leggings",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.LEGGINGS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.cursed_leggings").withStyle(ChatFormatting.LIGHT_PURPLE))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.CURSED))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CURSED_BOOTS = ITEMS.register("cursed_boots",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.BOOTS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.cursed_boots").withStyle(ChatFormatting.LIGHT_PURPLE))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.CURSED))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> TOXIC_HELMET = ITEMS.register("toxic_helmet",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.HELMET)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.toxic_helmet").withStyle(ChatFormatting.GREEN))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.TOXIC))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> TOXIC_CHESTPLATE = ITEMS.register("toxic_chestplate",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.CHESTPLATE)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.toxic_chestplate").withStyle(ChatFormatting.GREEN))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.TOXIC))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> TOXIC_LEGGINGS = ITEMS.register("toxic_leggings",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.LEGGINGS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.toxic_leggings").withStyle(ChatFormatting.GREEN))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.TOXIC))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> TOXIC_BOOTS = ITEMS.register("toxic_boots",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.BOOTS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.toxic_boots").withStyle(ChatFormatting.GREEN))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.TOXIC))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> BEAR_HELMET = ITEMS.register("bear_helmet",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.HELMET)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.bear_helmet").withStyle(ChatFormatting.AQUA))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.BEAR))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BEAR_CHESTPLATE = ITEMS.register("bear_chestplate",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.CHESTPLATE)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.bear_chestplate").withStyle(ChatFormatting.AQUA))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.BEAR))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BEAR_LEGGINGS = ITEMS.register("bear_leggings",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.LEGGINGS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.bear_leggings").withStyle(ChatFormatting.AQUA))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.BEAR))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BEAR_BOOTS = ITEMS.register("bear_boots",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.BOOTS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.bear_boots").withStyle(ChatFormatting.AQUA))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.BEAR))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> REBOUND_HELMET = ITEMS.register("rebound_helmet",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.HELMET)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.rebound_helmet").withStyle(ChatFormatting.YELLOW))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.REBOUND))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> REBOUND_CHESTPLATE = ITEMS.register("rebound_chestplate",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.CHESTPLATE)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.rebound_chestplate").withStyle(ChatFormatting.YELLOW))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.REBOUND))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> REBOUND_LEGGINGS = ITEMS.register("rebound_leggings",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.LEGGINGS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.rebound_leggings").withStyle(ChatFormatting.YELLOW))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.REBOUND))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> REBOUND_BOOTS = ITEMS.register("rebound_boots",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.BOOTS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.rebound_boots").withStyle(ChatFormatting.YELLOW))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.REBOUND))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> MAGE_HELMET = ITEMS.register("mage_helmet",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.HELMET)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.mage_helmet").withStyle(ChatFormatting.RED))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.MAGE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> MAGE_CHESTPLATE = ITEMS.register("mage_chestplate",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.CHESTPLATE)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.mage_chestplate").withStyle(ChatFormatting.RED))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.MAGE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> MAGE_LEGGINGS = ITEMS.register("mage_leggings",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.LEGGINGS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.mage_leggings").withStyle(ChatFormatting.RED))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.MAGE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> MAGE_BOOTS = ITEMS.register("mage_boots",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.DIAMOND, ArmorType.BOOTS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.mage_boots").withStyle(ChatFormatting.RED))
+                    .component(DataComponentTypeRegistry.ARMOUR_SET, new ArmourSetData(ArmourSets.MAGE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> BLACK_ICE_HELMET = ITEMS.register("black_ice_helmet",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.NETHERITE, ArmorType.HELMET)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.black_ice_helmet").withStyle(ChatFormatting.DARK_BLUE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BLACK_ICE_CHESTPLATE = ITEMS.register("black_ice_chestplate",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.NETHERITE, ArmorType.CHESTPLATE)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.black_ice_chestplate").withStyle(ChatFormatting.DARK_BLUE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BLACK_ICE_LEGGINGS = ITEMS.register("black_ice_leggings",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.NETHERITE, ArmorType.LEGGINGS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.black_ice_leggings").withStyle(ChatFormatting.DARK_BLUE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> BLACK_ICE_BOOTS = ITEMS.register("black_ice_boots",
+            (id) -> new Item(new Item.Properties().humanoidArmor(ArmorMaterials.NETHERITE, ArmorType.BOOTS)
+                    .component(DataComponents.CUSTOM_NAME, Component.translatable("item.frostbite.black_ice_boots").withStyle(ChatFormatting.DARK_BLUE))
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> FROSTBITTEN_HELMET = ITEMS.register("frostbitten_helmet",
+            (id) -> new Item(new Item.Properties().humanoidArmor(CustomArmorMaterials.FROSTBITTEN, ArmorType.HELMET)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROSTBITTEN_CHESTPLATE = ITEMS.register("frostbitten_chestplate",
+            (id) -> new Item(new Item.Properties().humanoidArmor(CustomArmorMaterials.FROSTBITTEN, ArmorType.CHESTPLATE)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROSTBITTEN_LEGGINGS = ITEMS.register("frostbitten_leggings",
+            (id) -> new Item(new Item.Properties().humanoidArmor(CustomArmorMaterials.FROSTBITTEN, ArmorType.LEGGINGS)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FROSTBITTEN_BOOTS = ITEMS.register("frostbitten_boots",
+            (id) -> new Item(new Item.Properties().humanoidArmor(CustomArmorMaterials.FROSTBITTEN, ArmorType.BOOTS)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
 //    public static final Map<String, DeferredItem<Item>> SPAWN_EGGS = EntityRegistry.ENTITY_TYPES.getEntries().stream().map(DeferredHolder::value)
 //            .filter(t -> t.create(null, (EntitySpawnReason) null) instanceof LivingEntity)

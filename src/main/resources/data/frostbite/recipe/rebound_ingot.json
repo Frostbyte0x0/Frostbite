@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:diamond",
+    "I": "minecraft:iron_ingot",
+    "S": "frostbite:poisonous_string"
+  },
+  "pattern": [
+    "SIS",
+    "IDI",
+    "SIS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:rebound_ingot"
+  }
+}

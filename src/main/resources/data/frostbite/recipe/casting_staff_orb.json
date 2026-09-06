@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "frostbite:magic_dust",
+    "E": "frostbite:embers"
+  },
+  "pattern": [
+    "MMM",
+    "MEM",
+    "MMM"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:casting_staff_orb"
+  }
+}

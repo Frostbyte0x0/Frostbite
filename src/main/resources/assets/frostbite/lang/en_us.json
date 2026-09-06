@@ -1,5 +1,6 @@
 {
   "itemGroup.frostbite.frostbite_tab": "Frostbite",
+  "itemGroup.frostbite.frostbite_combat_tab": "Frostbite Combat",
 
   "item.frostbite.frostbitten_gem": "Frostbitten Gem",
   "item.frostbite.reinforced_black_ice": "Reinforced Black Ice Block",
@@ -10,8 +11,6 @@
   "item.frostbite.frozen_stone_lantern": "Frozen Stone Lantern",
   "item.frostbite.starseeking_compass": "Starseeking Compass",
   "item.frostbite.frozen_arrow": "Frozen Arrow",
-  "item.frostbite.silver_stake": "Silver Stake",
-  "item.frostbite.silver": "Silver",
   "item.frostbite.embers": "Embers",
 
   "item.frostbite.black_block": "Black Block",
@@ -159,26 +158,22 @@
   "item.frostbite.confetti_popper": "Confetti Popper",
   "item.frostbite.shaman_staff": "Shaman Staff",
 
-  "item.frostbite.sniper": "Sniper",
-  "item.frostbite.sniper_bullet": "Sniper Bullet",
-  "item.frostbite.revolver": "Revolver",
-  "item.frostbite.revolver_bullet": "Revolver Bullet",
-
   "item.frostbite.fire": "§kFire",
 
-  "item.frostbite.thermal_lens": "Thermal lens",
-  "item.frostbite.advanced_thermal_lens": "Advanced thermal lens",
-  "item.frostbite.helmet_weaving_pattern": "Helmet weaving pattern",
-  "item.frostbite.chestplate_weaving_pattern": "Chestplate weaving pattern",
-  "item.frostbite.leggings_weaving_pattern": "Leggings weaving pattern",
-  "item.frostbite.boots_weaving_pattern": "Boots weaving pattern",
+  "item.frostbite.thermal_lens": "Thermal Lens",
+  "item.frostbite.advanced_thermal_lens": "Advanced Thermal Lens",
+  "item.frostbite.helmet_weaving_pattern": "Helmet Weaving Pattern",
+  "item.frostbite.chestplate_weaving_pattern": "Chestplate Weaving Pattern",
+  "item.frostbite.leggings_weaving_pattern": "Leggings Weaving Pattern",
+  "item.frostbite.boots_weaving_pattern": "Boots Weaving Pattern",
   "item.frostbite.weaving_table": "Weaving Table",
   "item.frostbite.deciphering_table": "Deciphering Table",
   "item.frostbite.combining_table": "Combining Table",
   "item.frostbite.applying_table": "Applying Table",
 
   "item.frostbite.jelly": "Jelly",
-  "item.frostbite.insulating_jelly": "Insulating jelly",
+  "item.frostbite.insulating_jelly": "Insulating Jelly",
+  "item.frostbite.poisonous_string": "Poisonous String",
   "item.frostbite.bottle_of_warmth": "Bottle of Warmth",
   "item.frostbite.bottle_of_heat": "Bottle of Heat",
   "item.frostbite.mist_berry": "Mist Berry",
@@ -210,7 +205,16 @@
   "item.frostbite.casting_staff": "Casting staff",
   "item.frostbite.summoning_staff": "Summoning staff",
   "item.frostbite.healing_staff": "Healing staff",
+  "item.frostbite.magic_dust": "Magic Dust",
+  "item.frostbite.casting_staff_orb": "Casting Staff Orb",
+  "item.frostbite.summoning_staff_orb": "Summoning Staff Orb",
+  "item.frostbite.healing_staff_orb": "Healing Staff Orb",
+  "item.frostbite.cloak": "Cloak",
   "item.frostbite.gale_fan": "Gale fan",
+  "item.frostbite.toxic_jelly": "Toxic Jelly",
+  "item.frostbite.rebound_ingot": "Rebound Ingot",
+  "item.frostbite.strengthened_bear_fur": "Strengthened Bear Fur",
+  "item.frostbite.bear_fur": "Bear Fur",
 
   "item.frostbite.wool_lining_helmet": "Wool lining helmet",
   "item.frostbite.wool_lining_chestplate": "Wool lining chestplate",
@@ -259,15 +263,11 @@
   "entity.monk.boss_bar": "Monk",
   "entity.shaman.boss_bar": "Shaman",
 
-  "attribute.name.cold_protection": "Cold Protection",
-
 
   "tooltip.frostbite.bottle_inner.tooltip": "Inner temperature: +%s°C",
   "tooltip.frostbite.bottle_outer.tooltip": "Outer temperature: +%s°C",
   "tooltip.frostbite.advanced_clock.tooltip": "Shows you the exact time of the day",
   "tooltip.frostbite.spicy_stew.tooltip": "Spicyness",
-  "tooltip.frostbite.thermometer.tooltip": "Shows you the biome you are in and its temperature",
-  "tooltip.frostbite.draining_staff.not_enough_charge": "Not enough charge",
 
   "container.frozen_remnants": "Frozen Remnants",
   "container.weaving_table": "Weaving Table",
@@ -431,6 +431,54 @@
   "rune.render.allies_left": "Defenders left: %s",
   "rune.render.health": "Health: %s/%s",
 
+  "frostbite.cleanliness.rusty": "Rusty",
+  "frostbite.cleanliness.regular": "Regular",
+  "frostbite.cleanliness.sparkling": "Sparkling",
+
+  "frostbite.armour_set": "Set",
+  "frostbite.armour_bonuses": "Armour Bonuses",
+
+  "frostbite.armour_sets.cursed": "Cursed",
+  "item.frostbite.cursed_helmet": "Cursed Helmet",
+  "item.frostbite.cursed_chestplate": "Cursed Chestplate",
+  "item.frostbite.cursed_leggings": "Cursed Leggings",
+  "item.frostbite.cursed_boots": "Cursed Boots",
+
+  "frostbite.armour_sets.toxic": "Toxic",
+  "item.frostbite.toxic_helmet": "Toxic Helmet",
+  "item.frostbite.toxic_chestplate": "Toxic Chestplate",
+  "item.frostbite.toxic_leggings": "Toxic Leggings",
+  "item.frostbite.toxic_boots": "Toxic Boots",
+
+  "frostbite.armour_sets.bear": "Bear",
+  "item.frostbite.bear_helmet": "Bear Helmet",
+  "item.frostbite.bear_chestplate": "Bear Chestplate",
+  "item.frostbite.bear_leggings": "Bear Leggings",
+  "item.frostbite.bear_boots": "Bear Boots",
+
+  "frostbite.armour_sets.rebound": "Rebound",
+  "item.frostbite.rebound_helmet": "Rebound Helmet",
+  "item.frostbite.rebound_chestplate": "Rebound Chestplate",
+  "item.frostbite.rebound_leggings": "Rebound Leggings",
+  "item.frostbite.rebound_boots": "Rebound Boots",
+
+  "frostbite.armour_sets.mage": "Mage",
+  "item.frostbite.mage_helmet": "Mage Helmet",
+  "item.frostbite.mage_chestplate": "Mage Chestplate",
+  "item.frostbite.mage_leggings": "Mage Leggings",
+  "item.frostbite.mage_boots": "Mage Boots",
+
+  "attribute.name.cold_protection": "Cold Protection",
+  "attribute.name.life_steal": "Life Steal",
+  "attribute.name.temperature_steal": "Temperature Steal",
+  "attribute.name.cold_defence": "Cold Defence",
+  "attribute.name.defence": "Defence",
+  "attribute.name.thorns": "Thorns",
+  "attribute.name.spell_damage": "Spell Damage",
+  "attribute.name.melee_damage": "Melee Damage",
+  "attribute.name.poison": "Poison",
+  "attribute.name.jumps": "Jumps",
+
 
   "key.codex": "Open Codex",
   "key.category.frostbite.frostbite": "Frostbite",
@@ -462,17 +510,5 @@
 
   "sounds.frostbite.snow_wind_ambience": "Snow and wind",
 
-  "sounds.frostbite.sniper_ping": "Sniper pings",
-  "sounds.frostbite.sniper_reload": "Sniper reloads",
-  "sounds.frostbite.sniper_shoot": "Sniper shoots",
-  "sounds.frostbite.sniper_fail": "Sniper fails",
-  "sounds.frostbite.sniper_chamber": "Sniper chambers",
-  "sounds.frostbite.stunning_bell_ring": "Stunning bell rings",
-  "sounds.frostbite.chaincicle_swipe": "Chaincicle swipes",
-  "sounds.frostbite.chaincicle_spin": "Chaincicle spins",
-  "sounds.frostbite.chaincicle_launched_loop": "Chaincicle searches",
-  "sounds.frostbite.chaincicle_hook_launch": "Chaincicle hook launched",
-  "sounds.frostbite.chaincicle_hook_hit": "Chaincicle hooks",
-  "sounds.frostbite.chaincicle_grapple_launch": "Chaincicle grapple launched",
-  "sounds.frostbite.chaincicle_grapple_hit": "Chaincicle grapples"
+  "sounds.frostbite.stunning_bell_ring": "Stunning bell rings"
 }

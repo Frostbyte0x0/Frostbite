@@ -8,11 +8,6 @@ public class ModModelLayers {
     public static final ModelLayerLocation ICE_SPIKE = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ice_spike"), "main");
 
-    public static final ModelLayerLocation SNIPER_BULLET = new ModelLayerLocation(
-            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "sniper_bullet"), "main");
-    public static final ModelLayerLocation REVOLVER_BULLET = new ModelLayerLocation(
-            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "revolver_bullet"), "main");
-
     public static final ModelLayerLocation WOOLLY_SHEEP = new ModelLayerLocation(
             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep"), "main");
     public static final ModelLayerLocation WOOLLY_SHEEP_FUR = new ModelLayerLocation(

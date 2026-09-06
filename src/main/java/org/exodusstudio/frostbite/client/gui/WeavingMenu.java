@@ -1,5 +1,7 @@
 package org.exodusstudio.frostbite.client.gui;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -13,11 +15,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.component.ArmourSetData;
+import org.exodusstudio.frostbite.common.component.ArmourStatsData;
+import org.exodusstudio.frostbite.common.item.armour.ArmourCleanliness;
+import org.exodusstudio.frostbite.common.item.armour.ArmourSet;
+import org.exodusstudio.frostbite.common.item.armour.ArmourSets;
+import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class WeavingMenu extends ItemCombinerMenu {
     static Item[] liningItems = new Item[] {
@@ -27,12 +38,12 @@ public class WeavingMenu extends ItemCombinerMenu {
             ItemRegistry.HEATED_COATING.asItem(),
             ItemRegistry.FROZEN_PLATING.asItem(),
     };
-    static Item[] weavingPatterns = new Item[] {
-            ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),
-            ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(),
-            ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(),
-            ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),
-    };
+    static Map<Item, String> weavingPatterns = Map.of(
+            ItemRegistry.HELMET_WEAVING_PATTERN.asItem(), "helmet",
+            ItemRegistry.CHESTPLATE_WEAVING_PATTERN.asItem(), "chestplate",
+            ItemRegistry.LEGGINGS_WEAVING_PATTERN.asItem(), "leggings",
+            ItemRegistry.BOOTS_WEAVING_PATTERN.asItem(),  "boots"
+    );
 
     public static HashMap<Item, Item> cutouts = new HashMap<>() {{
         put(ItemRegistry.HELMET_WEAVING_PATTERN.asItem(),     ItemRegistry.HELMET_CUTOUT.asItem());
@@ -85,7 +96,7 @@ public class WeavingMenu extends ItemCombinerMenu {
     }
 
     public static boolean isWeavingPattern(Item item) {
-        return Arrays.asList(weavingPatterns).contains(item);
+        return weavingPatterns.containsKey(item);
     }
 
     public static boolean isCutout(Item item) {
@@ -125,6 +136,10 @@ public class WeavingMenu extends ItemCombinerMenu {
                 player.getX(), player.getY(), player.getZ(), SoundEvents.SHEARS_SNIP, SoundSource.BLOCKS,
                 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat(), false
         );
+
+        for (String equipment : weavingPatterns.values()) {
+            DataHelper.setData(player, "craft_stats_" + equipment, "");
+        }
     }
 
     public void createResult() {
@@ -138,6 +153,39 @@ public class WeavingMenu extends ItemCombinerMenu {
             resultSlots.setItem(0, new ItemStack(linings.get(slot1).get(slot2)));
         } else if (slot1.equals(ItemRegistry.HIDE_SHEET.asItem()) && isWeavingPattern(slot2)) {
             resultSlots.setItem(0, new ItemStack(cutouts.get(slot2)));
+        } else if (ArmourSets.CRAFTS.containsKey(slot1) && isWeavingPattern(slot2)) {
+            ArmourSet set = ArmourSets.SETS.get(ArmourSets.CRAFTS.get(slot1));
+            String equipment = weavingPatterns.get(slot2);
+            ItemStack result = new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, set.id() + "_" + equipment)));
+            result.set(DataComponentTypeRegistry.ARMOUR_SET.get(), new ArmourSetData(set));
+
+            String equipmentCraftStats = DataHelper.getString(player, "craft_stats_" + equipment);
+            if (equipmentCraftStats.isEmpty()) {
+                ArmourStatsData data = ArmourStatsData.addRandomStats(set, result);
+                String s = "";
+                for (Map.Entry<String, String> e : data.attributes().attributesInfo().entrySet()) {
+                    s += e.getKey();
+                    s += "##";
+                    s += e.getValue();
+                    s += "##";
+                }
+                s += "///";
+                s += data.cleanliness().name().toLowerCase();
+
+                DataHelper.setData(player, "craft_stats_" + equipment, s);
+            } else {
+                String[] parts = equipmentCraftStats.split("///");
+                String[] entries = parts[0].split("##");
+                Map<String, String> map = new HashMap<>();
+                for (int i = 0; i < entries.length; i += 2) {
+                    map.put(entries[i], entries[i+1]);
+                }
+
+                ArmourStatsData data = new ArmourStatsData(new ArmourStatsData.AttributesInfo(map), ArmourCleanliness.valueOf(parts[1].toUpperCase()));
+                result.set(DataComponentTypeRegistry.ARMOUR_STATS, data);
+            }
+
+            resultSlots.setItem(0, result);
         } else {
             resultSlots.setItem(0, ItemStack.EMPTY);
         }

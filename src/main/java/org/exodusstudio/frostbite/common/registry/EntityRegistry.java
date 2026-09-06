@@ -11,11 +11,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.animals.*;
-import org.exodusstudio.frostbite.common.entity.custom.guards.RangedGuardEntity;
-import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
-import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
-import org.exodusstudio.frostbite.common.entity.custom.bullets.RevolverBulletEntity;
-import org.exodusstudio.frostbite.common.entity.custom.bullets.SniperBulletEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.CasterElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.HealerElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.elves.SummonerElfEntity;
@@ -23,11 +18,14 @@ import org.exodusstudio.frostbite.common.entity.custom.ennemies.*;
 import org.exodusstudio.frostbite.common.entity.custom.guards.ChiefGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.guards.GuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.guards.HeavyGuardEntity;
+import org.exodusstudio.frostbite.common.entity.custom.guards.RangedGuardEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.*;
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
+import org.exodusstudio.frostbite.common.entity.custom.projectiles.*;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.CurseBallEntity;
+import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.WhirlpoolEntity;
 import org.exodusstudio.frostbite.common.entity.goals.TargetEntitySensor;
-import org.exodusstudio.frostbite.common.entity.custom.projectiles.*;
 
 import java.util.function.Supplier;
 
@@ -58,18 +56,6 @@ public class EntityRegistry {
                     .<PackedHardenedSnowballProjectileEntity>of(PackedHardenedSnowballProjectileEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "packed_hardened_snowball"))));
-
-
-    public static final Supplier<EntityType<SniperBulletEntity>> SNIPER_BULLET_ENTITY =
-            ENTITY_TYPES.register("sniper_bullet", () -> EntityType.Builder
-                    .of(SniperBulletEntity::new, MobCategory.MISC)
-                    .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "sniper_bullet"))));
-    public static final Supplier<EntityType<RevolverBulletEntity>> REVOLVER_BULLET_ENTITY =
-            ENTITY_TYPES.register("revolver_bullet", () -> EntityType.Builder
-                    .of(RevolverBulletEntity::new, MobCategory.MISC)
-                    .sized(0.25f, 0.25f).build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "revolver_bullet"))));
 
 
     public static final Supplier<EntityType<HailcoilEntity>> HAILCOIL =
@@ -110,7 +96,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<WoollySheepEntity>> WOOLLY_SHEEP =
             ENTITY_TYPES.register("woolly_sheep", () -> EntityType.Builder
-                    .of(WoollySheepEntity::new, MobCategory.AMBIENT)
+                    .of(WoollySheepEntity::new, MobCategory.CREATURE)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep"))));
@@ -145,7 +131,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<BoarEntity>> BOAR =
             ENTITY_TYPES.register("boar", () -> EntityType.Builder
-                    .of(BoarEntity::new, MobCategory.AMBIENT)
+                    .of(BoarEntity::new, MobCategory.CREATURE)
                     .sized(1f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "boar"))));
@@ -206,7 +192,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<BanditEntity>> BANDIT =
             ENTITY_TYPES.register("bandit", () -> EntityType.Builder
-                    .of(BanditEntity::new, MobCategory.AMBIENT)
+                    .of(BanditEntity::new, MobCategory.CREATURE)
                     .sized(0.75f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "bandit"))));
@@ -232,18 +218,18 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "tanuki"))));
 
-    public static final Supplier<EntityType<HealerElfEntity>> HEALER_ELF =
-            ENTITY_TYPES.register("healer_elf", () -> EntityType.Builder
-                    .of(HealerElfEntity::new, MobCategory.MONSTER)
-                    .sized(0.6F, 1.95F)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "healer_elf"))));
     public static final Supplier<EntityType<CasterElfEntity>> CASTER_ELF =
             ENTITY_TYPES.register("caster_elf", () -> EntityType.Builder
                     .of(CasterElfEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "caster_elf"))));
+    public static final Supplier<EntityType<HealerElfEntity>> HEALER_ELF =
+            ENTITY_TYPES.register("healer_elf", () -> EntityType.Builder
+                    .of(HealerElfEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "healer_elf"))));
     public static final Supplier<EntityType<SummonerElfEntity>> SUMMONER_ELF =
             ENTITY_TYPES.register("summoner_elf", () -> EntityType.Builder
                     .of(SummonerElfEntity::new, MobCategory.MONSTER)
@@ -268,7 +254,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<ShamanEntity>> SHAMAN =
             ENTITY_TYPES.register("shaman", () -> EntityType.Builder
-                    .of(ShamanEntity::new, MobCategory.AMBIENT)
+                    .of(ShamanEntity::new, MobCategory.MONSTER)
                     .sized(0.75f, 2f)
                     .clientTrackingRange(2)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
@@ -276,7 +262,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<BigLevitatingJellyfishEntity>> BIG_LEVITATING_JELLYFISH =
             ENTITY_TYPES.register("big_levitating_jellyfish", () -> EntityType.Builder
-                    .of(BigLevitatingJellyfishEntity::new, MobCategory.AMBIENT)
+                    .of(BigLevitatingJellyfishEntity::new, MobCategory.CREATURE)
                     .sized(1.8f, 2.4f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "big_levitating_jellyfish"))));

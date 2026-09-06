@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "frostbite:poisonous_string",
+    "I": "frostbite:insulating_jelly",
+    "J": "frostbite:jelly"
+  },
+  "pattern": [
+    "JSJ",
+    "SIS",
+    "JSJ"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:toxic_jelly"
+  }
+}

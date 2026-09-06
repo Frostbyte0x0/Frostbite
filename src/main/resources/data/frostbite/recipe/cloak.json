@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "frostbite:magic_dust",
+    "W": "frostbite:woolly_wool"
+  },
+  "pattern": [
+    " M ",
+    "MWM",
+    " M "
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:cloak"
+  }
+}

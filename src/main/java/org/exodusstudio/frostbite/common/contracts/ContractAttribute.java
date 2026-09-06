@@ -232,7 +232,7 @@ public class ContractAttribute {
             int level = entry.getValue();
             AttributeInstance attr = map.getInstance(attribute.getAIAttribute());
             if (attr != null) {
-                attr.addPermanentModifier(attribute.getAttributeTemplate(level).create(1));
+                attr.addPermanentModifier(attribute.getAttributeTemplate(level).create(0));
             }
         }
     }

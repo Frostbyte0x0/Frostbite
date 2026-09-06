@@ -68,7 +68,9 @@ import org.exodusstudio.frostbite.common.mixinterfaces.PlayerWrapper;
 import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 import org.exodusstudio.frostbite.common.mixinterfaces.TemperatureEntity;
 import org.exodusstudio.frostbite.common.registry.*;
-import org.exodusstudio.frostbite.common.util.*;
+import org.exodusstudio.frostbite.common.util.Renderable;
+import org.exodusstudio.frostbite.common.util.TemperatureManager;
+import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 
@@ -356,6 +358,28 @@ public class ModEvents {
         });
     }
 
+//    @SubscribeEvent
+//    public static void entityJoin(EntityJoinLevelEvent event) {
+//        if (!event.getLevel().dimension().equals(Util.FROSTBITE_KEY) || event.getLevel().isClientSide() || event.loadedFromDisk()) return;
+//        if (Arrays.stream(DataHelper.getString(event.getLevel(), "tracked_entity_types").split(";"))
+//                .anyMatch(s -> s.equals(event.getEntity().typeHolder().value().getDescriptionId()))) {
+//            int count = DataHelper.getInt(event.getLevel(), event.getEntity().typeHolder().value().getDescriptionId() + "Count");
+//            DataHelper.setData(event.getLevel(), event.getEntity().typeHolder().value().getDescriptionId() + "Count",
+//                    Math.max(0, DataHelper.getInt(event.getLevel(), event.getEntity().typeHolder().value().getDescriptionId() + "Count") + 1));
+//        }
+//    }
+//
+//    @SubscribeEvent
+//    public static void entityLeave(EntityLeaveLevelEvent event) {
+//        if (!event.getLevel().dimension().equals(Util.FROSTBITE_KEY) || event.getLevel().isClientSide()) return;
+//        if (Arrays.stream(DataHelper.getString(event.getLevel(), "tracked_entity_types").split(";"))
+//                .anyMatch(s -> s.equals(event.getEntity().typeHolder().value().getDescriptionId()))) {
+//            int count = DataHelper.getInt(event.getLevel(), event.getEntity().typeHolder().value().getDescriptionId() + "Count");
+//            DataHelper.setData(event.getLevel(), event.getEntity().typeHolder().value().getDescriptionId() + "Count",
+//                    Math.max(0, DataHelper.getInt(event.getLevel(), event.getEntity().typeHolder().value().getDescriptionId() + "Count") - 1));
+//        }
+//    }
+
     @SubscribeEvent
     public static void blockInteract(PlayerInteractEvent.RightClickBlock event) {
         Level level = event.getLevel();
@@ -402,12 +426,6 @@ public class ModEvents {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.FAIL);
         }
-
-//        ParticleHelper.ring(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(1, 0, 0), 10, 2, 0.1);
-//        ParticleHelper.ring(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(0, 1, 0), 10, 2, 0.1);
-//        ParticleHelper.ring(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(0, 0, 1), 10, 2, 0.1);
-//        ParticleHelper.sphere(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1, 0), new Vec3(0, 0, 1), 10, 10, 2, 0.1);
-//        ParticleHelper.completeSphere(level, ParticleTypes.SOUL_FIRE_FLAME, player.position().add(0, 1.3, 0), Vec3.Y_AXIS, 10, 10, 0.01, 0.2);
     }
 
     @SubscribeEvent

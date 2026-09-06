@@ -161,7 +161,7 @@ public class FrozenRemnantsEntity extends Mob {
 
     public static boolean shouldSpawnFrozenRemnants(ServerLevel serverLevel) {
         return !serverLevel.getGameRules().get(GameRules.KEEP_INVENTORY)
-                && serverLevel.getGameRules().get(GameRuleRegistry.RULE_SPAWN_FROZEN_REMNANTS.get())
+                && serverLevel.getGameRules().get(GameRuleRegistry.SPAWN_FROZEN_REMNANTS.get())
                 && isFrostbite(serverLevel);
     }
 

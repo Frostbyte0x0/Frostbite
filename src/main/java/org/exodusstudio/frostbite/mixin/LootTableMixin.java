@@ -5,6 +5,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.exodusstudio.frostbite.common.component.ArmourStatsData;
 import org.exodusstudio.frostbite.common.component.ContractAttributeData;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
@@ -31,6 +32,8 @@ public class LootTableMixin {
                         .get(frostbite$random.nextIntBetweenInclusive(0, ContractAttributes.ATTRIBUTES.size() - 1));
                 stack.set(DataComponentTypeRegistry.CONTRACT_ATTRIBUTE.get(), new ContractAttributeData(attribute));
                 DataHelper.setData(stack, "level", frostbite$random.nextIntBetweenInclusive(1, 3));
+            } else if (stack.has(DataComponentTypeRegistry.ARMOUR_SET)) {
+                ArmourStatsData.addRandomStats(stack.get(DataComponentTypeRegistry.ARMOUR_SET).set(), stack);
             }
         }
         cir.setReturnValue(items);

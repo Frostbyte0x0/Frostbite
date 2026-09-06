@@ -394,4 +394,10 @@ public class Util {
 
         return false;
     }
+
+    public static <K, V> Map.Entry<K, V> chooseRandomEntryExcept(Map<K, V> map, Set<K> except) {
+        List<Map.Entry<K, V>> filtered = map.entrySet().stream().filter(e -> !except.contains(e.getKey())).toList();
+        int index = random.nextIntBetweenInclusive(0, filtered.size() - 1);
+        return filtered.get(index);
+    }
 }

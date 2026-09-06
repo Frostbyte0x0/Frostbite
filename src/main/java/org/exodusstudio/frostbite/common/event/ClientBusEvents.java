@@ -32,11 +32,7 @@ import org.exodusstudio.frostbite.common.block.renderers.LodestarRenderer;
 import org.exodusstudio.frostbite.common.block.renderers.RuneRenderer;
 import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
 import org.exodusstudio.frostbite.common.entity.client.models.*;
-import org.exodusstudio.frostbite.common.entity.client.models.bullet.RevolverBulletModel;
-import org.exodusstudio.frostbite.common.entity.client.models.bullet.SniperBulletModel;
 import org.exodusstudio.frostbite.common.entity.client.renderers.*;
-import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.RevolverBulletRenderer;
-import org.exodusstudio.frostbite.common.entity.client.renderers.bullet.SniperBulletRenderer;
 import org.exodusstudio.frostbite.common.entity.client.states.StateRenderState;
 import org.exodusstudio.frostbite.common.entity.custom.helper.StateMonsterEntity;
 import org.exodusstudio.frostbite.common.particle.*;
@@ -52,8 +48,6 @@ import java.lang.reflect.InvocationTargetException;
 public class ClientBusEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        EntityRenderers.register(EntityRegistry.SNIPER_BULLET_ENTITY.get(), SniperBulletRenderer::new);
-        EntityRenderers.register(EntityRegistry.REVOLVER_BULLET_ENTITY.get(), RevolverBulletRenderer::new);
         EntityRenderers.register(EntityRegistry.WOOLLY_SHEEP.get(), WoollySheepRenderer::new);
         EntityRenderers.register(EntityRegistry.WHIRLPOOL.get(), GenericEntityRenderer::new);
         EntityRenderers.register(EntityRegistry.HAILCOIL.get(), GenericEntityRenderer::new);
@@ -120,8 +114,6 @@ public class ClientBusEvents {
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(ModModelLayers.SNIPER_BULLET, SniperBulletModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.REVOLVER_BULLET, RevolverBulletModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.ICE_SPIKE, IceSpikeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.WOOLLY_SHEEP, WoollySheepModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.CURSE_BALL, CurseBallModel::createBodyLayer);
@@ -169,8 +161,8 @@ public class ClientBusEvents {
                 FireOverlay::render);
         event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "combo_overlay"),
                 ComboOverlay::render);
-        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
-                GunOverlay::render);
+//        event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "gun_overlay"),
+//                GunOverlay::render);
         event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "rage_overlay"),
                 RageOverlay::render);
         event.registerAboveAll(Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "lining_bar"),

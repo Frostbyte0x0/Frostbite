@@ -6,11 +6,16 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
@@ -18,9 +23,16 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityEquipment;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -29,12 +41,14 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import net.neoforged.neoforge.common.PercentageAttribute;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
 import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
+import org.exodusstudio.frostbite.common.component.ArmourStatsData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
@@ -42,6 +56,8 @@ import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
 import org.exodusstudio.frostbite.common.event.custom.CodexEntryUnlockedEvent;
 import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.event.custom.PlayerHasEntryEvent;
+import org.exodusstudio.frostbite.common.item.armour.ArmourCleanliness;
+import org.exodusstudio.frostbite.common.item.armour.ArmourSet;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
 import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
@@ -57,12 +73,14 @@ import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 
+@SuppressWarnings("DataFlowIssue")
 @EventBusSubscriber(modid = Frostbite.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
     public static final RandomSource random = RandomSource.create();
@@ -93,7 +111,12 @@ public class ClientEvents {
         if (player == null || level == null) return;
 
         if (event.getScreen() instanceof InventoryScreen || event.getScreen() instanceof CreativeModeInventoryScreen) {
-            int screenCenter = graphics.guiHeight() / 2;
+            int centerX = graphics.guiWidth() / 2;
+            int centerY = graphics.guiHeight() / 2;
+            if (Minecraft.getInstance().hasShiftDown())
+                renderArmourBonuses(player.getInventory().equipment, graphics,
+                        centerX + ((AbstractContainerScreen<?>) event.getScreen()).getImageWidth() / 2,
+                        centerY + ((AbstractContainerScreen<?>) event.getScreen()).getImageHeight() / 2);
 
             Contract c = LivingContractInfo.getContract(player);
             if (c == null) return;
@@ -108,9 +131,65 @@ public class ClientEvents {
             }
             int i = -lines.size() / 2;
             for (FormattedCharSequence line : lines.keySet()) {
-                graphics.text(font, line, lines.get(line) ? 16 : 0, screenCenter + i * font.lineHeight, 0xFFFFFFFF);
+                graphics.text(font, line, lines.get(line) ? 16 : 0, centerY + i * font.lineHeight, 0xFFFFFFFF);
                 i++;
             }
+        }
+    }
+
+    public static void renderArmourBonuses(EntityEquipment equipment, GuiGraphicsExtractor gui, int x, int y) {
+        Font font = Minecraft.getInstance().font;
+
+        Map<Holder<Attribute>, MobEffect.AttributeTemplate> totalAttributes = new LinkedHashMap<>();
+
+        ArmourSet set = ArmourSet.getFullSet(equipment);
+        if (set != null) {
+            totalAttributes.putAll(set.attributes());
+        }
+
+        EquipmentSlot[] slots = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+
+        for (EquipmentSlot slot : slots) {
+            ItemStack stack = equipment.get(slot);
+
+            if (!stack.isEmpty() && stack.has(DataComponentTypeRegistry.ARMOUR_STATS)) {
+                for (Map.Entry<Holder<Attribute>, MobEffect.AttributeTemplate> entry : stack.get(DataComponentTypeRegistry.ARMOUR_STATS).getAttributes().entrySet()) {
+
+                    if (totalAttributes.containsKey(entry.getKey()) && entry.getValue().operation() == totalAttributes.get(entry.getKey()).operation()) {
+                        MobEffect.AttributeTemplate combined = new MobEffect.AttributeTemplate(
+                                entry.getValue().id(),
+                                totalAttributes.get(entry.getKey()).amount() + entry.getValue().amount(),
+                                entry.getValue().operation()
+                        );
+                        totalAttributes.put(entry.getKey(), combined);
+                    }
+                    else totalAttributes.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        if (totalAttributes.isEmpty()) return;
+
+        Map<Holder<Attribute>, MobEffect.AttributeTemplate> posAttributes = new LinkedHashMap<>();
+        Map<Holder<Attribute>, MobEffect.AttributeTemplate> negativeAttributes = new LinkedHashMap<>();
+
+        for (Map.Entry<Holder<Attribute>, MobEffect.AttributeTemplate> entry : totalAttributes.entrySet()) {
+            if (entry.getValue().amount() > 0) posAttributes.put(entry.getKey(), entry.getValue());
+            else negativeAttributes.put(entry.getKey(), entry.getValue());
+        }
+
+        List<Either<FormattedText, TooltipComponent>> components = new ArrayList<>();
+        attributesComponents(negativeAttributes, components, 0, true);
+        attributesComponents(posAttributes, components, 0, true);
+
+        components.addFirst(Either.left(Component.translatable("frostbite.armour_bonuses").withStyle(ChatFormatting.GOLD)));
+
+        int h = components.size() * font.lineHeight + 16;
+        gui.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("friends/toast_background"), x, y - h, 150, h);
+
+        int i = 0;
+        for (Either<FormattedText, TooltipComponent> component : components) {
+            gui.text(font, (Component) component.left().orElseThrow(), x + 8, y + i + 8 - h, 0xFFFFFFFF);
+            i += font.lineHeight;
         }
     }
 
@@ -294,6 +373,71 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public static void armourTooltips(RenderTooltipEvent.GatherComponents event) {
+        ItemStack stack = event.getItemStack();
+        Player player = Minecraft.getInstance().player;
+        Level level = Minecraft.getInstance().level;
+        if (player == null || level == null) return;
+
+        if (stack.has(DataComponentTypeRegistry.ARMOUR_SET)) {
+            ArmourSet set = stack.get(DataComponentTypeRegistry.ARMOUR_SET).set();
+            Map<Holder<Attribute>, MobEffect.AttributeTemplate> attributes = set.attributes();
+            int pieces = set.getPiecesWithSet(player.getInventory().equipment);
+
+            attributesComponents(attributes, event.getTooltipElements(), 1, pieces == 4);
+            MutableComponent setPieces = Component.literal(" (")
+                    .append(String.valueOf(pieces))
+                    .append("/4)");
+            MutableComponent name = Component.translatable("frostbite.armour_sets." + set.id())
+                    .append(" ")
+                    .append(Component.translatable("frostbite.armour_set"));
+            if (pieces != 4) setPieces.withStyle(ChatFormatting.GRAY);
+            if (stack.has(DataComponents.CUSTOM_NAME)) {
+                name.withStyle(stack.get(DataComponents.CUSTOM_NAME).getStyle());
+                if (pieces == 4) setPieces.withStyle(stack.get(DataComponents.CUSTOM_NAME).getStyle());
+            }
+            name.append(setPieces);
+            event.getTooltipElements().add(1, Either.left(name));
+        }
+
+        if (stack.has(DataComponentTypeRegistry.ARMOUR_STATS)) {
+            ArmourStatsData data = stack.get(DataComponentTypeRegistry.ARMOUR_STATS);
+            ArmourCleanliness cleanliness = data.cleanliness();
+            Map<Holder<Attribute>, MobEffect.AttributeTemplate> attributes = data.getAttributes();
+
+            MutableComponent first = (MutableComponent) event.getTooltipElements().removeFirst().left().orElseThrow();
+            Component name = Component.translatable("frostbite.cleanliness." + cleanliness.name().toLowerCase())
+                    .withStyle(cleanliness.formatting).withStyle(ChatFormatting.ITALIC).append(" ").append(first);
+
+            event.getTooltipElements().addFirst(Either.left(name));
+
+            attributesComponents(attributes, event.getTooltipElements(), 1, true);
+        }
+    }
+
+    private static void attributesComponents(Map<Holder<Attribute>, MobEffect.AttributeTemplate> attributes, List<Either<FormattedText, TooltipComponent>> list, int offset, boolean shouldColour) {
+        int i = offset;
+        for (Map.Entry<Holder<Attribute>, MobEffect.AttributeTemplate> entry : attributes.entrySet()) {
+            Holder<Attribute> attribute = entry.getKey();
+            AttributeModifier modifier = entry.getValue().create(0);
+
+            MutableComponent c = Component.literal(modifier.amount() > 0 ? "  +" : "  ");
+            if (attribute.value() instanceof PercentageAttribute || attribute.value().equals(Attributes.ATTACK_SPEED.value()))
+                c.append(String.format("%.0f", modifier.amount() * 100)).append("%");
+            else if (attribute.value().equals(AttributeRegistry.POISON.value())) c.append(String.format("%.0f", modifier.amount())).append("s");
+            else c.append(String.format("%.0f", modifier.amount()));
+
+            c.append(" ");
+            c.append(Component.translatable(attribute.value().getDescriptionId()));
+            if (shouldColour) c.withStyle(modifier.amount() > 0 ? ChatFormatting.DARK_GREEN : ChatFormatting.DARK_RED);
+            else c.withStyle(ChatFormatting.GRAY);
+
+            list.add(i, Either.left(c));
+            i++;
+        }
+    }
+
+    @SubscribeEvent
     public static void staffControl(InputEvent.MouseButton.Pre event) {
         if (event.getButton() == 1) {
             Player player = Minecraft.getInstance().player;
@@ -318,13 +462,6 @@ public class ClientEvents {
                     level.playLocalSound(event.getEntity(), ambience.soundEvent.get(), SoundSource.AMBIENT, ambience.volume, 1);
                 }
             }
-        }
-    }
-
-    @SubscribeEvent
-    public static void fov(ComputeFovModifierEvent event) {
-        if (event.getPlayer().getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.SNIPER) && event.getPlayer().isShiftKeyDown()) {
-            event.setNewFovModifier(0.05f);
         }
     }
 

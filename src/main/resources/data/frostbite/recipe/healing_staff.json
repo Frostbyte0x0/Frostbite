@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": "frostbite:healing_staff_orb",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "H",
+    "S",
+    "S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:healing_staff"
+  }
+}

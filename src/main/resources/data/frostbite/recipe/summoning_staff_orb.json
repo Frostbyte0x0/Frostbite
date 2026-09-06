@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "frostbite:magic_dust",
+    "J": "frostbite:jelly"
+  },
+  "pattern": [
+    "MMM",
+    "MJM",
+    "MMM"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:summoning_staff_orb"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "frostbite:bear_fur",
+    "S": "frostbite:ice_shard",
+    "H": "frostbite:bottle_of_heat"
+  },
+  "pattern": [
+    "SBS",
+    "BHB",
+    "SBS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:strengthened_bear_fur"
+  }
+}

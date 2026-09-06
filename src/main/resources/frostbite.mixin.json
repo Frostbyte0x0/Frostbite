@@ -19,7 +19,8 @@
     "LootTableMixin",
     "PlayerMixin",
     "ServerPlayerGameModeMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "PathfindingContextMixin"
   ],
   "client": [
     "CreativeModeInventoryScreenMixin",
