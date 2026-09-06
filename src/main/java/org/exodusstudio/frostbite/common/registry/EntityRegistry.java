@@ -101,13 +101,6 @@ public class EntityRegistry {
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep"))));
 
-    public static final Supplier<EntityType<LevitatingJellyfishEntity>> LEVITATING_JELLYFISH =
-            ENTITY_TYPES.register("levitating_jellyfish", () -> EntityType.Builder
-                    .of(LevitatingJellyfishEntity::new, MobCategory.CREATURE)
-                    .sized(0.75f, 0.75f)
-                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
-                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "levitating_jellyfish"))));
-
     public static final Supplier<EntityType<FeralWolfEntity>> FERAL_WOLF =
             ENTITY_TYPES.register("feral_wolf", () -> EntityType.Builder
                     .of(FeralWolfEntity::new, MobCategory.MONSTER)
@@ -117,7 +110,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<FrozenRemnantsEntity>> FROZEN_REMNANTS =
             ENTITY_TYPES.register("frozen_remnants", () -> EntityType.Builder
-                    .of(FrozenRemnantsEntity::new, MobCategory.CREATURE)
+                    .of(FrozenRemnantsEntity::new, MobCategory.MISC)
                     .sized(0.75f, 2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frozen_remnants"))));
@@ -262,26 +255,32 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<BigLevitatingJellyfishEntity>> BIG_LEVITATING_JELLYFISH =
             ENTITY_TYPES.register("big_levitating_jellyfish", () -> EntityType.Builder
-                    .of(BigLevitatingJellyfishEntity::new, MobCategory.CREATURE)
+                    .of(BigLevitatingJellyfishEntity::new, MobCategory.MONSTER)
                     .sized(1.8f, 2.4f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "big_levitating_jellyfish"))));
+    public static final Supplier<EntityType<LevitatingJellyfishEntity>> LEVITATING_JELLYFISH =
+            ENTITY_TYPES.register("levitating_jellyfish", () -> EntityType.Builder
+                    .of(LevitatingJellyfishEntity::new, MobCategory.MONSTER)
+                    .sized(0.75f, 0.75f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE,
+                            Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "levitating_jellyfish"))));
 
     public static final Supplier<EntityType<EtherealSwordEntity>> ETHEREAL_SWORD =
             ENTITY_TYPES.register("ethereal_sword", () -> EntityType.Builder
-                    .of(EtherealSwordEntity::new, MobCategory.AMBIENT)
+                    .of(EtherealSwordEntity::new, MobCategory.MISC)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_sword"))));
     public static final Supplier<EntityType<EtherealHandsEntity>> ETHEREAL_HANDS =
             ENTITY_TYPES.register("ethereal_hands", () -> EntityType.Builder
-                    .of(EtherealHandsEntity::new, MobCategory.AMBIENT)
+                    .of(EtherealHandsEntity::new, MobCategory.MISC)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hands"))));
     public static final Supplier<EntityType<EtherealHammerEntity>> ETHEREAL_HAMMER =
             ENTITY_TYPES.register("ethereal_hammer", () -> EntityType.Builder
-                    .of(EtherealHammerEntity::new, MobCategory.AMBIENT)
+                    .of(EtherealHammerEntity::new, MobCategory.MISC)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ethereal_hammer"))));
@@ -289,40 +288,40 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<ChiefGuardEntity>> CHIEF_GUARD =
             ENTITY_TYPES.register("chief_guard", () -> EntityType.Builder
-                    .of(ChiefGuardEntity::new, MobCategory.AMBIENT)
+                    .of(ChiefGuardEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(2)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chief_guard"))));
     public static final Supplier<EntityType<GuardEntity>> GUARD =
             ENTITY_TYPES.register("guard", () -> EntityType.Builder
-                    .of(GuardEntity::new, MobCategory.AMBIENT)
+                    .of(GuardEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "guard"))));
     public static final Supplier<EntityType<HeavyGuardEntity>> HEAVY_GUARD =
             ENTITY_TYPES.register("heavy_guard", () -> EntityType.Builder
-                    .of(HeavyGuardEntity::new, MobCategory.AMBIENT)
+                    .of(HeavyGuardEntity::new, MobCategory.MONSTER)
                     .sized(0.75F, 2.34F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "heavy_guard"))));
     public static final Supplier<EntityType<RangedGuardEntity>> RANGED_GUARD =
             ENTITY_TYPES.register("ranged_guard", () -> EntityType.Builder
-                    .of(RangedGuardEntity::new, MobCategory.AMBIENT)
+                    .of(RangedGuardEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ranged_guard"))));
 
     public static final Supplier<EntityType<CurseBallEntity>> CURSE_BALL =
             ENTITY_TYPES.register("curse_ball", () -> EntityType.Builder
-                    .of(CurseBallEntity::new, MobCategory.AMBIENT)
+                    .of(CurseBallEntity::new, MobCategory.MISC)
                     .sized(1.2f, 1.2f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "curse_ball"))));
 
     public static final Supplier<EntityType<PlayerIllusionEntity>> PLAYER_ILLUSION =
             ENTITY_TYPES.register("player_illusion", () -> EntityType.Builder
-                    .of(PlayerIllusionEntity::new, MobCategory.AMBIENT)
+                    .of(PlayerIllusionEntity::new, MobCategory.MISC)
                     .sized(0.6F, 1.8F)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "player_illusion"))));

@@ -158,19 +158,19 @@ public class ModEventBusEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 ModEventBusEvents::checkAnimalSpawnRules,
-                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+                RegisterSpawnPlacementsEvent.Operation.AND);
         event.register(
                 EntityRegistry.BOAR.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 ModEventBusEvents::checkAnimalSpawnRules,
-                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+                RegisterSpawnPlacementsEvent.Operation.AND);
         event.register(
                 EntityRegistry.WOOLLY_SHEEP.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 ModEventBusEvents::checkAnimalSpawnRules,
-                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+                RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     public static boolean checkAnimalSpawnRules(EntityType<? extends Animal> type, LevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
