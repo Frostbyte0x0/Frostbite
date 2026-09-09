@@ -96,7 +96,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<WoollySheepEntity>> WOOLLY_SHEEP =
             ENTITY_TYPES.register("woolly_sheep", () -> EntityType.Builder
-                    .of(WoollySheepEntity::new, MobCategory.CREATURE)
+                    .of(WoollySheepEntity::new, MobCategory.AMBIENT)
                     .sized(0.75f, 0.75f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "woolly_sheep"))));
@@ -124,7 +124,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<BoarEntity>> BOAR =
             ENTITY_TYPES.register("boar", () -> EntityType.Builder
-                    .of(BoarEntity::new, MobCategory.CREATURE)
+                    .of(BoarEntity::new, MobCategory.AMBIENT)
                     .sized(1f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "boar"))));
@@ -185,7 +185,7 @@ public class EntityRegistry {
 
     public static final Supplier<EntityType<BanditEntity>> BANDIT =
             ENTITY_TYPES.register("bandit", () -> EntityType.Builder
-                    .of(BanditEntity::new, MobCategory.CREATURE)
+                    .of(BanditEntity::new, MobCategory.AMBIENT)
                     .sized(0.75f, 1f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "bandit"))));
