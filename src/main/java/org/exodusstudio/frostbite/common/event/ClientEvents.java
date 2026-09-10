@@ -251,14 +251,15 @@ public class ClientEvents {
         if (player == null) return;
 
         if (Minecraft.getInstance().options.keyJump.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent())) &&
-                LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.FROG) &&
+                player.getAttributes().hasAttribute(AttributeRegistry.JUMPS) &&
+                player.getAttributeValue(AttributeRegistry.JUMPS) > 0 &&
                 !player.isCreative()) {
             if (DataHelper.getInt(player, "jump_count") == -1) {
                 DataHelper.setData(player, "jump_count", 0);
                 return;
             }
             DataHelper.setData(player, "jump_count", DataHelper.getInt(player, "jump_count") + 1);
-            if (DataHelper.getInt(player, "jump_count") > LivingContractInfo.getStat(player, ContractAttributes.FROG) * 2) return;
+            if (DataHelper.getInt(player, "jump_count") > player.getAttributeValue(AttributeRegistry.JUMPS) * 2) return;
             while (Minecraft.getInstance().options.keyJump.consumeClick()) {
                 Vec3 d = player.getDeltaMovement();
                 player.setDeltaMovement(d.x, 0, d.z);

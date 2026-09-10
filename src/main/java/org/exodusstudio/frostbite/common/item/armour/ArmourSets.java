@@ -50,8 +50,8 @@ public class ArmourSets {
             "bear",
             Optional.of(ItemRegistry.STRENGTHENED_BEAR_FUR.asItem()),
             new LinkedHashMap<>() {{
-                put(AttributeRegistry.COLD_DEFENCE, new MobEffect.AttributeTemplate(
-                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "bear_cold_defence"), 0.3, AttributeModifier.Operation.ADD_VALUE));
+                put(AttributeRegistry.MELEE_DAMAGE, new MobEffect.AttributeTemplate(
+                        Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "bear_melee_damage"), 0.3, AttributeModifier.Operation.ADD_VALUE));
                 put(AttributeRegistry.DEFENCE, new MobEffect.AttributeTemplate(
                         Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "bear_defence"), 0.2, AttributeModifier.Operation.ADD_VALUE));
                 put(Attributes.MOVEMENT_SPEED, new MobEffect.AttributeTemplate(

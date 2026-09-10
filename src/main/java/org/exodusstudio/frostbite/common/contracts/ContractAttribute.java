@@ -331,7 +331,8 @@ public class ContractAttribute {
         ).apply(instance, AttributeTemplateInfo::new));
 
         public static AttributeTemplateInfo create(Holder<Attribute> attribute, Map<Integer, MobEffect.AttributeTemplate> attributeTemplates) {
-            return new AttributeTemplateInfo(BuiltInRegistries.ATTRIBUTE.getKey(attribute.value()).toString(), attributeTemplates.entrySet()
+//            return new AttributeTemplateInfo(BuiltInRegistries.ATTRIBUTE.getKey(attribute.value()).toString(), attributeTemplates.entrySet()
+            return new AttributeTemplateInfo(attribute.getKey().identifier().toString(), attributeTemplates.entrySet()
                     .stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, v -> v.getValue().id() + ";" + v.getValue().amount() + ";" + v.getValue().operation().name())));
         }

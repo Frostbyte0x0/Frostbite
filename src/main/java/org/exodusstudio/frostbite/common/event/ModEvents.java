@@ -650,6 +650,44 @@ public class ModEvents {
     }
 
     @SubscribeEvent
+    public static void attributesPre(LivingDamageEvent.Pre event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity target) {
+            if (target.getAttributes().hasAttribute(AttributeRegistry.DEFENCE))
+                event.setNewDamage((float) (event.getNewDamage() * (1 - target.getAttributeValue(AttributeRegistry.DEFENCE))));
+
+            if (event.getSource().isDirect() && target.getAttributes().hasAttribute(AttributeRegistry.MELEE_DAMAGE))
+                event.setNewDamage((float) (event.getNewDamage() * (1 + attacker.getAttributeValue(AttributeRegistry.MELEE_DAMAGE))));
+
+            if (event.getSource().is(DamageTypes.MAGIC) && target.getAttributes().hasAttribute(AttributeRegistry.SPELL_DAMAGE)) // TODO: make spell tag and add all required spells
+                event.setNewDamage((float) (event.getNewDamage() * (1 + attacker.getAttributeValue(AttributeRegistry.SPELL_DAMAGE))));
+        }
+    }
+
+    @SubscribeEvent
+    public static void attributesPost(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof LivingEntity attacker &&
+                event.getEntity() instanceof LivingEntity target &&
+                target.level() instanceof ServerLevel serverLevel) {
+            if (target.getAttributes().hasAttribute(AttributeRegistry.LIFE_STEAL))
+                attacker.heal((float) (event.getInflictedDamage() * attacker.getAttributeValue(AttributeRegistry.LIFE_STEAL)));
+
+            if (target.getAttributes().hasAttribute(AttributeRegistry.THORNS)) {
+                float damage = (float) (event.getInflictedDamage() * target.getAttributeValue(AttributeRegistry.THORNS));
+                if (damage > 0 && !event.getSource().is(DamageTypes.THORNS)) attacker.hurtServer(serverLevel, attacker.damageSources().thorns(attacker), damage);
+            }
+
+            if (target.getAttributes().hasAttribute(AttributeRegistry.POISON) && target.getAttributeValue(AttributeRegistry.POISON) > 0) {
+                attacker.addEffect(new MobEffectInstance(MobEffects.POISON, (int) target.getAttributeValue(AttributeRegistry.THORNS) * 5), target);
+            }
+
+            if (target.getAttributes().hasAttribute(AttributeRegistry.TEMPERATURE_STEAL))
+                ((TE) attacker).increaseTemperature(
+                        (float) (event.getInflictedDamage() * attacker.getAttributeValue(AttributeRegistry.TEMPERATURE_STEAL)), false);
+        }
+    }
+
+    @SubscribeEvent
     public static void contractDamage(LivingDamageEvent.Pre event) {
         if (event.getSource().getEntity() instanceof LivingEntity attacker &&
                 event.getEntity() instanceof LivingEntity victim) {

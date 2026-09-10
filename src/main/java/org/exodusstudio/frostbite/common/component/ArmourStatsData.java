@@ -47,11 +47,11 @@ public record ArmourStatsData(
     static final Map<Holder<Attribute>, Pair<Float[], AttributeModifier.Operation>> POSITIVE_STATS = new HashMap<>(){{
         put(AttributeRegistry.LIFE_STEAL, null);
         put(AttributeRegistry.TEMPERATURE_STEAL, null);
-        put(AttributeRegistry.COLD_DEFENCE, null);
+//        put(AttributeRegistry.COLD_DEFENCE, null);
         put(AttributeRegistry.DEFENCE, null);
         put(Attributes.MOVEMENT_SPEED, new Pair<>(null, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         put(AttributeRegistry.POISON, new Pair<>(new Float[]{3f, 6f, 9f}, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        put(AttributeRegistry.JUMPS, new Pair<>(new Float[]{1f, 1f, 1f}, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+        put(AttributeRegistry.JUMPS, new Pair<>(new Float[]{1f, 1f, 1f}, AttributeModifier.Operation.ADD_VALUE));
         put(AttributeRegistry.SPELL_DAMAGE, null);
         put(AttributeRegistry.MELEE_DAMAGE, null);
         put(Attributes.ATTACK_SPEED, new Pair<>(null, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
@@ -60,7 +60,7 @@ public record ArmourStatsData(
         put(Attributes.MAX_HEALTH, new Pair<>(new Float[]{-2f, -2f, -2f}, AttributeModifier.Operation.ADD_VALUE));
         put(AttributeRegistry.LIFE_STEAL, null);
         put(AttributeRegistry.TEMPERATURE_STEAL, null);
-        put(AttributeRegistry.COLD_DEFENCE, null);
+//        put(AttributeRegistry.COLD_DEFENCE, null);
         put(AttributeRegistry.DEFENCE, null);
         put(Attributes.MOVEMENT_SPEED, new Pair<>(null, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         put(AttributeRegistry.SPELL_DAMAGE, null);
@@ -136,7 +136,7 @@ public record ArmourStatsData(
         for (Map.Entry<Holder<Attribute>, MobEffect.AttributeTemplate> entry : stats.getAttributes().entrySet()) {
             Holder<Attribute> attribute = entry.getKey();
 
-            AttributeInstance attr = entity.getAttributes().getInstance(attribute);
+            AttributeInstance attr = entity.getAttribute(attribute);
             if (attr != null) {
                 try {
                     attr.addPermanentModifier(entry.getValue().create(0));

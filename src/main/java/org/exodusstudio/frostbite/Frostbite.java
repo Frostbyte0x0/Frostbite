@@ -17,6 +17,7 @@ public class Frostbite {
     public Frostbite(IEventBus modEventBus, ModContainer ignored) {
         DataComponentTypeRegistry.DATA_COMPONENT_TYPES.register(modEventBus);
         EntityRegistry.ENTITY_TYPES.register(modEventBus);
+        AttributeRegistry.ATTRIBUTES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
         CreativeModeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
@@ -31,7 +32,6 @@ public class Frostbite {
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
         MemoryModuleTypeRegistry.MEMORY_MODULE_TYPES.register(modEventBus);
         GameRuleRegistry.GAME_RULES.register(modEventBus);
-        AttributeRegistry.ATTRIBUTES.register(modEventBus);
         AttachmentRegistry.ATTACHMENT_TYPES.register(modEventBus);
     }
 }
