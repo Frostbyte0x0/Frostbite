@@ -1,30 +1,23 @@
 package org.exodusstudio.frostbite.common.particle.types;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
-import org.jetbrains.annotations.NotNull;
+import org.exodusstudio.frostbite.common.particle.options.TextParticleOption;
 
-public class DamageParticleType extends ParticleType<StringParticleOption> implements ParticleOptions {
+public class DamageParticleType extends ParticleType<TextParticleOption> {
     public DamageParticleType(boolean overrideLimiter) {
         super(overrideLimiter);
     }
 
     @Override
-    public MapCodec<StringParticleOption> codec() {
-        return StringParticleOption.codec(this);
+    public MapCodec<TextParticleOption> codec() {
+        return TextParticleOption.codec(this);
     }
 
     @Override
-    public StreamCodec<? super RegistryFriendlyByteBuf, StringParticleOption> streamCodec() {
-        return StringParticleOption.streamCodec(this);
-    }
-
-    @Override
-    public @NotNull ParticleType<?> getType() {
-        return this;
+    public StreamCodec<? super RegistryFriendlyByteBuf, TextParticleOption> streamCodec() {
+        return TextParticleOption.streamCodec(this);
     }
 }

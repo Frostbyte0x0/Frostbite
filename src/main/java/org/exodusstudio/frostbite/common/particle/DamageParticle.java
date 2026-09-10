@@ -3,79 +3,70 @@ package org.exodusstudio.frostbite.common.particle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SingleQuadParticle;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
+import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.common.particle.options.TextParticleOption;
 
-public class DamageParticle extends SingleQuadParticle {
-    private final String text;
+public class DamageParticle extends Particle {
+    public static final ParticleRenderType RENDER_TYPE = new ParticleRenderType("FROSTBITE_TEXT", "FT");
+    private static final float SCALE = 0.025f;
+    private static final int FADE_START = 40;
+    private static final int FADE_LENGTH = 10;
+    private static final int LIGHT_COORDS = 15728880;
+
+    private final FormattedCharSequence text;
+    private final float width;
+    private final float height;
+    private final int color;
 
     public DamageParticle(
-            ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite, String text
+            ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, String text, int color
     ) {
-        super(level, x, y, z, xSpeed, ySpeed, zSpeed, sprite.first());
+        super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.friction = 0.8f;
         this.hasPhysics = true;
         this.gravity = 0;
-        this.text = text;
-        this.setSpriteFromAge(sprite);
+        this.text = Component.literal(text).getVisualOrderText();
+        this.width = Minecraft.getInstance().font.width(this.text);
+        this.height = Minecraft.getInstance().font.lineHeight;
+        this.color = color;
     }
 
-    @Override
-    public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTicks) {
-        if (age + partialTicks >= lifetime) {
-            this.remove();
-            return;
-        }
-        if (age >= 40 && alpha > 0.01f) {
-            this.alpha = 1f - ((age + partialTicks) - 40) / 10;
-        }
+    public void extract(TextParticleRenderState renderState, Camera camera, float partialTicks) {
+        float currentAge = this.age + partialTicks;
+        float alpha = currentAge <= FADE_START ? 1f : 1f - (currentAge - FADE_START) / FADE_LENGTH;
+        if (alpha <= 0.01f) return;
 
-        SubmitNodeStorage collector = new SubmitNodeStorage();
-
+        Vec3 cameraPos = camera.position();
         PoseStack poseStack = new PoseStack();
-        poseStack.pushPose();
         poseStack.translate(
-                this.x,
-                this.y,
-                this.z
+                Mth.lerp(partialTicks, this.xo, this.x) - cameraPos.x(),
+                Mth.lerp(partialTicks, this.yo, this.y) - cameraPos.y(),
+                Mth.lerp(partialTicks, this.zo, this.z) - cameraPos.z()
         );
-//        float particleX = (float) (Mth.lerp(partialTicks, this.xo, this.x) - camera.position().x());
-//        float particleY = (float) (Mth.lerp(partialTicks, this.yo, this.y) - camera.position().y());
-//        float particleZ = (float) (Mth.lerp(partialTicks, this.zo, this.z) - camera.position().z());
-//        poseStack.translate(
-//                particleX,
-//                particleY,
-//                particleZ
-//        );
         poseStack.mulPose(camera.rotation());
-        collector.submitText(poseStack, 0, 0, Component.literal(this.text).getVisualOrderText(), false,
-                Font.DisplayMode.NORMAL, 15728880,
-                ARGB.colorFromFloat(this.alpha, this.rCol, this.gCol, this.bCol), 0, -10066330);
+        poseStack.scale(SCALE, -SCALE, SCALE);
 
-        reusedState.submit(collector, Minecraft.getInstance().levelRenderer.levelRenderState.cameraRenderState);
-//        Minecraft.getInstance().gameRenderer.featureRenderDispatcher().renderAllFeatures(collector);
-
-        super.extract(reusedState, camera, partialTicks);
+        renderState.add(poseStack, -this.width / 2f, -this.height / 2f, this.text,
+                ARGB.color(alpha, this.color), LIGHT_COORDS);
     }
 
     @Override
-    public SingleQuadParticle.Layer getLayer() {
-        return Layer.TRANSLUCENT;
+    public ParticleRenderType getGroup() {
+        return RENDER_TYPE;
     }
 
-    public record Provider(SpriteSet sprite) implements ParticleProvider<StringParticleOption> {
+    public record Provider() implements ParticleProvider<TextParticleOption> {
         public Particle createParticle(
-                StringParticleOption stringParticleOption,
+                TextParticleOption textParticleOption,
                 ClientLevel clientLevel,
                 double x,
                 double y,
@@ -86,10 +77,9 @@ public class DamageParticle extends SingleQuadParticle {
                 RandomSource randomSource
         ) {
             DamageParticle damageParticle = new DamageParticle(
-                    clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, this.sprite, stringParticleOption.text()
+                    clientLevel, x, y, z, xSpeed, ySpeed, zSpeed, textParticleOption.text(), textParticleOption.color()
             );
 
-            damageParticle.setSize(1.5f, 1.5f);
             damageParticle.setParticleSpeed(xSpeed, ySpeed, zSpeed);
             damageParticle.setLifetime(50);
             return damageParticle;

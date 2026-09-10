@@ -19,10 +19,12 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityEquipment;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -66,7 +68,7 @@ import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SpellTooltipable;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
-import org.exodusstudio.frostbite.common.particle.options.StringParticleOption;
+import org.exodusstudio.frostbite.common.particle.options.TextParticleOption;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
@@ -476,8 +478,9 @@ public class ClientEvents {
                     .normalize(0.1f);
 
             Minecraft.getInstance().level.addParticle(
-                    StringParticleOption.create(ParticleRegistry.DAMAGE_PARTICLE.get(),
-                            String.format("%.1f", event.getInflictedDamage())
+                    TextParticleOption.create(ParticleRegistry.DAMAGE_PARTICLE.get(),
+                            String.format("%.1f", event.getInflictedDamage()),
+                            0xFFFFFF
                     ),
                     target.getRandomX(0.7F),
                     target.getRandomY() + 1,

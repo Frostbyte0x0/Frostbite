@@ -21,6 +21,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleGroupsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.gui.WeavingScreen;
@@ -185,8 +186,13 @@ public class ClientBusEvents {
         event.registerSpriteSet(ParticleRegistry.DEBUG_PARTICLE.get(), DebugParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.HEAL_PARTICLE.get(), HealParticle.Provider::new);
         event.registerSpriteSet(ParticleRegistry.AMBIENT_SNOW_PARTICLE.get(), AmbientSnowParticle.Provider::new);
-        event.registerSpriteSet(ParticleRegistry.DAMAGE_PARTICLE.get(), DamageParticle.Provider::new);
+        event.registerSpecial(ParticleRegistry.DAMAGE_PARTICLE.get(), new DamageParticle.Provider());
         event.registerSpriteSet(ParticleRegistry.SLASH_PARTICLE.get(), SlashParticle.Provider::new);
+    }
+
+    @SubscribeEvent
+    public static void registerParticleGroups(RegisterParticleGroupsEvent event) {
+        event.register(DamageParticle.RENDER_TYPE, TextParticleGroup::new);
     }
 
     @SubscribeEvent
