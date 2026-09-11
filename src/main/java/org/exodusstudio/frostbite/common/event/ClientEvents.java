@@ -19,12 +19,10 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityEquipment;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -41,7 +39,10 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.PercentageAttribute;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -115,10 +116,14 @@ public class ClientEvents {
         if (event.getScreen() instanceof InventoryScreen || event.getScreen() instanceof CreativeModeInventoryScreen) {
             int centerX = graphics.guiWidth() / 2;
             int centerY = graphics.guiHeight() / 2;
-            if (Minecraft.getInstance().hasShiftDown())
-                renderArmourBonuses(player.getInventory().equipment, graphics,
-                        centerX + ((AbstractContainerScreen<?>) event.getScreen()).getImageWidth() / 2,
-                        centerY + ((AbstractContainerScreen<?>) event.getScreen()).getImageHeight() / 2);
+            int x = centerX + ((AbstractContainerScreen<?>) event.getScreen()).getImageWidth() / 2;
+            int y = centerY + ((AbstractContainerScreen<?>) event.getScreen()).getImageHeight() / 2;
+            if (Minecraft.getInstance().hasControlDown())
+                renderArmourBonuses(player.getInventory().equipment, graphics, x, y, 150);
+            else if (Minecraft.getInstance().hasShiftDown()) {
+                List<FormattedCharSequence> l = font.split(Component.translatable("frostbite.inventory.armour_tooltip"), 100);
+                Util.drawMultilineText(graphics, l, x + 3, y - font.lineHeight * l.size(), 0xFFFF6666);
+            }
 
             Contract c = LivingContractInfo.getContract(player);
             if (c == null) return;
@@ -139,7 +144,7 @@ public class ClientEvents {
         }
     }
 
-    public static void renderArmourBonuses(EntityEquipment equipment, GuiGraphicsExtractor gui, int x, int y) {
+    public static void renderArmourBonuses(EntityEquipment equipment, GuiGraphicsExtractor gui, int x, int y, int w) {
         Font font = Minecraft.getInstance().font;
 
         Map<Holder<Attribute>, MobEffect.AttributeTemplate> totalAttributes = new LinkedHashMap<>();
@@ -186,7 +191,7 @@ public class ClientEvents {
         components.addFirst(Either.left(Component.translatable("frostbite.armour_bonuses").withStyle(ChatFormatting.GOLD)));
 
         int h = components.size() * font.lineHeight + 16;
-        gui.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("friends/toast_background"), x, y - h, 150, h);
+        gui.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("friends/toast_background"), x, y - h, w, h);
 
         int i = 0;
         for (Either<FormattedText, TooltipComponent> component : components) {
@@ -261,7 +266,7 @@ public class ClientEvents {
                 return;
             }
             DataHelper.setData(player, "jump_count", DataHelper.getInt(player, "jump_count") + 1);
-            if (DataHelper.getInt(player, "jump_count") > player.getAttributeValue(AttributeRegistry.JUMPS) * 2) return;
+            if (DataHelper.getInt(player, "jump_count") > player.getAttributeValue(AttributeRegistry.JUMPS)) return;
             while (Minecraft.getInstance().options.keyJump.consumeClick()) {
                 Vec3 d = player.getDeltaMovement();
                 player.setDeltaMovement(d.x, 0, d.z);

@@ -195,7 +195,7 @@ public class BoarEntity extends Animal implements NeutralMob, TemperatureEntity 
                 boar.getNavigation().moveTo(target, 1.0D);
                 chargeCooldown--;
 
-                if (boar.distanceToSqr(target) < 6 && boar.distanceToSqr(target) > 2
+                if (boar.distanceToSqr(target) < 6// && boar.distanceToSqr(target) > 2
                         && boar.getSensing().hasLineOfSight(target) && chargeCooldown <= 0) {
                     isCharging = true;
                     chargeCooldown = 20;

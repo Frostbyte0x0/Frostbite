@@ -21,8 +21,8 @@ public class AttributeRegistry {
     public static final DeferredHolder<Attribute, Attribute> TEMPERATURE_STEAL = ATTRIBUTES.register("temperature_steal",
             () -> (new PercentageAttribute("attribute.name.temperature_steal", 0, 0, 1).setSyncable(true)));
 
-    public static final DeferredHolder<Attribute, Attribute> COLD_DEFENCE = ATTRIBUTES.register("cold_defence",
-            () -> (new PercentageAttribute("attribute.name.cold_defence", 0, 0, 1).setSyncable(true)));
+//    public static final DeferredHolder<Attribute, Attribute> COLD_DEFENCE = ATTRIBUTES.register("cold_defence",
+//            () -> (new PercentageAttribute("attribute.name.cold_defence", 0, 0, 1).setSyncable(true)));
 
     public static final DeferredHolder<Attribute, Attribute> THORNS = ATTRIBUTES.register("thorns",
             () -> (new PercentageAttribute("attribute.name.thorns", 0, 0, 1).setSyncable(true)));

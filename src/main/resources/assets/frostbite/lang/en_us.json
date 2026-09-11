@@ -436,6 +436,7 @@
   "frostbite.cleanliness.sparkling": "Sparkling",
 
   "frostbite.armour_set": "Set",
+  "frostbite.inventory.armour_tooltip": "Press Ctrl to show total armour stats",
   "frostbite.armour_bonuses": "Armour Bonuses",
 
   "frostbite.armour_sets.cursed": "Cursed",

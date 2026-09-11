@@ -656,10 +656,10 @@ public class ModEvents {
             if (target.getAttributes().hasAttribute(AttributeRegistry.DEFENCE))
                 event.setNewDamage((float) (event.getNewDamage() * (1 - target.getAttributeValue(AttributeRegistry.DEFENCE))));
 
-            if (event.getSource().isDirect() && target.getAttributes().hasAttribute(AttributeRegistry.MELEE_DAMAGE))
+            if (event.getSource().isDirect() && attacker.getAttributes().hasAttribute(AttributeRegistry.MELEE_DAMAGE))
                 event.setNewDamage((float) (event.getNewDamage() * (1 + attacker.getAttributeValue(AttributeRegistry.MELEE_DAMAGE))));
 
-            if (event.getSource().is(DamageTypes.MAGIC) && target.getAttributes().hasAttribute(AttributeRegistry.SPELL_DAMAGE)) // TODO: make spell tag and add all required spells
+            if (event.getSource().is(DamageTypes.MAGIC) && attacker.getAttributes().hasAttribute(AttributeRegistry.SPELL_DAMAGE)) // TODO: make spell tag and add all required spells
                 event.setNewDamage((float) (event.getNewDamage() * (1 + attacker.getAttributeValue(AttributeRegistry.SPELL_DAMAGE))));
         }
     }
@@ -669,7 +669,7 @@ public class ModEvents {
         if (event.getSource().getEntity() instanceof LivingEntity attacker &&
                 event.getEntity() instanceof LivingEntity target &&
                 target.level() instanceof ServerLevel serverLevel) {
-            if (target.getAttributes().hasAttribute(AttributeRegistry.LIFE_STEAL))
+            if (attacker.getAttributes().hasAttribute(AttributeRegistry.LIFE_STEAL))
                 attacker.heal((float) (event.getInflictedDamage() * attacker.getAttributeValue(AttributeRegistry.LIFE_STEAL)));
 
             if (target.getAttributes().hasAttribute(AttributeRegistry.THORNS)) {
@@ -678,12 +678,15 @@ public class ModEvents {
             }
 
             if (target.getAttributes().hasAttribute(AttributeRegistry.POISON) && target.getAttributeValue(AttributeRegistry.POISON) > 0) {
-                attacker.addEffect(new MobEffectInstance(MobEffects.POISON, (int) target.getAttributeValue(AttributeRegistry.THORNS) * 5), target);
+                attacker.addEffect(new MobEffectInstance(MobEffects.POISON, (int) target.getAttributeValue(AttributeRegistry.POISON) * 20), target);
             }
 
-            if (target.getAttributes().hasAttribute(AttributeRegistry.TEMPERATURE_STEAL))
-                ((TE) attacker).increaseTemperature(
-                        (float) (event.getInflictedDamage() * attacker.getAttributeValue(AttributeRegistry.TEMPERATURE_STEAL)), false);
+            if (attacker.getAttributes().hasAttribute(AttributeRegistry.TEMPERATURE_STEAL)) {
+                float steal = (float) (event.getInflictedDamage() * attacker.getAttributeValue(AttributeRegistry.TEMPERATURE_STEAL));
+                ((TE) attacker).increaseTemperature(steal, false);
+                ((TE) target).decreaseTemperature(steal, false);
+            }
+
         }
     }
 

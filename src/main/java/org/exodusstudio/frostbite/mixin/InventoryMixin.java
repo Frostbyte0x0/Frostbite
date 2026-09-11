@@ -94,9 +94,9 @@ public class InventoryMixin implements InventoryWrapper {
                 equipmentSlot != EquipmentSlot.BODY) {
             ArmourStatsData.tryRemoveStatBonuses(frostbite$inventory.player, equipmentSlot.getName());
 
+            frostbite$applyFullSet(frostbite$inventory);
             if (itemStack.has(DataComponents.EQUIPPABLE)) {
                 String equipmentName = itemStack.get(DataComponents.EQUIPPABLE).slot().getName().toLowerCase();
-                frostbite$applyFullSet(frostbite$inventory);
                 if (itemStack.has(DataComponentTypeRegistry.ARMOUR_STATS)) {
                     ArmourStatsData.addStatBonuses(frostbite$inventory.player, equipmentName, itemStack.get(DataComponentTypeRegistry.ARMOUR_STATS));
                 }

@@ -32,18 +32,18 @@ public class ContractAttributes {
             new ContractAttribute.Builder("repel", Polarity.POSITIVE, ContractTarget.PLAYER)
                     .scalable(List.of(1f, 2f, 3f))
     );
-//    public static final ContractAttribute FROG = of(
-//            new ContractAttribute.Builder("frog", Polarity.POSITIVE, ContractTarget.PLAYER)
-//                .scalable(List.of(1f, 2f, 3f))
-//                .templateInfo(AttributeRegistry.JUMPS, Map.of(
-//                        1, new MobEffect.AttributeTemplate(
-//                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frog_contract"), 1, AttributeModifier.Operation.ADD_VALUE),
-//                        2, new MobEffect.AttributeTemplate(
-//                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frog_contract"), 2, AttributeModifier.Operation.ADD_VALUE),
-//                        3, new MobEffect.AttributeTemplate(
-//                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frog_contract"), 3, AttributeModifier.Operation.ADD_VALUE)
-//                ))
-//    );
+    public static final ContractAttribute FROG = of(
+            new ContractAttribute.Builder("frog", Polarity.POSITIVE, ContractTarget.PLAYER)
+                .scalable(List.of(1f, 2f, 3f))
+                .templateInfo(AttributeRegistry.JUMPS, Map.of(
+                        1, new MobEffect.AttributeTemplate(
+                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frog_contract"), 1, AttributeModifier.Operation.ADD_VALUE),
+                        2, new MobEffect.AttributeTemplate(
+                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frog_contract"), 2, AttributeModifier.Operation.ADD_VALUE),
+                        3, new MobEffect.AttributeTemplate(
+                                Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frog_contract"), 3, AttributeModifier.Operation.ADD_VALUE)
+                ))
+    );
 
     // Player negative attributes
     public static final ContractAttribute DIABETIC = of(
