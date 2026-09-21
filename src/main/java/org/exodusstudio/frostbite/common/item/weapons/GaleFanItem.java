@@ -123,7 +123,12 @@ public class GaleFanItem extends Item {
     }
 
     public boolean isFirstAttack(ItemStack stack) {
-        return stack.get(DataComponentTypeRegistry.MODE).mode().equals("firstAttack");
+        ModeData modeData = stack.get(DataComponentTypeRegistry.MODE);
+        if (modeData == null) {
+            setFirstAttack(stack, true);
+            return true;
+        }
+        return modeData.mode().equals("firstAttack");
     }
 
     public void setFirstAttack(ItemStack stack, boolean firstAttack) {

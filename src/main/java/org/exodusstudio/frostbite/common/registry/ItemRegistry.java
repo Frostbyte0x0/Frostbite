@@ -320,6 +320,7 @@ public class ItemRegistry {
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> GALE_FAN =
             ITEMS.register("gale_fan", (id) -> new GaleFanItem(new Item.Properties()
+                    .component(DataComponentTypeRegistry.MODE, new ModeData("firstAttack"))
                     .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of("ticks_since_start", 0)))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
