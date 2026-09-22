@@ -63,6 +63,7 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
+import org.exodusstudio.frostbite.common.item.weapons.HuntersCatalyst;
 import org.exodusstudio.frostbite.common.mixinterfaces.InventoryWrapper;
 import org.exodusstudio.frostbite.common.mixinterfaces.PlayerWrapper;
 import org.exodusstudio.frostbite.common.mixinterfaces.TE;
@@ -269,6 +270,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void serverTick(ServerTickEvent.Pre event) {
         event.getServer().getAllLevels().forEach((level) -> {
+            HuntersCatalyst.tickFlashDeaggro(level);
             HashMap<UUID, Pair<String, Long>> toRemove = new HashMap<>();
 
             level.getData(AttachmentRegistry.CURRENT_RENDERING_ATTACKS).forEach((uuid, chargeAttackRenderables) -> {

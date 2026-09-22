@@ -33,6 +33,16 @@ public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Frostbite.MOD_ID);
 
+    public static final Supplier<EntityType<ImpactPelletEntity>> IMPACT_PELLET =
+            ENTITY_TYPES.register("impact_pellet", () -> EntityType.Builder
+                    .<ImpactPelletEntity>of(ImpactPelletEntity::new, MobCategory.MISC).sized(0.25f, 0.25f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "impact_pellet"))));
+
+    public static final Supplier<EntityType<ImpactZoneEntity>> IMPACT_ZONE =
+            ENTITY_TYPES.register("impact_zone", () -> EntityType.Builder
+                    .<ImpactZoneEntity>of(ImpactZoneEntity::new, MobCategory.MISC).sized(5f, 5f)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "impact_zone"))));
+
     public static final Supplier<EntityType<ExplodingSnowballProjectileEntity>> EXPLODING_SNOWBALL_PROJECTILE_ENTITY =
             ENTITY_TYPES.register("exploding_snowball", () -> EntityType.Builder
                     .<ExplodingSnowballProjectileEntity>of(ExplodingSnowballProjectileEntity::new, MobCategory.MISC)

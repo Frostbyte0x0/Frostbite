@@ -200,7 +200,17 @@
 
   "item.frostbite.daggers": "Daggers",
   "item.frostbite.boltsplitter": "Boltsplitter",
-  "item.frostbite.hunters_catalyst": "Hunter's catalyst",
+  "item.frostbite.hunters_catalyst": "Catalyst",
+  "item.frostbite.fire_powder": "Fire powder",
+  "item.frostbite.charge_pellet": "Charge pellet",
+  "item.frostbite.impact_pellet": "Impact pellet",
+  "item.frostbite.flash_pellet": "Flash pellet",
+  "tooltip.frostbite.catalyst.loaded": "Loaded",
+  "tooltip.frostbite.catalyst.empty": "Not loaded",
+  "tooltip.frostbite.catalyst.pellet": "Pellet: %s",
+  "tooltip.frostbite.catalyst.no_pellet": "Pellet: none",
+  "sounds.frostbite.catalyst_charge": "Catalyst charging",
+  "sounds.frostbite.catalyst_burst": "Catalyst burst",
 
   "item.frostbite.casting_staff": "Casting staff",
   "item.frostbite.summoning_staff": "Summoning staff",

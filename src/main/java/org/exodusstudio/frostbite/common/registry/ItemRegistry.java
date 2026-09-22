@@ -298,6 +298,15 @@ public class ItemRegistry {
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
 
+    public static final DeferredItem<Item> FIRE_POWDER = ITEMS.register("fire_powder", (id) -> new Item(new Item.Properties()
+            .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CHARGE_PELLET = ITEMS.register("charge_pellet", (id) -> new Item(new Item.Properties()
+            .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> IMPACT_PELLET = ITEMS.register("impact_pellet", (id) -> new Item(new Item.Properties()
+            .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> FLASH_PELLET = ITEMS.register("flash_pellet", (id) -> new Item(new Item.Properties()
+            .setId(ResourceKey.create(Registries.ITEM, id))));
+
 
     public static final DeferredItem<Item> CASTING_STAFF =
             ITEMS.register("casting_staff", (id) -> new CastingStaffItem(new Item.Properties()

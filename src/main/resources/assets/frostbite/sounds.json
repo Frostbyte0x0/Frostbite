@@ -91,5 +91,13 @@
     "sounds": [
       "frostbite:snow_wind_ambience"
     ]
+  },
+  "catalyst_charge": {
+    "subtitle": "sounds.frostbite.catalyst_charge",
+    "sounds": ["frostbite:chaincicle_swipe"]
+  },
+  "catalyst_burst": {
+    "subtitle": "sounds.frostbite.catalyst_burst",
+    "sounds": ["frostbite:stunning_bell_ring"]
   }
 }

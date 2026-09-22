@@ -33,6 +33,8 @@ public class SoundRegistry {
     public static final Supplier<SoundEvent> SNIPER_FAIL = registerSoundEvent("sniper_fail");
 
     public static final Supplier<SoundEvent> SNOW_WIND_AMBIENCE = registerSoundEvent("snow_wind_ambience");
+    public static final Supplier<SoundEvent> CATALYST_CHARGE = registerSoundEvent("catalyst_charge");
+    public static final Supplier<SoundEvent> CATALYST_BURST = registerSoundEvent("catalyst_burst");
 
     private static Supplier<SoundEvent> registerSoundEvent(String name) {
         Identifier id = Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, name);
