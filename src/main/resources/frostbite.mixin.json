@@ -30,6 +30,8 @@
     "InventoryScreenMixin",
     "LevelExtractorMixin",
     "LevelRendererMixin",
+    "ItemInHandRendererMixin",
+    "ParryHumanoidModelMixin",
     "LivingEntityRendererMixin",
     "MobRendererMixin",
     "MouseHandlerMixin",

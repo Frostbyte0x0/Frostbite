@@ -34,6 +34,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent;
@@ -51,6 +52,7 @@ import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.common.block.*;
+import org.exodusstudio.frostbite.common.combat.ParryManager;
 import org.exodusstudio.frostbite.common.block.block_entities.RuneBlockEntity;
 import org.exodusstudio.frostbite.common.commands.GiveFragmentCommand;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
@@ -94,6 +96,25 @@ public class ModEvents {
         if (event.getSource().getEntity() instanceof ServerPlayer player) {
             ((PlayerWrapper) player).frostbite$addDamage(event.getNewDamage());
         }
+    }
+
+    @SubscribeEvent
+    public static void parryDamage(LivingDamageEvent.Pre event) {
+        if (!(event.getEntity() instanceof Player player)
+                || !ParryManager.isParrying(player)
+                || !ParryManager.isAttackingDamage(event.getSource())) return;
+        event.setNewDamage(event.getNewDamage() * ParryManager.damageMultiplier(player));
+    }
+
+    @SubscribeEvent
+    public static void parryTick(PlayerTickEvent.Post event) {
+        if (event.getEntity().level().isClientSide()) return;
+        ParryManager.tick(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void parryBlocksAttacks(AttackEntityEvent event) {
+        if (ParryManager.isParrying(event.getEntity())) event.setCanceled(true);
     }
 
     @SubscribeEvent
