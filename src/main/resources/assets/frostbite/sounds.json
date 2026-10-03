@@ -1,4 +1,10 @@
 {
+  "parry": {
+    "subtitle": "sounds.frostbite.parry",
+    "sounds": [
+      "frostbite:parry"
+    ]
+  },
   "stunning_bell_ring": {
     "subtitle": "sounds.frostbite.stunning_bell_ring",
     "sounds": [

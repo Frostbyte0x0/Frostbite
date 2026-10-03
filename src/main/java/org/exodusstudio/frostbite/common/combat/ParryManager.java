@@ -15,6 +15,9 @@ public final class ParryManager {
     public static final int PERFECT_WINDOW = 5;
     public static final int PARRY_WINDOW = 15;
     public static final int MAX_DURATION = 40;
+    public static final String KNOCKBACK_MULTIPLIER = "frostbite_parry_knockback_multiplier";
+    public static final String KNOCKBACK_PENDING_TICK = "frostbite_parry_knockback_pending_tick";
+    public static final String PERFECT_FLASH = "frostbite_perfect_parry_flash";
 
     private ParryManager() {}
 

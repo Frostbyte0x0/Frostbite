@@ -46,6 +46,7 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.PercentageAttribute;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
@@ -262,6 +263,16 @@ public class ClientEvents {
             if (!ParryManager.isParrying(player)) {
                 ClientPacketDistributor.sendToServer(new ParryPayload(true));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void hidePerfectParryFlash(EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof LivingEntity living) || !living.level().isClientSide()) return;
+        if (DataHelper.getInt(living, ParryManager.PERFECT_FLASH) != 0) {
+            living.hurtTime = 0;
+            living.hurtDuration = 0;
+            DataHelper.setData(living, ParryManager.PERFECT_FLASH, 0);
         }
     }
 

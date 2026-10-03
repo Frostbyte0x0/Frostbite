@@ -103,13 +103,36 @@ public class ModEvents {
         if (!(event.getEntity() instanceof Player player)
                 || !ParryManager.isParrying(player)
                 || !ParryManager.isAttackingDamage(event.getSource())) return;
-        event.setNewDamage(event.getNewDamage() * ParryManager.damageMultiplier(player));
+        boolean perfect = ParryManager.ticks(player) < ParryManager.PERFECT_WINDOW;
+        float multiplier = ParryManager.damageMultiplier(player);
+        event.setNewDamage(event.getNewDamage() * multiplier);
+        DataHelper.setData(player, ParryManager.KNOCKBACK_MULTIPLIER, multiplier);
+        DataHelper.setData(player, ParryManager.KNOCKBACK_PENDING_TICK, player.tickCount);
+        DataHelper.setData(player, ParryManager.PERFECT_FLASH, perfect ? 1 : 0);
+        if (perfect) {
+            player.level().playSound(null, player.blockPosition(), SoundRegistry.PARRY.get(),
+                    net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void parryKnockback(LivingKnockBackEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        float multiplier = DataHelper.getFloat(player, ParryManager.KNOCKBACK_MULTIPLIER);
+        if (multiplier <= 0.0F) return;
+        event.setStrength(event.getStrength() * multiplier);
+        DataHelper.setData(player, ParryManager.KNOCKBACK_MULTIPLIER, 0.0F);
     }
 
     @SubscribeEvent
     public static void parryTick(PlayerTickEvent.Post event) {
         if (event.getEntity().level().isClientSide()) return;
-        ParryManager.tick(event.getEntity());
+        Player player = event.getEntity();
+        if (DataHelper.getFloat(player, ParryManager.KNOCKBACK_MULTIPLIER) > 0.0F
+                && DataHelper.getInt(player, ParryManager.KNOCKBACK_PENDING_TICK) != player.tickCount) {
+            DataHelper.setData(player, ParryManager.KNOCKBACK_MULTIPLIER, 0.0F);
+        }
+        ParryManager.tick(player);
     }
 
     @SubscribeEvent

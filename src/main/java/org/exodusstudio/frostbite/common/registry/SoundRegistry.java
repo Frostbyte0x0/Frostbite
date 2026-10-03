@@ -18,6 +18,7 @@ public class SoundRegistry {
             DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, Frostbite.MOD_ID);
 
     public static final Supplier<SoundEvent> STUNNING_BELL_RING = registerSoundEvent("stunning_bell_ring");
+    public static final Supplier<SoundEvent> PARRY = registerSoundEvent("parry");
 
     public static final Supplier<SoundEvent> CHAINCICLE_SWIPE = registerSoundEvent("chaincicle_swipe");
     //public static final Supplier<SoundEvent> CHAINCICLE_LAUNCHED_LOOP = registerSoundEvent("chaincicle_launched_loop");
