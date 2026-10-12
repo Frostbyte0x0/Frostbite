@@ -323,6 +323,7 @@
   "contract.attribute.illusions_desc_complete": "Create %s illusions when hit",
   "contract.attribute.repel": "Repel",
   "contract.attribute.repel_desc": "On perfect parry, push away enemies",
+  "contract.attribute.repel_desc_complete": "On perfect parry, deal %s%s shockwave damage to nearby mobs and push them away",
   "contract.attribute.frog": "Frog",
   "contract.attribute.frog_desc": "Extra jumps",
   "contract.attribute.frog_desc_complete": "%s extra jumps",
@@ -413,6 +414,7 @@
   "contract.attribute.piercing_desc_complete": "Ignore %s%s of armour protection",
   "contract.attribute.webbing": "Webbing",
   "contract.attribute.webbing_desc": "Accumulate webs around opponent to slow them down",
+  "contract.attribute.webbing_desc_complete": "Accumulate webs around opponent, slowing them by %s%s per web",
 
   "contract.attribute.corrosion": "Corrosion",
   "contract.attribute.corrosion_desc": "Deals less damage over time",
