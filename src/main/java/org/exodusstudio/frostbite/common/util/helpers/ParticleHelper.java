@@ -104,32 +104,6 @@ public class ParticleHelper {
         arr[0] = lastElement;
     }
 
-//    public static void ring(Level level, SimpleParticleType type, Vec3 origin, Vec3 normal, int count, double radiusX, double radiusZ) {
-//        normal = normal.normalize();
-//        Vec3 perpNormal = Vec3Helper.perpendicularY(normal);
-//        for (int i = 0; i < count; i++) {
-//            Vec3 pos = Vec3Helper.rotateFirstAroundSecond(perpNormal, normal, Math.PI * 2 * i / count).multiply(radiusX, 1, radiusZ);
-//            if (level instanceof ServerLevel serverLevel) {
-//                serverLevel.sendParticles(
-//                        type,
-//                        origin.x + pos.x,
-//                        origin.y + pos.y,
-//                        origin.z + pos.z,
-//                        1,
-//                        0, 0, 0, 0);
-//            } else {
-//                level.addAlwaysVisibleParticle(
-//                        type,
-//                        origin.x + pos.x,
-//                        origin.y + pos.y,
-//                        origin.z + pos.z,
-//                        0,
-//                        0,
-//                        0);
-//            }
-//        }
-//    }
-
     public static void ring(Level level, SimpleParticleType type, Vec3 origin, Vec3 normal, int count, double radius, Vec3 expandingCenter, double expandingSpeed) {
         normal = normal.normalize();
         Vec3 perpNormal = Vec3Helper.perpendicularY(normal);

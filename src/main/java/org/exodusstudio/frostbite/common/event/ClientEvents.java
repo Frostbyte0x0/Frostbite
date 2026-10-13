@@ -39,10 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
-import net.neoforged.neoforge.client.event.RenderTooltipEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.PercentageAttribute;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -556,5 +553,12 @@ public class ClientEvents {
                         (random.nextDouble()) * d + s);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void shader(ClientTickEvent.Post event) {
+//        if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.tickCount > 5)
+//            Minecraft.getInstance().gameRenderer.setPostEffect(
+//                    Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "custom"));
     }
 }
