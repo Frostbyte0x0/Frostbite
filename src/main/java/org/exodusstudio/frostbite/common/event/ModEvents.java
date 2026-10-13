@@ -208,24 +208,22 @@ public class ModEvents {
     }
 
     private static void repel(ServerLevel level, Player player) {
-        float strength = LivingContractInfo.getStat(player, ContractAttributes.REPEL);
         level.sendParticles(ParticleRegistry.SHOCKWAVE_PARTICLE.get(),
                 player.getX(), player.getY() + 0.1, player.getZ(),
                 24, REPEL_RADIUS * 0.55, 0.15, REPEL_RADIUS * 0.55, 0.02);
 
         AABB area = player.getBoundingBox().inflate(REPEL_RADIUS);
-        for (Player target : level.getEntitiesOfClass(Player.class, area,
-                target -> target != player && target.isAlive())) {
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area,
+                target -> target != player && target.isAlive() && !target.isSpectator())) {
             Vec3 direction = target.position().subtract(player.position());
             double distance = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
             if (distance < 0.001) direction = player.getViewVector(1.0F);
             else direction = new Vec3(direction.x / distance, 0.0, direction.z / distance);
 
-            float falloff = Mth.clamp(1.0F - (float) (distance / REPEL_RADIUS), 0.0F, 1.0F);
-            target.hurtServer(level, level.damageSources().generic(), strength * falloff);
-            target.push(direction.x * (0.65F + strength * 0.2F) * falloff,
-                    (0.25F + strength * 0.1F) * falloff,
-                    direction.z * (0.65F + strength * 0.2F) * falloff);
+            DamageSource damageSource = target.damageSources().playerAttack(player);
+            if (target.hurtServer(level, damageSource, 2.0F)) {
+                target.knockback(0.4F, -direction.x, -direction.z, damageSource, 2.0F);
+            }
         }
     }
 

@@ -382,7 +382,8 @@ public class ClientEvents {
 
         int ticksSinceStart = Math.toIntExact(level.getGameTime() - DataHelper.getInt(stack, "corrosion_start"));
         float halfEvery = ContractAttribute.getStat(c, ContractAttributes.CORROSION) * 60;
-        event.getTooltipElements().add(Minecraft.getInstance().hasShiftDown() ? 17 : 9, Either.left(Component.translatable("contract.corrosion.reduction", Math.round(100f *
+        int tooltipIndex = Math.min(Minecraft.getInstance().hasShiftDown() ? 17 : 9, event.getTooltipElements().size());
+        event.getTooltipElements().add(tooltipIndex, Either.left(Component.translatable("contract.corrosion.reduction", Math.round(100f *
                 Util.getLog2Reduction(ticksSinceStart, halfEvery)), "%").withStyle(ChatFormatting.YELLOW)));
     }
 
