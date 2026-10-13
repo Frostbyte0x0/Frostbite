@@ -10,6 +10,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -28,12 +29,14 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent;
@@ -51,6 +54,7 @@ import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
 import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
 import org.exodusstudio.frostbite.common.block.*;
+import org.exodusstudio.frostbite.common.combat.ParryManager;
 import org.exodusstudio.frostbite.common.block.block_entities.RuneBlockEntity;
 import org.exodusstudio.frostbite.common.commands.GiveFragmentCommand;
 import org.exodusstudio.frostbite.common.commands.SpawnLastStandCommand;
@@ -63,6 +67,7 @@ import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity
 import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
 import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
+import org.exodusstudio.frostbite.common.item.weapons.HuntersCatalyst;
 import org.exodusstudio.frostbite.common.mixinterfaces.InventoryWrapper;
 import org.exodusstudio.frostbite.common.mixinterfaces.PlayerWrapper;
 import org.exodusstudio.frostbite.common.mixinterfaces.TE;
@@ -83,6 +88,13 @@ import static org.exodusstudio.frostbite.common.util.Util.isFrostbite;
 public class ModEvents {
     static RandomSource random = RandomSource.create();
 
+    private static final String LOCK_IN_END_TICK = "frostbite_lock_in_end_tick";
+    private static final String LOCK_IN_ANCHOR = "frostbite_lock_in_anchor";
+    private static final String WEBBING_STACKS = "frostbite_webbing_stacks";
+    private static final String WEBBING_TICKS = "frostbite_webbing_ticks";
+    private static final String WEBBING_BASE_AMPLIFIER = "frostbite_webbing_base_amplifier";
+    private static final float REPEL_RADIUS = 4.0F;
+
     @SubscribeEvent
     public static void serverStarted(ServerAboutToStartEvent event) {
         Frostbite.SERVER = event.getServer();
@@ -93,6 +105,149 @@ public class ModEvents {
         if (event.getSource().getEntity() instanceof ServerPlayer player) {
             ((PlayerWrapper) player).frostbite$addDamage(event.getNewDamage());
         }
+    }
+
+    @SubscribeEvent
+    public static void parryDamage(LivingDamageEvent.Pre event) {
+        if (!(event.getEntity() instanceof Player player)
+                || !ParryManager.isParrying(player)
+                || !ParryManager.isAttackingDamage(event.getSource())) return;
+        boolean perfect = ParryManager.ticks(player) < ParryManager.PERFECT_WINDOW;
+        float multiplier = ParryManager.damageMultiplier(player);
+        event.setNewDamage(event.getNewDamage() * multiplier);
+        DataHelper.setData(player, ParryManager.KNOCKBACK_MULTIPLIER, multiplier);
+        DataHelper.setData(player, ParryManager.KNOCKBACK_PENDING_TICK, player.tickCount);
+        DataHelper.setData(player, ParryManager.PERFECT_FLASH, perfect ? 1 : 0);
+
+        if (player.level() instanceof ServerLevel serverLevel) {
+            LivingEntity opponent = getParryOpponent(event.getSource());
+            if (perfect && LivingContractInfo.hasAppliedAttribute(player, ContractAttributes.REPEL)) {
+                repel(serverLevel, player);
+            }
+            if (opponent != null) {
+                if (LivingContractInfo.hasAppliedAttributeOnWeapon(player, ContractAttributes.WEBBING)) {
+                    webbing(opponent, LivingContractInfo.getStatOnWeapon(player, ContractAttributes.WEBBING));
+                }
+                if (perfect && LivingContractInfo.hasAppliedAttributeOnWeapon(player, ContractAttributes.LOCK_IN)) {
+                    lockIn(opponent, LivingContractInfo.getStatOnWeapon(player, ContractAttributes.LOCK_IN));
+                }
+            }
+        }
+
+        if (perfect) {
+            player.level().playSound(null, player.blockPosition(), SoundRegistry.PARRY.get(),
+                    net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void parryKnockback(LivingKnockBackEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        float multiplier = DataHelper.getFloat(player, ParryManager.KNOCKBACK_MULTIPLIER);
+        if (multiplier <= 0.0F) return;
+        event.setStrength(event.getStrength() * multiplier);
+        DataHelper.setData(player, ParryManager.KNOCKBACK_MULTIPLIER, 0.0F);
+    }
+
+    @SubscribeEvent
+    public static void parryTick(PlayerTickEvent.Post event) {
+        if (event.getEntity().level().isClientSide()) return;
+        Player player = event.getEntity();
+        if (DataHelper.getFloat(player, ParryManager.KNOCKBACK_MULTIPLIER) > 0.0F
+                && DataHelper.getInt(player, ParryManager.KNOCKBACK_PENDING_TICK) != player.tickCount) {
+            DataHelper.setData(player, ParryManager.KNOCKBACK_MULTIPLIER, 0.0F);
+        }
+        ParryManager.tick(player);
+    }
+
+    @SubscribeEvent
+    public static void parryBlocksAttacks(AttackEntityEvent event) {
+        if (ParryManager.isParrying(event.getEntity())) event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void parryContractEffects(EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof LivingEntity entity) || entity.level().isClientSide()) return;
+
+        int lockEndTick = DataHelper.getInt(entity, LOCK_IN_END_TICK);
+        if (lockEndTick > entity.tickCount) {
+            List<Float> anchor = DataHelper.getList(entity, LOCK_IN_ANCHOR);
+            if (anchor.size() >= 3) {
+                entity.setPos(anchor.get(0), anchor.get(1), anchor.get(2));
+                entity.setDeltaMovement(Vec3.ZERO);
+            }
+        } else if (lockEndTick != 0) {
+            DataHelper.setData(entity, LOCK_IN_END_TICK, 0);
+            DataHelper.setData(entity, LOCK_IN_ANCHOR, List.of());
+        }
+
+        int webbingTicks = DataHelper.getInt(entity, WEBBING_TICKS);
+        int webbingStacks = DataHelper.getInt(entity, WEBBING_STACKS);
+        if (webbingTicks <= 0) {
+            if (webbingStacks != 0) {
+                DataHelper.setData(entity, WEBBING_STACKS, 0);
+                DataHelper.setData(entity, WEBBING_BASE_AMPLIFIER, 0);
+            }
+            return;
+        }
+
+        if (webbingStacks <= 0) {
+            DataHelper.setData(entity, WEBBING_TICKS, 0);
+            return;
+        }
+
+        DataHelper.setData(entity, WEBBING_TICKS, webbingTicks - 1);
+        int amplifier = Math.min(webbingStacks - 1 + DataHelper.getInt(entity, WEBBING_BASE_AMPLIFIER), 4);
+        entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 2, amplifier));
+    }
+
+    private static LivingEntity getParryOpponent(DamageSource source) {
+        if (source.getEntity() instanceof LivingEntity living) return living;
+        if (source.getDirectEntity() instanceof LivingEntity living) return living;
+        return null;
+    }
+
+    private static void repel(ServerLevel level, Player player) {
+        float strength = LivingContractInfo.getStat(player, ContractAttributes.REPEL);
+        level.sendParticles(ParticleRegistry.SHOCKWAVE_PARTICLE.get(),
+                player.getX(), player.getY() + 0.1, player.getZ(),
+                24, REPEL_RADIUS * 0.55, 0.15, REPEL_RADIUS * 0.55, 0.02);
+
+        AABB area = player.getBoundingBox().inflate(REPEL_RADIUS);
+        for (Player target : level.getEntitiesOfClass(Player.class, area,
+                target -> target != player && target.isAlive())) {
+            Vec3 direction = target.position().subtract(player.position());
+            double distance = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
+            if (distance < 0.001) direction = player.getViewVector(1.0F);
+            else direction = new Vec3(direction.x / distance, 0.0, direction.z / distance);
+
+            float falloff = Mth.clamp(1.0F - (float) (distance / REPEL_RADIUS), 0.0F, 1.0F);
+            target.hurtServer(level, level.damageSources().generic(), strength * falloff);
+            target.push(direction.x * (0.65F + strength * 0.2F) * falloff,
+                    (0.25F + strength * 0.1F) * falloff,
+                    direction.z * (0.65F + strength * 0.2F) * falloff);
+        }
+    }
+
+    private static void lockIn(LivingEntity target, float durationSeconds) {
+        if (random.nextFloat() >= Mth.clamp(durationSeconds / 2.0F, 0.0F, 1.0F)) return;
+
+        int durationTicks = Math.max(1, Mth.ceil(durationSeconds * 20.0F));
+        DataHelper.setData(target, LOCK_IN_END_TICK, target.tickCount + durationTicks);
+        DataHelper.setData(target, LOCK_IN_ANCHOR,
+                List.of((float) target.getX(), (float) target.getY(), (float) target.getZ()));
+        target.setDeltaMovement(Vec3.ZERO);
+    }
+
+    private static void webbing(LivingEntity target, float slowAmount) {
+        int stacks = Math.min(5, DataHelper.getInt(target, WEBBING_STACKS) + 1);
+        DataHelper.setData(target, WEBBING_STACKS, stacks);
+        int baseAmplifier = Mth.clamp(Mth.ceil(slowAmount / 25.0F) - 1, 0, 2);
+        DataHelper.setData(target, WEBBING_BASE_AMPLIFIER,
+                Math.max(baseAmplifier, DataHelper.getInt(target, WEBBING_BASE_AMPLIFIER)));
+        DataHelper.setData(target, WEBBING_TICKS, 60);
+        target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 2,
+                Math.min(stacks - 1 + baseAmplifier, 4)));
     }
 
     @SubscribeEvent
@@ -269,6 +424,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void serverTick(ServerTickEvent.Pre event) {
         event.getServer().getAllLevels().forEach((level) -> {
+            HuntersCatalyst.tickFlashDeaggro(level);
             HashMap<UUID, Pair<String, Long>> toRemove = new HashMap<>();
 
             level.getData(AttachmentRegistry.CURRENT_RENDERING_ATTACKS).forEach((uuid, chargeAttackRenderables) -> {

@@ -27,6 +27,10 @@ public class CreativeModeTabRegistry {
                     output.accept(ItemRegistry.BOLTSPLITTER);
 
                     output.accept(ItemRegistry.HUNTERS_CATALYST);
+                    output.accept(ItemRegistry.FIRE_POWDER);
+                    output.accept(ItemRegistry.CHARGE_PELLET);
+                    output.accept(ItemRegistry.IMPACT_PELLET);
+                    output.accept(ItemRegistry.FLASH_PELLET);
 
                     output.accept(ItemRegistry.SHAMAN_STAFF);
 

@@ -43,6 +43,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.PercentageAttribute;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
@@ -66,6 +67,8 @@ import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SpellTooltipable;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
+import org.exodusstudio.frostbite.common.network.ParryPayload;
+import org.exodusstudio.frostbite.common.combat.ParryManager;
 import org.exodusstudio.frostbite.common.particle.options.TextParticleOption;
 import org.exodusstudio.frostbite.common.registry.*;
 import org.exodusstudio.frostbite.common.util.Util;
@@ -250,6 +253,27 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    public static void parryInput(InputEvent.Key event) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null || !KeyMappingRegistry.PARRY.isActiveAndMatches(InputConstants.getKey(event.getKeyEvent()))) return;
+        while (KeyMappingRegistry.PARRY.consumeClick()) {
+            if (!ParryManager.isParrying(player)) {
+                ClientPacketDistributor.sendToServer(new ParryPayload(true));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void hidePerfectParryFlash(EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof LivingEntity living) || !living.level().isClientSide()) return;
+        if (DataHelper.getInt(living, ParryManager.PERFECT_FLASH) != 0) {
+            living.hurtTime = 0;
+            living.hurtDuration = 0;
+            DataHelper.setData(living, ParryManager.PERFECT_FLASH, 0);
+        }
+    }
+
+    @SubscribeEvent
     public static void frog(InputEvent.Key event) {
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
@@ -276,6 +300,10 @@ public class ClientEvents {
     public static void frog(PlayerTickEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
+        if (ParryManager.isParrying(player)) {
+            Minecraft.getInstance().options.keyJump.setDown(false);
+            if (player.getDeltaMovement().y > 0) player.setDeltaMovement(player.getDeltaMovement().x, 0, player.getDeltaMovement().z);
+        }
         if (player.onGround()) DataHelper.setData(player, "jump_count", -1);
     }
 

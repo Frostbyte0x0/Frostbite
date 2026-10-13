@@ -1,4 +1,10 @@
 {
+  "parry": {
+    "subtitle": "sounds.frostbite.parry",
+    "sounds": [
+      "frostbite:parry"
+    ]
+  },
   "stunning_bell_ring": {
     "subtitle": "sounds.frostbite.stunning_bell_ring",
     "sounds": [
@@ -91,5 +97,13 @@
     "sounds": [
       "frostbite:snow_wind_ambience"
     ]
+  },
+  "catalyst_charge": {
+    "subtitle": "sounds.frostbite.catalyst_charge",
+    "sounds": ["frostbite:chaincicle_swipe"]
+  },
+  "catalyst_burst": {
+    "subtitle": "sounds.frostbite.catalyst_burst",
+    "sounds": ["frostbite:stunning_bell_ring"]
   }
 }

@@ -28,7 +28,7 @@ public class ContractAttributes {
 //            new ContractAttribute.Builder("illusions", Polarity.POSITIVE, ContractTarget.PLAYER)
 //                .scalable(List.of(2f, 5f, 10f))
 //    );
-    public static final ContractAttribute REPEL = of( // TODO
+    public static final ContractAttribute REPEL = of(
             new ContractAttribute.Builder("repel", Polarity.POSITIVE, ContractTarget.PLAYER)
                     .scalable(List.of(1f, 2f, 3f))
     );
@@ -193,7 +193,7 @@ public class ContractAttributes {
                 new ContractAttribute.Builder("uppercut", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(10f, 20f, 30f))
             );
-    public static final ContractAttribute LOCK_IN = of( // TODO
+    public static final ContractAttribute LOCK_IN = of(
                 new ContractAttribute.Builder("lock_in", Polarity.POSITIVE, ContractTarget.WEAPON)
                     .scalable(List.of(1f, 1.5f, 2f))
             );
@@ -205,7 +205,7 @@ public class ContractAttributes {
             new ContractAttribute.Builder("piercing", Polarity.POSITIVE, ContractTarget.WEAPON)
                 .scalable(List.of(20f, 30f, 40f))
             );
-    public static final ContractAttribute WEBBING = of( // TODO
+    public static final ContractAttribute WEBBING = of(
             new ContractAttribute.Builder("webbing", Polarity.POSITIVE, ContractTarget.WEAPON)
                 .scalable(List.of(25f, 50f, 75f))
             );

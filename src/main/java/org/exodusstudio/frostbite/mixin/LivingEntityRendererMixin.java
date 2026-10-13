@@ -2,6 +2,7 @@ package org.exodusstudio.frostbite.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
@@ -10,6 +11,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.exodusstudio.frostbite.common.combat.ParryManager;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 
 @Mixin(LivingEntityRenderer.class)
 public class LivingEntityRendererMixin<T extends LivingEntity> {
@@ -29,5 +33,13 @@ public class LivingEntityRendererMixin<T extends LivingEntity> {
         return (frostbite$mc.player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemRegistry.ADVANCED_THERMAL_LENS) ||
                 frostbite$mc.player.getItemInHand(InteractionHand.OFF_HAND).is(ItemRegistry.ADVANCED_THERMAL_LENS))
                 && frostbite$mc.player.isUsingItem() && frostbite$mc.options.getCameraType().isFirstPerson();
+    }
+
+    @Inject(at = @At("TAIL"), method = "extractRenderState")
+    private void frostbite$hidePerfectParryFlash(T entity, LivingEntityRenderState state,
+                                                  float partialTick, CallbackInfo ci) {
+        if (DataHelper.getInt(entity, ParryManager.PERFECT_FLASH) != 0) {
+            state.hasRedOverlay = false;
+        }
     }
 }

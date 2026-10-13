@@ -1,4 +1,6 @@
 {
+  "sounds.frostbite.parry": "Perfect Parry",
+  "key.frostbite.parry": "Parry",
   "itemGroup.frostbite.frostbite_tab": "Frostbite",
   "itemGroup.frostbite.frostbite_combat_tab": "Frostbite Combat",
 
@@ -200,7 +202,17 @@
 
   "item.frostbite.daggers": "Daggers",
   "item.frostbite.boltsplitter": "Boltsplitter",
-  "item.frostbite.hunters_catalyst": "Hunter's catalyst",
+  "item.frostbite.hunters_catalyst": "Catalyst",
+  "item.frostbite.fire_powder": "Fire powder",
+  "item.frostbite.charge_pellet": "Charge pellet",
+  "item.frostbite.impact_pellet": "Impact pellet",
+  "item.frostbite.flash_pellet": "Flash pellet",
+  "tooltip.frostbite.catalyst.loaded": "Loaded",
+  "tooltip.frostbite.catalyst.empty": "Not loaded",
+  "tooltip.frostbite.catalyst.pellet": "Pellet: %s",
+  "tooltip.frostbite.catalyst.no_pellet": "Pellet: none",
+  "sounds.frostbite.catalyst_charge": "Catalyst charging",
+  "sounds.frostbite.catalyst_burst": "Catalyst burst",
 
   "item.frostbite.casting_staff": "Casting staff",
   "item.frostbite.summoning_staff": "Summoning staff",
@@ -311,6 +323,7 @@
   "contract.attribute.illusions_desc_complete": "Create %s illusions when hit",
   "contract.attribute.repel": "Repel",
   "contract.attribute.repel_desc": "On perfect parry, push away enemies",
+  "contract.attribute.repel_desc_complete": "On perfect parry, deal %s%s shockwave damage to nearby mobs and push them away",
   "contract.attribute.frog": "Frog",
   "contract.attribute.frog_desc": "Extra jumps",
   "contract.attribute.frog_desc_complete": "%s extra jumps",
@@ -401,6 +414,7 @@
   "contract.attribute.piercing_desc_complete": "Ignore %s%s of armour protection",
   "contract.attribute.webbing": "Webbing",
   "contract.attribute.webbing_desc": "Accumulate webs around opponent to slow them down",
+  "contract.attribute.webbing_desc_complete": "Accumulate webs around opponent, slowing them by %s%s per web",
 
   "contract.attribute.corrosion": "Corrosion",
   "contract.attribute.corrosion_desc": "Deals less damage over time",

@@ -38,6 +38,7 @@ import org.exodusstudio.frostbite.common.entity.custom.monk.MonkEntity;
 import org.exodusstudio.frostbite.common.entity.custom.shaman.ShamanEntity;
 import org.exodusstudio.frostbite.common.network.ServerPayloadHandler;
 import org.exodusstudio.frostbite.common.network.StaffPayload;
+import org.exodusstudio.frostbite.common.network.ParryPayload;
 import org.exodusstudio.frostbite.common.registry.AttributeRegistry;
 import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
@@ -95,6 +96,7 @@ public class ModEventBusEvents {
                 StaffPayload.STREAM_CODEC,
                 ServerPayloadHandler::handleDataOnMain
         );
+        registrar.playToServer(ParryPayload.TYPE, ParryPayload.STREAM_CODEC, ServerPayloadHandler::handleParry);
     }
 
     @SubscribeEvent
@@ -108,6 +110,7 @@ public class ModEventBusEvents {
     @SubscribeEvent
     public static void register(RegisterKeyMappingsEvent event) {
         event.register(KeyMappingRegistry.CODEX);
+        event.register(KeyMappingRegistry.PARRY);
         event.registerCategory(KeyMappingRegistry.FROSTBITE);
     }
 
