@@ -46,6 +46,7 @@ import org.exodusstudio.frostbite.common.registry.MemoryModuleTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.ParticleRegistry;
 import org.exodusstudio.frostbite.common.registry.SoundRegistry;
 import org.exodusstudio.frostbite.common.mixinterfaces.TargetingEntity;
+import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -434,33 +435,6 @@ public class MonkEntity extends Monster implements TargetingEntity { // TODO: ch
         return ProjectileDeflection.NONE;
     }
 
-//    public void tpRandomly(Level level) {
-//        for (int i = 0; i < 16; i++) {
-//            double d0 = this.getX() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
-//            double d1 = Mth.clamp(
-//                    this.getY() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER,
-//                    level.getMinY(),
-//                    (level.getMinY() + ((ServerLevel)level).getLogicalHeight() - 1)
-//            );
-//            double d2 = this.getZ() + (this.getRandom().nextDouble() - 0.5) * TP_DIAMETER;
-//            if (this.isPassenger()) {
-//                this.stopRiding();
-//            }
-//
-//            if (!(Util.squareAABB(new Vec3(getArenaCenter()), ARENA_SIZE)).contains(new Vec3(d0, d1, d2))) {
-//                continue;
-//            }
-//
-//            Vec3 vec3 = this.position();
-//            if (this.randomTeleport(d0, d1, d2, true)) {
-//                level.gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
-//                level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS);
-//                this.resetFallDistance();
-//                break;
-//            }
-//        }
-//    }
-
     protected void tpRandomly(Level serverLevel) {
         if (!this.level().isClientSide() && this.isAlive()) {
             double x = this.getX() + (this.random.nextDouble() - 0.5) * TP_DIAMETER;
@@ -504,11 +478,13 @@ public class MonkEntity extends Monster implements TargetingEntity { // TODO: ch
     }
 
     public void setIllusion(boolean illusion) {
-        this.entityData.set(DATA_ILLUSION, illusion);
+//        this.entityData.set(DATA_ILLUSION, illusion);
+        DataHelper.setData(this, "isIllusion", illusion);
     }
 
     public boolean isIllusion() {
-        return this.entityData.get(DATA_ILLUSION);
+//        return this.entityData.get(DATA_ILLUSION);
+        return DataHelper.getBoolean(this, "isIllusion");
     }
 
     public void setLastConfusionAttack(String attack) {

@@ -30,14 +30,14 @@ public abstract class SeriousAttackWeapon extends ComboWeapon {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
+        if ((getCharge(stack) >= chargeRequired || player.isCreative()) && player.isShiftKeyDown()) {
+            doChargeAttack(level, player, usedHand);
+            setCharge(stack, 0);
+            return InteractionResult.SUCCESS;
+        }
         if (canUse(player.getItemInHand(usedHand), level.getGameTime(), cooldown)) {
             doCooldownAttack(level, player, usedHand);
             DataHelper.setData(stack, "last_used", Math.toIntExact(player.level().getGameTime()));
-            return InteractionResult.SUCCESS;
-        }
-        if (getCharge(stack) >= chargeRequired && player.isShiftKeyDown()) {
-            doChargeAttack(level, player, usedHand);
-            setCharge(stack, 0);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
