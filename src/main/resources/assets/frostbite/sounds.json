@@ -105,5 +105,17 @@
   "catalyst_burst": {
     "subtitle": "sounds.frostbite.catalyst_burst",
     "sounds": ["frostbite:stunning_bell_ring"]
+  },
+  "snow_ambience": {
+    "subtitle": "sounds.frostbite.snow_ambience",
+    "sounds": ["frostbite:snow_ambience"]
+  },
+  "blizzard_ambience": {
+    "subtitle": "sounds.frostbite.blizzard_ambience",
+    "sounds": ["frostbite:blizzard_ambience"]
+  },
+  "whiteout_ambience": {
+    "subtitle": "sounds.frostbite.whiteout_ambience",
+    "sounds": ["frostbite:whiteout_ambience"]
   }
 }
