@@ -14,6 +14,7 @@ import org.exodusstudio.frostbite.common.component.ContractData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.item.contract.ContractItem;
+import org.exodusstudio.frostbite.common.item.contract.PartialContractItem;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.MenuTypeRegistry;
 import org.exodusstudio.frostbite.common.util.Util;
@@ -70,7 +71,9 @@ public class ApplyingMenu extends ItemCombinerMenu {
     }
 
     public boolean canCraft() {
-        return inputSlots.getItem(1).getItem() instanceof ContractItem && Contract.getContract(inputSlots.getItem(1)) != null;
+        return (inputSlots.getItem(1).getItem() instanceof ContractItem ||
+                inputSlots.getItem(1).getItem() instanceof PartialContractItem) &&
+                Contract.getContract(inputSlots.getItem(1)) != null;
     }
 
     @Override
