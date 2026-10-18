@@ -13,19 +13,19 @@
       "type": "minecraft:add",
       "argument1": {
         "type": "minecraft:mul",
-        "argument1": 0.24,
+        "argument1": 0.10,
         "argument2": "minecraft:overworld/continents"
       },
       "argument2": {
         "type": "minecraft:add",
         "argument1": {
           "type": "minecraft:mul",
-          "argument1": 0.14,
+          "argument1": 0.08,
           "argument2": "minecraft:overworld/erosion"
         },
         "argument2": {
           "type": "minecraft:mul",
-          "argument1": -0.9,
+            "argument1": -0.65,
           "argument2": {
             "type": "minecraft:half_negative",
             "argument": "minecraft:overworld/ridges"
@@ -36,7 +36,7 @@
   },
   "argument2": {
     "type": "minecraft:mul",
-    "argument1": 0.3,
+    "argument1": 0.16,
     "argument2": "minecraft:overworld/base_3d_noise"
   }
 }

@@ -7,6 +7,8 @@
   "downfall": 0.5,
   "effects": {
     "fog_color": 8289748,
+    "foliage_color": 2521660,
+    "grass_color": 3840581,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2,
@@ -75,7 +77,6 @@
       "frostbite:charm_foliage",
       "frostbite:mossy_fallen_logs",
       "minecraft:forest_rock",
-      "minecraft:vines",
       "minecraft:flower_default",
       "minecraft:patch_grass_taiga",
       "minecraft:patch_tall_grass",

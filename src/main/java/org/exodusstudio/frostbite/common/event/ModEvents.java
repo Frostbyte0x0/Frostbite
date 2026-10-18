@@ -253,6 +253,11 @@ public class ModEvents {
         Level level = event.getLevel();
 
         if (level instanceof ServerLevel serverLevel && serverLevel.dimensionType().hasSkyLight()) {
+            if (isFrostbite(serverLevel)) {
+                serverLevel.setRainLevel(0.0F);
+                serverLevel.setThunderLevel(0.0F);
+            }
+
             WeatherInfo weatherInfo = DataHelper.getWeatherInfo(serverLevel);
 
             if (serverLevel.getGameRules().get(GameRules.ADVANCE_WEATHER)) {
