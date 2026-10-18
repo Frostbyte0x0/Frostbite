@@ -2,8 +2,7 @@
   "temperature_modifier": "frozen",
   "carvers": [
     "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
+    "minecraft:cave_extra_underground"
   ],
   "downfall": 0.5,
   "effects": {
@@ -89,9 +88,7 @@
       "minecraft:seagrass_deep",
       "minecraft:kelp_cold"
     ],
-    [
-      "frostbite:frostbite_snow_and_freeze"
-    ]
+    []
   ],
   "has_precipitation": false,
   "spawn_costs": {},
