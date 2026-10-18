@@ -71,6 +71,7 @@ import org.exodusstudio.frostbite.common.network.ParryPayload;
 import org.exodusstudio.frostbite.common.combat.ParryManager;
 import org.exodusstudio.frostbite.common.particle.options.TextParticleOption;
 import org.exodusstudio.frostbite.common.registry.*;
+import org.exodusstudio.frostbite.common.util.ScreenShakeHandler;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.weather.WeatherInfo;
@@ -488,8 +489,33 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void ambience(PlayerTickEvent.Post event) {
+        WeatherInfo weatherInfo = DataHelper.getWeatherInfo(Minecraft.getInstance().level);
         for (SoundRegistry.Ambience ambience : SoundRegistry.Ambience.AMBIENCES) {
             if (ambience.shouldPlay.apply(event.getEntity().level()) && event.getEntity().level() instanceof ClientLevel level) {
+                if (level.getGameTime() + ambience.fadeLength - ambience.startTime > ambience.length) {
+                    ambience.startTime = level.getGameTime();
+                    level.playLocalSound(event.getEntity(), ambience.soundEvent.get(), SoundSource.AMBIENT, ambience.volume, 1);
+                }
+            }
+        }
+        for (SoundRegistry.Ambience ambience : SoundRegistry.Ambience.SNOW_AMBIENCE) {
+            if (ambience.shouldPlay.apply(event.getEntity().level()) && event.getEntity().level() instanceof ClientLevel level) {
+                if (level.getGameTime() + ambience.fadeLength - ambience.startTime > ambience.length) {
+                    ambience.startTime = level.getGameTime();
+                    level.playLocalSound(event.getEntity(), ambience.soundEvent.get(), SoundSource.AMBIENT, ambience.volume, 1);
+                }
+            }
+        }
+        for (SoundRegistry.Ambience ambience : SoundRegistry.Ambience.BLIZZARD_AMBIENCE) {
+            if (ambience.shouldPlay.apply(event.getEntity().level()) && event.getEntity().level() instanceof ClientLevel level  && weatherInfo.isBlizzarding) {
+                if (level.getGameTime() + ambience.fadeLength - ambience.startTime > ambience.length) {
+                    ambience.startTime = level.getGameTime();
+                    level.playLocalSound(event.getEntity(), ambience.soundEvent.get(), SoundSource.AMBIENT, ambience.volume, 1);
+                }
+            }
+        }
+        for (SoundRegistry.Ambience ambience : SoundRegistry.Ambience.WHITEOUT_AMBIENCE) {
+            if (ambience.shouldPlay.apply(event.getEntity().level()) && event.getEntity().level() instanceof ClientLevel level && weatherInfo.isWhiteouting) {
                 if (level.getGameTime() + ambience.fadeLength - ambience.startTime > ambience.length) {
                     ambience.startTime = level.getGameTime();
                     level.playLocalSound(event.getEntity(), ambience.soundEvent.get(), SoundSource.AMBIENT, ambience.volume, 1);
@@ -533,20 +559,22 @@ public class ClientEvents {
             float r = Mth.lerp(weatherInfo.whiteoutLevel,
                     Mth.lerp(weatherInfo.blizzardLevel, 30, 20), 15);
             float offset = Mth.lerp(weatherInfo.whiteoutLevel,
-                    Mth.lerp(weatherInfo.blizzardLevel, 10, 5), 2);
+                    Mth.lerp(weatherInfo.blizzardLevel, 10, 6), 2);
             float s = Mth.lerp(weatherInfo.whiteoutLevel,
-                    Mth.lerp(weatherInfo.blizzardLevel, 0.025f, 0.1f), 0.1f);
+                    Mth.lerp(weatherInfo.blizzardLevel, 0.025f, 0.05f), 0.1f);
             float d = Mth.lerp(weatherInfo.whiteoutLevel,
-                    Mth.lerp(weatherInfo.blizzardLevel, 0.05f, 0.1f), 0.1f);
+                    Mth.lerp(weatherInfo.blizzardLevel, 0.075f, 0.1f), 0.3f);
             int count = (int) Mth.lerp(weatherInfo.whiteoutLevel,
-                    Mth.lerp(weatherInfo.blizzardLevel, 125, 100), 75);
+                    Mth.lerp(weatherInfo.blizzardLevel, 50, 100), 200);
             for (int i = 0; i < count; i++) {
                 double d0 = player.getX() + player.getLookAngle().normalize().x * offset + (0.5D - random.nextDouble()) * r;
                 double d1 = player.getY() + player.getLookAngle().normalize().y * offset + (0.5D - random.nextDouble()) * r / 2f + r / 4f;
                 double d2 = player.getZ() + player.getLookAngle().normalize().z * offset + (0.5D - random.nextDouble()) * r;
 
                 level.addAlwaysVisibleParticle(
-                        random.nextFloat() < 0.01 ? ParticleTypes.END_ROD : ParticleRegistry.AMBIENT_SNOW_PARTICLE.get(),
+                        random.nextFloat() < Mth.lerp(weatherInfo.whiteoutLevel,
+                                Mth.lerp(weatherInfo.blizzardLevel, 0.01, 0.02), 0.05)
+                                ? ParticleTypes.END_ROD : ParticleRegistry.AMBIENT_SNOW_PARTICLE.get(),
                         d0, d1, d2,
                         (random.nextDouble()) * d + s,
                         (-random.nextDouble()) * d - s,
@@ -561,4 +589,28 @@ public class ClientEvents {
 //            Minecraft.getInstance().gameRenderer.setPostEffect(
 //                    Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "custom"));
     }
+
+    @SubscribeEvent
+    public static void screenShakeTick(ClientTickEvent.Post event) {
+        ScreenShakeHandler.tick();
+    }
+
+    static int screenShakeTicks = 0;
+    @SubscribeEvent
+    public static void screenShake(ClientTickEvent.Post event) {
+        Minecraft minecraft =  Minecraft.getInstance();
+        Player player = minecraft.player;
+        if (player == null) return;
+
+        WeatherInfo weatherInfo = DataHelper.getWeatherInfo(minecraft.level);
+        if (minecraft.level.canSeeSky(player.blockPosition()) && minecraft.level.dimension() == Util.FROSTBITE_KEY) {
+            screenShakeTicks++;
+            ScreenShakeHandler.triggerShake(Mth.lerp(weatherInfo.whiteoutLevel,
+                    Mth.lerp(weatherInfo.blizzardLevel, 0, 0.25), 0.5));
+            if (screenShakeTicks >= 10) {
+                screenShakeTicks = 0;
+            }
+        }
+    }
 }
+
