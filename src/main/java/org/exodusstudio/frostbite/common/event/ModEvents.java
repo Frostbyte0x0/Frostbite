@@ -214,7 +214,7 @@ public class ModEvents {
                 24, REPEL_RADIUS * 0.55, 0.15, REPEL_RADIUS * 0.55, 0.02);
 
         AABB area = player.getBoundingBox().inflate(REPEL_RADIUS);
-        for (Player target : level.getEntitiesOfClass(Player.class, area,
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area,
                 target -> target != player && target.isAlive())) {
             Vec3 direction = target.position().subtract(player.position());
             double distance = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
