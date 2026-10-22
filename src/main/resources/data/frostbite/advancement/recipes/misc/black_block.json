@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "frostbite:metal_cog"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_metal_cog": {
@@ -13,7 +19,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "frostbite:black_block"
+        "recipes": "frostbite:black_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

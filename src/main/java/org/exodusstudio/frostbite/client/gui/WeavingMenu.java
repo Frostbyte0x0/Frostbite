@@ -162,17 +162,17 @@ public class WeavingMenu extends ItemCombinerMenu {
             String equipmentCraftStats = DataHelper.getString(player, "craft_stats_" + equipment);
             if (equipmentCraftStats.isEmpty()) {
                 ArmourStatsData data = ArmourStatsData.addRandomStats(set, result);
-                String s = "";
+                StringBuilder s = new StringBuilder();
                 for (Map.Entry<String, String> e : data.attributes().attributesInfo().entrySet()) {
-                    s += e.getKey();
-                    s += "##";
-                    s += e.getValue();
-                    s += "##";
+                    s.append(e.getKey());
+                    s.append("##");
+                    s.append(e.getValue());
+                    s.append("##");
                 }
-                s += "///";
-                s += data.cleanliness().name().toLowerCase();
+                s.append("///");
+                s.append(data.cleanliness().name().toLowerCase());
 
-                DataHelper.setData(player, "craft_stats_" + equipment, s);
+                DataHelper.setData(player, "craft_stats_" + equipment, s.toString());
             } else {
                 String[] parts = equipmentCraftStats.split("///");
                 String[] entries = parts[0].split("##");

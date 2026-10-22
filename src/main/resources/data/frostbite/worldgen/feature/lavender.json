@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:tree",
+  "below_trunk_provider": {
+    "id": "minecraft:dirt"
+  },
+  "decorators": [
+    {
+      "type": "minecraft:trunk_vine"
+    },
+    {
+      "type": "minecraft:leave_vine",
+      "probability": 0.12
+    }
+  ],
+  "foliage_placer": {
+    "type": "minecraft:random_spread_foliage_placer",
+    "foliage_height": 2,
+    "leaf_placement_attempts": 15,
+    "radius": 2,
+    "offset": 0
+  },
+  "foliage_provider": {
+    "id": "frostbite:lavender_leaves",
+    "properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "ignore_vines": false,
+  "minimum_size": {
+    "type": "minecraft:two_layers_feature_size",
+    "limit": 1,
+    "lower_size": 0,
+    "upper_size": 2
+  },
+  "trunk_placer": {
+    "type": "minecraft:upwards_branching_trunk_placer",
+    "base_height": 6,
+    "height_rand_a": 1,
+    "height_rand_b": 4,
+    "extra_branch_length": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 3,
+      "min_inclusive": 2
+    },
+    "extra_branch_steps": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 5,
+      "min_inclusive": 3
+    },
+    "place_branch_per_log_probability": 0.4,
+    "can_grow_through": "#minecraft:air"
+  },
+  "trunk_provider": {
+    "id": "frostbite:lavender_log",
+    "properties": {
+      "axis": "y"
+    }
+  }
+}

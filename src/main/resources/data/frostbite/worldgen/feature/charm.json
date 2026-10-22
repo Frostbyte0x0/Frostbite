@@ -1,0 +1,71 @@
+{
+  "type": "minecraft:tree",
+  "below_trunk_provider": {
+    "id": "minecraft:dirt"
+  },
+  "decorators": [
+    {
+      "type": "minecraft:trunk_vine"
+    },
+    {
+      "type": "minecraft:leave_vine",
+      "probability": 0.2
+    }
+  ],
+  "foliage_placer": {
+    "type": "minecraft:cherry_foliage_placer",
+    "corner_hole_chance": 0.25,
+    "hanging_leaves_chance": 0.2,
+    "hanging_leaves_extension_chance": 0.5,
+    "height": 5,
+    "offset": 0,
+    "radius": 4,
+    "wide_bottom_layer_hole_chance": 0.25
+  },
+  "foliage_provider": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": {
+          "id": "frostbite:charm_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "frostbite:flowering_charm_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 1
+      }
+    ]
+  },
+  "ignore_vines": false,
+  "minimum_size": {
+    "type": "minecraft:two_layers_feature_size",
+    "limit": 1,
+    "lower_size": 0,
+    "upper_size": 2
+  },
+  "trunk_placer": {
+    "type": "minecraft:fancy_trunk_placer",
+    "base_height": 6,
+    "height_rand_a": 11,
+    "height_rand_b": 5
+  },
+  "trunk_provider": {
+    "id": "frostbite:charm_log",
+    "properties": {
+      "axis": "y"
+    }
+  }
+}

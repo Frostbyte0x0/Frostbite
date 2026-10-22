@@ -42,7 +42,7 @@ public class EtherealHammerModel extends EntityModel<EtherealRenderState> {
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        poseStack.mulPose(Axis.YP.rotationDegrees(yRot));
+        poseStack.rotate(Axis.YP.rotationDegrees(yRot));
         hammer.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

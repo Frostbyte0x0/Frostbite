@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -19,7 +18,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.exodusstudio.frostbite.client.gui.scribing.CombiningMenu;
 
 public class CombiningTable extends HorizontalDirectionalBlock {
-    public static final MapCodec<CombiningTable> CODEC = simpleCodec(CombiningTable::new);
     private static final Component CONTAINER_TITLE =
             Component.translatable("container.combining_table").withStyle(ChatFormatting.WHITE);
 
@@ -38,11 +36,6 @@ public class CombiningTable extends HorizontalDirectionalBlock {
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider((i, inventory, _) ->
                 new CombiningMenu(i, inventory, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {

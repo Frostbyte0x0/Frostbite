@@ -184,6 +184,11 @@ public class CurseBallEntity extends Entity {
     }
 
     @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
+    }
+
+    @Override
     public final Vec3 getPosition(float partialTick) {
         if (getCursedEntity() == null) {
             return super.getPosition(partialTick);

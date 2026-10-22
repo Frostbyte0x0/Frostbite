@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -17,15 +16,8 @@ import org.exodusstudio.frostbite.common.registry.BlockEntityRegistry;
 import org.jetbrains.annotations.Nullable;
 
 public class LodestarBlock extends BaseEntityBlock {
-    public static final MapCodec<LodestarBlock> CODEC = simpleCodec(LodestarBlock::new);
-
     public LodestarBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

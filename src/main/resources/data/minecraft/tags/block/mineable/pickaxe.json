@@ -1,5 +1,8 @@
 {
   "values": [
-    "frostbite:black_block"
+    {
+      "id": "frostbite:black_block",
+      "required": false
+    }
   ]
 }

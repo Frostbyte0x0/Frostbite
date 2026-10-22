@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -97,22 +98,8 @@ public class OTFPortal extends Structure {
     }
 
     @Override
-    public StructureStart generate(
-            Holder<Structure> structure,
-            ResourceKey<Level> level,
-            RegistryAccess registryAccess,
-            ChunkGenerator chunkGenerator,
-            BiomeSource biomeSource,
-            RandomState randomState,
-            StructureTemplateManager structureTemplateManager,
-            long seed,
-            ChunkPos chunkPos,
-            int references,
-            LevelHeightAccessor heightAccessor,
-            Predicate<Holder<Biome>> validBiome
-    ) {
-        StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
-                randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
+    public StructureStart generate(Holder<Structure> structure, ResourceKey<Level> level, RegistryAccess registryAccess, ChunkGenerator chunkGenerator, BiomeSource biomeSource, Climate.Sampler climateSampler, RandomState randomState, StructureTemplateManager structureTemplateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor heightAccessor, Predicate<Holder<Biome>> validBiome) {
+        StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource, climateSampler, randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
 
         if (structureStart != StructureStart.INVALID_START) {
             structureStart.getPieces().forEach(p -> {

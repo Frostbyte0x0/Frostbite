@@ -3,17 +3,15 @@
   "criteria": {
     "otf_portal": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "minecraft:location": {
-                "structures": "frostbite:otf_portal"
-              }
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "frostbite:otf_portal"
             }
           }
-        ]
+        }
       },
       "trigger": "minecraft:location"
     }

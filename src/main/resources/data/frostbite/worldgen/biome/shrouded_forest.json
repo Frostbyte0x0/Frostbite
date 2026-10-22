@@ -3,7 +3,68 @@
     "minecraft:visual/fog_color": "#496ab8",
     "minecraft:visual/fog_start_distance": -50,
     "minecraft:visual/fog_end_distance": 100,
-    "minecraft:visual/sky_fog_end_distance": 0
+    "minecraft:visual/sky_fog_end_distance": 0,
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [
+            {
+              "type": "frostbite:boar",
+              "count": 4,
+              "weight": 40
+            },
+            {
+              "type": "frostbite:bandit",
+              "count": 4,
+              "weight": 40
+            },
+            {
+              "type": "frostbite:woolly_sheep",
+              "count": 4,
+              "weight": 40
+            }
+          ],
+          "monster": [
+            {
+              "type": "frostbite:levitating_jellyfish",
+              "count": 4,
+              "weight": 30
+            },
+            {
+              "type": "frostbite:big_levitating_jellyfish",
+              "count": 4,
+              "weight": 30
+            },
+            {
+              "type": "frostbite:iced_zombie",
+              "count": 4,
+              "weight": 30
+            },
+            {
+              "type": "frostbite:iced_skeleton",
+              "count": 4,
+              "weight": 30
+            },
+            {
+              "type": "frostbite:revenant",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 2,
+                "max_inclusive": 4
+              },
+              "weight": 30
+            },
+            {
+              "type": "frostbite:iced_creeper",
+              "count": 4,
+              "weight": 30
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    }
   },
   "temperature_modifier": "frozen",
   "carvers": [
@@ -93,69 +154,5 @@
     ]
   ],
   "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [
-      {
-        "type": "frostbite:boar",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 40
-      },
-      {
-        "type": "frostbite:bandit",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 40
-      },
-      {
-        "type": "frostbite:woolly_sheep",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 40
-      }
-    ],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "frostbite:levitating_jellyfish",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      },
-      {
-        "type": "frostbite:big_levitating_jellyfish",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      },
-      {
-        "type": "frostbite:iced_zombie",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      },
-      {
-        "type": "frostbite:iced_skeleton",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      },
-      {
-        "type": "frostbite:revenant",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 30
-      },
-      {
-        "type": "frostbite:iced_creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      }
-    ]
-  },
   "temperature": -0.5
 }

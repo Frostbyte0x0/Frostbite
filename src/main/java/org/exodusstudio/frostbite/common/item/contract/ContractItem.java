@@ -1,6 +1,7 @@
 package org.exodusstudio.frostbite.common.item.contract;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,8 +33,8 @@ public class ContractItem extends Item {
         if (level.isClientSide()) {
             Minecraft mc = Minecraft.getInstance();
             level.playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_THUNDER.value(), player.getSoundSource(), 1, 0.25f, false);
-            if (player == mc.player) {
-                mc.gameRenderer.displayItemActivation(player.getItemInHand(usedHand));
+            if (player instanceof LocalPlayer localPlayer) {
+                localPlayer.displayItemActivation(player.getItemInHand(usedHand));
             }
         }
 

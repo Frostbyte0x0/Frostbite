@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.client.gui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
 import net.minecraft.client.input.KeyEvent;
@@ -24,7 +25,7 @@ public class WeavingScreen extends ItemCombinerScreen<WeavingMenu> {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (event.key() == 256) {
+        if (event.key() == InputConstants.KEY_ESCAPE) {
             this.player.closeContainer();
         }
         return super.keyPressed(event);

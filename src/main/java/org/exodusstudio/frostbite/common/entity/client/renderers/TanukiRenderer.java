@@ -35,7 +35,7 @@ public class TanukiRenderer extends MobRenderer<TanukiEntity, TanukiRenderState,
         float f7 = state.sitAmount;
         if (f7 > 0.0F) {
             stack.translate(0.0F, 0.8F * f7, 0.0F);
-            stack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(f7, state.xRot, state.xRot + 90.0F)));
+            stack.rotate(Axis.XP.rotationDegrees(Mth.lerp(f7, state.xRot, state.xRot + 90.0F)));
             stack.translate(0.0F, -1.0F * f7, 0.0F);
         }
     }

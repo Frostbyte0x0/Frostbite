@@ -28,6 +28,7 @@ public class Frostbite {
         MenuTypeRegistry.MENU_TYPES.register(modEventBus);
         ConsumeEffectRegistry.CONSUME_EFFECT_TYPES.register(modEventBus);
         FoliagePlacerRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
+        FeatureRegistry.FEATURE_TYPES.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
         MemoryModuleTypeRegistry.MEMORY_MODULE_TYPES.register(modEventBus);

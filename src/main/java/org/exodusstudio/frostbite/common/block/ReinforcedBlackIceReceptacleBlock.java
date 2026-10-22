@@ -1,7 +1,6 @@
 package org.exodusstudio.frostbite.common.block;
 
 import com.google.common.base.Predicates;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.*;
@@ -17,7 +16,6 @@ import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 
 public class ReinforcedBlackIceReceptacleBlock extends DirectionalBlock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
-    public static final MapCodec<ReinforcedBlackIceReceptacleBlock> CODEC = simpleCodec(ReinforcedBlackIceReceptacleBlock::new);
     private static BlockPattern portalShape;
 
     public ReinforcedBlackIceReceptacleBlock(Properties properties) {
@@ -27,12 +25,6 @@ public class ReinforcedBlackIceReceptacleBlock extends DirectionalBlock {
                 .setValue(LIT, false)
                 .setValue(FACING, Direction.NORTH));
     }
-
-    @Override
-    protected MapCodec<? extends DirectionalBlock> codec() {
-        return CODEC;
-    }
-
 
     public static BlockPattern getOrCreatePortalShape() {
         if (portalShape == null) {

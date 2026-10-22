@@ -1,11 +1,12 @@
 {
   "type": "minecraft:add",
-  "argument1": {
-    "type": "minecraft:y_clamped_gradient",
-    "from_y": -64,
-    "to_y": 320,
+  "left": {
+    "type": "minecraft:gradient",
+    "axis": "y",
+    "from_coordinate": -64,
     "from_value": 1.5,
+    "to_coordinate": 320,
     "to_value": -1.5
   },
-  "argument2": "frostbite:frostbite/offset"
+  "right": "frostbite:frostbite/offset"
 }

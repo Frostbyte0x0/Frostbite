@@ -36,7 +36,7 @@ public class BlockRegistry {
                     .strength(-1.0F)
                     .sound(SoundType.GLASS)
                     .lightLevel(_ -> 11)
-                    .pushReaction(PushReaction.BLOCK)
+                    .pushReaction(PushReaction.IMMOVEABLE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite_portal")))));
 
     public static final DeferredBlock<Block> SLATED_ICE = registerBlock("slated_ice",
@@ -442,7 +442,7 @@ public class BlockRegistry {
                     .randomTicks()
                     .noCollision()
                     .sound(SoundType.SWEET_BERRY_BUSH)
-                    .pushReaction(PushReaction.DESTROY)
+                    .pushReaction(PushReaction.POPPED)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "chilli_pepper_plant")))));
 
 

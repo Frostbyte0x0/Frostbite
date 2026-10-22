@@ -35,7 +35,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.overlays.FlashbangOverlay;
-import org.exodusstudio.frostbite.common.registry.DamageTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
@@ -430,7 +429,7 @@ public class HuntersCatalyst extends Item {
         stack.pushPose();
 
         stack.translate(beamPos.x, beamPos.y, beamPos.z);
-        stack.mulPose(rotation);
+        stack.rotate(rotation);
 
         int ticks = DURATION - getTicksRemaining(context.user().getUseItem());
         float progress = (ticks + partialTicks) / DURATION;
@@ -461,7 +460,7 @@ public class HuntersCatalyst extends Item {
         float scroll = height < 0 ? animationTime : -animationTime;
         float texVOff = Mth.frac(scroll * 0.2F - (float)Mth.floor(scroll * 0.1F));
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(animationTime * 2.25F - 45.0F));
+        poseStack.rotate(Axis.YP.rotationDegrees(animationTime * 2.25F - 45.0F));
         float wnx;
         float enz;
         float wsx = -solidBeamRadius;

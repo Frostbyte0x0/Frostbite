@@ -28,7 +28,7 @@ public class EtherealRenderer<T extends Entity, M extends EntityModel<EtherealRe
     public void submit(EtherealRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
         nodeCollector.submitModel(model, renderState, poseStack, RenderTypes.entityTranslucent(getTextureLocation()),
-                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, renderState.outlineColor, null);
+                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, renderState.outlineColor);
     }
 
     public Identifier getTextureLocation() {

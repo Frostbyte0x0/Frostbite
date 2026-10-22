@@ -28,17 +28,17 @@ public class FrozenRemnantsRenderer extends LivingEntityRenderer<FrozenRemnantsE
     }
 
     @Override
-    public void extractRenderState(FrozenRemnantsEntity frozenRemnants, FrozenRemnantsRenderState renderState, float p_361157_) {
-        super.extractRenderState(frozenRemnants, renderState, p_361157_);
+    public void extractRenderState(FrozenRemnantsEntity frozenRemnants, FrozenRemnantsRenderState renderState, float partialTicks) {
+        super.extractRenderState(frozenRemnants, renderState, partialTicks);
         Frustum frustum = Minecraft.getInstance().gameRenderer.mainCamera().getCullFrustum();
-        renderState.isOnScreen = isVisible(frozenRemnants, frustum);
+        renderState.isOnScreen = isVisible(frozenRemnants, partialTicks, frustum);
         frozenRemnants.setOnScreen(renderState.isOnScreen);
         renderState.headPitch = frozenRemnants.getHeadPitch();
         renderState.bodyRot = frozenRemnants.getYRot();
     }
 
-    private boolean isVisible(FrozenRemnantsEntity entity, Frustum culler) {
-        AABB boundingBox = this.getBoundingBoxForCulling(entity).inflate(0.5);
+    private boolean isVisible(FrozenRemnantsEntity entity, float partialTicks, Frustum culler) {
+        AABB boundingBox = this.getBoundingBoxForCulling(entity, partialTicks).inflate(0.5);
         if (boundingBox.hasNaN() || boundingBox.getSize() == 0) {
             boundingBox = new AABB(
                     entity.getX() - 2,

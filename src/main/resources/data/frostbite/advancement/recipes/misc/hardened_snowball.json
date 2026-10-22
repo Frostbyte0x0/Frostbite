@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "frostbite:hardened_snowball"
+        "recipes": "frostbite:hardened_snowball"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

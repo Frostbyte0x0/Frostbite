@@ -474,7 +474,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void staffControl(InputEvent.MouseButton.Pre event) {
-        if (event.getButton() == 1) {
+        if (event.getButton() == InputConstants.MOUSE_BUTTON_RIGHT) {
             Player player = Minecraft.getInstance().player;
             if (player != null) {
                 ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);

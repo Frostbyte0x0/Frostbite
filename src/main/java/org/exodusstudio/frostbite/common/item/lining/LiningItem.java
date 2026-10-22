@@ -2,6 +2,7 @@ package org.exodusstudio.frostbite.common.item.lining;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -57,7 +58,7 @@ public class LiningItem extends Item {
                 ItemStack swappedToEquipment = inHand.consumeAndReturn(1, player);
                 player.getInventory().setItem(slot, swappedToEquipment);
                 if (!player.getInventory().add(swappedToInventory)) {
-                    player.drop(swappedToInventory, false);
+                    player.drop(swappedToInventory, false, Prediction.PREDICTED);
                 }
 
                 return InteractionResult.SUCCESS.heldItemTransformedTo(inHand);

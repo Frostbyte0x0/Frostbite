@@ -17,16 +17,17 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 import java.util.stream.Stream;
 
-@Mixin(EnvironmentAttributeSystem.class)
+@Mixin(EnvironmentAttributeSystem.Builder.class)
 public class EnvironmentAttributeSystemMixin {
-    @Inject(at = @At("TAIL"), method = "addDefaultLayers", cancellable = true)
-    private static void addDefaultLayers(EnvironmentAttributeSystem.Builder builder, Level level, CallbackInfo ci) {
+    @Inject(at = @At("TAIL"), method = "addDefaultLayers")
+    private void addDefaultLayers(Level level, CallbackInfoReturnable<EnvironmentAttributeSystem.Builder> cir) {
         if (Util.isFrostbite(level)) {
+            EnvironmentAttributeSystem.Builder builder = (EnvironmentAttributeSystem.Builder) (Object) this;
             RegistryAccess registryaccess = level.registryAccess();
             BiomeManager biomemanager = level.getBiomeManager();
             Objects.requireNonNull(level);
@@ -35,7 +36,6 @@ public class EnvironmentAttributeSystemMixin {
             frostbite$addBiomeLayer(builder, registryaccess.lookupOrThrow(Registries.BIOME), biomemanager);
             level.dimensionType().timelines().forEach((p_466516_) -> builder.addTimelineLayer(p_466516_, clockManager));
             FrostbiteWeatherAttributes.addBuiltinLayers(builder, FrostbiteWeatherAttributes.WeatherAccess.from(level));
-            ci.cancel();
         }
     }
 

@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.util;
 
+import net.minecraft.tags.BlockTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.gui.Font;
@@ -21,6 +22,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PositionPath;
 import net.minecraft.world.entity.animal.fox.Fox;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -209,7 +211,7 @@ public class Util {
             }
 
             Vec3 oldPos = user.position();
-            if (user.randomTeleport(xx, yy, zz, true, ItemStack.EMPTY)) {
+            if (user.randomTeleport(xx, yy, zz, true, state -> false, ItemStack.EMPTY)) {
                 level.gameEvent(GameEvent.TELEPORT, oldPos, GameEvent.Context.of(user));
                 SoundSource soundSource;
                 SoundEvent soundEvent;
@@ -254,7 +256,7 @@ public class Util {
             while(!landed && toPos.getY() > level.getMinY()) {
                 BlockPos below = toPos.below();
                 BlockState state = level.getBlockState(below);
-                if (state.blocksMotion()) {
+                if (state.is(BlockTags.ENTITIES_CAN_TELEPORT_TO)) {
                     landed = true;
                 } else {
                     --y;
@@ -263,7 +265,7 @@ public class Util {
             }
 
             if (level.hasChunkAt(toPos) && landed && level.noCollision(entity) && !level.containsAnyLiquid(entity.getBoundingBox())) {
-                entity.moveOrInterpolateTo(new Vec3(toPos.above()));
+                entity.moveOrInterpolateTo(PositionPath.of(new Vec3(toPos.above())));
                 break;
             }
         }

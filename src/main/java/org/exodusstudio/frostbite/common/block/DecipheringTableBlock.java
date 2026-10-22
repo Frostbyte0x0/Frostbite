@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +31,6 @@ import org.exodusstudio.frostbite.common.block.block_entities.DecipheringTableBl
 import org.jspecify.annotations.Nullable;
 
 public class DecipheringTableBlock extends BaseEntityBlock {
-    public static final MapCodec<DecipheringTableBlock> CODEC = simpleCodec(DecipheringTableBlock::new);
     private static final Component CONTAINER_TITLE =
             Component.translatable("container.deciphering_table").withStyle(ChatFormatting.WHITE);
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -93,11 +91,6 @@ public class DecipheringTableBlock extends BaseEntityBlock {
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {

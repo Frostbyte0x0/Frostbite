@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.client.gui.scribing;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
@@ -26,7 +27,7 @@ public class ApplyingScreen extends ItemCombinerScreen<ApplyingMenu> {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (event.key() == 256) {
+        if (event.key() == InputConstants.KEY_ESCAPE) {
             player.closeContainer();
         }
         return super.keyPressed(event);

@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "frostbite:empty_jar"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_glass": {
@@ -13,7 +19,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "frostbite:empty_jar"
+        "recipes": "frostbite:empty_jar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

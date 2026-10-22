@@ -86,45 +86,44 @@
     ]
   ],
   "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [
-      {
-        "type": "frostbite:boar",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 40
+  "temperature": -0.5,
+  "attributes": {
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [
+            {
+              "type": "frostbite:boar",
+              "count": 4,
+              "weight": 40
+            },
+            {
+              "type": "frostbite:woolly_sheep",
+              "count": 4,
+              "weight": 40
+            }
+          ],
+          "monster": [
+            {
+              "type": "frostbite:iced_zombie",
+              "count": 4,
+              "weight": 30
+            },
+            {
+              "type": "frostbite:iced_skeleton",
+              "count": 4,
+              "weight": 30
+            },
+            {
+              "type": "frostbite:iced_creeper",
+              "count": 4,
+              "weight": 30
+            }
+          ]
+        }
       },
-      {
-        "type": "frostbite:woolly_sheep",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 40
-      }
-    ],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "frostbite:iced_zombie",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      },
-      {
-        "type": "frostbite:iced_skeleton",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      },
-      {
-        "type": "frostbite:iced_creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 30
-      }
-    ]
-  },
-  "temperature": -0.5
+      "modifier": "overlay"
+    }
+  }
 }

@@ -52,7 +52,7 @@ public class DamageParticle extends Particle {
                 Mth.lerp(partialTicks, this.yo, this.y) - cameraPos.y(),
                 Mth.lerp(partialTicks, this.zo, this.z) - cameraPos.z()
         );
-        poseStack.mulPose(camera.rotation());
+        poseStack.rotate(camera.rotation());
         poseStack.scale(SCALE, -SCALE, SCALE);
 
         renderState.add(poseStack, -this.width / 2f, -this.height / 2f, this.text,

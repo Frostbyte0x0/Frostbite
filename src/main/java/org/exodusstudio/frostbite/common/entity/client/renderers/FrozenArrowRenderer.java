@@ -27,11 +27,11 @@ public class FrozenArrowRenderer extends ArrowRenderer<FrozenArrow, TippableArro
         super.submit(state, stack, nodeCollector, cameraRenderState);
 
         stack.pushPose();
-        stack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90));
-        stack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
-        stack.mulPose(Axis.XP.rotationDegrees(180));
+        stack.rotate(Axis.YP.rotationDegrees(state.yRot - 90));
+        stack.rotate(Axis.ZP.rotationDegrees(state.xRot));
+        stack.rotate(Axis.XP.rotationDegrees(180));
         nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(getTextureLocation(state)),
-                state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+                state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
         stack.popPose();
     }
 

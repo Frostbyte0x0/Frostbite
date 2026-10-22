@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -18,13 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.exodusstudio.frostbite.client.gui.WeavingMenu;
 
 public class WeavingTable extends HorizontalDirectionalBlock {
-    public static final MapCodec<WeavingTable> CODEC = simpleCodec(WeavingTable::new);
     private static final Component CONTAINER_TITLE = Component.translatable("container.weaving_table");
-
-    @Override
-    public MapCodec<WeavingTable> codec() {
-        return CODEC;
-    }
 
     public WeavingTable(Properties p_49795_) {
         super(p_49795_);

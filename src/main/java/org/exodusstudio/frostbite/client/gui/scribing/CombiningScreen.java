@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.client.gui.scribing;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -27,7 +28,7 @@ public class CombiningScreen extends ItemCombinerScreen<CombiningMenu> {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (event.key() == 256) {
+        if (event.key() == InputConstants.KEY_ESCAPE) {
             this.player.closeContainer();
         }
         return super.keyPressed(event);

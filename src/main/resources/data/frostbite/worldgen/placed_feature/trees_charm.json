@@ -40,8 +40,8 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "frostbite:charm_sapling",
-          "Properties": {
+          "id": "frostbite:charm_sapling",
+          "properties": {
             "stage": "0"
           }
         }

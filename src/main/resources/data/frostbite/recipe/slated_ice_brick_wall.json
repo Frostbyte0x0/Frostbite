@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "#": "frostbite:slated_ice_brick"
+    "#": "frostbite:slated_ice_bricks"
   },
   "pattern": [
     "###",

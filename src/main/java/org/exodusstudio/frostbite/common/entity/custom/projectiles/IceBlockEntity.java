@@ -21,7 +21,7 @@ public class IceBlockEntity extends FallingBlockEntity {
 
     @Override
     protected double getDefaultGravity() {
-        if (!hurtMarked) {
+        if (!syncVelocity) {
             return 0.025;
         }
         return 1;

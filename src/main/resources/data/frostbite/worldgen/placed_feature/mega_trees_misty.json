@@ -32,8 +32,8 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "frostbite:misty_sapling",
-          "Properties": {
+          "id": "frostbite:misty_sapling",
+          "properties": {
             "stage": "0"
           }
         }

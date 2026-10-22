@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -109,7 +110,7 @@ public class BanditEntity extends Animal implements TemperatureEntity {
         if (!level().isClientSide()) {
             ItemStack heldItem = this.getItemInHand(InteractionHand.MAIN_HAND);
             if (!heldItem.isEmpty()) {
-                drop(heldItem, false, true);
+                drop(heldItem, false, Prediction.PREDICTED);
             }
         }
         super.die(damageSource);

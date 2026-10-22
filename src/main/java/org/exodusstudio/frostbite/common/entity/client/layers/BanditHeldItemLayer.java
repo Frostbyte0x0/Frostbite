@@ -29,15 +29,15 @@ public class BanditHeldItemLayer extends RenderLayer<BanditRenderState, BanditMo
             }
 
             //stack.mulPose(Axis.ZP.rotation(state.headRollAngle));
-            stack.mulPose(Axis.YP.rotationDegrees(v));
-            stack.mulPose(Axis.XP.rotationDegrees(v1));
+            stack.rotate(Axis.YP.rotationDegrees(v));
+            stack.rotate(Axis.XP.rotationDegrees(v1));
             if (state.isBaby) {
                 stack.translate(0.06, 0.26, -0.5);
             } else {
                 stack.translate(0.06, 0.27, -0.5);
             }
 
-            stack.mulPose(Axis.XP.rotationDegrees(90));
+            stack.rotate(Axis.XP.rotationDegrees(90));
             stack.translate(0, 0.1, 0);
 
             itemstackrenderstate.submit(stack, submitNodeCollector, i, OverlayTexture.NO_OVERLAY, -1);

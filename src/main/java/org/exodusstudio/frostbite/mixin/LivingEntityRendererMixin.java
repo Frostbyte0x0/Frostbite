@@ -4,11 +4,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,7 +23,7 @@ public class LivingEntityRendererMixin<T extends LivingEntity> {
     Minecraft frostbite$mc = Minecraft.getInstance();
 
     @Inject(at = @At("HEAD"), method = "shouldShowName*", cancellable = true)
-    private void shouldShowName(T entity, double distanceToCameraSq, CallbackInfoReturnable<Boolean> cir) {
+    private void shouldShowName(@Coerce Entity entity, double v, CallbackInfoReturnable<Boolean> cir) {
         if (frostbite$shouldShowEntityOutlines()) {
             cir.setReturnValue(true);
         }

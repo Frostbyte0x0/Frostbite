@@ -36,9 +36,9 @@ public class RevenantModel extends HumanoidModel<RevenantRenderState> {
     public void setupAnim(RevenantRenderState state) {
         super.setupAnim(state);
         
-        boolean flag = state.swingAnimationType != SwingAnimationType.STAB;
+        boolean flag = state.currentSwing == null || state.currentSwing.animation().type() != SwingAnimationType.STAB;
         if (flag) {
-            float f = state.attackTime;
+            float f = state.swingAnimation;
             float f1 = -(float)Math.PI / (state.isAggressive ? 1.5F : 2.25F);
             float f2 = Mth.sin(f * (float)Math.PI);
             float f3 = Mth.sin((1.0F - (1.0F - f) * (1.0F - f)) * (float)Math.PI);

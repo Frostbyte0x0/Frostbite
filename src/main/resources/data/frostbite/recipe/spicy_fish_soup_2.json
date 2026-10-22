@@ -1,4 +1,11 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "frostbite:charge",
+      "registry": "minecraft:data_component_type"
+    }
+  ],
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "group": "spicy_fish_soup",
@@ -12,8 +19,7 @@
   ],
   "result": {
     "components": {
-      "frostbite:charge":
-      {
+      "frostbite:charge": {
         "charge": 2
       }
     },

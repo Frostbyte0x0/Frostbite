@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +39,6 @@ import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class ChilliPepperPlantBlock extends VegetationBlock implements BonemealableBlock {
-    public static final MapCodec<ChilliPepperPlantBlock> CODEC = simpleCodec(ChilliPepperPlantBlock::new);
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
     private static final VoxelShape SHAPE_SAPLING = Block.column(10.0, 0.0, 8.0);
     private static final VoxelShape SHAPE_GROWING = Block.column(14.0, 0.0, 16.0);
@@ -49,11 +48,6 @@ public class ChilliPepperPlantBlock extends VegetationBlock implements Bonemeala
     public ChilliPepperPlantBlock(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
-    }
-
-    @Override
-    public MapCodec<ChilliPepperPlantBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -121,6 +115,7 @@ public class ChilliPepperPlantBlock extends VegetationBlock implements Bonemeala
                 Block.dropFromBlockInteractLootTable(
                         serverLevel,
                         CHILLI,
+                        pos,
                         state,
                         level.getBlockEntity(pos),
                         null,
@@ -147,18 +142,18 @@ public class ChilliPepperPlantBlock extends VegetationBlock implements Bonemeala
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        return state.getValue(AGE) < 3;
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
+        return blockState.getValue(AGE) < 3;
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        int newAge = Math.min(3, state.getValue(AGE) + 1);
-        level.setBlock(pos, state.setValue(AGE, newAge), 2);
+    public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
+        int newAge = Math.min(3, blockState.getValue(AGE) + 1);
+        serverLevel.setBlock(blockPos, blockState.setValue(AGE, newAge), 2);
     }
 }

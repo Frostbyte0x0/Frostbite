@@ -1,42 +1,43 @@
 {
   "type": "minecraft:add",
-  "argument1": {
+  "left": {
     "type": "minecraft:add",
-    "argument1": {
-      "type": "minecraft:y_clamped_gradient",
-      "from_y": 0,
-      "to_y": 256,
+    "left": {
+      "type": "minecraft:gradient",
+      "axis": "y",
+      "from_coordinate": 0,
       "from_value": 0.65,
+      "to_coordinate": 256,
       "to_value": -1.35
     },
-    "argument2": {
+    "right": {
       "type": "minecraft:add",
-      "argument1": {
+      "left": {
         "type": "minecraft:mul",
-        "argument1": 0.24,
-        "argument2": "minecraft:overworld/continents"
+        "left": 0.24,
+        "right": "minecraft:overworld/continents"
       },
-      "argument2": {
+      "right": {
         "type": "minecraft:add",
-        "argument1": {
+        "left": {
           "type": "minecraft:mul",
-          "argument1": 0.14,
-          "argument2": "minecraft:overworld/erosion"
+          "left": 0.14,
+          "right": "minecraft:overworld/erosion"
         },
-        "argument2": {
+        "right": {
           "type": "minecraft:mul",
-          "argument1": -0.9,
-          "argument2": {
+          "left": -0.9,
+          "right": {
             "type": "minecraft:half_negative",
-            "argument": "minecraft:overworld/ridges"
+            "input": "minecraft:overworld/ridges"
           }
         }
       }
     }
   },
-  "argument2": {
+  "right": {
     "type": "minecraft:mul",
-    "argument1": 0.3,
-    "argument2": "minecraft:overworld/base_3d_noise"
+    "left": 0.3,
+    "right": "minecraft:overworld/base_3d_noise"
   }
 }

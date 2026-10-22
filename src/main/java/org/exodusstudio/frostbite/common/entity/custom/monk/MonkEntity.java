@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.entity.custom.monk;
 
+import net.minecraft.tags.BlockTags;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -447,14 +448,14 @@ public class MonkEntity extends Monster implements TargetingEntity { // TODO: ch
     private void teleport(double x, double y, double z) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
 
-        while (blockpos$mutableblockpos.getY() > this.level().getMinY() && !this.level().getBlockState(blockpos$mutableblockpos).blocksMotion()) {
+        while (blockpos$mutableblockpos.getY() > this.level().getMinY() && !this.level().getBlockState(blockpos$mutableblockpos).is(BlockTags.ENTITIES_CAN_TELEPORT_TO)) {
             blockpos$mutableblockpos.move(Direction.DOWN);
         }
 
         BlockState blockstate = this.level().getBlockState(blockpos$mutableblockpos);
-        if (blockstate.blocksMotion()) {
+        if (blockstate.is(BlockTags.ENTITIES_CAN_TELEPORT_TO)) {
             Vec3 vec3 = this.position();
-            boolean flag2 = this.randomTeleport(x, y, z, true);
+            boolean flag2 = this.randomTeleport(x, y, z, true, state -> false);
             if (flag2) {
                 this.level().gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
                 if (!this.isSilent()) {

@@ -13,7 +13,7 @@ import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.phys.AABB;
@@ -55,17 +55,8 @@ public class MistyFoliagePlacer extends FoliagePlacer {
         return FoliagePlacerRegistry.MEGA_MISTY_FOLIAGE_PLACER.get();
     }
 
-    protected void createFoliage(
-            WorldGenLevel level,
-            FoliagePlacer.FoliageSetter blockSetter,
-            RandomSource random,
-            TreeConfiguration config,
-            int maxTreeHeight,
-            FoliagePlacer.FoliageAttachment attachment,
-            int foliageHeight,
-            int foliageRadius,
-            int offset
-    ) {
+    @Override
+    protected void createFoliage(WorldGenLevel level, FoliageSetter blockSetter, RandomSource random, TreeFeature feature, int maxTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
         // Place some sphere centers on the trunk
         // Loop over all the potential locations of leaves and place leaves if they're within a certain distance of center
         // Loop over all the locations of leaves and remove them at random
@@ -83,7 +74,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
         );
 
         placeLeavesFromSphereCenters(sphereCenters, blockSetter, random,
-                attachment.pos().offset(0, -treeHeight, 0), locations, level, config);
+                attachment.pos().offset(0, -treeHeight, 0), locations, level, feature);
 
 
         deleteLeavesAtRandom(level, blockSetter, random);
@@ -121,7 +112,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
             BlockPos origin,
             AABB locations,
             WorldGenLevel level,
-            TreeConfiguration treeConfiguration
+            TreeFeature feature
     ) {
         BlockPos.MutableBlockPos relativeLeafPos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos leafPos = new BlockPos.MutableBlockPos();
@@ -135,7 +126,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
                         double dist = !large ? leafPos.distSqr(sphereCenter.getFirst()) : leafPos.distToCenterSqr(new Vec3(sphereCenter.getFirst()));
                         int offsetXZ = large ? 1 : 0;
                         if (Math.sqrt(dist) <= sphereCenter.getSecond()) {
-                            if (tryPlaceLeaf(level, foliageSetter, random, treeConfiguration,
+                            if (tryPlaceLeaf(level, foliageSetter, random, feature,
                                     leafPos.setWithOffset(origin, x + offsetXZ, y, z + offsetXZ))) {
                                 this.leafPositions.add(new Pair<>(
                                         relativeLeafPos.setWithOffset(Vec3i.ZERO, x, y, z).immutable(),
@@ -147,6 +138,11 @@ public class MistyFoliagePlacer extends FoliagePlacer {
                 }
             }
         }
+    }
+
+    @Override
+    public int foliageHeight(RandomSource randomSource, int i, TreeFeature treeFeature) {
+        return 0;
     }
 
     protected void deleteLeavesAtRandom(LevelSimulatedReader level, FoliageSetter foliageSetter, RandomSource random) {
@@ -201,11 +197,6 @@ public class MistyFoliagePlacer extends FoliagePlacer {
 
     protected BlockPos.MutableBlockPos newPosWithOff(BlockPos pos, int x, int y, int z) {
         return (new BlockPos.MutableBlockPos()).setWithOffset(pos, x, y, z);
-    }
-
-    public int foliageHeight(RandomSource random, int treeHeight, TreeConfiguration treeConfiguration) {
-        this.treeHeight = treeHeight;
-        return Math.max(4, treeHeight - this.trunkHeight.sample(random));
     }
 
     protected boolean shouldSkipLocation(

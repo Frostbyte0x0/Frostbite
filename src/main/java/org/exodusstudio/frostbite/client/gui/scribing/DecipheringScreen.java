@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.client.gui.scribing;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenPosition;
@@ -40,7 +41,7 @@ public class DecipheringScreen extends AbstractRecipeBookScreen<DecipheringMenu>
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (event.key() == 256) {
+        if (event.key() == InputConstants.KEY_ESCAPE) {
             this.player.closeContainer();
         }
         return super.keyPressed(event);

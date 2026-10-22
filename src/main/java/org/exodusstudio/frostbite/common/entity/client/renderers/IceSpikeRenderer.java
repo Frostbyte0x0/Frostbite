@@ -30,22 +30,22 @@ public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRen
         float f = state.biteProgress;
         if (f != 0 && state.isRising) {
             stack.pushPose();
-            stack.mulPose(Axis.YP.rotationDegrees(90.0F - state.yRot));
+            stack.rotate(Axis.YP.rotationDegrees(90.0F - state.yRot));
             stack.scale(-1.0F, -1.0F, 1.0F);
             stack.translate(0.0F, -1.501F, 0.0F);
             nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(TEXTURE_LOCATION),
-                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
             stack.popPose();
         }
 
         if (!state.isRising) {
             stack.pushPose();
             stack.translate(0, 0.2, 0);
-            stack.mulPose(Axis.YN.rotationDegrees(state.yRot));
-            stack.mulPose(Axis.XN.rotationDegrees(90 - state.xRot));
+            stack.rotate(Axis.YN.rotationDegrees(state.yRot));
+            stack.rotate(Axis.XN.rotationDegrees(90 - state.xRot));
             stack.translate(0, -1.2, 0);
             nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(TEXTURE_LOCATION),
-                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
             stack.popPose();
         }
 

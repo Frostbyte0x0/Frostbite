@@ -1,13 +1,12 @@
 package org.exodusstudio.frostbite.common.block;
 
-import com.mojang.serialization.MapCodec;
+import net.minecraft.world.level.block.sounds.AmbientLeavesBlockSoundPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
@@ -26,7 +25,7 @@ public class RangedLeavesBlock extends LeavesBlock {
     public static final IntegerProperty DISTANCE;
 
     public RangedLeavesBlock(Properties properties) {
-        super(0.01F, properties);
+        super(AmbientLeavesBlockSoundPlayer.noAmbientSound(), properties);
         this.registerDefaultState((((this.stateDefinition.any())
                 .setValue(SNOWY, false)
                 .setValue(DISTANCE, 11))
@@ -37,11 +36,6 @@ public class RangedLeavesBlock extends LeavesBlock {
     @Override
     protected boolean decaying(BlockState state) {
         return !(Boolean)state.getValue(PERSISTENT) && state.getValue(DISTANCE) == 11;
-    }
-
-    @Override
-    public MapCodec<? extends LeavesBlock> codec() {
-        return simpleCodec(RangedLeavesBlock::new);
     }
 
     @Override
@@ -97,11 +91,6 @@ public class RangedLeavesBlock extends LeavesBlock {
         } else {
             return state.hasProperty(DISTANCE) ? OptionalInt.of(state.getValue(DISTANCE)) : OptionalInt.empty();
         }
-    }
-
-    @Override
-    protected void spawnFallingLeavesParticle(Level level, BlockPos blockPos, RandomSource randomSource) {
-        // TODO
     }
 
     static {

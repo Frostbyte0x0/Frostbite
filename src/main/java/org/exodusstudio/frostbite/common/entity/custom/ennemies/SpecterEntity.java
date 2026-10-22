@@ -66,7 +66,9 @@ public class SpecterEntity extends Monster {
     public void tick() {
         this.noPhysics = true;
         super.tick();
-        this.move(MoverType.SELF, getDeltaMovement());
+        if (canSimulateMovement()) {
+            this.move(MoverType.SELF, getDeltaMovement());
+        }
         this.noPhysics = false;
         this.setNoGravity(true);
         if (!level().isEmptyBlock(blockPosition()) && Math.abs(getDeltaMovement().length()) < 0.03) {
@@ -135,6 +137,6 @@ public class SpecterEntity extends Monster {
 
     @Override
     public PushReaction getPistonPushReaction() {
-        return PushReaction.IGNORE;
+        return PushReaction.IGNORE_ENTITY;
     }
 }

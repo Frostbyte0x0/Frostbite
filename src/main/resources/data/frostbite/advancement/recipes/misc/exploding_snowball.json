@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "frostbite:exploding_snowball"
+        "recipes": "frostbite:exploding_snowball"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

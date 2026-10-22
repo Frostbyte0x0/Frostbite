@@ -139,11 +139,6 @@ public class FrozenRemnantsEntity extends Mob {
         this.getEntityData().set(DATA_OWNER_UUID, Optional.of(EntityReference.of(uuid)));
     }
 
-    @Override
-    public InterpolationHandler getInterpolation() {
-        return null;
-    }
-
     public UUID getOwnerUUID() {
         if (this.getEntityData().get(DATA_OWNER_UUID).isEmpty()) {
             return null;

@@ -668,7 +668,7 @@ public class ModEvents {
             if (entity.tickCount % 1200 == 500 && random.nextFloat() < LivingContractInfo.getStat(entity, ContractAttributes.CHARGED) / 100) {
                 LightningBolt bolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, entity.level());
                 bolt.setDamage(3);
-                bolt.moveOrInterpolateTo(new Vec3(entity.getX(), entity.getY(), entity.getZ()));
+                bolt.moveOrInterpolateTo(PositionPath.of(new Vec3(entity.getX(), entity.getY(), entity.getZ())));
                 entity.level().addFreshEntity(bolt);
             }
         }

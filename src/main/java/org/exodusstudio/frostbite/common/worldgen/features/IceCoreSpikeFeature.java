@@ -1,31 +1,49 @@
 package org.exodusstudio.frostbite.common.worldgen.features;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.phys.Vec3;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 
-public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguration> {
+public record IceCoreSpikeFeature(
+        Holder<BlockStateProvider> spikeProvider,
+        Holder<BlockStateProvider> coreProvider,
+        float length,
+        float baseSpikeRadius,
+        boolean bothUpAndDown
+) implements Feature {
+    public static final MapCodec<IceCoreSpikeFeature> CODEC = RecordCodecBuilder.mapCodec((i) -> i.group(
+            BlockStateProvider.CODEC.fieldOf("spike_provider").forGetter(IceCoreSpikeFeature::spikeProvider),
+            BlockStateProvider.CODEC.fieldOf("core_provider").forGetter(IceCoreSpikeFeature::coreProvider),
+            Codec.FLOAT.fieldOf("length").forGetter(IceCoreSpikeFeature::length),
+            Codec.FLOAT.fieldOf("base_spike_radius").forGetter(IceCoreSpikeFeature::baseSpikeRadius),
+            Codec.BOOL.fieldOf("both_up_and_down").orElse(false).forGetter(IceCoreSpikeFeature::bothUpAndDown))
+            .apply(i, IceCoreSpikeFeature::new));
     public static final RandomSource random = RandomSource.create();
 
-    public IceCoreSpikeFeature(Codec<IceCoreSpikeFeatureConfiguration> codec) {
-        super(codec);
+    @Override
+    public MapCodec<IceCoreSpikeFeature> codec() {
+        return CODEC;
     }
 
-    private static void setSpikeBlock(WorldGenLevel level, Vec3 pos, IceCoreSpikeFeatureConfiguration config) {
-        level.setBlock(BlockPos.containing(pos), config.spikeProvider.getState(level, random, BlockPos.containing(pos)), 19);
+    private static void setSpikeBlock(WorldGenLevel level, Vec3 pos, IceCoreSpikeFeature config) {
+        level.setBlock(BlockPos.containing(pos), config.spikeProvider.value().getState(level, random, BlockPos.containing(pos)), 19);
     }
 
-    private static void setCoreBlock(WorldGenLevel level, BlockPos pos, IceCoreSpikeFeatureConfiguration config) {
-        level.setBlock(pos, config.coreProvider.getState(level, random, pos), 19);
+    private static void setCoreBlock(WorldGenLevel level, BlockPos pos, IceCoreSpikeFeature config) {
+        level.setBlock(pos, config.coreProvider.value().getState(level, random, pos), 19);
     }
 
-    private static void placeDisk(Vec3 normal, float radius, WorldGenLevel level, Vec3 origin, IceCoreSpikeFeatureConfiguration config) {
+    private static void placeDisk(Vec3 normal, float radius, WorldGenLevel level, Vec3 origin, IceCoreSpikeFeature config) {
         setSpikeBlock(level, origin, config);
 
         if (radius == 0) return;
@@ -45,7 +63,7 @@ public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguratio
         }
     }
 
-    private static void placeSpike(Vec3 dir, WorldGenLevel level, BlockPos origin, IceCoreSpikeFeatureConfiguration config) {
+    private static void placeSpike(Vec3 dir, WorldGenLevel level, BlockPos origin, IceCoreSpikeFeature config) {
         dir = dir.normalize();
         Vec3 pos = new Vec3(origin).add(0.5, 0, 0.5);
         for (int i = 0; i < config.length; i++) {
@@ -55,12 +73,12 @@ public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguratio
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<IceCoreSpikeFeatureConfiguration> context) {
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource ignored, BlockPos origin) {
         Vec3 anchor = new Vec3(
                 random.nextDouble() * Util.plusOrMinus(),
                 random.nextDouble() * 4,
                 random.nextDouble() * Util.plusOrMinus()).normalize();
-        placeSpike(anchor, context.level(), context.origin(), context.config());
+        placeSpike(anchor, level, origin, this);
 
         int n = random.nextBoolean() ? 3 : 4;
         for (int i = 0; i < n; i++) {
@@ -74,14 +92,14 @@ public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguratio
             add = new Vec3(add.x, Math.abs(add.y), add.z);
 
 
-            placeSpike(add, context.level(), context.origin(), context.config());
+            placeSpike(add, level, origin, this);
         }
 
-        setCoreBlock(context.level(), context.origin(), context.config());
+        setCoreBlock(level, origin, this);
         return false;
     }
 
-//    private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos origin, BiConsumer<BlockPos, BlockState> rootSetter, BiConsumer<BlockPos, BlockState> trunkSetter, FoliagePlacer.FoliageSetter foliageSetter, IceCoreSpikeFeatureConfiguration config) {
+//    private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos origin, BiConsumer<BlockPos, BlockState> rootSetter, BiConsumer<BlockPos, BlockState> trunkSetter, FoliagePlacer.FoliageSetter foliageSetter, IceCoreSpikeFeature config) {
 //        int treeHeight = config.trunkPlacer.getTreeHeight(random);
 //        int foliageHeight = config.foliagePlacer.foliageHeight(random, treeHeight, config);
 //        int trunkHeight = treeHeight - foliageHeight;
@@ -112,7 +130,7 @@ public class IceCoreSpikeFeature extends Feature<IceCoreSpikeFeatureConfiguratio
 //        final WorldGenLevel level = context.level();
 //        RandomSource random = context.random();
 //        BlockPos origin = context.origin();
-//        IceCoreSpikeFeatureConfiguration config = context.config();
+//        IceCoreSpikeFeature config = context.config();
 //        Set<BlockPos> rootPositions = Sets.newHashSet();
 //        Set<BlockPos> trunks = Sets.newHashSet();
 //        final Set<BlockPos> foliage = Sets.newHashSet();

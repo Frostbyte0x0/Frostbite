@@ -1,37 +1,37 @@
 {
-  "type": "minecraft:flat_cache",
-  "argument": {
-    "type": "minecraft:cache_2d",
-    "argument": {
+  "type": "minecraft:cache",
+  "input": {
+    "type": "minecraft:cache",
+    "input": {
       "type": "minecraft:add",
-      "argument1": {
+      "left": {
         "type": "minecraft:mul",
-        "argument1": {
+        "left": {
           "type": "minecraft:blend_offset"
         },
-        "argument2": {
+        "right": {
           "type": "minecraft:add",
-          "argument1": 1,
-          "argument2": {
+          "left": 1,
+          "right": {
             "type": "minecraft:mul",
-            "argument1": -1,
-            "argument2": {
-              "type": "minecraft:cache_once",
-              "argument": {
+            "left": -1,
+            "right": {
+              "type": "minecraft:cache",
+              "input": {
                 "type": "minecraft:blend_alpha"
               }
             }
           }
         }
       },
-      "argument2": {
+      "right": {
         "type": "minecraft:mul",
-        "argument1": {
+        "left": {
           "type": "minecraft:add",
-          "argument1": -0.5037500262260437,
-          "argument2": {
+          "left": -0.5037500262260437,
+          "right": {
             "type": "minecraft:mul",
-            "argument1": {
+            "left": {
               "type": "minecraft:spline",
               "spline": {
                 "coordinate": {
@@ -67,13 +67,13 @@
                     "value": {
                       "coordinate": {
                         "type": "minecraft:mul",
-                        "argument1": {
+                        "left": {
                           "type": "minecraft:noise",
                           "noise": "minecraft:erosion",
                           "xz_scale": 0.5,
                           "y_scale": 1
                         },
-                        "argument2": 1
+                        "right": 1
                       },
                       "points": [
                         {
@@ -112,12 +112,12 @@
                 ]
               }
             },
-            "argument2": 2
+            "right": 2
           }
         },
-        "argument2": {
-          "type": "minecraft:cache_once",
-          "argument": {
+        "right": {
+          "type": "minecraft:cache",
+          "input": {
             "type": "minecraft:blend_alpha"
           }
         }

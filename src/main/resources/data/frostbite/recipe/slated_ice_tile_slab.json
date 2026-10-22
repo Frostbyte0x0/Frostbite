@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "frostbite:slated_ice_tile"
+    "#": "frostbite:slated_ice_tiles"
   },
   "pattern": [
     "###"

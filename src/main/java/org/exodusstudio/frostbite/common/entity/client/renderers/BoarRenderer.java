@@ -41,7 +41,7 @@ public class BoarRenderer extends MobRenderer<BoarEntity, LivingEntityRenderStat
 //                });
 
         poseStack.pushPose();
-        poseStack.mulPose(camera.orientation);
+        poseStack.rotate(camera.orientation);
         poseStack.scale(0.1f, -0.1f, 0.1f);
 
 //        SubmitNodeStorage collector = new SubmitNodeStorage();

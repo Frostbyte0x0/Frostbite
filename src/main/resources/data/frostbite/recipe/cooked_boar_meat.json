@@ -2,8 +2,9 @@
   "type": "minecraft:smelting",
   "category": "food",
   "experience": 0.35,
-  "ingredient": "frostbite:boar_meat",
+  "ingredient": "frostbite:raw_boar_meat",
   "result": {
     "id": "frostbite:cooked_boar_meat"
-  }
+  },
+  "cookingtime": 200
 }

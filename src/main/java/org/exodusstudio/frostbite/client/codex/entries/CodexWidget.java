@@ -16,7 +16,6 @@ import net.minecraft.world.item.Item;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.formations.CircleCodexFormation;
 import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
-import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.jspecify.annotations.Nullable;
 

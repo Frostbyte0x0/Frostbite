@@ -25,26 +25,25 @@ public class WoollySheepWoolLayer extends RenderLayer<SheepRenderState, WoollySh
         this.babyModel = new WoollySheepFurModel(modelSet.bakeLayer(ModModelLayers.WOOLLY_SHEEP_BABY_FUR));
     }
 
-    public void submit(PoseStack p_434319_, SubmitNodeCollector p_434903_, int p_434733_, SheepRenderState p_432970_, float p_432913_, float p_435103_) {
+    public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int p_434733_, SheepRenderState p_432970_, float p_432913_, float p_435103_) {
         if (!p_432970_.isSheared) {
             EntityModel<SheepRenderState> entitymodel = p_432970_.isBaby ? this.babyModel : this.adultModel;
             if (p_432970_.isInvisible) {
                 if (p_432970_.appearsGlowing()) {
-                    p_434903_.submitModel(
+                    nodeCollector.submitModel(
                             entitymodel,
                             p_432970_,
-                            p_434319_,
+                            poseStack,
                             RenderTypes.outline(SHEEP_FUR_LOCATION),
                             p_434733_,
                             LivingEntityRenderer.getOverlayCoords(p_432970_, 0.0F),
                             -16777216,
                             null,
-                            p_432970_.outlineColor,
-                            null
+                            p_432970_.outlineColor
                     );
                 }
             } else {
-                coloredCutoutModelCopyLayerRender(entitymodel, SHEEP_FUR_LOCATION, p_434319_, p_434903_, p_434733_, p_432970_, p_432970_.getWoolColor(), 0);
+                coloredCutoutModelCopyLayerRender(entitymodel, SHEEP_FUR_LOCATION, poseStack, nodeCollector, p_434733_, p_432970_, p_432970_.getWoolColor(), 0);
             }
         }
     }

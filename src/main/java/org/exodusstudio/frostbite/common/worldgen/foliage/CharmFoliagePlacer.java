@@ -13,7 +13,7 @@ import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.phys.AABB;
@@ -49,7 +49,7 @@ public class CharmFoliagePlacer extends FoliagePlacer {
             WorldGenLevel level,
             FoliageSetter blockSetter,
             RandomSource random,
-            TreeConfiguration config,
+            TreeFeature feature,
             int maxTreeHeight,
             FoliageAttachment attachment,
             int foliageHeight,
@@ -72,7 +72,7 @@ public class CharmFoliagePlacer extends FoliagePlacer {
         );
 
         placeLeavesFromSphereCenter(new BlockPos(0, treeHeight, 0), 3, blockSetter, random,
-                attachment.pos().offset(0, -treeHeight, 0), locations, level, config);
+                attachment.pos().offset(0, -treeHeight, 0), locations, level, feature);
 
 
         deleteLeavesAtRandom(level, blockSetter, random);
@@ -87,7 +87,7 @@ public class CharmFoliagePlacer extends FoliagePlacer {
             BlockPos origin,
             AABB locations,
             WorldGenLevel level,
-            TreeConfiguration treeConfiguration
+            TreeFeature feature
     ) {
         BlockPos.MutableBlockPos relativeLeafPos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos leafPos = new BlockPos.MutableBlockPos();
@@ -102,7 +102,7 @@ public class CharmFoliagePlacer extends FoliagePlacer {
                             Math.pow(leafPos.getY() - sphereCenter.getY(), 2) * 4 +
                             Math.pow(leafPos.getZ() - sphereCenter.getZ(), 2);
                     if (dist <= radius) {
-                        if (tryPlaceLeaf(level, foliageSetter, random, treeConfiguration,
+                        if (tryPlaceLeaf(level, foliageSetter, random, feature,
                                 leafPos.setWithOffset(origin, x + 1, y, z + 1))) {
                             this.leafPositions.add(new Pair<>(
                                     relativeLeafPos.setWithOffset(Vec3i.ZERO, x, y, z).immutable(),
@@ -168,7 +168,7 @@ public class CharmFoliagePlacer extends FoliagePlacer {
         return (new BlockPos.MutableBlockPos()).setWithOffset(pos, x, y, z);
     }
 
-    public int foliageHeight(RandomSource random, int treeHeight, TreeConfiguration treeConfiguration) {
+    public int foliageHeight(RandomSource random, int treeHeight, TreeFeature feature) {
         this.treeHeight = treeHeight;
         return Math.max(4, treeHeight - this.trunkHeight.sample(random));
     }

@@ -27,7 +27,7 @@ public class RevenantRenderer extends HumanoidMobRenderer<RevenantEntity, Revena
     @Override
     public void submit(RevenantRenderState state, PoseStack stack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         if (state.isRecovering) {
-            stack.mulPose(Axis.ZN.rotationDegrees(180));
+            stack.rotate(Axis.ZN.rotationDegrees(180));
             stack.translate(0, -2, 0);
         }
         super.submit(state, stack, nodeCollector, cameraRenderState);

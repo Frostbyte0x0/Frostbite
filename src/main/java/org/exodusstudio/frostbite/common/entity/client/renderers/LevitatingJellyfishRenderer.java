@@ -48,9 +48,9 @@ public class LevitatingJellyfishRenderer extends LivingEntityRenderer<Levitating
     @Override
     protected void setupRotations(LevitatingJellyfishRenderState state, PoseStack stack, float p_116026_, float p_116027_) {
         stack.translate(0.0F, state.isBaby ? 0.25F : 0.5F, 0.0F);
-        stack.mulPose(Axis.YP.rotationDegrees(180.0F - p_116026_));
-        stack.mulPose(Axis.XP.rotationDegrees(state.xBodyRot));
-        stack.mulPose(Axis.YP.rotationDegrees(state.zBodyRot));
+        stack.rotate(Axis.YP.rotationDegrees(180.0F - p_116026_));
+        stack.rotate(Axis.XP.rotationDegrees(state.xBodyRot));
+        stack.rotate(Axis.YP.rotationDegrees(state.zBodyRot));
         stack.translate(0.0F, state.isBaby ? -0.3F : -0.6F, 0.0F);
     }
 }

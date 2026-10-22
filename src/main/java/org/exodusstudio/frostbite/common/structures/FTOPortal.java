@@ -13,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -30,7 +31,6 @@ import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.registry.StructureRegistry;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.Util;
@@ -88,22 +88,8 @@ public class FTOPortal extends Structure {
     }
 
     @Override
-    public StructureStart generate(
-            Holder<Structure> structure,
-            ResourceKey<Level> level,
-            RegistryAccess registryAccess,
-            ChunkGenerator chunkGenerator,
-            BiomeSource biomeSource,
-            RandomState randomState,
-            StructureTemplateManager structureTemplateManager,
-            long seed,
-            ChunkPos chunkPos,
-            int references,
-            LevelHeightAccessor heightAccessor,
-            Predicate<Holder<Biome>> validBiome
-    ) {
-        StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource,
-                randomState, structureTemplateManager, seed, new ChunkPos(0, 0), references, heightAccessor, validBiome);
+    public StructureStart generate(Holder<Structure> structure, ResourceKey<Level> level, RegistryAccess registryAccess, ChunkGenerator chunkGenerator, BiomeSource biomeSource, Climate.Sampler climateSampler, RandomState randomState, StructureTemplateManager structureTemplateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor heightAccessor, Predicate<Holder<Biome>> validBiome) {
+        StructureStart structureStart = super.generate(structure, level, registryAccess, chunkGenerator, biomeSource, climateSampler, randomState, structureTemplateManager, seed, chunkPos, references, heightAccessor, validBiome);
 
         Optional<Level> l = Util.getFrostbiteLevel();
         if (l.isEmpty()) throw new IllegalStateException("Frostbite level can't be accessed");

@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.common.block;
 
+import net.minecraft.world.level.levelgen.densityfunction.SamplerContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -111,8 +112,9 @@ public class FrostbitePortalBlock extends Block implements Portal {
                 ChunkGenerator chunkgenerator = destinationLevel.getChunkSource().getGenerator();
                 StructureStart structurestart = structure.generate(p_structure, destinationLevel.dimension(),
                         destinationLevel.getServer().registryAccess(), chunkgenerator, chunkgenerator.getBiomeSource(),
-                        destinationLevel.getChunkSource().randomState(), destinationLevel.getStructureManager(), destinationLevel.getSeed(),
-                        new ChunkPos(pos.getX(), pos.getZ()), 0, destinationLevel, (p_214580_) -> true);
+                        destinationLevel.getChunkSource().randomState().createClimateSampler(SamplerContext.EMPTY_UNCACHED),
+                        destinationLevel.getChunkSource().randomState(), destinationLevel.getStructureTemplateManager(), destinationLevel.getSeed(),
+                        new ChunkPos(pos.getX(), pos.getZ()), 0, destinationLevel, (biomeHolder) -> true);
                 BoundingBox boundingbox = structurestart.getBoundingBox();
                 ChunkPos chunkpos = new ChunkPos(SectionPos.blockToSectionCoord(boundingbox.minX()),
                         SectionPos.blockToSectionCoord(boundingbox.minZ()));

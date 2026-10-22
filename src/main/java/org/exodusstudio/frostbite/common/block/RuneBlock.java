@@ -1,6 +1,5 @@
 package org.exodusstudio.frostbite.common.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -42,7 +41,6 @@ import java.util.List;
 
 public class RuneBlock extends BaseEntityBlock {
     private static final RandomSource random = RandomSource.create();
-    public static final MapCodec<RuneBlock> CODEC = simpleCodec(RuneBlock::new);
     public static final EnumProperty<RuneLootLevel> LOOT_LEVEL =
             EnumProperty.create("loot_level", RuneLootLevel.class);
     public static final BooleanProperty OPENED =
@@ -60,11 +58,6 @@ public class RuneBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(LOOT_LEVEL, OPENED);
         super.createBlockStateDefinition(builder);
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

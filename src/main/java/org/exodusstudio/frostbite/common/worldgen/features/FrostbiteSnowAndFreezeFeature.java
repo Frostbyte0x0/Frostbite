@@ -1,37 +1,37 @@
 package org.exodusstudio.frostbite.common.worldgen.features;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowyBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.block.BrazierBlock;
 import org.exodusstudio.frostbite.common.block.SnowableSlabBlock;
 import org.exodusstudio.frostbite.common.block.SnowableStairBlock;
 import org.exodusstudio.frostbite.common.block.SnowableWallBlock;
 import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 
-public class FrostbiteSnowAndFreezeFeature extends Feature<NoneFeatureConfiguration> {
-    public FrostbiteSnowAndFreezeFeature(Codec<NoneFeatureConfiguration> codec) {
-        super(codec);
+public record FrostbiteSnowAndFreezeFeature() implements Feature {
+    public static final MapCodec<FrostbiteSnowAndFreezeFeature> CODEC = MapCodec.unit(FrostbiteSnowAndFreezeFeature::new);
+
+    @Override
+    public MapCodec<FrostbiteSnowAndFreezeFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        BlockPos below = context.origin().below();
-        BlockState belowState = context.level().getBlockState(below);
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
+        BlockPos below = origin.below();
+        BlockState belowState = level.getBlockState(below);
 
-        WorldGenLevel level = context.level();
-        BlockPos origin = context.origin();
         BlockPos.MutableBlockPos topPos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos belowPos = new BlockPos.MutableBlockPos();
 
@@ -49,11 +49,11 @@ public class FrostbiteSnowAndFreezeFeature extends Feature<NoneFeatureConfigurat
 
                 if (biome.shouldSnow(level, topPos)) {
                     if (isSnowableBlock(belowState)) {
-                        context.level().setBlock(below, belowState.setValue(BlockStateProperties.SNOWY, true), 2);
+                        level.setBlock(below, belowState.setValue(BlockStateProperties.SNOWY, true), 2);
                         continue;
                     }
                     if (shouldUnlight(belowState)) {
-                        context.level().setBlock(below, belowState.setValue(BlockStateProperties.LIT, false), 2);
+                        level.setBlock(below, belowState.setValue(BlockStateProperties.LIT, false), 2);
                         continue;
                     }
                     if (isInvalidBlock(belowState)) continue;

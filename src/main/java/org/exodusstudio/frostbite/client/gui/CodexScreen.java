@@ -1,5 +1,6 @@
 package org.exodusstudio.frostbite.client.gui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -52,7 +53,7 @@ public class CodexScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean p_433867_) {
-        if (event.button() == 0) {
+        if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             int i = (this.width - 252) / 2;
             int j = (this.height - 140) / 2;
 
@@ -72,7 +73,7 @@ public class CodexScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.key() == 256) {
+        if (keyEvent.key() == InputConstants.KEY_ESCAPE) {
             assert Minecraft.getInstance().player != null;
             Minecraft.getInstance().player.closeContainer();
         }

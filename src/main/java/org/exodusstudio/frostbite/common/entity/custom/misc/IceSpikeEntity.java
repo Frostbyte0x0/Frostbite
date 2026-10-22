@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoveSimulationType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -84,6 +85,11 @@ public class IceSpikeEntity extends EvokerFangs {
                 level().playLocalSound(getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_BREAK, getSoundSource(), 1.0F, random.nextFloat() * 0.2F + 0.85F, false);
             }
         }
+    }
+
+    @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
     }
 
     @Override

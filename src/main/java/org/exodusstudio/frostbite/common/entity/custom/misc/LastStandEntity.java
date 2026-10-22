@@ -102,7 +102,7 @@ public class LastStandEntity extends Entity {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     HailcoilEntity hailcoil = new HailcoilEntity(EntityRegistry.HAILCOIL.get(), serverLevel);
                     hailcoil.move(MoverType.SELF, Vec3.atCenterOf(this.blockPosition()));
-                    hailcoil.setInvulnerable(true);
+                    hailcoil.setPermanentlyInvulnerable(true);
                     hailcoils.add(hailcoil);
 
                     hailcoil.setDeltaMovement(new Vec3(random.nextDouble(), random.nextDouble(), random.nextDouble()));
@@ -129,7 +129,7 @@ public class LastStandEntity extends Entity {
             if (getReleaseTicks() < 0) {
                 this.discard();
                 for (HailcoilEntity hailcoil : hailcoils) {
-                    hailcoil.setInvulnerable(false);
+                    hailcoil.setPermanentlyInvulnerable(false);
                 }
             }
 

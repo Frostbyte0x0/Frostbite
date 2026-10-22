@@ -2,7 +2,6 @@ package org.exodusstudio.frostbite.common.entity.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -29,7 +28,7 @@ public class CurseBallRenderer extends EntityRenderer<CurseBallEntity, CurseBall
     public void submit(CurseBallRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
         super.submit(renderState, poseStack, nodeCollector, cameraRenderState);
         nodeCollector.submitModel(model, renderState, poseStack, RenderTypes.entityTranslucent(getTextureLocation(renderState)),
-                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, renderState.outlineColor, null);
+                renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, renderState.outlineColor);
     }
 
     @Override
@@ -53,11 +52,6 @@ public class CurseBallRenderer extends EntityRenderer<CurseBallEntity, CurseBall
         reusedState.z = pos.z;
 
         reusedState.curse = entity.getCurse();
-    }
-
-    @Override
-    public boolean shouldRender(CurseBallEntity livingEntity, Frustum camera, double camX, double camY, double camZ) {
-        return true;
     }
 
     @Override

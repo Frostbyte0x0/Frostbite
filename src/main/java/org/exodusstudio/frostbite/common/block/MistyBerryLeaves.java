@@ -34,6 +34,7 @@ public class MistyBerryLeaves extends RangedLeavesBlock {
             Block.dropFromBlockInteractLootTable(
                     serverLevel,
                     MIST_BERRY,
+                    pos,
                     state,
                     level.getBlockEntity(pos),
                     null,

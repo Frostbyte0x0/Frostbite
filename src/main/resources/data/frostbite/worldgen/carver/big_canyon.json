@@ -1,0 +1,40 @@
+{
+  "type": "minecraft:canyon",
+  "probability": 0.1,
+  "shape": {
+    "distance_factor": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 10.5,
+      "min_inclusive": 1
+    },
+    "horizontal_radius_factor": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 1.5,
+      "min_inclusive": 1
+    },
+    "thickness": {
+      "type": "minecraft:trapezoid",
+      "max": 12.0,
+      "min": 0.0,
+      "plateau": 10.0
+    },
+    "vertical_radius_center_factor": 0.0,
+    "vertical_radius_default_factor": 1.0,
+    "width_smoothness": 3,
+    "y_scale": 3.0
+  },
+  "vertical_rotation": {
+    "type": "minecraft:uniform",
+    "max_exclusive": 0.1,
+    "min_inclusive": -0.1
+  },
+  "y": {
+    "type": "minecraft:uniform",
+    "max_inclusive": {
+      "absolute": 150
+    },
+    "min_inclusive": {
+      "absolute": 10
+    }
+  }
+}

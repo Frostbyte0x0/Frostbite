@@ -50,6 +50,6 @@ public class DaggersItem extends ComboWeapon {
         Vec3 dir = user.getLookAngle();
         Vec3 vel = user.getDeltaMovement();
         user.setDeltaMovement(vel.add(dir.x * 1.8 - vel.x * 0.5, dir.y * 0.8 - vel.y, dir.z * 1.8 - vel.z * 0.5));
-        user.hurtMarked = true;
+        user.syncVelocity = true;
     }
 }

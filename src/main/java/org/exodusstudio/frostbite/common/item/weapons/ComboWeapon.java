@@ -96,7 +96,7 @@ public abstract class ComboWeapon extends Item {
                 }
             }
         });
-        user.swing(usedHand);
+        user.swing(usedHand, user.getItemInHand(usedHand).getAttackAnimation(), false);
         level.playSound(
                 null, user.blockPosition(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS,
                 1.0f,

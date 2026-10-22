@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomModelData;
@@ -73,7 +74,7 @@ public class GiveFragmentCommand {
         for (ServerPlayer player : players) {
             boolean added = player.getInventory().add(stack);
             if (added) {
-                ItemEntity drop = player.drop(stack.copy(), false);
+                ItemEntity drop = player.drop(stack.copy(), false, Prediction.PREDICTED);
                 if (drop != null) {
                     drop.makeFakeItem();
                 }
@@ -91,7 +92,7 @@ public class GiveFragmentCommand {
                         );
                 player.containerMenu.broadcastChanges();
             } else {
-                ItemEntity drop = player.drop(stack, false);
+                ItemEntity drop = player.drop(stack, false, Prediction.PREDICTED);
                 if (drop != null) {
                     drop.setNoPickUpDelay();
                     drop.setTarget(player.getUUID());

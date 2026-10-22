@@ -92,17 +92,17 @@ public class LodestarRenderer implements BlockEntityRenderer<LodestarBlockEntity
         stack.pushPose();
         stack.translate(0.5, 0.45 + f1 * 0.2, 0.5);
         Vector3f vector3f = (new Vector3f(0.5F, 1.0F, 0.5F)).normalize();
-        stack.mulPose((new Quaternionf()).rotationAxis(f * ((float)Math.PI / 180F), vector3f));
-        submitNodeCollector.submitModelPart(this.cage, stack, CAGE_TEXTURE.renderType(RenderTypes::entityCutout), state.lightCoords, OverlayTexture.NO_OVERLAY, this.materials.get(CAGE_TEXTURE), -1, state.breakProgress);
+        stack.rotate((new Quaternionf()).rotationAxis(f * ((float)Math.PI / 180F), vector3f));
+        submitNodeCollector.submitModelPart(this.cage, stack, CAGE_TEXTURE.renderType(RenderTypes::entityCutout), state.lightCoords, OverlayTexture.NO_OVERLAY, this.materials.get(CAGE_TEXTURE), -1);
         stack.popPose();
 
         // Eye
         stack.pushPose();
         stack.translate(0.5, 0.45 + f1 * 0.2, 0.5);
         stack.scale(0.5F, 0.5F, 0.5F);
-        stack.mulPose(cameraRenderState.orientation);
-        stack.mulPose((new Quaternionf()).rotationZ((float)Math.PI).rotateY((float)Math.PI));
-        stack.scale(1.3333334F, 1.3333334F, 1.3333334F);
+        stack.rotate(cameraRenderState.orientation);
+        stack.rotate((new Quaternionf()).rotationZ((float)Math.PI).rotateY((float)Math.PI));
+        stack.scale(1.333333F, 1.333333F, 1.333333F);
         submitNodeCollector.submitModelPart(this.eye, stack, EYE_TEXTURE.renderType(RenderTypes::entityCutout), state.lightCoords, OverlayTexture.NO_OVERLAY, this.materials.get(EYE_TEXTURE));
         stack.popPose();
 

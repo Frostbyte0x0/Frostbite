@@ -18,26 +18,26 @@ import java.util.Set;
 public class FrostbiteWeatherAttributes {
     public static final EnvironmentAttributeMap BLIZZARD =
             EnvironmentAttributeMap.builder()
-            .modify(EnvironmentAttributes.SKY_COLOR, ColorModifier.BLEND_TO_GRAY, new ColorModifier.BlendToGray(0.6F, 0.75F))
-            .modify(EnvironmentAttributes.CLOUD_COLOR, ColorModifier.BLEND_TO_GRAY, new ColorModifier.BlendToGray(0.24F, 0.5F))
+            .modify(EnvironmentAttributes.SKY_COLOR, ColorModifier.BLEND_TO_GRAY_RGB, new ColorModifier.BlendToGray(0.6F, 0.75F))
+            .modify(EnvironmentAttributes.CLOUD_COLOR, ColorModifier.BLEND_TO_GRAY_ARGB, new ColorModifier.BlendToGray(0.24F, 0.5F))
             .modify(EnvironmentAttributes.SKY_LIGHT_LEVEL, FloatModifier.ALPHA_BLEND, new FloatWithAlpha(4.0F, 0.3125F))
-            .modify(EnvironmentAttributes.SKY_LIGHT_COLOR, ColorModifier.ALPHA_BLEND, ARGB.color(0.3125F, Timelines.NIGHT_SKY_LIGHT_COLOR))
+            .modify(EnvironmentAttributes.SKY_LIGHT_COLOR, ColorModifier.ALPHA_BLEND_RGB, ARGB.vector4fFromARGB32(ARGB.color(0.3125F, Timelines.NIGHT_SKY_LIGHT_COLOR)))
             .modify(EnvironmentAttributes.SKY_LIGHT_FACTOR, FloatModifier.ALPHA_BLEND, new FloatWithAlpha(0.24F, 0.3125F))
             .set(EnvironmentAttributes.FOG_START_DISTANCE, -50f)
             .set(EnvironmentAttributes.FOG_END_DISTANCE, 50f)
-            .set(EnvironmentAttributes.FOG_COLOR, ARGB.color(255, 125, 125, 200))
+            .set(EnvironmentAttributes.FOG_COLOR, ARGB.vector3fFromRGB24(ARGB.color(255, 125, 125, 200)))
             .set(EnvironmentAttributes.STAR_BRIGHTNESS, 0.0F)
             .set(EnvironmentAttributes.BEES_STAY_IN_HIVE, true).build();
     public static final EnvironmentAttributeMap WHITEOUT =
             EnvironmentAttributeMap.builder()
-            .modify(EnvironmentAttributes.SKY_COLOR, ColorModifier.BLEND_TO_GRAY, new ColorModifier.BlendToGray(0.24F, 0.94F))
-            .modify(EnvironmentAttributes.CLOUD_COLOR, ColorModifier.BLEND_TO_GRAY, new ColorModifier.BlendToGray(0.095F, 0.94F))
+            .modify(EnvironmentAttributes.SKY_COLOR, ColorModifier.BLEND_TO_GRAY_RGB, new ColorModifier.BlendToGray(0.24F, 0.94F))
+            .modify(EnvironmentAttributes.CLOUD_COLOR, ColorModifier.BLEND_TO_GRAY_ARGB, new ColorModifier.BlendToGray(0.095F, 0.94F))
             .modify(EnvironmentAttributes.SKY_LIGHT_LEVEL, FloatModifier.ALPHA_BLEND, new FloatWithAlpha(4.0F, 0.52734375F))
-            .modify(EnvironmentAttributes.SKY_LIGHT_COLOR, ColorModifier.ALPHA_BLEND, ARGB.color(0.52734375F, Timelines.NIGHT_SKY_LIGHT_COLOR))
+            .modify(EnvironmentAttributes.SKY_LIGHT_COLOR, ColorModifier.ALPHA_BLEND_RGB, ARGB.vector4fFromARGB32(ARGB.color(0.52734375F, Timelines.NIGHT_SKY_LIGHT_COLOR)))
             .modify(EnvironmentAttributes.SKY_LIGHT_FACTOR, FloatModifier.ALPHA_BLEND, new FloatWithAlpha(0.24F, 0.52734375F))
             .set(EnvironmentAttributes.FOG_START_DISTANCE, -50f)
             .set(EnvironmentAttributes.FOG_END_DISTANCE, 25f)
-            .set(EnvironmentAttributes.FOG_COLOR, ARGB.color(255, 150, 150, 255))
+            .set(EnvironmentAttributes.FOG_COLOR, ARGB.vector3fFromRGB24(ARGB.color(255, 150, 150, 255)))
             .set(EnvironmentAttributes.STAR_BRIGHTNESS, 0.0F)
             .set(EnvironmentAttributes.BEES_STAY_IN_HIVE, true).build();
     private static final Set<EnvironmentAttribute<?>> WEATHER_ATTRIBUTES = Sets.union(BLIZZARD.keySet(), WHITEOUT.keySet());
