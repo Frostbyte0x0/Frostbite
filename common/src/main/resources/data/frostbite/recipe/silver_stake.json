@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "frostbite:silver_stake"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "frostbite:silver_stake"
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "frostbite:silver"
+  },
+  "pattern": [
+    "S  ",
+    "S  ",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "frostbite:silver_stake"
+  }
+}

@@ -1,0 +1,306 @@
+package org.exodusstudio.frostbite.common.registry;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import dev.architectury.registry.CreativeTabRegistry;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import org.exodusstudio.frostbite.common.registry.deferred.DeferredRegister;
+import org.exodusstudio.frostbite.Frostbite;
+
+public class CreativeModeTabRegistry {
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Frostbite.MOD_ID);
+
+    static {
+        CREATIVE_MODE_TABS.register("frostbite_combat_tab", () -> CreativeTabRegistry.create(builder -> builder
+                .title(Component.translatable("itemGroup.frostbite.frostbite_combat_tab"))
+                .icon(() -> new ItemStack(ItemRegistry.CASTING_STAFF.get()))
+                .displayItems(((_, output) -> {
+                    output.accept(ItemRegistry.LAST_STAND);
+
+                    output.accept(ItemRegistry.CASTING_STAFF);
+                    output.accept(ItemRegistry.HEALING_STAFF);
+                    output.accept(ItemRegistry.SUMMONING_STAFF);
+                    output.accept(ItemRegistry.GALE_FAN);
+                    output.accept(ItemRegistry.DAGGERS);
+                    output.accept(ItemRegistry.NAGINATA);
+                    output.accept(ItemRegistry.BOLTSPLITTER);
+
+                    output.accept(ItemRegistry.HUNTERS_CATALYST);
+                    output.accept(ItemRegistry.FIRE_POWDER);
+                    output.accept(ItemRegistry.CHARGE_PELLET);
+                    output.accept(ItemRegistry.IMPACT_PELLET);
+                    output.accept(ItemRegistry.FLASH_PELLET);
+
+                    output.accept(ItemRegistry.SHAMAN_STAFF);
+
+                    output.accept(ItemRegistry.EXPLODING_SNOWBALL);
+                    output.accept(ItemRegistry.HARDENED_SNOWBALL);
+                    output.accept(ItemRegistry.PACKED_HARDENED_SNOWBALL);
+                    output.accept(ItemRegistry.BLUE_HARDENED_SNOWBALL);
+
+
+                    output.accept(ItemRegistry.HELMET_CUTOUT);
+                    output.accept(ItemRegistry.CHESTPLATE_CUTOUT);
+                    output.accept(ItemRegistry.LEGGINGS_CUTOUT);
+                    output.accept(ItemRegistry.BOOTS_CUTOUT);
+
+                    output.accept(ItemRegistry.HELMET_WEAVING_PATTERN);
+                    output.accept(ItemRegistry.CHESTPLATE_WEAVING_PATTERN);
+                    output.accept(ItemRegistry.LEGGINGS_WEAVING_PATTERN);
+                    output.accept(ItemRegistry.BOOTS_WEAVING_PATTERN);
+
+                    output.accept(ItemRegistry.WOOLLY_WOOL);
+                    output.accept(ItemRegistry.FROZEN_FUR);
+                    output.accept(ItemRegistry.INSULATED_CLOTH);
+                    output.accept(ItemRegistry.HEATED_COATING);
+                    output.accept(ItemRegistry.FROZEN_PLATING);
+
+                    output.accept(ItemRegistry.CURSED_HELMET);
+                    output.accept(ItemRegistry.CURSED_CHESTPLATE);
+                    output.accept(ItemRegistry.CURSED_LEGGINGS);
+                    output.accept(ItemRegistry.CURSED_BOOTS);
+
+                    output.accept(ItemRegistry.TOXIC_HELMET);
+                    output.accept(ItemRegistry.TOXIC_CHESTPLATE);
+                    output.accept(ItemRegistry.TOXIC_LEGGINGS);
+                    output.accept(ItemRegistry.TOXIC_BOOTS);
+
+                    output.accept(ItemRegistry.BEAR_HELMET);
+                    output.accept(ItemRegistry.BEAR_CHESTPLATE);
+                    output.accept(ItemRegistry.BEAR_LEGGINGS);
+                    output.accept(ItemRegistry.BEAR_BOOTS);
+
+                    output.accept(ItemRegistry.REBOUND_HELMET);
+                    output.accept(ItemRegistry.REBOUND_CHESTPLATE);
+                    output.accept(ItemRegistry.REBOUND_LEGGINGS);
+                    output.accept(ItemRegistry.REBOUND_BOOTS);
+
+                    output.accept(ItemRegistry.MAGE_HELMET);
+                    output.accept(ItemRegistry.MAGE_CHESTPLATE);
+                    output.accept(ItemRegistry.MAGE_LEGGINGS);
+                    output.accept(ItemRegistry.MAGE_BOOTS);
+
+                    output.accept(ItemRegistry.BLACK_ICE_HELMET);
+                    output.accept(ItemRegistry.BLACK_ICE_CHESTPLATE);
+                    output.accept(ItemRegistry.BLACK_ICE_LEGGINGS);
+                    output.accept(ItemRegistry.BLACK_ICE_BOOTS);
+
+                    output.accept(ItemRegistry.FROSTBITTEN_HELMET);
+                    output.accept(ItemRegistry.FROSTBITTEN_CHESTPLATE);
+                    output.accept(ItemRegistry.FROSTBITTEN_LEGGINGS);
+                    output.accept(ItemRegistry.FROSTBITTEN_BOOTS);
+
+                    output.accept(ItemRegistry.WOOL_LINING_HELMET);
+                    output.accept(ItemRegistry.WOOL_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.WOOL_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.WOOL_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_HELMET);
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.WOOLLY_WOOL_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_HELMET);
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.FROZEN_FUR_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_HELMET);
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.INSULATED_CLOTH_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_HELMET);
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.HEATED_COATING_LINING_BOOTS);
+
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_HELMET);
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_CHESTPLATE);
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_LEGGINGS);
+                    output.accept(ItemRegistry.FROZEN_PLATING_LINING_BOOTS);
+                }))));
+
+        CREATIVE_MODE_TABS.register("frostbite_tab", () -> CreativeTabRegistry.create(builder -> builder
+                .title(Component.translatable("itemGroup.frostbite.frostbite_tab"))
+                .icon(() -> new ItemStack(ItemRegistry.FROSTBITTEN_GEM.get()))
+                .displayItems(((_, output) -> {
+                    output.accept(BlockRegistry.REINFORCED_BLACK_ICE);
+                    output.accept(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE);
+                    output.accept(ItemRegistry.FROSTBITTEN_GEM);
+                    output.accept(ItemRegistry.STARSEEKING_COMPASS);
+
+                    output.accept(BlockRegistry.SLATED_ICE);
+                    output.accept(BlockRegistry.COBBLED_SLATED_ICE);
+                    output.accept(BlockRegistry.COBBLED_SLATED_ICE_STAIRS);
+                    output.accept(BlockRegistry.COBBLED_SLATED_ICE_SLAB);
+                    output.accept(BlockRegistry.COBBLED_SLATED_ICE_WALL);
+                    output.accept(BlockRegistry.POLISHED_SLATED_ICE);
+                    output.accept(BlockRegistry.POLISHED_SLATED_ICE_STAIRS);
+                    output.accept(BlockRegistry.POLISHED_SLATED_ICE_SLAB);
+                    output.accept(BlockRegistry.POLISHED_SLATED_ICE_WALL);
+                    output.accept(BlockRegistry.SLATED_ICE_BRICKS);
+                    output.accept(BlockRegistry.SLATED_ICE_BRICK_STAIRS);
+                    output.accept(BlockRegistry.SLATED_ICE_BRICK_SLAB);
+                    output.accept(BlockRegistry.SLATED_ICE_BRICK_WALL);
+                    output.accept(BlockRegistry.SLATED_ICE_TILES);
+                    output.accept(BlockRegistry.SLATED_ICE_TILE_STAIRS);
+                    output.accept(BlockRegistry.SLATED_ICE_TILE_SLAB);
+                    output.accept(BlockRegistry.SLATED_ICE_TILE_WALL);
+                    output.accept(BlockRegistry.CHISELED_SLATED_ICE);
+                    output.accept(BlockRegistry.ORNATE_SLATED_ICE);
+                    output.accept(BlockRegistry.SLATED_ICE_PILLAR);
+
+                    output.accept(BlockRegistry.SLATED_SNOW);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW_STAIRS);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW_SLAB);
+                    output.accept(BlockRegistry.COBBLED_SLATED_SNOW_WALL);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW_STAIRS);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW_SLAB);
+                    output.accept(BlockRegistry.POLISHED_SLATED_SNOW_WALL);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICKS);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICK_STAIRS);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICK_SLAB);
+                    output.accept(BlockRegistry.SLATED_SNOW_BRICK_WALL);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILES);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILE_STAIRS);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILE_SLAB);
+                    output.accept(BlockRegistry.SLATED_SNOW_TILE_WALL);
+                    output.accept(BlockRegistry.CHISELED_SLATED_SNOW);
+                    output.accept(BlockRegistry.ORNATE_SLATED_SNOW);
+                    output.accept(BlockRegistry.SLATED_SNOW_PILLAR);
+
+                    output.accept(BlockRegistry.MARBLE);
+                    output.accept(BlockRegistry.MARBLE_BRICKS);
+                    output.accept(BlockRegistry.CHISELED_MARBLE);
+                    output.accept(BlockRegistry.MARBLE_PILLAR);
+
+                    output.accept(BlockRegistry.LODESTAR);
+                    output.accept(BlockRegistry.STONE_LANTERN);
+                    output.accept(BlockRegistry.FROZEN_STONE_LANTERN);
+
+                    // MISTY WOOD
+                    output.accept(BlockRegistry.MISTY_LOG);
+                    output.accept(BlockRegistry.FROZEN_MISTY_LOG);
+                    output.accept(BlockRegistry.MISTY_WOOD);
+                    output.accept(BlockRegistry.STRIPPED_MISTY_LOG);
+                    output.accept(BlockRegistry.STRIPPED_MISTY_WOOD);
+                    output.accept(BlockRegistry.MISTY_PLANKS);
+                    output.accept(BlockRegistry.MISTY_LEAVES);
+                    output.accept(BlockRegistry.MISTY_BERRY_LEAVES);
+                    output.accept(BlockRegistry.MISTY_SAPLING);
+                    output.accept(BlockRegistry.MISTY_GRASS);
+                    output.accept(BlockRegistry.SNOWY_MISTY_GRASS);
+
+                    // CHARM WOOD
+                    output.accept(BlockRegistry.CHARM_LOG);
+                    output.accept(BlockRegistry.CHARM_WOOD);
+                    output.accept(BlockRegistry.STRIPPED_CHARM_LOG);
+                    output.accept(BlockRegistry.STRIPPED_CHARM_WOOD);
+                    output.accept(BlockRegistry.CHARM_PLANKS);
+                    output.accept(BlockRegistry.CHARM_LEAVES);
+                    output.accept(BlockRegistry.FLOWERING_CHARM_LEAVES);
+                    output.accept(BlockRegistry.CHARM_SAPLING);
+
+                    output.accept(BlockRegistry.GIANT_REED);
+                    output.accept(BlockRegistry.MISTY_TALL_GRASS);
+                    output.accept(BlockRegistry.GLIMMERING_BUSH);
+                    output.accept(BlockRegistry.GRASSY_GLIMMERING_BUSH);
+                    output.accept(BlockRegistry.SNOWY_FERN);
+
+                    // MOSSY CHARM WOOD
+                    output.accept(BlockRegistry.MOSSY_CHARM_LOG);
+                    output.accept(BlockRegistry.MOSSY_CHARM_WOOD);
+                    output.accept(BlockRegistry.MOSSY_STRIPPED_CHARM_LOG);
+                    output.accept(BlockRegistry.MOSSY_STRIPPED_CHARM_WOOD);
+                    output.accept(BlockRegistry.MOSSY_CHARM_PLANKS);
+
+                    // LAVENDER WOOD
+                    output.accept(BlockRegistry.LAVENDER_LOG);
+                    output.accept(BlockRegistry.LAVENDER_WOOD);
+                    output.accept(BlockRegistry.STRIPPED_LAVENDER_LOG);
+                    output.accept(BlockRegistry.STRIPPED_LAVENDER_WOOD);
+                    output.accept(BlockRegistry.LAVENDER_PLANKS);
+                    output.accept(BlockRegistry.LAVENDER_LEAVES);
+                    output.accept(BlockRegistry.LAVENDER_SAPLING);
+
+                    // SHINNING CEDAR WOOD
+                    output.accept(BlockRegistry.SHINNING_CEDAR_LOG);
+                    output.accept(BlockRegistry.SHINNING_CEDAR_WOOD);
+                    output.accept(BlockRegistry.STRIPPED_SHINNING_CEDAR_LOG);
+                    output.accept(BlockRegistry.STRIPPED_SHINNING_CEDAR_WOOD);
+                    output.accept(BlockRegistry.SHINNING_CEDAR_PLANKS);
+                    output.accept(BlockRegistry.SHINNING_CEDAR_LEAVES);
+                    output.accept(BlockRegistry.SHINNING_CEDAR_SAPLING);
+
+                    // DIM WOOD
+                    output.accept(BlockRegistry.DIM_LOG);
+                    output.accept(BlockRegistry.DIM_WOOD);
+                    output.accept(BlockRegistry.STRIPPED_DIM_LOG);
+                    output.accept(BlockRegistry.STRIPPED_DIM_WOOD);
+                    output.accept(BlockRegistry.DIM_PLANKS);
+                    output.accept(BlockRegistry.DIM_LEAVES);
+                    output.accept(BlockRegistry.DIM_SAPLING);
+
+                    // SILVER WOOD
+                    output.accept(BlockRegistry.SILVER_LOG);
+                    output.accept(BlockRegistry.SILVER_WOOD);
+                    output.accept(BlockRegistry.STRIPPED_SILVER_LOG);
+                    output.accept(BlockRegistry.STRIPPED_SILVER_WOOD);
+                    output.accept(BlockRegistry.SILVER_PLANKS);
+                    output.accept(BlockRegistry.SILVER_LEAVES);
+                    output.accept(BlockRegistry.SILVER_SAPLING);
+
+                    output.accept(ItemRegistry.CONFETTI_POPPER);
+                    output.accept(ItemRegistry.THERMAL_LENS);
+                    output.accept(ItemRegistry.ADVANCED_THERMAL_LENS);
+
+                    output.accept(ItemRegistry.BOTTLE_OF_WARMTH);
+                    output.accept(ItemRegistry.BOTTLE_OF_HEAT);
+                    output.accept(ItemRegistry.CHILLI_PEPPER);
+                    output.accept(ItemRegistry.MIST_BERRY);
+                    output.accept(ItemRegistry.RAW_BOAR_MEAT);
+                    output.accept(ItemRegistry.COOKED_BOAR_MEAT);
+                    output.accept(ItemRegistry.SPICY_VEGETABLE_STEW);
+                    output.accept(ItemRegistry.SPICY_FISH_SOUP);
+                    output.accept(ItemRegistry.SPICY_MEAT_STEW);
+                    output.accept(ItemRegistry.HIDE);
+                    output.accept(ItemRegistry.HIDE_SHEET);
+                    output.accept(ItemRegistry.JELLY);
+                    output.accept(ItemRegistry.INSULATING_JELLY);
+                    output.accept(ItemRegistry.POISONOUS_STRING);
+                    output.accept(ItemRegistry.TOXIC_JELLY);
+                    output.accept(ItemRegistry.REBOUND_INGOT);
+                    output.accept(ItemRegistry.STRENGTHENED_BEAR_FUR);
+                    output.accept(ItemRegistry.BEAR_FUR);
+                    output.accept(ItemRegistry.EMBERS);
+                    output.accept(ItemRegistry.MAGIC_DUST);
+                    output.accept(ItemRegistry.CLOAK);
+                    output.accept(ItemRegistry.CASTING_STAFF_ORB);
+                    output.accept(ItemRegistry.HEALING_STAFF_ORB);
+                    output.accept(ItemRegistry.SUMMONING_STAFF_ORB);
+                    output.accept(ItemRegistry.ICE_SHARD);
+                    output.accept(BlockRegistry.ICE_CORE);
+
+                    output.accept(BlockRegistry.WEAVING_TABLE);
+                    output.accept(BlockRegistry.DECIPHERING_TABLE);
+                    output.accept(BlockRegistry.COMBINING_TABLE);
+                    output.accept(BlockRegistry.APPLYING_TABLE);
+                    output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
+                    output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);
+                    output.accept(BlockRegistry.BIG_HEATER_BLOCK);
+
+                    output.accept(BlockRegistry.GUARDING_RUNE);
+                    output.accept(BlockRegistry.CHALLENGE_RUNE);
+
+                    output.accept(BlockRegistry.BRAZIER);
+                    output.accept(BlockRegistry.SOUL_BRAZIER);
+
+                    ItemRegistry.CONTRACT_FRAGMENTS.values().forEach(output::accept);
+                }))));
+    }
+}
