@@ -71,6 +71,10 @@
     ],
     [
       "minecraft:glow_lichen",
+      "frostbite:surface_glow_lichen",
+      "frostbite:moss_patches",
+      "frostbite:ice_patches",
+      "frostbite:dripleaf_patches",
       "minecraft:flower_default",
       "minecraft:patch_grass_badlands",
       "minecraft:brown_mushroom_normal",

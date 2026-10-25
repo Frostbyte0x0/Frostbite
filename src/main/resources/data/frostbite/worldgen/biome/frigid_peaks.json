@@ -71,6 +71,8 @@
     ],
     [
       "minecraft:glow_lichen",
+      "frostbite:surface_glow_lichen",
+      "frostbite:ice_patches",
       "minecraft:trees_water",
       "frostbite:ice_core_spikes",
       "minecraft:flower_default",

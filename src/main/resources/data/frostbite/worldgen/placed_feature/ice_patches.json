@@ -1,16 +1,12 @@
 {
-  "feature": "frostbite:mossy_fallen_log",
+  "feature": "frostbite:ice_patch_debris",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 3
+      "chance": 12
     },
     {
       "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:surface_water_depth_filter",
-      "max_water_depth": 0
     },
     {
       "type": "minecraft:heightmap",
