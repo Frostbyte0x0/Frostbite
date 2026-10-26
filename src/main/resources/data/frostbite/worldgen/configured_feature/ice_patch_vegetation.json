@@ -39,18 +39,6 @@
             "Name": "minecraft:powder_snow"
           },
           "weight": 8
-        },
-        {
-          "data": {
-            "Name": "minecraft:coarse_dirt"
-          },
-          "weight": 8
-        },
-        {
-          "data": {
-            "Name": "minecraft:brown_mushroom_block"
-          },
-          "weight": 2
         }
       ]
     }

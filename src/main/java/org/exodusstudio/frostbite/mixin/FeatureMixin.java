@@ -6,7 +6,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
 import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.worldgen.features.IcePatchFeature;
 import org.exodusstudio.frostbite.common.worldgen.features.FrostbiteSnowAndFreezeFeature;
 import org.exodusstudio.frostbite.common.worldgen.features.IceCoreSpikeFeature;
 import org.exodusstudio.frostbite.common.worldgen.features.IceCoreSpikeFeatureConfiguration;
@@ -28,6 +30,8 @@ public class FeatureMixin {
                     frostbite$register("ice_core_spikes", new IceCoreSpikeFeature(IceCoreSpikeFeatureConfiguration.CODEC));
             FrostbiteSnowAndFreezeFeature FROSTBITE_SNOW_AND_FREEZE =
                     frostbite$register("frostbite_snow_and_freeze", new FrostbiteSnowAndFreezeFeature(NoneFeatureConfiguration.CODEC));
+            IcePatchFeature ICE_PATCH =
+                    frostbite$register("ice_patch", new IcePatchFeature(VegetationPatchConfiguration.CODEC));
             frostbite$hasRegistered = true;
         }
     }
