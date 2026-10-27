@@ -5,19 +5,24 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.goals.SummonerElfSummonGoal;
+import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
 public class SummonerElfEntity extends ElfEntity {
     public SummonerElfEntity(EntityType<? extends ElfEntity> ignored, Level level) {
         super(EntityRegistry.SUMMONER_ELF.get(), level, 100);
-        setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.SUMMONING_STAFF.asItem()));
+        ItemStack staff = new ItemStack(ItemRegistry.SUMMONING_STAFF.asItem());
+        ModeWeapon.loadToMax(staff);
+        setItemSlot(EquipmentSlot.MAINHAND, staff);
     }
 
     @Override
     public void tick() {
         if (!level().isClientSide() && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
-            setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.SUMMONING_STAFF.asItem()));
+            ItemStack staff = new ItemStack(ItemRegistry.SUMMONING_STAFF.asItem());
+            ModeWeapon.loadToMax(staff);
+            setItemSlot(EquipmentSlot.MAINHAND, staff);
         }
         super.tick();
     }

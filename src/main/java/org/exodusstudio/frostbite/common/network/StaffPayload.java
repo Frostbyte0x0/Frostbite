@@ -30,14 +30,15 @@ public record StaffPayload(StaffInfo staffInfo) implements CustomPacketPayload {
         return TYPE;
     }
 
-    public record StaffInfo(String mode, UUID uuid) {
+    public record StaffInfo(String mode, UUID uuid, boolean cast) {
         public StaffInfo(FriendlyByteBuf buf) {
-            this(buf.readUtf(), buf.readUUID());
+            this(buf.readUtf(), buf.readUUID(), buf.readBoolean());
         }
 
         public void write(FriendlyByteBuf buffer) {
             buffer.writeUtf(this.mode);
             buffer.writeUUID(this.uuid);
+            buffer.writeBoolean(this.cast);
         }
 
         public String generateName() {

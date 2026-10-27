@@ -45,6 +45,7 @@ import net.neoforged.neoforge.common.PercentageAttribute;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.lwjgl.glfw.GLFW;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
 import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
@@ -394,6 +395,11 @@ public class ClientEvents {
 
         if (stack.getItem() instanceof SpellTooltipable s && stack.has(DataComponentTypeRegistry.MODE)) {
             int i = 1;
+            if (stack.getItem() instanceof ModeWeapon) {
+                event.getTooltipElements().add(i++, Either.left(Component.translatable(
+                        "frostbite.staff.uses", ModeWeapon.getUses(stack), ModeWeapon.MAX_USES)
+                        .withStyle(ChatFormatting.GRAY)));
+            }
             for (String str : s.getModes()) {
                 String mode = stack.get(DataComponentTypeRegistry.MODE).mode();
                 MutableComponent c = Component.translatable("frostbite.modes." + str);
@@ -474,16 +480,27 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void staffControl(InputEvent.MouseButton.Pre event) {
-        if (event.getButton() == 1) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-                if (itemInHand.getItem() instanceof ModeWeapon staff && !player.getCooldowns().isOnCooldown(itemInHand)) {
-                    staff.attack(player.level(), player);
-                    player.getCooldowns().addCooldown(itemInHand, 20);
-                    event.setCanceled(true);
-                    ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID())));
-                }
+        if (event.getAction() != GLFW.GLFW_PRESS) return;
+        if (event.getButton() != 0 && event.getButton() != 1) return;
+
+        Player player = Minecraft.getInstance().player;
+        if (player == null || Minecraft.getInstance().gui.screen() != null) return;
+
+        ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        if (!(itemInHand.getItem() instanceof ModeWeapon staff)) return;
+
+        if (event.getButton() == 0) {
+            staff.cycleMode(itemInHand);
+            event.setCanceled(true);
+            ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(
+                    itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID(), false)));
+        } else if (!player.getCooldowns().isOnCooldown(itemInHand)) {
+            boolean used = staff.attack(player.level(), player);
+            player.getCooldowns().addCooldown(itemInHand, 20);
+            event.setCanceled(true);
+            if (used) {
+                ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(
+                        itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID(), true)));
             }
         }
     }
@@ -614,4 +631,3 @@ public class ClientEvents {
         }
     }
 }
-

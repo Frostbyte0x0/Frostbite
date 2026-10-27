@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.goals.HealerElfHealGoal;
+import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
@@ -16,13 +17,17 @@ public class HealerElfEntity extends ElfEntity {
 
     public HealerElfEntity(EntityType<? extends ElfEntity> ignored, Level level) {
         super(EntityRegistry.HEALER_ELF.get(), level, 100);
-        setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.HEALING_STAFF.asItem()));
+        ItemStack staff = new ItemStack(ItemRegistry.HEALING_STAFF.asItem());
+        ModeWeapon.loadToMax(staff);
+        setItemSlot(EquipmentSlot.MAINHAND, staff);
     }
 
     @Override
     public void tick() {
         if (!level().isClientSide() && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
-            setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.HEALING_STAFF.asItem()));
+            ItemStack staff = new ItemStack(ItemRegistry.HEALING_STAFF.asItem());
+            ModeWeapon.loadToMax(staff);
+            setItemSlot(EquipmentSlot.MAINHAND, staff);
         }
         super.tick();
     }

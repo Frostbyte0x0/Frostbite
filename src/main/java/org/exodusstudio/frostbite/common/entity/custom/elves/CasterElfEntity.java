@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.entity.goals.CasterElfCastGoal;
+import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 import org.exodusstudio.frostbite.common.registry.ItemRegistry;
 
@@ -16,7 +17,9 @@ public class CasterElfEntity extends ElfEntity {
     @Override
     public void tick() {
         if (!level().isClientSide() && getItemBySlot(EquipmentSlot.MAINHAND).isEmpty()) {
-            setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.CASTING_STAFF.asItem()));
+            ItemStack staff = new ItemStack(ItemRegistry.CASTING_STAFF.asItem());
+            ModeWeapon.loadToMax(staff);
+            setItemSlot(EquipmentSlot.MAINHAND, staff);
         }
 
         super.tick();

@@ -19,17 +19,25 @@ import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
 import org.exodusstudio.frostbite.common.util.helpers.Vec3Helper;
 import org.joml.Vector3f;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class CastingStaffItem extends ModeWeapon {
     public static final String[] MODES = new String[]{"icy_breath", "spikes"};
+    private static final double AIMED_BREATH_RANGE = 5.0;
+    private static final double AIMED_BREATH_RADIUS = 1.0;
+    private static final double RADIAL_BREATH_RANGE = 2.5;
+    private static final int RADIAL_BREATH_RAYS = 16;
+    private static final int AIMED_BREATH_SEGMENTS = 10;
+    private static final int AIMED_BREATH_RING_PARTICLES = 12;
 
     public CastingStaffItem(Properties properties) {
         super(properties);
     }
 
     @Override
-    public void attack(Level level, LivingEntity owner) {
+    protected void performAttack(Level level, LivingEntity owner) {
         Vec3 vec3 = owner.position().add(0, owner.getEyeHeight(), 0);
         Vec3 vec31 = owner.getLookAngle();
         Vec3 vec32 = vec31.normalize();
@@ -39,41 +47,66 @@ public class CastingStaffItem extends ModeWeapon {
                 if (level.isClientSide()) {
                     int particleCount = 30;
                     for (int i = 1; i < 4; i++) {
-                        Vec3 vec33 = vec3.add(vec32.scale(i / 10f + 0.3f));
                         for (int j = 0; j < particleCount; j++) {
-                            Vector3f add = vec32.scale(i / 3f - 0.3f).toVector3f()
-                                    .rotate(Vec3Helper.getRotationQuaternionAroundLookVector(j, particleCount, owner, vec32));
+                            double angle = j * Math.PI * 2 / particleCount;
+                            double y = 1 - 2 * (j + 0.5) / particleCount;
+                            double horizontal = Math.sqrt(1 - y * y);
+                            Vec3 direction = new Vec3(
+                                    Math.cos(angle) * horizontal,
+                                    y,
+                                    Math.sin(angle) * horizontal);
+                            double largestComponent = Math.max(Math.abs(direction.x),
+                                    Math.max(Math.abs(direction.y), Math.abs(direction.z)));
+                            Vec3 boundaryDirection = direction.scale(RADIAL_BREATH_RANGE / largestComponent);
+                            Vec3 position = vec3.add(boundaryDirection.scale(i / 3.0));
+                            addIcyBreathParticle(level, position,
+                                    direction.scale(i / 3.0 * 0.001),
+                                    direction.scale(0.05 * (i + 1)));
+                        }
+                    }
 
-                            Vec3 vec34 = vec33.add(
-                                    add.x * 0.1,
-                                    add.y * 0.1,
-                                    add.z * 0.1);
-                            owner.level().addAlwaysVisibleParticle(
-                                    Vec3ParticleOption.create(ParticleRegistry.ICY_BREATH_PARTICLE.get(),
-                                            add.normalize(i / 3f * 0.001f)),
-                                    vec34.x + (0.5 - random.nextDouble()) * 0.1f,
-                                    vec34.y + (0.5 - random.nextDouble()) * 0.1f,
-                                    vec34.z + (0.5 - random.nextDouble()) * 0.1f,
-                                    vec32.x * 0.05 * (i + 1) + add.x * 0.03 + (0.5 - random.nextDouble()) * 0.025,
-                                    vec32.y * 0.05 * (i + 1) + add.y * 0.03 + (0.5 - random.nextDouble()) * 0.025,
-                                    vec32.z * 0.05 * (i + 1) + add.z * 0.03 + (0.5 - random.nextDouble()) * 0.025);
+                    Vec3 reference = Math.abs(vec32.y) < 0.9 ? new Vec3(0, 1, 0) : new Vec3(1, 0, 0);
+                    Vec3 side = vec32.cross(reference).normalize();
+                    Vec3 up = side.cross(vec32).normalize();
+                    for (int i = 1; i <= AIMED_BREATH_SEGMENTS; i++) {
+                        Vec3 center = vec3.add(vec32.scale(AIMED_BREATH_RANGE * i / AIMED_BREATH_SEGMENTS));
+                        for (int j = 0; j < AIMED_BREATH_RING_PARTICLES; j++) {
+                            double angle = j * Math.PI * 2 / AIMED_BREATH_RING_PARTICLES;
+                            Vec3 offset = side.scale(Math.cos(angle) * AIMED_BREATH_RADIUS)
+                                    .add(up.scale(Math.sin(angle) * AIMED_BREATH_RADIUS));
+                            addIcyBreathParticle(level, center.add(offset),
+                                    vec32.scale(0.001),
+                                    vec32.scale(0.08).add(offset.scale(0.01)));
                         }
                     }
 
                 } else {
-                    Vec3 end = vec3.add(vec32.scale(2.5));
+                    Set<Entity> affectedEntities = new HashSet<>();
+                    AABB radialBounds = new AABB(
+                            vec3.subtract(RADIAL_BREATH_RANGE),
+                            vec3.add(RADIAL_BREATH_RANGE));
 
-                    for (Entity entity1 : owner.level().getEntities(owner, new AABB(vec3, end).inflate(1.0))) {
-                        AABB aabb = entity1.getBoundingBox().inflate(1);
-                        Optional<Vec3> optional1 = aabb.clip(vec3, end);
-                        if (optional1.isPresent()) {
+                    for (Entity entity1 : owner.level().getEntities(owner, radialBounds)) {
+                        if (affectedEntities.add(entity1)) {
                             entity1.hurtServer((ServerLevel) level, owner.damageSources().freeze(), 4f);
                         }
                     }
 
-                    DataHelper.addPseudoEntity(level, PseudoEntityTypes.BREATH,
-                            new PseudoEntity(vec32.scale(0.15),
-                            new AABB(vec3.add(0.75), vec3.subtract(0.75)), owner.getUUID(), level.getGameTime()));
+                    Vec3 end = vec3.add(vec32.scale(AIMED_BREATH_RANGE));
+
+                    for (Entity entity1 : owner.level().getEntities(owner, new AABB(vec3, end).inflate(AIMED_BREATH_RADIUS))) {
+                        AABB aabb = entity1.getBoundingBox().inflate(AIMED_BREATH_RADIUS);
+                        Optional<Vec3> optional1 = aabb.clip(vec3, end);
+                        if (optional1.isPresent() && affectedEntities.add(entity1)) {
+                            entity1.hurtServer((ServerLevel) level, owner.damageSources().freeze(), 4f);
+                        }
+                    }
+
+                    addBreathTrail(level, owner, vec32, 0.3);
+                    for (int i = 0; i < RADIAL_BREATH_RAYS; i++) {
+                        double angle = i * Math.PI * 2 / RADIAL_BREATH_RAYS;
+                        addBreathTrail(level, owner, new Vec3(Math.cos(angle), 0, Math.sin(angle)), 0.15);
+                    }
                 }
                 break;
             case "spikes":
@@ -131,6 +164,24 @@ public class CastingStaffItem extends ModeWeapon {
                 }
                 break;
         }
+    }
+
+    private static void addIcyBreathParticle(Level level, Vec3 position, Vec3 acceleration, Vec3 velocity) {
+        level.addAlwaysVisibleParticle(
+                Vec3ParticleOption.create(ParticleRegistry.ICY_BREATH_PARTICLE.get(), acceleration),
+                position.x + (0.5 - random.nextDouble()) * 0.08,
+                position.y + (0.5 - random.nextDouble()) * 0.08,
+                position.z + (0.5 - random.nextDouble()) * 0.08,
+                velocity.x + (0.5 - random.nextDouble()) * 0.02,
+                velocity.y + (0.5 - random.nextDouble()) * 0.02,
+                velocity.z + (0.5 - random.nextDouble()) * 0.02);
+    }
+
+    private static void addBreathTrail(Level level, LivingEntity owner, Vec3 direction, double speed) {
+        Vec3 origin = owner.position().add(0, owner.getEyeHeight(), 0);
+        DataHelper.addPseudoEntity(level, PseudoEntityTypes.BREATH,
+                new PseudoEntity(direction.scale(speed),
+                        new AABB(origin.add(0.75), origin.subtract(0.75)), owner.getUUID(), level.getGameTime()));
     }
 
     @Override

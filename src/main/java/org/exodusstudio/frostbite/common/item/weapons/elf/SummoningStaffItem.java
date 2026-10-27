@@ -17,7 +17,7 @@ public class SummoningStaffItem extends ModeWeapon {
     }
 
     @Override
-    public void attack(Level level, LivingEntity owner) {
+    protected void performAttack(Level level, LivingEntity owner) {
         if (level instanceof ServerLevel serverLevel) {
             switch (getMode(owner.getItemInHand(InteractionHand.MAIN_HAND))) {
                 case "roaming_blizzard":

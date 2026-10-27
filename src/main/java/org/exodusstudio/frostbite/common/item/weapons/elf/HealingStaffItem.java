@@ -14,7 +14,7 @@ public class HealingStaffItem extends ModeWeapon {
     }
 
     @Override
-    public void attack(Level level, LivingEntity owner) {
+    protected void performAttack(Level level, LivingEntity owner) {
         switch (getMode(owner.getItemInHand(InteractionHand.MAIN_HAND))) {
             case "heal":
                 if (!level.isClientSide()) {
