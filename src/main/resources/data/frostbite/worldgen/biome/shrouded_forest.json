@@ -8,8 +8,7 @@
   "temperature_modifier": "frozen",
   "carvers": [
     "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
+    "minecraft:cave_extra_underground"
   ],
   "downfall": 1,
   "effects": {

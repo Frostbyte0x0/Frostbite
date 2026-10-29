@@ -507,6 +507,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void ambience(PlayerTickEvent.Post event) {
+        if (Minecraft.getInstance().level == null) return;
         WeatherInfo weatherInfo = DataHelper.getWeatherInfo(Minecraft.getInstance().level);
         for (SoundRegistry.Ambience ambience : SoundRegistry.Ambience.AMBIENCES) {
             if (ambience.shouldPlay.apply(event.getEntity().level()) && event.getEntity().level() instanceof ClientLevel level) {

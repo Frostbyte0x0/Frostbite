@@ -87,23 +87,6 @@ public class ChilliPepperPlantBlock extends VegetationBlock implements Bonemeala
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
-        if (entity instanceof LivingEntity && !entity.is(EntityTypes.FOX) && !entity.is(EntityTypes.BEE)) {
-            entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
-            if (level instanceof ServerLevel serverLevel && state.getValue(AGE) != 0) {
-                Vec3 movement = entity.isClientAuthoritative() ? entity.getKnownMovement() : entity.oldPosition().subtract(entity.position());
-                if (movement.horizontalDistanceSqr() > 0.0) {
-                    double xs = Math.abs(movement.x());
-                    double zs = Math.abs(movement.z());
-                    if (xs >= 0.003F || zs >= 0.003F) {
-                        entity.hurtServer(serverLevel, level.damageSources().sweetBerryBush(), 1.0F);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     protected InteractionResult useItemOn(
             ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult
     ) {
