@@ -8,33 +8,15 @@
     "entries": [
       {
         "data": {
-          "id": "minecraft:snow_block"
-        },
-        "weight": 1
-      },
-      {
-        "data": {
-          "id": "frostbite:marble"
-        },
-        "weight": 1
-      },
-      {
-        "data": {
           "id": "minecraft:blue_ice"
         },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "minecraft:packed_ice"
+        },
         "weight": 2
-      },
-      {
-        "data": {
-          "id": "frostbite:slated_ice"
-        },
-        "weight": 10
-      },
-      {
-        "data": {
-          "id": "frostbite:slated_snow"
-        },
-        "weight": 10
       }
     ]
   },

@@ -4,7 +4,7 @@
     {
       "type": "minecraft:attached_to_logs",
       "block_provider": {
-        "type": "minecraft:weighted_state_provider",
+        "type": "minecraft:weighted",
         "entries": [
           {
             "data": {
@@ -33,10 +33,10 @@
   },
   "stump_decorators": [],
   "trunk_provider": {
-    "type": "minecraft:simple_state_provider",
+    "type": "minecraft:simple",
     "state": {
       "id": "frostbite:charm_log",
-      "Properties": {
+      "properties": {
         "axis": "y"
       }
     }

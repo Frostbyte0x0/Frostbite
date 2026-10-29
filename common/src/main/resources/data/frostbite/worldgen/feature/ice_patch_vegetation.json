@@ -1,44 +1,71 @@
 {
-  "type": "minecraft:simple_block",
-  "to_place": {
-    "type": "minecraft:weighted_state_provider",
-    "entries": [
-      {
-        "data": {
-          "id": "minecraft:snow",
-          "Properties": {
-            "layers": "1"
+  "type": "minecraft:weighted_random_selector",
+  "features": [
+    {
+      "weight": 20,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:snow",
+            "properties": {
+              "layers": "1"
+            }
           }
         },
-        "weight": 20
-      },
-      {
-        "data": {
-          "id": "minecraft:snow",
-          "Properties": {
-            "layers": "2"
-          }
-        },
-        "weight": 10
-      },
-      {
-        "data": {
-          "id": "minecraft:packed_ice"
-        },
-        "weight": 8
-      },
-      {
-        "data": {
-          "id": "minecraft:blue_ice"
-        },
-        "weight": 3
-      },
-      {
-        "data": {
-          "id": "minecraft:powder_snow"
-        },
-        "weight": 8
+        "placement": []
       }
-    ]
-  }
+    },
+    {
+      "weight": 10,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:snow",
+            "properties": {
+              "layers": "2"
+            }
+          }
+        },
+        "placement": []
+      }
+    },
+    {
+      "weight": 8,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:packed_ice"
+          }
+        },
+        "placement": []
+      }
+    },
+    {
+      "weight": 3,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:blue_ice"
+          }
+        },
+        "placement": []
+      }
+    },
+    {
+      "weight": 8,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:powder_snow"
+          }
+        },
+        "placement": []
+      }
+    }
+  ]
 }

@@ -1,64 +1,97 @@
 {
-  "type": "minecraft:simple_block",
-  "to_place": {
-    "type": "minecraft:weighted_state_provider",
-    "entries": [
-      {
-        "data": {
-          "id": "minecraft:moss_carpet"
-        },
-        "weight": 68
-      },
-      {
-        "data": {
-          "id": "minecraft:small_dripleaf",
-          "Properties": {
-            "facing": "north",
-            "half": "lower",
-            "waterlogged": "false"
+  "type": "minecraft:weighted_random_selector",
+  "features": [
+    {
+      "weight": 68,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:moss_carpet"
           }
         },
-        "weight": 8
-      },
-      {
-        "data": {
-          "id": "minecraft:small_dripleaf",
-          "Properties": {
-            "facing": "south",
-            "half": "lower",
-            "waterlogged": "false"
-          }
-        },
-        "weight": 8
-      },
-      {
-        "data": {
-          "id": "minecraft:small_dripleaf",
-          "Properties": {
-            "facing": "east",
-            "half": "lower",
-            "waterlogged": "false"
-          }
-        },
-        "weight": 8
-      },
-      {
-        "data": {
-          "id": "minecraft:small_dripleaf",
-          "Properties": {
-            "facing": "west",
-            "half": "lower",
-            "waterlogged": "false"
-          }
-        },
-        "weight": 8
-      },
-      {
-        "data": {
-          "id": "minecraft:verdant_froglight"
-        },
-        "weight": 1
+        "placement": []
       }
-    ]
-  }
+    },
+    {
+      "weight": 8,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:small_dripleaf",
+            "properties": {
+              "facing": "north",
+              "half": "lower",
+              "waterlogged": "false"
+            }
+          }
+        },
+        "placement": []
+      }
+    },
+    {
+      "weight": 8,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:small_dripleaf",
+            "properties": {
+              "facing": "south",
+              "half": "lower",
+              "waterlogged": "false"
+            }
+          }
+        },
+        "placement": []
+      }
+    },
+    {
+      "weight": 3,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:small_dripleaf",
+            "properties": {
+              "facing": "east",
+              "half": "lower",
+              "waterlogged": "false"
+            }
+          }
+        },
+        "placement": []
+      }
+    },
+    {
+      "weight": 8,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:small_dripleaf",
+            "properties": {
+              "facing": "west",
+              "half": "lower",
+              "waterlogged": "false"
+            }
+          }
+        },
+        "placement": []
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "feature": {
+          "type": "minecraft:simple_block",
+          "to_place": {
+            "id": "minecraft:verdant_froglight"
+          }
+        },
+        "placement": []
+      }
+    }
+  ]
 }
