@@ -1,7 +1,14 @@
 {
-  "variants": {
-    "": {
-      "model": "frostbite:block/flowering_charm_leaves"
+  "multipart": [
+    {
+      "apply": {
+        "model": "frostbite:block/flowering_charm_leaves"
+      }
+    },
+    {
+      "apply": {
+        "model": "frostbite:block/flowering_charm_leaves_emissive"
+      }
     }
-  }
+  ]
 }
