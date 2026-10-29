@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "frostbite",
+  "version": "${version}",
+  "name": "Frostbite",
+  "description": "Cool mod :thumbsup:",
+  "authors": [
+    "Exodus Studio"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "org.exodusstudio.frostbite.fabric.FrostbiteFabric"
+    ],
+    "client": [
+      "org.exodusstudio.frostbite.fabric.client.FrostbiteFabricClient"
+    ]
+  },
+  "mixins": [
+    "frostbite.mixins.json",
+    "frostbite-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": ">=26.3",
+    "java": ">=25",
+    "architectury": ">=22.0.5",
+    "fabric-api": "*"
+  }
+}

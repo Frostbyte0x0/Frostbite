@@ -1,0 +1,8 @@
+{
+  "accessWidener": "frostbite.accesswidener",
+  "injected_interfaces": {
+    "net/minecraft/world/entity/Entity": ["org/exodusstudio/frostbite/common/mixinterfaces/AttachmentHolder"],
+    "net/minecraft/world/level/Level": ["org/exodusstudio/frostbite/common/mixinterfaces/AttachmentHolder"],
+    "net/minecraft/world/level/chunk/ChunkAccess": ["org/exodusstudio/frostbite/common/mixinterfaces/AttachmentHolder"]
+  }
+}
