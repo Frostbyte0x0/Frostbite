@@ -1,0 +1,191 @@
+package org.exodusstudio.frostbite.client.gui;
+
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import org.exodusstudio.frostbite.client.codex.Codex;
+import org.exodusstudio.frostbite.client.codex.formations.CodexFormation;
+import org.exodusstudio.frostbite.client.codex.tabs.CodexTab;
+import org.exodusstudio.frostbite.client.codex.tabs.ListCodexTab;
+import org.exodusstudio.frostbite.client.codex.tabs.TreeCodexTab;
+import org.exodusstudio.frostbite.common.registry.KeyMappingRegistry;
+import org.jspecify.annotations.Nullable;
+
+public class CodexScreen extends Screen {
+    private static final Identifier WINDOW_LOCATION = Identifier.withDefaultNamespace("textures/gui/advancements/window.png");
+    private static final Component VERY_SAD_LABEL = Component.translatable("advancements.sad_label");
+    private static final Component NO_ADVANCEMENTS_LABEL = Component.translatable("advancements.empty");
+    private static final Component TITLE = Component.translatable("gui.codex");
+    private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
+    private @Nullable CodexTab selectedTab;
+    private boolean isScrolling;
+
+    public CodexScreen() {
+        super(TITLE);
+    }
+
+    @Override
+    protected void init() {
+        this.layout.addTitleHeader(TITLE, this.font);
+        this.selectedTab = Codex.GENERAL_TAB;
+
+        Codex.TABS.forEach(t -> t.setScreen(this));
+
+        this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, _ -> this.onClose()).width(200).build());
+        this.layout.visitWidgets(this::addRenderableWidget);
+        this.repositionElements();
+    }
+
+    @Override
+    protected void repositionElements() {
+        this.layout.arrangeElements();
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean p_433867_) {
+        if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
+            int i = (this.width - 252) / 2;
+            int j = (this.height - 140) / 2;
+
+            for (CodexTab tab : Codex.TABS) {
+                if (tab.isMouseOver(i, j, event.x(), event.y())) {
+                    selectedTab = tab;
+                    if (tab instanceof TreeCodexTab t) t.formations.forEach(CodexFormation::computePlacements);
+                    if (selectedTab instanceof ListCodexTab t) t.reloadTiles();
+                    break;
+                }
+            }
+            if (selectedTab instanceof ListCodexTab) ((ListCodexTab) selectedTab).selectTile((int) event.x(), (int) event.y());
+        }
+
+        return super.mouseClicked(event, p_433867_);
+    }
+
+    @Override
+    public boolean keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.key() == InputConstants.KEY_ESCAPE) {
+            assert Minecraft.getInstance().player != null;
+            Minecraft.getInstance().player.closeContainer();
+        }
+
+        if (KeyMappingRegistry.CODEX.matches(keyEvent)) {
+            this.minecraft.gui.setScreen(null);
+            this.minecraft.mouseHandler.grabMouse();
+            return true;
+        } else {
+            return super.keyPressed(keyEvent);
+        }
+    }
+
+    @Override
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
+
+        int i = (this.width - 252) / 2;
+        int j = (this.height - 140) / 2;
+
+        graphics.nextStratum();
+        this.renderInside(graphics, i, j);
+        graphics.nextStratum();
+        this.renderWindow(graphics, i, j, mouseX, mouseY);
+        if (this.isScrolling && this.selectedTab != null) {
+            if (this.selectedTab.canScrollHorizontally() && this.selectedTab.canScrollVertically()) {
+                graphics.requestCursor(CursorTypes.RESIZE_ALL);
+            } else if (this.selectedTab.canScrollHorizontally()) {
+                graphics.requestCursor(CursorTypes.RESIZE_EW);
+            } else if (this.selectedTab.canScrollVertically()) {
+                graphics.requestCursor(CursorTypes.RESIZE_NS);
+            }
+        }
+
+        this.renderTooltips(graphics, mouseX, mouseY, i, j);
+    }
+
+    @Override
+    public boolean mouseDragged(MouseButtonEvent event, double p_97347_, double p_97348_) {
+        if (event.button() != 0) {
+            this.isScrolling = false;
+            return false;
+        } else {
+            if (!this.isScrolling) {
+                this.isScrolling = true;
+            } else if (this.selectedTab != null) {
+                this.selectedTab.scroll(event.x(), event.y(), p_97347_, p_97348_);
+            }
+
+            return true;
+        }
+    }
+
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        this.isScrolling = false;
+        return super.mouseReleased(event);
+    }
+
+    @Override
+    public boolean mouseScrolled(double x, double y, double scrollX, double scrollY) {
+        if (this.selectedTab instanceof TreeCodexTab tab) {
+            tab.zoom(scrollY);
+            return true;
+        }
+
+        if (this.selectedTab != null) {
+            this.selectedTab.scroll(x, y, scrollX * 8, scrollY * 8);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void renderInside(GuiGraphicsExtractor gui, int x, int y) {
+        CodexTab tab = this.selectedTab;
+        if (tab == null) {
+            gui.fill(x + 9, y + 18, x + 9 + 234, y + 18 + 113, -16777216);
+            int i = x + 9 + 117;
+            gui.text(this.font, NO_ADVANCEMENTS_LABEL, i, y + 18 + 56 - 9 / 2, -1);
+            gui.text(this.font, VERY_SAD_LABEL, i, y + 18 + 113 - 9, -1);
+        } else {
+            tab.drawContents(gui, x + 9, y + 18);
+        }
+    }
+
+    public void renderWindow(GuiGraphicsExtractor gui, int offsetX, int offsetY, int p_470848_, int p_470691_) {
+        gui.blit(RenderPipelines.GUI_TEXTURED, WINDOW_LOCATION, offsetX, offsetY, 0, 0, 252, 140, 256, 256);
+        for (CodexTab tab : Codex.TABS) {
+            tab.drawTab(gui, offsetX, offsetY, p_470848_, p_470691_, tab == this.selectedTab);
+        }
+
+        for (CodexTab tab : Codex.TABS) {
+            tab.drawIcon(gui, offsetX, offsetY);
+        }
+
+        gui.text(this.font, this.selectedTab != null ? this.selectedTab.getTitle() : TITLE, offsetX + 8, offsetY + 6, -12566464, false);
+    }
+
+    private void renderTooltips(GuiGraphicsExtractor gui, int mouseX, int mouseY, int offsetX, int offsetY) {
+        if (this.selectedTab != null) {
+            gui.pose().pushMatrix();
+            gui.pose().translate(offsetX + 9, offsetY + 18);
+            gui.nextStratum();
+            this.selectedTab.drawTooltips(gui, mouseX - offsetX - 9, mouseY - offsetY - 18, offsetX, offsetY);
+            gui.pose().popMatrix();
+        }
+
+        for (CodexTab tab : Codex.TABS) {
+            if (tab.isMouseOver(offsetX, offsetY, mouseX, mouseY)) {
+                gui.setTooltipForNextFrame(this.font, tab.getTitle(), mouseX, mouseY);
+            }
+        }
+    }
+}

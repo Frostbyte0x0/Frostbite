@@ -1,0 +1,59 @@
+package org.exodusstudio.frostbite.common.entity.client.renderers;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.AABB;
+import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.entity.client.layers.ModModelLayers;
+import org.exodusstudio.frostbite.common.entity.client.models.FrozenRemnantsModel;
+import org.exodusstudio.frostbite.common.entity.client.states.FrozenRemnantsRenderState;
+import org.exodusstudio.frostbite.common.entity.custom.misc.FrozenRemnantsEntity;
+
+public class FrozenRemnantsRenderer extends LivingEntityRenderer<FrozenRemnantsEntity, FrozenRemnantsRenderState, FrozenRemnantsModel> {
+    public FrozenRemnantsRenderer(EntityRendererProvider.Context context) {
+        super(context, new FrozenRemnantsModel(context.bakeLayer(ModModelLayers.FROZEN_REMNANTS)), 0.45f);
+    }
+
+    @Override
+    public FrozenRemnantsRenderState createRenderState() {
+        return new FrozenRemnantsRenderState();
+    }
+
+    @Override
+    public Identifier getTextureLocation(FrozenRemnantsRenderState renderState) {
+        return Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "textures/entity/frozen_remnants/frozen_remnants.png");
+    }
+
+    @Override
+    public void extractRenderState(FrozenRemnantsEntity frozenRemnants, FrozenRemnantsRenderState renderState, float partialTicks) {
+        super.extractRenderState(frozenRemnants, renderState, partialTicks);
+        Frustum frustum = Minecraft.getInstance().gameRenderer.mainCamera().getCullFrustum();
+        renderState.isOnScreen = isVisible(frozenRemnants, partialTicks, frustum);
+        frozenRemnants.setOnScreen(renderState.isOnScreen);
+        renderState.headPitch = frozenRemnants.getHeadPitch();
+        renderState.bodyRot = frozenRemnants.getYRot();
+    }
+
+    private boolean isVisible(FrozenRemnantsEntity entity, float partialTicks, Frustum culler) {
+        AABB boundingBox = this.getBoundingBoxForCulling(entity, partialTicks).inflate(0.5);
+        if (boundingBox.hasNaN() || boundingBox.getSize() == 0) {
+            boundingBox = new AABB(
+                    entity.getX() - 2,
+                    entity.getY() - 2,
+                    entity.getZ() - 2,
+                    entity.getX() + 2,
+                    entity.getY() + 2,
+                    entity.getZ() + 2);
+        }
+
+        return culler.isVisible(boundingBox);
+    }
+
+    @Override
+    protected boolean affectedByCulling(FrozenRemnantsEntity display) {
+        return false;
+    }
+}

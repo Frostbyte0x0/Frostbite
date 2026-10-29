@@ -1,0 +1,48 @@
+{
+  "values": {
+    "frostbite:misty_log": {
+      "transformer": "minecraft:axe",
+      "transform_data": {
+        "block_state_provider": {
+          "type": "minecraft:rule_based",
+          "rules": [
+            {
+              "if_true": {
+                "type": "minecraft:matching_blocks",
+                "blocks": "frostbite:misty_log"
+              },
+              "then": {
+                "type": "minecraft:copy_properties",
+                "source": {"id": "frostbite:stripped_misty_log"}
+              }
+            }
+          ]
+        },
+        "item_damage_per_use": 1,
+        "sound": "minecraft:item.axe.strip"
+      }
+    },
+    "frostbite:misty_wood": {
+      "transformer": "minecraft:axe",
+      "transform_data": {
+        "block_state_provider": {
+          "type": "minecraft:rule_based",
+          "rules": [
+            {
+              "if_true": {
+                "type": "minecraft:matching_blocks",
+                "blocks": "frostbite:misty_wood"
+              },
+              "then": {
+                "type": "minecraft:copy_properties",
+                "source": {"id": "frostbite:stripped_misty_wood"}
+              }
+            }
+          ]
+        },
+        "item_damage_per_use": 1,
+        "sound": "minecraft:item.axe.strip"
+      }
+    }
+  }
+}

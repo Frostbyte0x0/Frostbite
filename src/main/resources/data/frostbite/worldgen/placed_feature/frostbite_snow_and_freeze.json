@@ -1,8 +1,0 @@
-{
-  "feature": "frostbite:frostbite_snow_and_freeze",
-  "placement": [
-    {
-      "type": "minecraft:biome"
-    }
-  ]
-}

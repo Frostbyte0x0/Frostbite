@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "org.exodusstudio.frostbite.fabric.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "minVersion": "0.8",
+  "mixins": [
+    "EntityMixin",
+    "HolderReferenceMixin",
+    "ItemStackMixin",
+    "LightningBoltMixin",
+    "LivingEntityMixin",
+    "MobMixin",
+    "PlayerAdvancementsMixin",
+    "PlayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

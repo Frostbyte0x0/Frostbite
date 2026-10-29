@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "[9,)"
+license = "MIT"
+
+[[mods]]
+modId = "frostbite"
+version = "${version}"
+displayName = "Frostbite"
+authors = "Exodus Studio"
+description = '''
+Cool mod :thumbsup:
+'''
+#enumExtensions="META-INF/enumextensions.json"
+
+[[dependencies.frostbite]]
+modId = "neoforge"
+type = "required"
+versionRange = "[26.3.0.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.frostbite]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.3,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.frostbite]]
+modId = "architectury"
+type = "required"
+versionRange = "[22.0.5,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "frostbite.mixins.json"
+[[mixins]]
+config = "frostbite-neoforge.mixins.json"

@@ -1,0 +1,43 @@
+{
+  "type": "minecraft:add",
+  "left": {
+    "type": "minecraft:add",
+    "left": {
+      "type": "minecraft:gradient",
+      "axis": "y",
+      "from_coordinate": 0,
+      "from_value": 0.65,
+      "to_coordinate": 256,
+      "to_value": -1.35
+    },
+    "right": {
+      "type": "minecraft:add",
+      "left": {
+        "type": "minecraft:mul",
+        "left": 0.24,
+        "right": "minecraft:overworld/continents"
+      },
+      "right": {
+        "type": "minecraft:add",
+        "left": {
+          "type": "minecraft:mul",
+          "left": 0.14,
+          "right": "minecraft:overworld/erosion"
+        },
+        "right": {
+          "type": "minecraft:mul",
+          "left": -0.9,
+          "right": {
+            "type": "minecraft:half_negative",
+            "input": "minecraft:overworld/ridges"
+          }
+        }
+      }
+    }
+  },
+  "right": {
+    "type": "minecraft:mul",
+    "left": 0.3,
+    "right": "minecraft:overworld/base_3d_noise"
+  }
+}
