@@ -134,3 +134,6 @@ accessible method net/minecraft/world/level/Level getEntities ()Lnet/minecraft/w
 accessible method net/minecraft/server/level/ServerLevel getEntities ()Lnet/minecraft/world/level/entity/LevelEntityGetter;
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageWidth I
 accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen imageHeight I
+
+accessible method net/minecraft/world/level/levelgen/feature/VegetationPatchFeature distributeVegetation (Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/world/level/chunk/ChunkGenerator;Lnet/minecraft/util/RandomSource;Ljava/util/Set;)V
+extendable method net/minecraft/world/level/levelgen/feature/VegetationPatchFeature distributeVegetation (Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/world/level/chunk/ChunkGenerator;Lnet/minecraft/util/RandomSource;Ljava/util/Set;)V

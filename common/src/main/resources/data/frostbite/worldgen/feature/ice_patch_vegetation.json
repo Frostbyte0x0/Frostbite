@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "type": "minecraft:weighted_state_provider",
+    "entries": [
+      {
+        "data": {
+          "id": "minecraft:snow",
+          "Properties": {
+            "layers": "1"
+          }
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "minecraft:snow",
+          "Properties": {
+            "layers": "2"
+          }
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "minecraft:packed_ice"
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "minecraft:blue_ice"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "minecraft:powder_snow"
+        },
+        "weight": 8
+      }
+    ]
+  }
+}

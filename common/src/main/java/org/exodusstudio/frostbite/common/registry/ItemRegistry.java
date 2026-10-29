@@ -311,26 +311,26 @@ public class ItemRegistry {
 
     public static final DeferredItem<Item> CASTING_STAFF =
             ITEMS.register("casting_staff", (id) -> new CastingStaffItem(new Item.Properties()
-                    .component(DataComponentTypeRegistry.MODE, new ModeData(CastingStaffItem.MODES[0]))
-                    .component(DataComponentTypeRegistry.MAP_STRING_INT, new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
+                    .component(DataComponentTypeRegistry.MODE.get(), new ModeData(CastingStaffItem.MODES[0]))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SUMMONING_STAFF =
             ITEMS.register("summoning_staff", (id) -> new SummoningStaffItem(new Item.Properties()
-                    .component(DataComponentTypeRegistry.MODE, new ModeData(SummoningStaffItem.MODES[0]))
-                    .component(DataComponentTypeRegistry.MAP_STRING_INT, new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
+                    .component(DataComponentTypeRegistry.MODE.get(), new ModeData(SummoningStaffItem.MODES[0]))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> HEALING_STAFF =
             ITEMS.register("healing_staff", (id) -> new HealingStaffItem(new Item.Properties()
-                    .component(DataComponentTypeRegistry.MODE, new ModeData(HealingStaffItem.MODES[0]))
-                    .component(DataComponentTypeRegistry.MAP_STRING_INT, new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
+                    .component(DataComponentTypeRegistry.MODE.get(), new ModeData(HealingStaffItem.MODES[0]))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
                     .stacksTo(1)
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> SHAMAN_STAFF =
             ITEMS.register("shaman_staff", (id) -> new ShamanStaffItem(new Item.Properties()
-                    .component(DataComponentTypeRegistry.MODE, new ModeData(ShamanStaffItem.MODES[0]))
-                    .component(DataComponentTypeRegistry.MAP_STRING_INT, new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
+                    .component(DataComponentTypeRegistry.MODE.get(), new ModeData(ShamanStaffItem.MODES[0]))
+                    .component(DataComponentTypeRegistry.MAP_STRING_INT.get(), new MapStringIntData(Map.of(ModeWeapon.STAFF_USES_KEY, 0)))
                     .setId(ResourceKey.create(Registries.ITEM, id))));
     public static final DeferredItem<Item> GALE_FAN =
             ITEMS.register("gale_fan", (id) -> new GaleFanItem(new Item.Properties()

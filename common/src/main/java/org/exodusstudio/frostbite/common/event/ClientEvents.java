@@ -25,7 +25,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
@@ -47,21 +46,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.exodusstudio.frostbite.common.util.PercentageAttribute;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.codex.CodexEntryToast;
 import org.exodusstudio.frostbite.client.codex.entries.CodexEntry;
 import org.exodusstudio.frostbite.client.gui.CodexScreen;
+import org.exodusstudio.frostbite.common.combat.ParryManager;
 import org.exodusstudio.frostbite.common.component.ArmourStatsData;
 import org.exodusstudio.frostbite.common.contracts.Contract;
 import org.exodusstudio.frostbite.common.contracts.ContractAttribute;
 import org.exodusstudio.frostbite.common.contracts.ContractAttributes;
 import org.exodusstudio.frostbite.common.contracts.LivingContractInfo;
-import org.exodusstudio.frostbite.common.event.custom.CodexEntryUnlockedEvent;
-import org.exodusstudio.frostbite.common.event.custom.LivingDamageEvent;
-import org.exodusstudio.frostbite.common.event.custom.LivingTickEvent;
-import org.exodusstudio.frostbite.common.event.custom.MovePlayerEvent;
-import org.exodusstudio.frostbite.common.event.custom.PlayerHasEntryEvent;
+import org.exodusstudio.frostbite.common.event.custom.*;
 import org.exodusstudio.frostbite.common.item.armour.ArmourCleanliness;
 import org.exodusstudio.frostbite.common.item.armour.ArmourSet;
 import org.exodusstudio.frostbite.common.item.contract.ContractFragmentItem;
@@ -71,11 +66,11 @@ import org.exodusstudio.frostbite.common.item.weapons.ComboWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SeriousAttackWeapon;
 import org.exodusstudio.frostbite.common.item.weapons.SpellTooltipable;
 import org.exodusstudio.frostbite.common.item.weapons.elf.ModeWeapon;
-import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.network.ParryPayload;
-import org.exodusstudio.frostbite.common.combat.ParryManager;
+import org.exodusstudio.frostbite.common.network.StaffPayload;
 import org.exodusstudio.frostbite.common.particle.options.TextParticleOption;
 import org.exodusstudio.frostbite.common.registry.*;
+import org.exodusstudio.frostbite.common.util.PercentageAttribute;
 import org.exodusstudio.frostbite.common.util.ScreenShakeHandler;
 import org.exodusstudio.frostbite.common.util.Util;
 import org.exodusstudio.frostbite.common.util.helpers.DataHelper;
@@ -402,9 +397,9 @@ public class ClientEvents {
         if (stack.getItem() instanceof SpellTooltipable s && stack.has(DataComponentTypeRegistry.MODE.get())) {
             int i = 1;
             if (stack.getItem() instanceof ModeWeapon) {
-                event.getTooltipElements().add(i++, Either.left(Component.translatable(
+                lines.add(i++, Component.translatable(
                         "frostbite.staff.uses", ModeWeapon.getUses(stack), ModeWeapon.MAX_USES)
-                        .withStyle(ChatFormatting.GRAY)));
+                        .withStyle(ChatFormatting.GRAY));
             }
             for (String str : s.getModes()) {
                 String mode = stack.get(DataComponentTypeRegistry.MODE.get()).mode();
@@ -482,30 +477,29 @@ public class ClientEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void staffControl(InputEvent.MouseButton.Pre event) {
-        if (event.getAction() != GLFW.GLFW_PRESS) return;
-        if (event.getButton() != 0 && event.getButton() != 1) return;
+    public static EventResult staffControl(Minecraft minecraft, MouseButtonInfo buttonInfo, int action) {
+//        if (event.getAction() != GLFW.GLFW_PRESS) return EventResult.pass(); TODO: translate to arch
+        if (buttonInfo.button() != 0 && buttonInfo.button() != 1) return EventResult.pass();
 
         Player player = Minecraft.getInstance().player;
-        if (player == null || Minecraft.getInstance().gui.screen() != null) return;
+        if (player == null || Minecraft.getInstance().gui.screen() != null) return EventResult.pass();
 
         ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-        if (!(itemInHand.getItem() instanceof ModeWeapon staff)) return;
+        if (!(itemInHand.getItem() instanceof ModeWeapon staff)) return EventResult.pass();
 
-        if (event.getButton() == 0) {
+        if (buttonInfo.button() == 0) {
             staff.cycleMode(itemInHand);
-            event.setCanceled(true);
-            ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(
+            NetworkManager.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(
                     itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID(), false)));
+            return EventResult.interruptTrue();
         } else if (!player.getCooldowns().isOnCooldown(itemInHand)) {
             boolean used = staff.attack(player.level(), player);
             player.getCooldowns().addCooldown(itemInHand, 20);
-            event.setCanceled(true);
             if (used) {
-                ClientPacketDistributor.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(
+                NetworkManager.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(
                         itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID(), true)));
             }
+            return EventResult.interruptTrue();
         }
         return EventResult.pass();
     }
@@ -526,7 +520,7 @@ public class ClientEvents {
 //        return EventResult.pass();
 //    }
 
-    public static void ambience(PlayerTickEvent.Post event) {
+    public static void ambience(Player player) {
         if (Minecraft.getInstance().level == null) return;
         WeatherInfo weatherInfo = DataHelper.getWeatherInfo(Minecraft.getInstance().level);
         for (SoundRegistry.Ambience ambience : SoundRegistry.Ambience.AMBIENCES) {

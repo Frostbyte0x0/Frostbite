@@ -1,0 +1,64 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "type": "minecraft:weighted_state_provider",
+    "entries": [
+      {
+        "data": {
+          "id": "minecraft:moss_carpet"
+        },
+        "weight": 68
+      },
+      {
+        "data": {
+          "id": "minecraft:small_dripleaf",
+          "Properties": {
+            "facing": "north",
+            "half": "lower",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "minecraft:small_dripleaf",
+          "Properties": {
+            "facing": "south",
+            "half": "lower",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "minecraft:small_dripleaf",
+          "Properties": {
+            "facing": "east",
+            "half": "lower",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "minecraft:small_dripleaf",
+          "Properties": {
+            "facing": "west",
+            "half": "lower",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "minecraft:verdant_froglight"
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

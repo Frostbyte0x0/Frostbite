@@ -9,7 +9,7 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import org.exodusstudio.frostbite.common.registry.FoliagePlacerRegistry;
@@ -37,7 +37,7 @@ public class CharmFoliagePlacer extends FoliagePlacer {
             WorldGenLevel level,
             FoliageSetter blockSetter,
             RandomSource random,
-            TreeConfiguration config,
+            TreeFeature config,
             int maxTreeHeight,
             FoliageAttachment attachment,
             int foliageHeight,
@@ -73,7 +73,6 @@ public class CharmFoliagePlacer extends FoliagePlacer {
     }
 
     public int foliageHeight(RandomSource random, int treeHeight, TreeFeature feature) {
-        this.treeHeight = treeHeight;
         return Math.max(4, treeHeight - this.trunkHeight.sample(random));
     }
 
