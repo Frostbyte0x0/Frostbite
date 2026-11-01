@@ -1,0 +1,20 @@
+{
+  "parent": "frostbite:adventure/find_castle",
+  "display": {
+    "icon": { "id": "minecraft:amethyst_shard" },
+    "title": { "text": "Placeholder: Defeat the Shaman" },
+    "description": { "text": "Placeholder: Defeat the Shaman boss." }
+  },
+  "criteria": {
+    "defeat_shaman": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": { "minecraft:entity_type": "frostbite:shaman" }
+        }
+      }
+    }
+  }
+}
