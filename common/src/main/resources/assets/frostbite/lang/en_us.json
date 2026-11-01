@@ -1,5 +1,17 @@
 {
   "sounds.frostbite.parry": "Perfect Parry",
+  "sounds.frostbite.chaincicle_swipe": "Chaincicle swipes",
+  "sounds.frostbite.chaincicle_spin": "Chaincicle spins",
+  "sounds.frostbite.chaincicle_launched_loop": "Chaincicle launches",
+  "sounds.frostbite.chaincicle_hook_launch": "Chaincicle hook launches",
+  "sounds.frostbite.chaincicle_hook_hit": "Chaincicle hook hits",
+  "sounds.frostbite.chaincicle_grapple_launch": "Chaincicle grapple launches",
+  "sounds.frostbite.chaincicle_grapple_hit": "Chaincicle grapple hits",
+  "sounds.frostbite.sniper_reload": "Sniper reloads",
+  "sounds.frostbite.sniper_chamber": "Sniper chambers",
+  "sounds.frostbite.sniper_shoot": "Sniper fires",
+  "sounds.frostbite.sniper_ping": "Sniper rifle pings",
+  "sounds.frostbite.sniper_fail": "Sniper fails to fire",
   "key.frostbite.parry": "Parry",
   "itemGroup.frostbite.frostbite_tab": "Frostbite",
   "itemGroup.frostbite.frostbite_combat_tab": "Frostbite Combat",
@@ -524,6 +536,10 @@
   "death.attack.hunters_catalyst": "%s got their hunter catalysted",
 
   "sounds.frostbite.snow_wind_ambience": "Snow and wind",
+
+  "sounds.frostbite.snow_ambience": "Snow falls",
+  "sounds.frostbite.blizzard_ambience": "Blizzard roars",
+  "sounds.frostbite.whiteout_ambience": "Whiteout winds",
 
   "sounds.frostbite.stunning_bell_ring": "Stunning bell rings"
 }
