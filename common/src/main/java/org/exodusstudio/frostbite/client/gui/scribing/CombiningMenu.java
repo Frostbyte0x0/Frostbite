@@ -36,7 +36,12 @@ public class CombiningMenu extends ItemCombinerMenu {
     }
 
     public CombiningMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
-        super(MenuTypeRegistry.COMBINING_MENU.get(), containerId, playerInventory, access, createInputSlotDefinitions());
+        this(MenuTypeRegistry.COMBINING_MENU.get(), containerId, playerInventory, access);
+    }
+
+    protected CombiningMenu(net.minecraft.world.inventory.MenuType<? extends ItemCombinerMenu> menuType,
+                            int containerId, Inventory playerInventory, ContainerLevelAccess access) {
+        super(menuType, containerId, playerInventory, access, createInputSlotDefinitions());
     }
 
     protected boolean isValidBlock(BlockState state) {

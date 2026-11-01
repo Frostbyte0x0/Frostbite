@@ -12,9 +12,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.client.gui.WeavingScreen;
-import org.exodusstudio.frostbite.client.gui.scribing.ApplyingScreen;
-import org.exodusstudio.frostbite.client.gui.scribing.CombiningScreen;
-import org.exodusstudio.frostbite.client.gui.scribing.DecipheringScreen;
+import org.exodusstudio.frostbite.client.gui.scribing.ContractTableScreen;
 import org.exodusstudio.frostbite.client.overlays.*;
 import org.exodusstudio.frostbite.common.event.ClientBusEvents;
 import org.exodusstudio.frostbite.common.event.ClientEvents;
@@ -79,8 +77,6 @@ public final class FrostbiteFabricClient implements ClientModInitializer {
 
     private void registerScreens() {
         MenuScreenRegistry.registerScreenFactory(MenuTypeRegistry.WEAVING_MENU.get(), WeavingScreen::new);
-        MenuScreenRegistry.registerScreenFactory(MenuTypeRegistry.DECIPHERING_MENU.get(), DecipheringScreen::new);
-        MenuScreenRegistry.registerScreenFactory(MenuTypeRegistry.COMBINING_MENU.get(), CombiningScreen::new);
-        MenuScreenRegistry.registerScreenFactory(MenuTypeRegistry.APPLYING_MENU.get(), ApplyingScreen::new);
+        MenuScreenRegistry.registerScreenFactory(MenuTypeRegistry.CONTRACT_TABLE_MENU.get(), ContractTableScreen::new);
     }
 }

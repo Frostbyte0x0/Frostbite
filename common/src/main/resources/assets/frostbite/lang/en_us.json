@@ -169,9 +169,7 @@
   "item.frostbite.leggings_weaving_pattern": "Leggings Weaving Pattern",
   "item.frostbite.boots_weaving_pattern": "Boots Weaving Pattern",
   "item.frostbite.weaving_table": "Weaving Table",
-  "item.frostbite.deciphering_table": "Deciphering Table",
-  "item.frostbite.combining_table": "Combining Table",
-  "item.frostbite.applying_table": "Applying Table",
+  "item.frostbite.contract_table": "Contract Table",
 
   "item.frostbite.jelly": "Jelly",
   "item.frostbite.insulating_jelly": "Insulating Jelly",
@@ -284,9 +282,10 @@
 
   "container.frozen_remnants": "Frozen Remnants",
   "container.weaving_table": "Weaving Table",
-  "container.deciphering_table": "Deciphering Table",
-  "container.combining_table": "Combining Table",
-  "container.applying_table": "Applying Table",
+  "container.contract_table": "Contract Table",
+  "contract_table.tab.deciphering": "Decipher",
+  "contract_table.tab.combining": "Combine",
+  "contract_table.tab.applying": "Apply",
 
   "contract.player_literacy.illiterate": "Illiterate",
   "contract.player_literacy.illiterate_desc": "You can read the polarity of contract fragments",

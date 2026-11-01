@@ -9,6 +9,7 @@ import org.exodusstudio.frostbite.client.gui.WeavingMenu;
 import org.exodusstudio.frostbite.client.gui.scribing.ApplyingMenu;
 import org.exodusstudio.frostbite.client.gui.scribing.CombiningMenu;
 import org.exodusstudio.frostbite.client.gui.scribing.DecipheringMenu;
+import org.exodusstudio.frostbite.client.gui.scribing.ContractTableMenu;
 
 import java.util.function.Supplier;
 
@@ -27,4 +28,7 @@ public class MenuTypeRegistry {
 
     public static final Supplier<MenuType<ApplyingMenu>> APPLYING_MENU =
             MENU_TYPES.register("applying", () -> new MenuType<>(ApplyingMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
+    public static final Supplier<MenuType<ContractTableMenu>> CONTRACT_TABLE_MENU =
+            MENU_TYPES.register("contract_table", () -> new MenuType<>(ContractTableMenu::new, FeatureFlags.DEFAULT_FLAGS));
 }

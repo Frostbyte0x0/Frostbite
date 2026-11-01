@@ -287,9 +287,7 @@ public class CreativeModeTabRegistry {
                     output.accept(BlockRegistry.ICE_CORE);
 
                     output.accept(BlockRegistry.WEAVING_TABLE);
-                    output.accept(BlockRegistry.DECIPHERING_TABLE);
-                    output.accept(BlockRegistry.COMBINING_TABLE);
-                    output.accept(BlockRegistry.APPLYING_TABLE);
+                    output.accept(BlockRegistry.CONTRACT_TABLE);
                     output.accept(BlockRegistry.SMALL_HEATER_BLOCK);
                     output.accept(BlockRegistry.MEDIUM_HEATER_BLOCK);
                     output.accept(BlockRegistry.BIG_HEATER_BLOCK);
