@@ -2,10 +2,6 @@
   "feature": "minecraft:forest_rock",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 2
-    },
-    {
       "type": "minecraft:count",
       "count": 1
     },
