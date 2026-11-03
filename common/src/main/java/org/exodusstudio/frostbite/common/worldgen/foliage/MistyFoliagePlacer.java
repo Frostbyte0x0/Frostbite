@@ -42,8 +42,8 @@ public class MistyFoliagePlacer extends FoliagePlacer {
     protected final List<Pair<BlockPos, BlockPos>> leafPositionsToRemove = new ArrayList<>();
 
     // Parameters to avoid copying over the whole functions in MegaMistyFoliagePlacer
-    protected int minCount = 4;
-    protected int maxCount = 6;
+    protected int minCount = 5;
+    protected int maxCount = 7;
     protected boolean large = false;
 
     public MistyFoliagePlacer(IntProvider radius, IntProvider offset, IntProvider trunkHeight) {
@@ -52,7 +52,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
     }
 
     protected FoliagePlacerType<?> type() {
-        return FoliagePlacerRegistry.MEGA_MISTY_FOLIAGE_PLACER.get();
+        return FoliagePlacerRegistry.MISTY_FOLIAGE_PLACER.get();
     }
 
     @Override
@@ -62,6 +62,8 @@ public class MistyFoliagePlacer extends FoliagePlacer {
         // Loop over all the locations of leaves and remove them at random
         // Loop over all the locations of leaves and remove leaves if they don't have enough neighbors
 
+        this.treeHeight = maxTreeHeight;
+        this.maxRadius = 0;
         this.leafPositions.clear();
 
         List<Pair<BlockPos, Float>> sphereCenters = generateSphereCenters(treeHeight - foliageHeight, treeHeight,
@@ -90,7 +92,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
 
         for (int i = 0; i < count; i++) {
             int y = bottomOffset + 2 + Math.round((float) i / count * availableHeight) + random.nextInt(1) * plusOrMinus();
-            float radius = getSphereRadius(y, availableHeight, random);
+            float radius = getSphereRadius(y - bottomOffset, availableHeight, random);
             Pair<BlockPos, Float> pair = new Pair<>(new BlockPos(0, y, 0), radius);
             centers.add(pair);
 
@@ -142,7 +144,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
 
     @Override
     public int foliageHeight(RandomSource randomSource, int i, TreeFeature treeFeature) {
-        return 0;
+        return Math.max(4, i - this.trunkHeight.sample(randomSource));
     }
 
     protected void deleteLeavesAtRandom(LevelSimulatedReader level, FoliageSetter foliageSetter, RandomSource random) {
@@ -154,7 +156,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
 
             double dist = Math.sqrt(Math.pow(pos.getX(), 2) + Math.pow(pos.getZ(), 2));
 
-            if (isLeaf && dist > 1 && random.nextFloat() * (large ? 7 : 5) < dist) { // && dist > 1.5 && random.nextFloat() < 0.35f
+            if (isLeaf && dist > 1 && random.nextFloat() * (large ? 9 : 7) < dist) {
                 foliageSetter.set(absolutePos, Blocks.AIR.defaultBlockState());
                 leafPositionsToRemove.add(positions);
             }
@@ -188,7 +190,7 @@ public class MistyFoliagePlacer extends FoliagePlacer {
     }
 
     protected float getSphereRadius(int y, int availableHeight, RandomSource random) {
-        return 2.5f * (1.25f - 1.15f * y / availableHeight) + random.nextFloat() * 1.25f;
+        return 2.75f * (1.25f - 0.95f * y / availableHeight) + random.nextFloat() * 1.25f;
     }
 
     protected static boolean isMistyBlock(BlockState state) {

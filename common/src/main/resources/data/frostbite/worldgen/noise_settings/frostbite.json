@@ -344,8 +344,8 @@
     ]
   },
   "noise": {
-    "height": 320,
-    "min_y": 0
+    "height": 384,
+    "min_y": -64
   },
   "noise_router": {
     "chunk_surface_level": 0,

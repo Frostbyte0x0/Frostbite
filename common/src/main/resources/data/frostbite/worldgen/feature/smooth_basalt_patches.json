@@ -4,7 +4,9 @@
   "size": 32,
   "targets": [
     {
-      "state": "minecraft:smooth_basalt",
+      "state": {
+        "id": "minecraft:smooth_basalt"
+      },
       "target": {
         "predicate_type": "minecraft:tag_match",
         "tag": "minecraft:base_stone_overworld"

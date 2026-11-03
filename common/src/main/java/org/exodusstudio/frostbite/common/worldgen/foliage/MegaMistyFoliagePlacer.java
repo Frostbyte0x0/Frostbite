@@ -22,7 +22,7 @@ public class MegaMistyFoliagePlacer extends MistyFoliagePlacer {
     }
 
     protected FoliagePlacerType<?> type() {
-        return FoliagePlacerRegistry.MISTY_FOLIAGE_PLACER.get();
+        return FoliagePlacerRegistry.MEGA_MISTY_FOLIAGE_PLACER.get();
     }
 
     @Override

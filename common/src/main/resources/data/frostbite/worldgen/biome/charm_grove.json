@@ -37,7 +37,7 @@
     [
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
-      "minecraft:ore_granite_upper",
+      "frostbite:ore_granite_upper",
       "minecraft:ore_granite_lower",
       "minecraft:ore_diorite_upper",
       "minecraft:ore_diorite_lower",
@@ -76,6 +76,7 @@
       "frostbite:trees_lavender",
       "frostbite:trees_charm",
       "frostbite:charm_foliage",
+      "minecraft:patch_leaf_litter",
       "frostbite:fallen_logs",
       "frostbite:moss_patches",
       "frostbite:ice_patches",
