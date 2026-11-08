@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "frostbite:slated_ice",
+    "frostbite:marble",
+    "minecraft:blue_ice",
+    "minecraft:packed_ice",
+    "minecraft:ice",
+    "minecraft:stone",
+    "minecraft:deepslate",
+    "minecraft:tuff",
+    "minecraft:granite",
+    "minecraft:diorite",
+    "minecraft:andesite"
+  ]
+}

@@ -52,6 +52,9 @@ import java.util.stream.Collectors;
 public class ItemRegistry {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Frostbite.MOD_ID);
 
+    public static final DeferredItem<Item> CRYSTALLITE = ITEMS.register("crystallite",
+            (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
             (id) -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)
                     .setId(ResourceKey.create(Registries.ITEM, id))));

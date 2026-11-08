@@ -23,7 +23,7 @@
   "features": [
     [],
     [
-      "minecraft:lake_lava_underground"
+      "frostbite:obsidian_lake_underground"
     ],
     [
       "minecraft:amethyst_geode"
@@ -38,7 +38,14 @@
     ],
     [],
     [
-      "minecraft:ore_emerald"
+      "frostbite:ore_iron",
+      "frostbite:ore_gold",
+      "frostbite:ore_lapis",
+      "frostbite:ore_redstone",
+      "frostbite:ore_copper",
+      "frostbite:ore_diamond",
+      "frostbite:ore_emerald",
+      "frostbite:ore_crystallite"
     ],
     [],
     [

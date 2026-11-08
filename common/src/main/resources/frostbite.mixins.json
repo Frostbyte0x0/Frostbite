@@ -15,8 +15,10 @@
     "InventoryMixin",
     "LivingEntityMixin",
     "LootTableMixin",
+    "NoiseBasedAquiferMixin",
     "PathfindingContextMixin",
     "PlayerMixin",
+    "ProtoChunkMixin",
     "ServerPlayerGameModeMixin",
     "ServerPlayerMixin"
   ],

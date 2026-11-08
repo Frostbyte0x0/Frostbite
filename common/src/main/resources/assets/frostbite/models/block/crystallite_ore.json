@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "frostbite:block/crystallite_block_top_bottom",
+    "up": "frostbite:block/crystallite_block_top_bottom",
+    "north": "frostbite:block/crystalite_block_side",
+    "south": "frostbite:block/crystalite_block_side",
+    "east": "frostbite:block/crystalite_block_side",
+    "west": "frostbite:block/crystalite_block_side",
+    "particle": "frostbite:block/crystalite_block_side"
+  }
+}

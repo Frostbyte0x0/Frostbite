@@ -3,6 +3,7 @@
     {
       "id": "frostbite:black_block",
       "required": false
-    }
+    },
+    "frostbite:crystallite_ore"
   ]
 }

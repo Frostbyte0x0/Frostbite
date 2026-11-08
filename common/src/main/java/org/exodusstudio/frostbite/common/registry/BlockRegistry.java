@@ -39,6 +39,10 @@ public class BlockRegistry {
                     .pushReaction(PushReaction.IMMOVEABLE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "frostbite_portal")))));
 
+    public static final DeferredBlock<Block> CRYSTALLITE_ORE = registerBlock("crystallite_ore",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ANCIENT_DEBRIS)
+                    .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "crystallite_ore")))));
+
     public static final DeferredBlock<Block> SLATED_ICE = registerBlock("slated_ice",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)
                     .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "slated_ice")))));
