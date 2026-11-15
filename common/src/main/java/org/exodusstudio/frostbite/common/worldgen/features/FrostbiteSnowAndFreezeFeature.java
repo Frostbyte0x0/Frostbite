@@ -13,10 +13,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import org.exodusstudio.frostbite.common.block.BrazierBlock;
-import org.exodusstudio.frostbite.common.block.SnowableSlabBlock;
-import org.exodusstudio.frostbite.common.block.SnowableStairBlock;
-import org.exodusstudio.frostbite.common.block.SnowableWallBlock;
+import org.exodusstudio.frostbite.Frostbite;
+import org.exodusstudio.frostbite.common.block.*;
 import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 
 public record FrostbiteSnowAndFreezeFeature() implements Feature {
@@ -35,34 +33,34 @@ public record FrostbiteSnowAndFreezeFeature() implements Feature {
         BlockPos.MutableBlockPos topPos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos belowPos = new BlockPos.MutableBlockPos();
 
+
+
         for(int dx = 0; dx < 16; ++dx) {
             for(int dz = 0; dz < 16; ++dz) {
                 int x = origin.getX() + dx;
                 int z = origin.getZ() + dz;
-                int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+                int y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
                 topPos.set(x, y, z);
                 belowPos.set(topPos).move(Direction.DOWN, 1);
+                belowState = level.getBlockState(belowPos);
                 Biome biome = level.getBiome(topPos).value();
                 if (biome.shouldFreeze(level, belowPos, false)) {
                     level.setBlock(belowPos, Blocks.ICE.defaultBlockState(), 2);
                 }
 
-                if (biome.shouldSnow(level, topPos)) {
-                    if (isSnowableBlock(belowState)) {
-                        level.setBlock(below, belowState.setValue(BlockStateProperties.SNOWY, true), 2);
-                        continue;
-                    }
-                    if (shouldUnlight(belowState)) {
-                        level.setBlock(below, belowState.setValue(BlockStateProperties.LIT, false), 2);
-                        continue;
-                    }
-                    if (isInvalidBlock(belowState)) continue;
+                if (isSnowableBlock(belowState)) {
+                    level.setBlock(below, belowState.setValue(BlockStateProperties.SNOWY, true), 2);
+                    continue;
+                }
+                if (shouldUnlight(belowState)) {
+                    level.setBlock(below, belowState.setValue(BlockStateProperties.LIT, false), 2);
+                    continue;
+                }
+                if (isInvalidBlock(belowState)) continue;
 
-                    level.setBlock(topPos, Blocks.SNOW.defaultBlockState(), 2);
-                    belowState = level.getBlockState(belowPos);
-                    if (belowState.hasProperty(SnowyBlock.SNOWY)) {
-                        level.setBlock(belowPos, belowState.setValue(SnowyBlock.SNOWY, true), 2);
-                    }
+                level.setBlock(topPos, Blocks.SNOW.defaultBlockState(), 2);
+                if (belowState.hasProperty(SnowyBlock.SNOWY)) {
+                    level.setBlock(belowPos, belowState.setValue(SnowyBlock.SNOWY, true), 2);
                 }
             }
         }
@@ -84,6 +82,7 @@ public record FrostbiteSnowAndFreezeFeature() implements Feature {
 
     public static boolean isInvalidBlock(BlockState state) {
         return
+                !state.isSolid() ||
                 state.is(Blocks.PACKED_ICE) ||
                 state.is(BlockRegistry.STONE_LANTERN) ||
                 state.is(BlockRegistry.FROZEN_STONE_LANTERN) ||
