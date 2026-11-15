@@ -12,6 +12,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.component.Tool;
@@ -54,6 +55,31 @@ public class ItemRegistry {
 
     public static final DeferredItem<Item> CRYSTALLITE = ITEMS.register("crystallite",
             (id) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
+
+    public static final DeferredItem<Item> CRYSTALLITE_SWORD = ITEMS.register("crystallite_sword",
+            (id) -> new Item(new Item.Properties()
+                    .sword(ToolMaterial.NETHERITE, 3.0F, -2.4F)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CRYSTALLITE_PICKAXE = ITEMS.register("crystallite_pickaxe",
+            (id) -> new Item(new Item.Properties()
+                    .pickaxe(ToolMaterial.NETHERITE, 1.0F, -2.8F)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CRYSTALLITE_AXE = ITEMS.register("crystallite_axe",
+            (id) -> new Item(new Item.Properties()
+                    .axe(ToolMaterial.NETHERITE, 5.0F, -3.0F)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CRYSTALLITE_SHOVEL = ITEMS.register("crystallite_shovel",
+            (id) -> new Item(new Item.Properties()
+                    .shovel(ToolMaterial.NETHERITE, 1.5F, -3.0F)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CRYSTALLITE_HOE = ITEMS.register("crystallite_hoe",
+            (id) -> new Item(new Item.Properties()
+                    .hoe(ToolMaterial.NETHERITE, -4.0F, 0.0F)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
+    public static final DeferredItem<Item> CRYSTALLITE_SPEAR = ITEMS.register("crystallite_spear",
+            (id) -> new Item(new Item.Properties()
+                    .spear(ToolMaterial.NETHERITE, 1.15F, 1.2F, 0.4F, 2.5F, 9.0F, 5.5F, 5.1F, 8.75F, 4.6F)
+                    .setId(ResourceKey.create(Registries.ITEM, id))));
 
     public static final DeferredItem<Item> EXPLODING_SNOWBALL = ITEMS.register("exploding_snowball",
             (id) -> new ExplodingSnowballItem(new Item.Properties().stacksTo(16)

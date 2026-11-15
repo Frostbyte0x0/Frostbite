@@ -130,6 +130,14 @@ public class CreativeModeTabRegistry {
                     output.accept(BlockRegistry.REINFORCED_BLACK_ICE);
                     output.accept(BlockRegistry.REINFORCED_BLACK_ICE_RECEPTACLE);
                     output.accept(ItemRegistry.FROSTBITTEN_GEM);
+                    output.accept(ItemRegistry.CRYSTALLITE);
+                    output.accept(BlockRegistry.CRYSTALLITE_ORE);
+                    output.accept(ItemRegistry.CRYSTALLITE_SWORD);
+                    output.accept(ItemRegistry.CRYSTALLITE_PICKAXE);
+                    output.accept(ItemRegistry.CRYSTALLITE_AXE);
+                    output.accept(ItemRegistry.CRYSTALLITE_SHOVEL);
+                    output.accept(ItemRegistry.CRYSTALLITE_HOE);
+                    output.accept(ItemRegistry.CRYSTALLITE_SPEAR);
                     output.accept(ItemRegistry.STARSEEKING_COMPASS);
 
                     output.accept(BlockRegistry.SLATED_ICE);
