@@ -1,0 +1,22 @@
+{
+  "parent": "frostbite:adventure/enter_frostbite",
+  "display": {
+    "icon": { "id": "minecraft:stone_bricks" },
+    "title": { "text": "Placeholder: Find the Castle" },
+    "description": { "text": "Placeholder: Find the Frostbite castle." }
+  },
+  "criteria": {
+    "find_castle": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": { "structures": "frostbite:guard_tower" }
+          }
+        }
+      }
+    }
+  }
+}

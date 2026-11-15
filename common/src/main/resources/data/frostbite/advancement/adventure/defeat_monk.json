@@ -1,0 +1,20 @@
+{
+  "parent": "frostbite:adventure/find_castle",
+  "display": {
+    "icon": { "id": "minecraft:iron_sword" },
+    "title": { "text": "Placeholder: Defeat the Monk" },
+    "description": { "text": "Placeholder: Defeat the Monk boss." }
+  },
+  "criteria": {
+    "defeat_monk": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": { "minecraft:entity_type": "frostbite:monk" }
+        }
+      }
+    }
+  }
+}

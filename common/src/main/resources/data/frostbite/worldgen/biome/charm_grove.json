@@ -7,7 +7,7 @@
   "downfall": 0.5,
   "effects": {
     "fog_color": 8289748,
-    "foliage_color": 2521660,
+    "foliage_color": 8828803,
     "grass_color": 8828803,
     "mood_sound": {
       "block_search_extent": 8,
@@ -80,7 +80,7 @@
       "frostbite:moss_patches",
       "frostbite:ice_patches",
       "frostbite:dripleaf_patches",
-      "minecraft:forest_rock",
+      "frostbite:boulders",
       "minecraft:flower_default",
       "minecraft:patch_grass_taiga",
       "minecraft:patch_tall_grass",
@@ -89,7 +89,6 @@
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_taiga",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_pumpkin",
       "minecraft:seagrass_deep",
       "minecraft:kelp_cold"
     ],

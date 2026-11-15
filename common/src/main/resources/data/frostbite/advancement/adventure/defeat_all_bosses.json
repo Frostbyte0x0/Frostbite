@@ -1,0 +1,57 @@
+{
+  "parent": "frostbite:adventure/defeat_chief_guard",
+  "display": {
+    "icon": { "id": "minecraft:nether_star" },
+    "frame": "challenge",
+    "title": { "text": "Placeholder: Defeat All Bosses" },
+    "description": { "text": "Placeholder: Defeat every Frostbite boss." }
+  },
+  "criteria": {
+    "monk": {
+        "trigger": "minecraft:player_killed_entity",
+        "conditions": {
+          "entity": {
+            "type": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": { "minecraft:entity_type": "frostbite:monk" }
+          }
+      }
+    },
+    "shaman": {
+        "trigger": "minecraft:player_killed_entity",
+        "conditions": {
+          "entity": {
+            "type": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": { "minecraft:entity_type": "frostbite:shaman" }
+          }
+      }
+    },
+    "big_levitating_jellyfish": {
+        "trigger": "minecraft:player_killed_entity",
+        "conditions": {
+          "entity": {
+            "type": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": { "minecraft:entity_type": "frostbite:big_levitating_jellyfish" }
+          }
+      }
+    },
+    "chief_guard": {
+        "trigger": "minecraft:player_killed_entity",
+        "conditions": {
+          "entity": {
+            "type": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": { "minecraft:entity_type": "frostbite:chief_guard" }
+          }
+      }
+    }
+  },
+  "requirements": [
+    [ "monk" ],
+    [ "shaman" ],
+    [ "big_levitating_jellyfish" ],
+    [ "chief_guard" ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "parent": "frostbite:adventure/find_castle",
+  "display": {
+    "icon": { "id": "minecraft:glowstone" },
+    "title": { "text": "Placeholder: Defeat the Jellyfish" },
+    "description": { "text": "Placeholder: Defeat the Big Levitating Jellyfish boss." }
+  },
+  "criteria": {
+    "defeat_big_levitating_jellyfish": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": { "minecraft:entity_type": "frostbite:big_levitating_jellyfish" }
+        }
+      }
+    }
+  }
+}

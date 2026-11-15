@@ -5,9 +5,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.exodusstudio.frostbite.common.registry.deferred.DeferredHolder;
 import org.exodusstudio.frostbite.common.registry.deferred.DeferredRegister;
 import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.block.block_entities.DecipheringTableBlockEntity;
 import org.exodusstudio.frostbite.common.block.block_entities.LodestarBlockEntity;
 import org.exodusstudio.frostbite.common.block.block_entities.RuneBlockEntity;
+import org.exodusstudio.frostbite.common.block.block_entities.DecipheringTableBlockEntity;
 
 import java.util.Set;
 
@@ -21,7 +21,7 @@ public class BlockEntityRegistry {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DecipheringTableBlockEntity>> DECIPHERING_TABLE =
             BLOCK_ENTITY_TYPES.register("deciphering_table", () -> new BlockEntityType<>
-                            (DecipheringTableBlockEntity::new, Set.of(BlockRegistry.DECIPHERING_TABLE.get())));
+                    (DecipheringTableBlockEntity::new, Set.of(BlockRegistry.CONTRACT_TABLE.get())));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RuneBlockEntity>> RUNE =
             BLOCK_ENTITY_TYPES.register("rune", () -> new BlockEntityType<>

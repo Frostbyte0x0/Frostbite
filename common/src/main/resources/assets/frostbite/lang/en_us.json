@@ -1,5 +1,17 @@
 {
   "sounds.frostbite.parry": "Perfect Parry",
+  "sounds.frostbite.chaincicle_swipe": "Chaincicle swipes",
+  "sounds.frostbite.chaincicle_spin": "Chaincicle spins",
+  "sounds.frostbite.chaincicle_launched_loop": "Chaincicle launches",
+  "sounds.frostbite.chaincicle_hook_launch": "Chaincicle hook launches",
+  "sounds.frostbite.chaincicle_hook_hit": "Chaincicle hook hits",
+  "sounds.frostbite.chaincicle_grapple_launch": "Chaincicle grapple launches",
+  "sounds.frostbite.chaincicle_grapple_hit": "Chaincicle grapple hits",
+  "sounds.frostbite.sniper_reload": "Sniper reloads",
+  "sounds.frostbite.sniper_chamber": "Sniper chambers",
+  "sounds.frostbite.sniper_shoot": "Sniper fires",
+  "sounds.frostbite.sniper_ping": "Sniper rifle pings",
+  "sounds.frostbite.sniper_fail": "Sniper fails to fire",
   "key.frostbite.parry": "Parry",
   "itemGroup.frostbite.frostbite_tab": "Frostbite",
   "itemGroup.frostbite.frostbite_combat_tab": "Frostbite Combat",
@@ -169,9 +181,7 @@
   "item.frostbite.leggings_weaving_pattern": "Leggings Weaving Pattern",
   "item.frostbite.boots_weaving_pattern": "Boots Weaving Pattern",
   "item.frostbite.weaving_table": "Weaving Table",
-  "item.frostbite.deciphering_table": "Deciphering Table",
-  "item.frostbite.combining_table": "Combining Table",
-  "item.frostbite.applying_table": "Applying Table",
+  "item.frostbite.contract_table": "Contract Table",
 
   "item.frostbite.jelly": "Jelly",
   "item.frostbite.insulating_jelly": "Insulating Jelly",
@@ -284,9 +294,10 @@
 
   "container.frozen_remnants": "Frozen Remnants",
   "container.weaving_table": "Weaving Table",
-  "container.deciphering_table": "Deciphering Table",
-  "container.combining_table": "Combining Table",
-  "container.applying_table": "Applying Table",
+  "container.contract_table": "Contract Table",
+  "contract_table.tab.deciphering": "Decipher",
+  "contract_table.tab.combining": "Combine",
+  "contract_table.tab.applying": "Apply",
 
   "contract.player_literacy.illiterate": "Illiterate",
   "contract.player_literacy.illiterate_desc": "You can read the polarity of contract fragments",
@@ -525,6 +536,10 @@
   "death.attack.hunters_catalyst": "%s got their hunter catalysted",
 
   "sounds.frostbite.snow_wind_ambience": "Snow and wind",
+
+  "sounds.frostbite.snow_ambience": "Snow falls",
+  "sounds.frostbite.blizzard_ambience": "Blizzard roars",
+  "sounds.frostbite.whiteout_ambience": "Whiteout winds",
 
   "sounds.frostbite.stunning_bell_ring": "Stunning bell rings"
 }

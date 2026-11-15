@@ -1,0 +1,20 @@
+{
+  "parent": "frostbite:adventure/find_castle",
+  "display": {
+    "icon": { "id": "minecraft:shield" },
+    "title": { "text": "Placeholder: Defeat the Chief Guard" },
+    "description": { "text": "Placeholder: Defeat the Chief Guard boss." }
+  },
+  "criteria": {
+    "defeat_chief_guard": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": { "minecraft:entity_type": "frostbite:chief_guard" }
+        }
+      }
+    }
+  }
+}
