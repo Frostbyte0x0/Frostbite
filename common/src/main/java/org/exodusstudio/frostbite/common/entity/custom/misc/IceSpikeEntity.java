@@ -47,6 +47,7 @@ public class IceSpikeEntity extends EvokerFangs {
     ) {
         this(EntityRegistry.ICE_SPIKE.get(), level);
         this.setDelayTicks(warmupDelay);
+        this.warmupDelayTicks = warmupDelay;
         this.setOwner(owner);
         this.setYRot(yRot);
         this.setXRot(xRot);
@@ -82,7 +83,7 @@ public class IceSpikeEntity extends EvokerFangs {
         if (p_36935_ == 4) {
             this.clientSideAttackStarted = true;
             if (!isSilent()) {
-                level().playLocalSound(getX(), getY(), getZ(), SoundEvents.AMETHYST_BLOCK_BREAK, getSoundSource(), 1.0F, random.nextFloat() * 0.2F + 0.85F, false);
+                level().playLocalSound(getX(), getY(), getZ(), SoundEvents.SPEAR_HIT.value(), getSoundSource(), 0.5F, random.nextFloat() * 0.2F + 0.85F, false);
             }
         }
     }
@@ -134,7 +135,7 @@ public class IceSpikeEntity extends EvokerFangs {
                 DamageSource damagesource = this.damageSources().indirectMagic(this, livingentity);
                 Level var5 = this.level();
                 if (var5 instanceof ServerLevel serverlevel) {
-                    if (target.hurtServer(serverlevel, damagesource, 6.0F)) {
+                    if (target.hurtServer(serverlevel, damagesource, 9.0F)) {
                         EnchantmentHelper.doPostAttackEffects(serverlevel, target, damagesource);
                     }
                 }

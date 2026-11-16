@@ -32,7 +32,7 @@ public class IceSpikeModel extends EntityModel<IceSpikeRenderState> {
         super.setupAnim(state);
         float f = state.biteProgress;
         if (state.isRising) {
-            this.bb_main.y = ((10.5f + Math.max(-Math.max(Mth.abs(1 / (f - 0.6f)), -4), -4f)) * 5);
+            this.bb_main.y = ((8f + Math.max(-Math.max(Mth.abs(1 / (f - 0.6f)), -4), -5f)) * 10);
         }
     }
 

@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.exodusstudio.frostbite.common.component.ModeData;
+import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.item.weapons.SpellTooltipable;
 import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 import org.exodusstudio.frostbite.common.registry.DataComponentTypeRegistry;
@@ -44,7 +45,7 @@ public abstract class ModeWeapon extends Item implements SpellTooltipable {
 
     public final boolean attack(Level level, LivingEntity owner) {
         ItemStack stack = owner.getItemInHand(InteractionHand.MAIN_HAND);
-        if (!consumeUse(stack)) return false;
+        if (!(owner instanceof ElfEntity || (owner instanceof Player player && player.isCreative())) && !consumeUse(stack)) return false;
 
         if (!level.isClientSide()) {
             ((TE) owner).decreaseTemperature(INNER_TEMPERATURE_COST, true);
@@ -92,7 +93,7 @@ public abstract class ModeWeapon extends Item implements SpellTooltipable {
     }
 
     public static int getUses(ItemStack stack) {
-        return Math.min(MAX_USES, Math.max(0, DataHelper.getInt(stack, STAFF_USES_KEY)));
+        return Math.clamp(DataHelper.getInt(stack, STAFF_USES_KEY), 0, MAX_USES);
     }
 
     public static void setUses(ItemStack stack, int uses) {

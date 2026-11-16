@@ -42,7 +42,7 @@ public class FireSliceRenderer extends EntityRenderer<FireSliceEntity, FireSlice
         poseStack.rotate(Axis.XP.rotationDegrees(-state.xRot));
         poseStack.translate(0, -1.4, 0);
         nodeCollector.submitModel(model, state, poseStack, RenderTypes.entityCutout(getTextureLocation(state)),
-                state.lightCoords, 0, 0, null, state.outlineColor);
+                15728880, 0, 0, null, state.outlineColor);
         poseStack.popPose();
         super.submit(state, poseStack, nodeCollector, cameraRenderState);
     }

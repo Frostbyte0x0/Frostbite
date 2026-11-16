@@ -19,7 +19,6 @@
     "PathfindingContextMixin",
     "PlayerMixin",
     "ProtoChunkMixin",
-    "ServerPlayerGameModeMixin",
     "ServerPlayerMixin"
   ],
   "client": [

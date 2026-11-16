@@ -13,8 +13,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import org.exodusstudio.frostbite.Frostbite;
-import org.exodusstudio.frostbite.common.block.*;
+import org.exodusstudio.frostbite.common.block.BrazierBlock;
+import org.exodusstudio.frostbite.common.block.SnowableSlabBlock;
+import org.exodusstudio.frostbite.common.block.SnowableStairBlock;
+import org.exodusstudio.frostbite.common.block.SnowableWallBlock;
 import org.exodusstudio.frostbite.common.registry.BlockRegistry;
 
 public record FrostbiteSnowAndFreezeFeature() implements Feature {

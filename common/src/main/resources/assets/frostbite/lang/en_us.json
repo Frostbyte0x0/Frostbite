@@ -271,8 +271,8 @@
   "item.frostbite.frozen_plating_lining_leggings": "Frozen plating lining leggings",
   "item.frostbite.frozen_plating_lining_boots": "Frozen plating lining boots",
 
-  "frostbite.modes.icy_breath" : "Icy Breath",
-  "frostbite.modes.spikes" : "Spikes",
+  "frostbite.modes.floor" : "Floor",
+  "frostbite.modes.throw" : "Throw",
   "frostbite.modes.roaming_blizzard" : "Roaming Blizzard",
   "frostbite.modes.hailcoil" : "Hailcoil",
   "frostbite.modes.heal" : "Heal",

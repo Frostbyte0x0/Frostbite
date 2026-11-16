@@ -477,9 +477,13 @@ public class ClientEvents {
         }
     }
 
+    static boolean pressed = false;
     public static EventResult staffControl(Minecraft minecraft, MouseButtonInfo buttonInfo, int action) {
-//        if (event.getAction() != GLFW.GLFW_PRESS) return EventResult.pass(); TODO: translate to arch
-        if (buttonInfo.button() != 0 && buttonInfo.button() != 1) return EventResult.pass();
+        if (buttonInfo.button() != Minecraft.getInstance().options.keyUse.key.getValue() &&
+                buttonInfo.button() != Minecraft.getInstance().options.keyAttack.key.getValue()) return EventResult.pass();
+        pressed = !pressed;
+        if (pressed || Minecraft.getInstance().isPaused()) return EventResult.pass();
+
 
         Player player = Minecraft.getInstance().player;
         if (player == null || Minecraft.getInstance().gui.screen() != null) return EventResult.pass();
@@ -487,7 +491,7 @@ public class ClientEvents {
         ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);
         if (!(itemInHand.getItem() instanceof ModeWeapon staff)) return EventResult.pass();
 
-        if (buttonInfo.button() == 0) {
+        if (buttonInfo.button() == Minecraft.getInstance().options.keyUse.key.getValue()) {
             staff.cycleMode(itemInHand);
             NetworkManager.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(
                     itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID(), false)));

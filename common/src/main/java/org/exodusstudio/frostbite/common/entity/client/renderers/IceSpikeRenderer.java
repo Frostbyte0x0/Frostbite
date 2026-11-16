@@ -34,7 +34,7 @@ public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRen
             stack.scale(-1.0F, -1.0F, 1.0F);
             stack.translate(0.0F, -1.501F, 0.0F);
             nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(TEXTURE_LOCATION),
-                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
+                    15728880, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
             stack.popPose();
         }
 
@@ -45,7 +45,7 @@ public class IceSpikeRenderer extends EntityRenderer<IceSpikeEntity, IceSpikeRen
             stack.rotate(Axis.XN.rotationDegrees(90 - state.xRot));
             stack.translate(0, -1.2, 0);
             nodeCollector.submitModel(model, state, stack, RenderTypes.entityCutout(TEXTURE_LOCATION),
-                    state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
+                    15728880, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
             stack.popPose();
         }
 

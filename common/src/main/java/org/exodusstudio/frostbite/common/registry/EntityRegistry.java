@@ -100,7 +100,7 @@ public class EntityRegistry {
     public static final Supplier<EntityType<IceSpikeEntity>> ICE_SPIKE =
             ENTITY_TYPES.register("ice_spike", () -> EntityType.Builder
                     .<IceSpikeEntity>of(IceSpikeEntity::new, MobCategory.MISC)
-                    .sized(1f, 1f)
+                    .sized(1f, 1.5f)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE,
                             Identifier.fromNamespaceAndPath(Frostbite.MOD_ID, "ice_spike"))));
 

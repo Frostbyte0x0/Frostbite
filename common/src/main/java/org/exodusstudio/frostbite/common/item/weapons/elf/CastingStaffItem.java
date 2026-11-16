@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.exodusstudio.frostbite.Frostbite;
 import org.exodusstudio.frostbite.common.entity.custom.elves.ElfEntity;
 import org.exodusstudio.frostbite.common.entity.custom.helper.PseudoEntity;
 import org.exodusstudio.frostbite.common.entity.custom.misc.IceSpikeEntity;
@@ -24,7 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class CastingStaffItem extends ModeWeapon {
-    public static final String[] MODES = new String[]{"icy_breath", "spikes"};
+    public static final String[] MODES = new String[]{"floor", "throw"};
     private static final double AIMED_BREATH_RANGE = 5.0;
     private static final double AIMED_BREATH_RADIUS = 1.0;
     private static final double RADIAL_BREATH_RANGE = 2.5;
@@ -43,73 +44,99 @@ public class CastingStaffItem extends ModeWeapon {
         Vec3 vec32 = vec31.normalize();
 
         switch (getMode(owner.getItemInHand(InteractionHand.MAIN_HAND))) {
-            case "icy_breath":
-                if (level.isClientSide()) {
-                    int particleCount = 30;
-                    for (int i = 1; i < 4; i++) {
-                        for (int j = 0; j < particleCount; j++) {
-                            double angle = j * Math.PI * 2 / particleCount;
-                            double y = 1 - 2 * (j + 0.5) / particleCount;
-                            double horizontal = Math.sqrt(1 - y * y);
-                            Vec3 direction = new Vec3(
-                                    Math.cos(angle) * horizontal,
-                                    y,
-                                    Math.sin(angle) * horizontal);
-                            double largestComponent = Math.max(Math.abs(direction.x),
-                                    Math.max(Math.abs(direction.y), Math.abs(direction.z)));
-                            Vec3 boundaryDirection = direction.scale(RADIAL_BREATH_RANGE / largestComponent);
-                            Vec3 position = vec3.add(boundaryDirection.scale(i / 3.0));
-                            addIcyBreathParticle(level, position,
-                                    direction.scale(i / 3.0 * 0.001),
-                                    direction.scale(0.05 * (i + 1)));
+            case "floor":
+//                if (level.isClientSide()) {
+//                    int particleCount = 30;
+//                    for (int i = 1; i < 4; i++) {
+//                        for (int j = 0; j < particleCount; j++) {
+//                            double angle = j * Math.PI * 2 / particleCount;
+//                            double y = 1 - 2 * (j + 0.5) / particleCount;
+//                            double horizontal = Math.sqrt(1 - y * y);
+//                            Vec3 direction = new Vec3(
+//                                    Math.cos(angle) * horizontal,
+//                                    y,
+//                                    Math.sin(angle) * horizontal);
+//                            double largestComponent = Math.max(Math.abs(direction.x),
+//                                    Math.max(Math.abs(direction.y), Math.abs(direction.z)));
+//                            Vec3 boundaryDirection = direction.scale(RADIAL_BREATH_RANGE / largestComponent);
+//                            Vec3 position = vec3.add(boundaryDirection.scale(i / 3.0));
+//                            addIcyBreathParticle(level, position,
+//                                    direction.scale(i / 3.0 * 0.001),
+//                                    direction.scale(0.05 * (i + 1)));
+//                        }
+//                    }
+//
+//                    Vec3 reference = Math.abs(vec32.y) < 0.9 ? new Vec3(0, 1, 0) : new Vec3(1, 0, 0);
+//                    Vec3 side = vec32.cross(reference).normalize();
+//                    Vec3 up = side.cross(vec32).normalize();
+//                    for (int i = 1; i <= AIMED_BREATH_SEGMENTS; i++) {
+//                        Vec3 center = vec3.add(vec32.scale(AIMED_BREATH_RANGE * i / AIMED_BREATH_SEGMENTS));
+//                        for (int j = 0; j < AIMED_BREATH_RING_PARTICLES; j++) {
+//                            double angle = j * Math.PI * 2 / AIMED_BREATH_RING_PARTICLES;
+//                            Vec3 offset = side.scale(Math.cos(angle) * AIMED_BREATH_RADIUS)
+//                                    .add(up.scale(Math.sin(angle) * AIMED_BREATH_RADIUS));
+//                            addIcyBreathParticle(level, center.add(offset),
+//                                    vec32.scale(0.001),
+//                                    vec32.scale(0.08).add(offset.scale(0.01)));
+//                        }
+//                    }
+//
+//                } else {
+//                    Set<Entity> affectedEntities = new HashSet<>();
+//                    AABB radialBounds = new AABB(
+//                            vec3.subtract(RADIAL_BREATH_RANGE),
+//                            vec3.add(RADIAL_BREATH_RANGE));
+//
+//                    for (Entity entity1 : owner.level().getEntities(owner, radialBounds)) {
+//                        if (affectedEntities.add(entity1)) {
+//                            entity1.hurtServer((ServerLevel) level, owner.damageSources().freeze(), 4f);
+//                        }
+//                    }
+//
+//                    Vec3 end = vec3.add(vec32.scale(AIMED_BREATH_RANGE));
+//
+//                    for (Entity entity1 : owner.level().getEntities(owner, new AABB(vec3, end).inflate(AIMED_BREATH_RADIUS))) {
+//                        AABB aabb = entity1.getBoundingBox().inflate(AIMED_BREATH_RADIUS);
+//                        Optional<Vec3> optional1 = aabb.clip(vec3, end);
+//                        if (optional1.isPresent() && affectedEntities.add(entity1)) {
+//                            entity1.hurtServer((ServerLevel) level, owner.damageSources().freeze(), 4f);
+//                        }
+//                    }
+//
+//                    addBreathTrail(level, owner, vec32, 0.3);
+//                    for (int i = 0; i < RADIAL_BREATH_RAYS; i++) {
+//                        double angle = i * Math.PI * 2 / RADIAL_BREATH_RAYS;
+//                        addBreathTrail(level, owner, new Vec3(Math.cos(angle), 0, Math.sin(angle)), 0.15);
+//                    }
+//                }
+
+                if (level instanceof ServerLevel serverLevel) {
+                    if (!owner.isShiftKeyDown()) {
+                        for (int i = 1; i < 5; i++) {
+                            for (int j = 0; j < i; j++) {
+                                float angle = (-owner.getYRot() * Mth.PI / 180) - ((float) j / 3) + (float) i / 6 - 0.16f;
+                                serverLevel.addFreshEntity(new IceSpikeEntity(level,
+                                        owner.getX() + 1.5 * i * Mth.sin(angle),
+                                        Math.floor(owner.getY()),
+                                        owner.getZ() + 1.5 * i * Mth.cos(angle),
+                                        (owner.getYRot() + ((float) j / 3) - (float) i / 6), 0, 2 * i, owner, true));
+                            }
                         }
-                    }
-
-                    Vec3 reference = Math.abs(vec32.y) < 0.9 ? new Vec3(0, 1, 0) : new Vec3(1, 0, 0);
-                    Vec3 side = vec32.cross(reference).normalize();
-                    Vec3 up = side.cross(vec32).normalize();
-                    for (int i = 1; i <= AIMED_BREATH_SEGMENTS; i++) {
-                        Vec3 center = vec3.add(vec32.scale(AIMED_BREATH_RANGE * i / AIMED_BREATH_SEGMENTS));
-                        for (int j = 0; j < AIMED_BREATH_RING_PARTICLES; j++) {
-                            double angle = j * Math.PI * 2 / AIMED_BREATH_RING_PARTICLES;
-                            Vec3 offset = side.scale(Math.cos(angle) * AIMED_BREATH_RADIUS)
-                                    .add(up.scale(Math.sin(angle) * AIMED_BREATH_RADIUS));
-                            addIcyBreathParticle(level, center.add(offset),
-                                    vec32.scale(0.001),
-                                    vec32.scale(0.08).add(offset.scale(0.01)));
+                    } else {
+                        for (int i = 1; i < 3; i++) {
+                            for (int j = 0; j < i*4; j++) {
+                                float angle = Mth.PI * j / (i * 2);
+                                serverLevel.addFreshEntity(new IceSpikeEntity(level,
+                                        owner.getX() + i * Mth.sin(angle),
+                                        Math.floor(owner.getY()),
+                                        owner.getZ() + i * Mth.cos(angle),
+                                        -angle, 0, j, owner, true));
+                            }
                         }
-                    }
-
-                } else {
-                    Set<Entity> affectedEntities = new HashSet<>();
-                    AABB radialBounds = new AABB(
-                            vec3.subtract(RADIAL_BREATH_RANGE),
-                            vec3.add(RADIAL_BREATH_RANGE));
-
-                    for (Entity entity1 : owner.level().getEntities(owner, radialBounds)) {
-                        if (affectedEntities.add(entity1)) {
-                            entity1.hurtServer((ServerLevel) level, owner.damageSources().freeze(), 4f);
-                        }
-                    }
-
-                    Vec3 end = vec3.add(vec32.scale(AIMED_BREATH_RANGE));
-
-                    for (Entity entity1 : owner.level().getEntities(owner, new AABB(vec3, end).inflate(AIMED_BREATH_RADIUS))) {
-                        AABB aabb = entity1.getBoundingBox().inflate(AIMED_BREATH_RADIUS);
-                        Optional<Vec3> optional1 = aabb.clip(vec3, end);
-                        if (optional1.isPresent() && affectedEntities.add(entity1)) {
-                            entity1.hurtServer((ServerLevel) level, owner.damageSources().freeze(), 4f);
-                        }
-                    }
-
-                    addBreathTrail(level, owner, vec32, 0.3);
-                    for (int i = 0; i < RADIAL_BREATH_RAYS; i++) {
-                        double angle = i * Math.PI * 2 / RADIAL_BREATH_RAYS;
-                        addBreathTrail(level, owner, new Vec3(Math.cos(angle), 0, Math.sin(angle)), 0.15);
                     }
                 }
                 break;
-            case "spikes":
+            case "throw":
                 if (!level.isClientSide()) {
                     Vec3 look = owner.getLookAngle().normalize();
                     Vec3 spawnPos = owner.position().add(0, owner.getEyeHeight(), 0).add(look.scale(1.5));
