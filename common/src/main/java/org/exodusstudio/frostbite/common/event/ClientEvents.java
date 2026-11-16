@@ -508,22 +508,6 @@ public class ClientEvents {
         return EventResult.pass();
     }
 
-//    public static EventResult staffControl(Minecraft minecraft, MouseButtonInfo buttonInfo, int action) {
-//        if (buttonInfo.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
-//            Player player = Minecraft.getInstance().player;
-//            if (player != null) {
-//                ItemStack itemInHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-//                if (itemInHand.getItem() instanceof ModeWeapon staff && !player.getCooldowns().isOnCooldown(itemInHand)) {
-//                    staff.attack(player.level(), player);
-//                    player.getCooldowns().addCooldown(itemInHand, 20);
-//                    NetworkManager.sendToServer(new StaffPayload(new StaffPayload.StaffInfo(itemInHand.get(DataComponentTypeRegistry.MODE.get()).mode(), player.getUUID())));
-//                    return EventResult.interruptFalse();
-//                }
-//            }
-//        }
-//        return EventResult.pass();
-//    }
-
     public static void ambience(Player player) {
         if (Minecraft.getInstance().level == null) return;
         WeatherInfo weatherInfo = DataHelper.getWeatherInfo(Minecraft.getInstance().level);

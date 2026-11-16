@@ -16,6 +16,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.exodusstudio.frostbite.common.mixinterfaces.TE;
 import org.exodusstudio.frostbite.common.registry.EntityRegistry;
 
 import org.jetbrains.annotations.Nullable;
@@ -125,7 +126,8 @@ public class IceSpikeEntity extends EvokerFangs {
         if (target.isAlive() && target != livingentity) {
             if (livingentity == null) {
                 if (level() instanceof ServerLevel serverLevel) {
-                    target.hurtServer(serverLevel, this.damageSources().magic(), 4);
+                    target.hurtServer(serverLevel, this.damageSources().magic(), 9);
+                    ((TE) target).decreaseTemperature(3, false);
                 }
             } else {
                 if (livingentity.isAlliedTo(target)) {
@@ -135,7 +137,8 @@ public class IceSpikeEntity extends EvokerFangs {
                 DamageSource damagesource = this.damageSources().indirectMagic(this, livingentity);
                 Level var5 = this.level();
                 if (var5 instanceof ServerLevel serverlevel) {
-                    if (target.hurtServer(serverlevel, damagesource, 9.0F)) {
+                    if (target.hurtServer(serverlevel, damagesource, 9)) {
+                        ((TE) target).decreaseTemperature(3, false);
                         EnchantmentHelper.doPostAttackEffects(serverlevel, target, damagesource);
                     }
                 }
