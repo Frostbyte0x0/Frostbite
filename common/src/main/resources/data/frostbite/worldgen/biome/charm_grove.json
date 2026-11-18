@@ -97,29 +97,29 @@
           "ambient": [
             {
               "type": "frostbite:boar",
-              "count": 4,
+              "count": 5,
               "weight": 40
             },
             {
               "type": "frostbite:woolly_sheep",
-              "count": 4,
+              "count": 5,
               "weight": 40
             }
           ],
           "monster": [
             {
               "type": "frostbite:iced_zombie",
-              "count": 4,
+              "count": 5,
               "weight": 30
             },
             {
               "type": "frostbite:iced_skeleton",
-              "count": 4,
+              "count": 5,
               "weight": 30
             },
             {
               "type": "frostbite:iced_creeper",
-              "count": 4,
+              "count": 5,
               "weight": 30
             }
           ]

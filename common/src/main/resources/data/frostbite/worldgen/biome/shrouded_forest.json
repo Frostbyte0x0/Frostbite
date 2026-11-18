@@ -11,34 +11,34 @@
           "ambient": [
             {
               "type": "frostbite:boar",
-              "count": 4,
+              "count": 5,
               "weight": 40
             },
             {
               "type": "frostbite:bandit",
-              "count": 4,
+              "count": 5,
               "weight": 40
             },
             {
               "type": "frostbite:woolly_sheep",
-              "count": 4,
+              "count": 5,
               "weight": 40
             }
           ],
           "monster": [
             {
               "type": "frostbite:levitating_jellyfish",
-              "count": 4,
+              "count": 5,
               "weight": 30
             },
             {
               "type": "frostbite:big_levitating_jellyfish",
-              "count": 4,
+              "count": 5,
               "weight": 30
             },
             {
               "type": "frostbite:iced_zombie",
-              "count": 4,
+              "count": 5,
               "weight": 30
             },
             {
@@ -51,13 +51,13 @@
               "count": {
                 "type": "minecraft:uniform",
                 "min_inclusive": 2,
-                "max_inclusive": 4
+                "max_inclusive": 5
               },
               "weight": 30
             },
             {
               "type": "frostbite:iced_creeper",
-              "count": 4,
+              "count": 5,
               "weight": 30
             }
           ]
@@ -133,8 +133,6 @@
       "frostbite:trees_misty",
       "frostbite:mega_trees_misty",
       "frostbite:misty_foliage",
-      "frostbite:moss_patches",
-      "frostbite:ice_patches",
       "frostbite:dripleaf_patches",
       "minecraft:patch_grass_badlands",
       "minecraft:brown_mushroom_normal",

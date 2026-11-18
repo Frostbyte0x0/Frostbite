@@ -123,7 +123,6 @@ public class ModEventBusEvents {
     }
 
     public static boolean checkMonsterSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor level, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
-        if (pos.getY() < 65) return false;
         return Monster.checkMonsterSpawnRules(type, level, spawnReason, pos, random);
     }
 

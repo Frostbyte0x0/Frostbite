@@ -32,9 +32,26 @@ public class IcePatchFeature extends VegetationPatchFeature implements Feature {
     public void distributeVegetation(
             final WorldGenLevel level, final ChunkGenerator generator, final RandomSource random, final Set<BlockPos> surface
     ) {
+        if (surface.isEmpty()) {
+            return;
+        }
+
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int minZ = Integer.MAX_VALUE;
+        int maxZ = Integer.MIN_VALUE;
         for (BlockPos position : surface) {
-            int x = position.getX();
-            int z = position.getZ();
+            minX = Math.min(minX, position.getX());
+            maxX = Math.max(maxX, position.getX());
+            minZ = Math.min(minZ, position.getZ());
+            maxZ = Math.max(maxZ, position.getZ());
+        }
+
+        int centerX = (minX + maxX) / 2;
+        int centerZ = (minZ + maxZ) / 2;
+        for (BlockPos position : surface) {
+            int x = position.getX() - centerX;
+            int z = position.getZ() - centerZ;
 
             // Keep the larger snow and ice center in the dirt patch and leave a dirt border.
             if (x * x + z * z > 5) {
