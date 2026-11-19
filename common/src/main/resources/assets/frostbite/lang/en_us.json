@@ -535,9 +535,31 @@
   "codex.target_entry.shaman.title": "Shaman",
   "codex.target_entry.shaman.description": "A shaman that has been corrupted by the frostbite. He can summon spirits to help him in battle.",
 
+
+  "codex.list_entry.starseeking_compass.title": "Starseeking Compass",
+  "codex.list_entry.starseeking_compass.description": "This is the start of your journey in §bFrostbite, craft this item to find the starter castle to access the portal and enter Frostbite",
+  "codex.list_entry.starseeking_compass.tips": "Watch the skies when you get close \nBe prepared...",
+
   "codex.list_entry.temperature.title": "Temperature",
   "codex.list_entry.temperature.description": "Each entity has a temperature, which can be affected by the environment and the items they wear. If your temperature drops too low, you will start to take damage over time.",
   "codex.list_entry.temperature.tips": "Wear lining to protect yourself from lower temperatures \nYou can also use the bottle of warmth to increase your temperature",
+
+  "codex.list_entry.lining.title": "Lining",
+  "codex.list_entry.lining.description": "Lining is a second set of \"armour\" that protects you from the cold.",
+  "codex.list_entry.lining.tips": "Hide from boars is useful for making lining \nThere are 6 tiers of lining, each better than the last",
+
+  "codex.list_entry.crystalite.title": "Crystallite",
+  "codex.list_entry.crystalite.description": "Crystallite is an ore you can only get in §bFrostbite, it is very rare, similarly to netherite. It is used for many recipes.",
+  "codex.list_entry.crystalite.tips": "The ore is only mineable with diamond tools",
+
+  "codex.list_entry.staffs.title": "Staffs",
+  "codex.list_entry.staffs.description": "Staffs are a type of weapon you can find. They need to be loaded with magic powder obtained from elves to be used.",
+  "codex.list_entry.staffs.tips": "",
+
+  "codex.list_entry.magic_dust.title": "Magic Dust",
+  "codex.list_entry.magic_dust.description": "Magic dust is obtained from elves",
+  "codex.list_entry.magic_dust.tips": "",
+
 
   "death.attack.freezing": "%s was taken by the cold",
   "death.attack.delay": "%s couldn't handle the delay",
